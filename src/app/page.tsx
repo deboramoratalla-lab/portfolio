@@ -1,65 +1,21 @@
-import Image from "next/image";
+import Image from "next/image"
+import { ProjectCard } from "@/components/project-card"
+import { projects } from "@/data/projects"
+
+const methods = [
+  ["I start by asking why", "I rarely take a brief at face value. I pull at the loose threads — what people are actually trying to do, what the business needs and what the system can support — until the problem feels honest.", "Questions first"],
+  ["I put the awkward decisions on the table", "Trade-offs do not disappear because nobody names them. I make them visible early, including the ideas I would rather not ship.", "Trade-offs"],
+  ["I don’t disappear into Figma", "I work best with Product and Engineering in the room. I share unfinished thinking, invite constraints early and leave behind decisions the team can use without me.", "Working in the open"],
+  ["I automate the boring parts, not the thinking", "I use systems and AI for repetitive work: exploring options, checking patterns and speeding up execution. The judgment stays human.", "Systems · AI"],
+]
 
 export default function Home() {
-  return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
-  );
+  return <main id="top">
+    <section className="home-hero"><div className="hero-words"><span>Clarity.</span><span>Structure.</span><span>Systems.</span></div><p>I design complex products and the systems behind them — turning ambiguous workflows into clear product decisions, scalable foundations and responsible AI.</p><video src="/media/ZOeDI7fC0g8dMMaYluHtSKEnHe0.mp4" autoPlay muted loop playsInline /></section>
+    <section className="about section" id="about"><header className="section-title"><h2>About</h2><sup>01</sup></header><div className="about-grid"><div className="portrait"><Image src="/media/y6pNO70rr4PZo0E8r6ULmhFEeA.png" alt="Debora Moratalla" fill sizes="(max-width: 800px) 100vw, 38vw" /></div><div><p className="large-copy">I&apos;ve always been more interested in the system than the screen.</p><p>My multidisciplinary path has moved through brand, product, design systems and code. That range helps me see the relationships between decisions — and make complex products easier for teams to build and people to use.</p></div></div></section>
+    <section className="work section" id="work"><header className="section-title"><h2>Selected work</h2><sup>02</sup></header><div className="project-stack">{projects.map((project, index) => <ProjectCard project={project} index={index} key={project.slug} />)}</div></section>
+    <section className="practice section" id="practice"><header className="section-title"><h2>How I work</h2><sup>03</sup></header><div className="method-list">{methods.map(([title, copy, tag]) => <article key={title}><h3>{title}</h3><div><p>{copy}</p><span>{tag}</span></div></article>)}</div><blockquote>Systems before screens.<br/>Judgment before automation.</blockquote><p className="practice-close">I am most useful before the answer is obvious: asking the awkward question, turning messy constraints into something the team can act on, and staying close enough to engineering to see the idea through.</p></section>
+    <section className="tools section" id="tools"><header className="section-title"><h2>Tools</h2><sup>04</sup></header><p className="large-copy">Tools change. Judgment compounds.</p><div className="tool-grid">{["Figma","Storybook","React","GitHub","Vercel","Claude","Cursor","Maze","Linear","Notion"].map(tool => <div key={tool}><span>{tool}</span><p>{tool === "Figma" ? "Product design and systems" : tool === "Storybook" ? "Coded component libraries" : tool === "React" ? "Prototypes and production UI" : "Part of the working stack"}</p></div>)}</div></section>
+    <section className="earlier section"><header className="section-title"><h2>Earlier work</h2><sup>05</sup></header><p>Selected experiments and earlier product work — useful evidence of how my practice evolved.</p><div className="earlier-list">{[["AccessIA","Accessibility · AI concept","https://medium.com/design-bootcamp/accessia-the-future-of-ux-accessibility-045d83fd1d56"],["Moofi","Product design · Fintech","/projects/moofi"],["Mi Yo Digital","Service design · Digital identity","https://medium.com/@debora.moratalla/miyodigital-promoting-a-safer-digital-identity-fea48d136f52"],["Nomaia","Product strategy · Wellbeing","https://medium.com/@debora.moratalla/redefining-digital-workers-wellbeing-through-slow-living-with-lean-ux-01f97640bde6"]].map(([name, label, href], index) => <a href={href} key={name}><span>0{index+1}</span><strong>{name}</strong><p>{label}</p><i>↗</i></a>)}</div></section>
+  </main>
 }

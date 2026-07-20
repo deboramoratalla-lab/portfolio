@@ -1,0 +1,4693 @@
+[
+  {
+    "description": "",
+    "links": [
+      {
+        "href": "https://deboramoratalla.framer.website/projects/saas",
+        "text": "SUEZ · Board InternationalMaking workflow state visible across a €1.2B budgeting system.PRODUCT DESIGNENTERPRISE WORKFLOW"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/projects/tap-mindset-ds",
+        "text": "TAP Mindset Design SystemBuilding the system that keeps product, design and code in sync.DESIGN SYSTEMAI WORKFLOWS"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/projects/tap-mindset",
+        "text": "TAP MindsetReframing one product into three role-based experiences.PRODUCT DESIGNSPORTS"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/projects/fluxy",
+        "text": "FluxyDesigning an agent that earns autonomy through legibility and consent.AGENTIC DESIGNMOBILITY"
+      },
+      {
+        "href": "https://medium.com/design-bootcamp/accessia-the-future-of-ux-accessibility-045d83fd1d56",
+        "text": "AccessIA(01)Accessibility · AI concept"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/projects/moofi",
+        "text": "Moofi(02)Product design · Fintech"
+      },
+      {
+        "href": "https://medium.com/@debora.moratalla/miyodigital-promoting-a-safer-digital-identity-fea48d136f52",
+        "text": "Mi Yo Digital(03)Service design · Digital identity"
+      },
+      {
+        "href": "https://medium.com/@debora.moratalla/redefining-digital-workers-wellbeing-through-slow-living-with-lean-ux-01f97640bde6",
+        "text": "Nomaia(04)Product strategy · Wellbeing"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/work/valeria",
+        "text": "Valeria(05)Product design · Concept"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/contact",
+        "text": "Let´s connect .rolling-text-inner-06b45445-0405-41d4-bcd2-ae790a96d67d { --font-size: 15px; --text: rgb(255, 255, 255); --line-height-abs: 18px; box-sizing: bor"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#top",
+        "text": ""
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#about",
+        "text": "About, .rolling-text-inner-04ce0ea6-e561-4772-853a-6275bbcc739b { --font-size: 14px; --text: var(--token-af1df47b-ea84-448e-bdf0-a5ce0f875a59, rgb(153, 153, 153"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#work",
+        "text": "Work, .rolling-text-inner-33f12b40-a3a9-40e5-82c3-d1351d68ad15 { --font-size: 14px; --text: var(--token-af1df47b-ea84-448e-bdf0-a5ce0f875a59, rgb(153, 153, 153)"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#practice",
+        "text": "Practice, .rolling-text-inner-1e31ad8d-1bb0-4868-b1be-0ea58f6bd526 { --font-size: 14px; --text: var(--token-af1df47b-ea84-448e-bdf0-a5ce0f875a59, rgb(153, 153, "
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#tools",
+        "text": "Tools .rolling-text-inner-71d09b9e-453e-45c6-a12b-3a52a016b82f { --font-size: 14px; --text: var(--token-af1df47b-ea84-448e-bdf0-a5ce0f875a59, rgb(153, 153, 153)"
+      },
+      {
+        "href": "https://www.linkedin.com/in/deboramoratallamartin/",
+        "text": ""
+      },
+      {
+        "href": "https://www.framer.com/",
+        "text": "Create a free website with Framer, the website builder loved by startups, designers and agencies."
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#top",
+        "text": ""
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#about",
+        "text": "About, .rolling-text-inner-b3b73e52-37d2-4db2-a02e-8cdcec984659 { --font-size: 14px; --text: var(--token-af1df47b-ea84-448e-bdf0-a5ce0f875a59, rgb(153, 153, 153"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#work",
+        "text": "Work, .rolling-text-inner-f839ed77-5689-4136-94bd-db95c8a6be9f { --font-size: 14px; --text: var(--token-af1df47b-ea84-448e-bdf0-a5ce0f875a59, rgb(153, 153, 153)"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#practice",
+        "text": "Practice, .rolling-text-inner-001dfb6c-883b-475b-97c4-ddc50f185656 { --font-size: 14px; --text: var(--token-af1df47b-ea84-448e-bdf0-a5ce0f875a59, rgb(153, 153, "
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#tools",
+        "text": "Tools .rolling-text-inner-1b0bd86e-dcc1-466b-848a-5130117e093f { --font-size: 14px; --text: var(--token-af1df47b-ea84-448e-bdf0-a5ce0f875a59, rgb(153, 153, 153)"
+      }
+    ],
+    "media": [
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://framerusercontent.com/assets/ZOeDI7fC0g8dMMaYluHtSKEnHe0.mp4",
+        "tag": "VIDEO"
+      },
+      {
+        "alt": "Debora Moratalla",
+        "poster": "",
+        "src": "https://framerusercontent.com/images/y6pNO70rr4PZo0E8r6ULmhFEeA.png?scale-down-to=1024&width=1122&height=1402",
+        "tag": "IMG"
+      },
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://framerusercontent.com/images/U83YozysM0D05lMq82nlFdYG1M.png?scale-down-to=4096&width=4536&height=2946",
+        "tag": "IMG"
+      },
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://framerusercontent.com/images/7WRS2B1Dd4dOwKjpPVAjEylA44.png?width=1920&height=1080",
+        "tag": "IMG"
+      },
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://framerusercontent.com/images/KSw5kmupZz4s4LoheYzh4rnIY.png?lossless=1&width=1851&height=1253",
+        "tag": "IMG"
+      },
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://framerusercontent.com/images/ASHNp23jYU6G6rS2Bcba6Rz5TUY.png?scale-down-to=4096&width=5007&height=3723",
+        "tag": "IMG"
+      },
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://cdn.simpleicons.org/figma/FFFFFF",
+        "tag": "IMG"
+      },
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://cdn.simpleicons.org/figma/FFFFFF",
+        "tag": "IMG"
+      },
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://cdn.simpleicons.org/storybook/FFFFFF",
+        "tag": "IMG"
+      },
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://cdn.simpleicons.org/framer/FFFFFF",
+        "tag": "IMG"
+      },
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://cdn.simpleicons.org/react/FFFFFF",
+        "tag": "IMG"
+      },
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://cdn.simpleicons.org/html5/FFFFFF",
+        "tag": "IMG"
+      },
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://cdn.simpleicons.org/github/FFFFFF",
+        "tag": "IMG"
+      },
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://cdn.simpleicons.org/vercel/FFFFFF",
+        "tag": "IMG"
+      },
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://cdn.simpleicons.org/anthropic/FFFFFF",
+        "tag": "IMG"
+      },
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://cdn.simpleicons.org/cursor/FFFFFF",
+        "tag": "IMG"
+      },
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://cdn.simpleicons.org/vercel/FFFFFF",
+        "tag": "IMG"
+      },
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://cdn.simpleicons.org/hotjar/FFFFFF",
+        "tag": "IMG"
+      },
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://cdn.simpleicons.org/maze/FFFFFF",
+        "tag": "IMG"
+      },
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://cdn.simpleicons.org/looker/FFFFFF",
+        "tag": "IMG"
+      },
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://cdn.simpleicons.org/linear/FFFFFF",
+        "tag": "IMG"
+      },
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://cdn.simpleicons.org/notion/FFFFFF",
+        "tag": "IMG"
+      },
+      {
+        "alt": "purple and white abstract painting",
+        "poster": "",
+        "src": "https://framerusercontent.com/images/8YnggG8NPTylEcj2U9q9XLUao.jpg?scale-down-to=1024&width=4500&height=3000",
+        "tag": "IMG"
+      },
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://framerusercontent.com/assets/FfgrxPGRSyq80jCjbKCnyf82M48.mp4",
+        "tag": "VIDEO"
+      },
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://framerusercontent.com/images/t9F0HSYsx4KaPvb297n67QHfMFM.png?scale-down-to=1024&width=1694&height=1120",
+        "tag": "IMG"
+      },
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://framerusercontent.com/images/Z1eHxuo4nM04jAwcN71PPFZs5Q.png?scale-down-to=1024&width=4029&height=3321",
+        "tag": "IMG"
+      },
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://framerusercontent.com/images/6mDeNp7oYgeyBEgSpGaidPGOtSc.png?scale-down-to=1024&width=7599&height=6066",
+        "tag": "IMG"
+      },
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://framerusercontent.com/images/26EnvWlBBg207dThkXKLU4gCds.jpg?width=1200&height=1778",
+        "tag": "IMG"
+      },
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://framerusercontent.com/images/hsX9Ccf2XX8R8GhdWd3PtuJiWE.png?width=320&height=320",
+        "tag": "IMG"
+      },
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://framerusercontent.com/images/fGbG9jaFRAyQSEpEDOgAJdQWVk.png?width=512&height=512",
+        "tag": "IMG"
+      },
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://framerusercontent.com/images/hsX9Ccf2XX8R8GhdWd3PtuJiWE.png?width=320&height=320",
+        "tag": "IMG"
+      },
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://framer.com/edit?framerSiteId=39841b625bfedde28ea1bb4dc77fb5830eb597bc3870245ec8d691c3bbb9f4b4&source=deboramoratalla.framer.website&features=%7B%22editorBarDisableFrameAncestorsSecurity%22%3Afalse%2C%22onPageLocalizationSupport%22%3Atrue%2C%22onPageMoveTool%22%3Atrue%2C%22onPageRichTextBlockSelection%22%3Afalse%7D&loadStart=1784555196233",
+        "tag": "IFRAME"
+      }
+    ],
+    "texts": [
+      {
+        "tag": "P",
+        "text": "AI Workflows"
+      },
+      {
+        "tag": "P",
+        "text": "Design Systems"
+      },
+      {
+        "tag": "H3",
+        "text": "Clarity."
+      },
+      {
+        "tag": "H3",
+        "text": "Structure."
+      },
+      {
+        "tag": "P",
+        "text": "I design complex products and the systems behind them,turning ambiguous workflows into clear product decisions, scalable foundations and responsible AI."
+      },
+      {
+        "tag": "P",
+        "text": "Systems"
+      },
+      {
+        "tag": "H3",
+        "text": "I’ve always been more interested in the system than the screen."
+      },
+      {
+        "tag": "P",
+        "text": "01"
+      },
+      {
+        "tag": "P",
+        "text": "I’m Debora, a product designer shaped by a multidisciplinary path: interior design, HR and self-taught code. Moving between disciplines taught me to connect people, rules and technology — and to look for the structure behind complex products."
+      },
+      {
+        "tag": "P",
+        "text": "Selected Work"
+      },
+      {
+        "tag": "P",
+        "text": "02"
+      },
+      {
+        "tag": "P",
+        "text": "Four projects across enterprise product design, systems and responsible AI."
+      },
+      {
+        "tag": "H3",
+        "text": "SUEZ · Board International"
+      },
+      {
+        "tag": "P",
+        "text": "Making workflow state visible across a €1.2B budgeting system."
+      },
+      {
+        "tag": "P",
+        "text": "PRODUCT DESIGN"
+      },
+      {
+        "tag": "P",
+        "text": "ENTERPRISE WORKFLOW"
+      },
+      {
+        "tag": "H3",
+        "text": "TAP Mindset Design System"
+      },
+      {
+        "tag": "P",
+        "text": "Building the system that keeps product, design and code in sync."
+      },
+      {
+        "tag": "P",
+        "text": "DESIGN SYSTEM"
+      },
+      {
+        "tag": "P",
+        "text": "AI WORKFLOWS"
+      },
+      {
+        "tag": "H3",
+        "text": "TAP Mindset"
+      },
+      {
+        "tag": "P",
+        "text": "Reframing one product into three role-based experiences."
+      },
+      {
+        "tag": "P",
+        "text": "PRODUCT DESIGN"
+      },
+      {
+        "tag": "P",
+        "text": "SPORTS"
+      },
+      {
+        "tag": "H3",
+        "text": "Fluxy"
+      },
+      {
+        "tag": "P",
+        "text": "Designing an agent that earns autonomy through legibility and consent."
+      },
+      {
+        "tag": "P",
+        "text": "AGENTIC DESIGN"
+      },
+      {
+        "tag": "P",
+        "text": "MOBILITY"
+      },
+      {
+        "tag": "H2",
+        "text": "How I work"
+      },
+      {
+        "tag": "P",
+        "text": "03"
+      },
+      {
+        "tag": "P",
+        "text": "Connected"
+      },
+      {
+        "tag": "P",
+        "text": "Structured"
+      },
+      {
+        "tag": "P",
+        "text": "Data-driven"
+      },
+      {
+        "tag": "P",
+        "text": "Scalable"
+      },
+      {
+        "tag": "P",
+        "text": "I start by asking why"
+      },
+      {
+        "tag": "P",
+        "text": "I rarely take a brief at face value. I pull at the loose threads — what people are actually trying to do, what the business needs and what the system can support — until the problem feels honest."
+      },
+      {
+        "tag": "P",
+        "text": "Questions first"
+      },
+      {
+        "tag": "P",
+        "text": "I put the awkward decisions on the table"
+      },
+      {
+        "tag": "P",
+        "text": "Trade-offs do not disappear because nobody names them. I make them visible early, including the ideas I would rather not ship, so the team knows what we are protecting and what we are giving up."
+      },
+      {
+        "tag": "P",
+        "text": "Trade-offs"
+      },
+      {
+        "tag": "P",
+        "text": "I don't disappear into Figma"
+      },
+      {
+        "tag": "P",
+        "text": "I work best with Product and Engineering in the room. I share unfinished thinking, invite constraints early and leave behind decisions the team can use without needing me to translate them."
+      },
+      {
+        "tag": "P",
+        "text": "Working in the open"
+      },
+      {
+        "tag": "P",
+        "text": "I automate the boring parts, not the thinking"
+      },
+      {
+        "tag": "P",
+        "text": "I use systems and AI for the repetitive work: exploring options, checking patterns and speeding up execution. The judgment — what matters, what fits and what should ship — stays human."
+      },
+      {
+        "tag": "P",
+        "text": "Systems · AI"
+      },
+      {
+        "tag": "P",
+        "text": "Systems before screens. Judgment before automation."
+      },
+      {
+        "tag": "P",
+        "text": "I am most useful before the answer is obvious: asking the awkward question, turning messy constraints into something the team can act on, and staying close enough to engineering to see the idea through. Systems and AI help me move faster, but they never decide what is worth making."
+      },
+      {
+        "tag": "H3",
+        "text": "Tools change.04Judgment compounds."
+      },
+      {
+        "tag": "P",
+        "text": "Tools change. The way I use them matters more."
+      },
+      {
+        "tag": "H2",
+        "text": "Earlier work"
+      },
+      {
+        "tag": "P",
+        "text": "05"
+      },
+      {
+        "tag": "P",
+        "text": "Selected experiments and earlier product work."
+      },
+      {
+        "tag": "P",
+        "text": "Smaller in scope, but useful evidence of how my practice evolved across accessibility, fintech, identity and wellbeing."
+      },
+      {
+        "tag": "H5",
+        "text": "AccessIA"
+      },
+      {
+        "tag": "P",
+        "text": "(01)"
+      },
+      {
+        "tag": "P",
+        "text": "Accessibility · AI concept"
+      },
+      {
+        "tag": "H5",
+        "text": "Moofi"
+      },
+      {
+        "tag": "P",
+        "text": "(02)"
+      },
+      {
+        "tag": "P",
+        "text": "Product design · Fintech"
+      },
+      {
+        "tag": "H5",
+        "text": "Mi Yo Digital"
+      },
+      {
+        "tag": "P",
+        "text": "(03)"
+      },
+      {
+        "tag": "P",
+        "text": "Service design · Digital identity"
+      },
+      {
+        "tag": "H5",
+        "text": "Nomaia"
+      },
+      {
+        "tag": "P",
+        "text": "(04)"
+      },
+      {
+        "tag": "P",
+        "text": "Product strategy · Wellbeing"
+      },
+      {
+        "tag": "H5",
+        "text": "Valeria"
+      },
+      {
+        "tag": "P",
+        "text": "(05)"
+      },
+      {
+        "tag": "P",
+        "text": "Product design · Concept"
+      },
+      {
+        "tag": "P",
+        "text": "Structured"
+      },
+      {
+        "tag": "P",
+        "text": "Clear"
+      },
+      {
+        "tag": "P",
+        "text": "Scalable"
+      },
+      {
+        "tag": "P",
+        "text": "Connected"
+      },
+      {
+        "tag": "P",
+        "text": "If you're building something complex and need someone who can see the whole system — let's talk."
+      },
+      {
+        "tag": "P",
+        "text": "Let´s connect"
+      },
+      {
+        "tag": "P",
+        "text": "Explore"
+      },
+      {
+        "tag": "P",
+        "text": "About,"
+      },
+      {
+        "tag": "P",
+        "text": "Work,"
+      },
+      {
+        "tag": "P",
+        "text": "Practice,"
+      },
+      {
+        "tag": "P",
+        "text": "Tools"
+      },
+      {
+        "tag": "P",
+        "text": "Based in Madrid"
+      },
+      {
+        "tag": "P",
+        "text": "Product Designer"
+      },
+      {
+        "tag": "P",
+        "text": "Create a free website with Framer, the website builder loved by startups, designers and agencies."
+      },
+      {
+        "tag": "P",
+        "text": "Explore"
+      },
+      {
+        "tag": "P",
+        "text": "About,"
+      },
+      {
+        "tag": "P",
+        "text": "Work,"
+      },
+      {
+        "tag": "P",
+        "text": "Practice,"
+      },
+      {
+        "tag": "P",
+        "text": "Tools"
+      },
+      {
+        "tag": "P",
+        "text": "Based in Madrid"
+      },
+      {
+        "tag": "P",
+        "text": "Product Designer"
+      }
+    ],
+    "title": "Debora Moratalla´s Portfolio",
+    "url": "https://deboramoratalla.framer.website/"
+  },
+  {
+    "description": "",
+    "links": [
+      {
+        "href": "https://deboramoratalla.framer.website/#top",
+        "text": ""
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#about",
+        "text": "About, .rolling-text-inner-b55f8609-6690-4a3e-b486-166c6a8907e7 { --font-size: 14px; --text: var(--token-af1df47b-ea84-448e-bdf0-a5ce0f875a59, rgb(153, 153, 153"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#work",
+        "text": "Work, .rolling-text-inner-4db17643-5bbf-4b07-8f04-67397896677b { --font-size: 14px; --text: var(--token-af1df47b-ea84-448e-bdf0-a5ce0f875a59, rgb(153, 153, 153)"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#practice",
+        "text": "Practice, .rolling-text-inner-a3fb9fe7-6254-431d-b074-9f826ea8f01f { --font-size: 14px; --text: var(--token-af1df47b-ea84-448e-bdf0-a5ce0f875a59, rgb(153, 153, "
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#tools",
+        "text": "Tools .rolling-text-inner-e137b8c1-b64b-4e67-a185-160d2ef55039 { --font-size: 14px; --text: var(--token-af1df47b-ea84-448e-bdf0-a5ce0f875a59, rgb(153, 153, 153)"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#top",
+        "text": ""
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#about",
+        "text": "About, .rolling-text-inner-d5012b7c-4cef-41d8-a38f-8bfadf8931a8 { --font-size: 14px; --text: var(--token-af1df47b-ea84-448e-bdf0-a5ce0f875a59, rgb(153, 153, 153"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#work",
+        "text": "Work, .rolling-text-inner-b8b3f73f-5697-4237-b26d-06271a580c9e { --font-size: 14px; --text: var(--token-af1df47b-ea84-448e-bdf0-a5ce0f875a59, rgb(153, 153, 153)"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#practice",
+        "text": "Practice, .rolling-text-inner-46c6eb5b-693e-47d6-b43e-cb52643d2848 { --font-size: 14px; --text: var(--token-af1df47b-ea84-448e-bdf0-a5ce0f875a59, rgb(153, 153, "
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#tools",
+        "text": "Tools .rolling-text-inner-cc1233d8-dcb6-44c1-95cb-111ec0ac13d1 { --font-size: 14px; --text: var(--token-af1df47b-ea84-448e-bdf0-a5ce0f875a59, rgb(153, 153, 153)"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#top",
+        "text": ""
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#about",
+        "text": "About, .rolling-text-inner-fc876612-d4d0-4995-96ea-6f69e3c62b27 { --font-size: 14px; --text: var(--token-af1df47b-ea84-448e-bdf0-a5ce0f875a59, rgb(153, 153, 153"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#work",
+        "text": "Work, .rolling-text-inner-762480f1-ee83-4a36-b2e8-89c74fb455a4 { --font-size: 14px; --text: var(--token-af1df47b-ea84-448e-bdf0-a5ce0f875a59, rgb(153, 153, 153)"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#practice",
+        "text": "Practice, .rolling-text-inner-ba951bce-7acc-49d8-ac81-a40932ee17b7 { --font-size: 14px; --text: var(--token-af1df47b-ea84-448e-bdf0-a5ce0f875a59, rgb(153, 153, "
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#tools",
+        "text": "Tools .rolling-text-inner-f50825b9-734e-456e-a302-835f34756e54 { --font-size: 14px; --text: var(--token-af1df47b-ea84-448e-bdf0-a5ce0f875a59, rgb(153, 153, 153)"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/projects/saas#diagnosis",
+        "text": "01The diagnosisThe diagnosisThe diagnosis"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/projects/saas#system",
+        "text": "02The systemThe systemThe system"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/projects/saas#from-product-to-system",
+        "text": "03From product to systemFrom product to systemFrom product to system"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/projects/tap-mindset-ds",
+        "text": "See how this principle evolved in TAP Design System ↗"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/projects/fluxy",
+        "text": "PREVIOUS PROJECTFluxyA responsible travel agent for everyday mobility"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/projects/tap-mindset-ds",
+        "text": "NEXT PROJECTTAP Design SystemA coded system connecting design and development"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/contact",
+        "text": "Let´s connect .rolling-text-inner-e682c804-1ff3-4cee-815a-8d4b6fdbd1f9 { --font-size: 15px; --text: rgb(255, 255, 255); --line-height-abs: 18px; box-sizing: bor"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#top",
+        "text": ""
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#about",
+        "text": "About, .rolling-text-inner-fdf167b3-5e48-403c-8df2-fa65623c6780 { --font-size: 14px; --text: var(--token-af1df47b-ea84-448e-bdf0-a5ce0f875a59, rgb(153, 153, 153"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#work",
+        "text": "Work, .rolling-text-inner-abb16906-f963-4c08-baf2-0db917676f6a { --font-size: 14px; --text: var(--token-af1df47b-ea84-448e-bdf0-a5ce0f875a59, rgb(153, 153, 153)"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#practice",
+        "text": "Practice, .rolling-text-inner-7d1af143-8ff4-41a2-ae3c-0531a2c436db { --font-size: 14px; --text: var(--token-af1df47b-ea84-448e-bdf0-a5ce0f875a59, rgb(153, 153, "
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#tools",
+        "text": "Tools .rolling-text-inner-156e224d-2280-4fc9-9011-716accc7733f { --font-size: 14px; --text: var(--token-af1df47b-ea84-448e-bdf0-a5ce0f875a59, rgb(153, 153, 153)"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/contact",
+        "text": "Let´s connect .rolling-text-inner-bf5cde72-27d2-4ed2-9ea0-3875a9684122 { --font-size: 15px; --text: rgb(255, 255, 255); --line-height-abs: 18px; box-sizing: bor"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#top",
+        "text": ""
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#about",
+        "text": "About, .rolling-text-inner-6d8b9d7d-a259-40a9-9482-c11c17f5949a { --font-size: 14px; --text: var(--token-af1df47b-ea84-448e-bdf0-a5ce0f875a59, rgb(153, 153, 153"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#work",
+        "text": "Work, .rolling-text-inner-ca0c4ba4-1d33-4023-b3db-dfe772571700 { --font-size: 14px; --text: var(--token-af1df47b-ea84-448e-bdf0-a5ce0f875a59, rgb(153, 153, 153)"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#practice",
+        "text": "Practice, .rolling-text-inner-7fbe0804-0287-431d-a892-239ba3c75d7a { --font-size: 14px; --text: var(--token-af1df47b-ea84-448e-bdf0-a5ce0f875a59, rgb(153, 153, "
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#tools",
+        "text": "Tools .rolling-text-inner-8aba7053-cd22-461a-a7ba-f89ddcf771d2 { --font-size: 14px; --text: var(--token-af1df47b-ea84-448e-bdf0-a5ce0f875a59, rgb(153, 153, 153)"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/contact",
+        "text": "Let´s connect .rolling-text-inner-7140eb61-3d09-4137-b99f-2ce352589a1f { --font-size: 14px; --text: rgb(255, 255, 255); --line-height-abs: 17px; box-sizing: bor"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#top",
+        "text": ""
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#about",
+        "text": "About, .rolling-text-inner-bbdca2f5-5226-4cb3-9243-1247fb3f344a { --font-size: 14px; --text: var(--token-af1df47b-ea84-448e-bdf0-a5ce0f875a59, rgb(153, 153, 153"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#work",
+        "text": "Work, .rolling-text-inner-30efa521-d6ec-4b45-af40-363b860c8aea { --font-size: 14px; --text: var(--token-af1df47b-ea84-448e-bdf0-a5ce0f875a59, rgb(153, 153, 153)"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#practice",
+        "text": "Practice, .rolling-text-inner-873a76aa-7127-4485-85c6-3a1c9714a55b { --font-size: 14px; --text: var(--token-af1df47b-ea84-448e-bdf0-a5ce0f875a59, rgb(153, 153, "
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#tools",
+        "text": "Tools .rolling-text-inner-6041632f-b975-4b16-8c60-4fe171fa45bb { --font-size: 14px; --text: var(--token-af1df47b-ea84-448e-bdf0-a5ce0f875a59, rgb(153, 153, 153)"
+      },
+      {
+        "href": "https://www.linkedin.com/in/deboramoratallamartin/",
+        "text": ""
+      },
+      {
+        "href": "https://www.framer.com/",
+        "text": "Create a free website with Framer, the website builder loved by startups, designers and agencies."
+      }
+    ],
+    "media": [
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://framerusercontent.com/images/hsX9Ccf2XX8R8GhdWd3PtuJiWE.png?width=320&height=320",
+        "tag": "IMG"
+      },
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://framerusercontent.com/images/hsX9Ccf2XX8R8GhdWd3PtuJiWE.png?width=320&height=320",
+        "tag": "IMG"
+      },
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://framerusercontent.com/images/hsX9Ccf2XX8R8GhdWd3PtuJiWE.png?width=320&height=320",
+        "tag": "IMG"
+      },
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://framerusercontent.com/images/fL9YsjcUWjmuDS7xICXN72fDkpY.png?scale-down-to=4096&width=4808&height=2552",
+        "tag": "IMG"
+      },
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://framerusercontent.com/images/fL9YsjcUWjmuDS7xICXN72fDkpY.png?scale-down-to=4096&width=4808&height=2552",
+        "tag": "IMG"
+      },
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://framerusercontent.com/images/fL9YsjcUWjmuDS7xICXN72fDkpY.png?scale-down-to=4096&width=4808&height=2552",
+        "tag": "IMG"
+      },
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://framerusercontent.com/images/euI7feC9sysqqis8gqXR6X4QOo.png?scale-down-to=4096&width=6470&height=3245",
+        "tag": "IMG"
+      },
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://framerusercontent.com/assets/hi5RUlder0uFb2zoYYPHJlwIt3E.mov",
+        "tag": "VIDEO"
+      },
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://framerusercontent.com/images/9j6WjZoUkauvEI9LNsWRRL3GYGw.png?scale-down-to=4096&width=5370&height=5011",
+        "tag": "IMG"
+      },
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://framerusercontent.com/images/hsX9Ccf2XX8R8GhdWd3PtuJiWE.png?width=320&height=320",
+        "tag": "IMG"
+      },
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://framerusercontent.com/images/hsX9Ccf2XX8R8GhdWd3PtuJiWE.png?width=320&height=320",
+        "tag": "IMG"
+      },
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://framerusercontent.com/images/hsX9Ccf2XX8R8GhdWd3PtuJiWE.png?width=320&height=320",
+        "tag": "IMG"
+      },
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://framerusercontent.com/images/fGbG9jaFRAyQSEpEDOgAJdQWVk.png?width=512&height=512",
+        "tag": "IMG"
+      }
+    ],
+    "texts": [
+      {
+        "tag": "P",
+        "text": "Explore"
+      },
+      {
+        "tag": "P",
+        "text": "About,"
+      },
+      {
+        "tag": "P",
+        "text": "Work,"
+      },
+      {
+        "tag": "P",
+        "text": "Practice,"
+      },
+      {
+        "tag": "P",
+        "text": "Tools"
+      },
+      {
+        "tag": "P",
+        "text": "Based in Madrid"
+      },
+      {
+        "tag": "P",
+        "text": "Product Designer"
+      },
+      {
+        "tag": "P",
+        "text": "Explore"
+      },
+      {
+        "tag": "P",
+        "text": "About,"
+      },
+      {
+        "tag": "P",
+        "text": "Work,"
+      },
+      {
+        "tag": "P",
+        "text": "Practice,"
+      },
+      {
+        "tag": "P",
+        "text": "Tools"
+      },
+      {
+        "tag": "P",
+        "text": "Explore"
+      },
+      {
+        "tag": "P",
+        "text": "About,"
+      },
+      {
+        "tag": "P",
+        "text": "Work,"
+      },
+      {
+        "tag": "P",
+        "text": "Practice,"
+      },
+      {
+        "tag": "P",
+        "text": "Tools"
+      },
+      {
+        "tag": "LI",
+        "text": "Enterprise Planning /"
+      },
+      {
+        "tag": "H1",
+        "text": "Enterprise Planning /"
+      },
+      {
+        "tag": "LI",
+        "text": "Enterprise Planning /"
+      },
+      {
+        "tag": "H1",
+        "text": "Enterprise Planning /"
+      },
+      {
+        "tag": "LI",
+        "text": "Enterprise Planning /"
+      },
+      {
+        "tag": "H1",
+        "text": "Enterprise Planning /"
+      },
+      {
+        "tag": "P",
+        "text": "Role:"
+      },
+      {
+        "tag": "P",
+        "text": "Solo Senior Product Designer"
+      },
+      {
+        "tag": "P",
+        "text": "Scope:"
+      },
+      {
+        "tag": "P",
+        "text": "Problem framing → Interaction design → Rule system."
+      },
+      {
+        "tag": "P",
+        "text": "Timeline:"
+      },
+      {
+        "tag": "P",
+        "text": "6 months"
+      },
+      {
+        "tag": "P",
+        "text": "Context:"
+      },
+      {
+        "tag": "P",
+        "text": "Suez x Board"
+      },
+      {
+        "tag": "P",
+        "text": "How a homepage redesign became a coordination system for finance teams, and a reusable foundation for the work that followed."
+      },
+      {
+        "tag": "P",
+        "text": "How a homepage redesign became a coordination system for finance teams, and a reusable foundation for the work that followed."
+      },
+      {
+        "tag": "P",
+        "text": "Annual budget coordinated"
+      },
+      {
+        "tag": "P",
+        "text": "€1.2B"
+      },
+      {
+        "tag": "P",
+        "text": "€1.2B"
+      },
+      {
+        "tag": "P",
+        "text": "€1.2B"
+      },
+      {
+        "tag": "P",
+        "text": "24 regions · 186 agencies · one dependency chain"
+      },
+      {
+        "tag": "P",
+        "text": "CASE STUDY INDEX"
+      },
+      {
+        "tag": "P",
+        "text": "01"
+      },
+      {
+        "tag": "P",
+        "text": "The diagnosis"
+      },
+      {
+        "tag": "P",
+        "text": "The diagnosis"
+      },
+      {
+        "tag": "P",
+        "text": "The diagnosis"
+      },
+      {
+        "tag": "P",
+        "text": "02"
+      },
+      {
+        "tag": "P",
+        "text": "The system"
+      },
+      {
+        "tag": "P",
+        "text": "The system"
+      },
+      {
+        "tag": "P",
+        "text": "The system"
+      },
+      {
+        "tag": "P",
+        "text": "03"
+      },
+      {
+        "tag": "P",
+        "text": "From product to system"
+      },
+      {
+        "tag": "P",
+        "text": "From product to system"
+      },
+      {
+        "tag": "P",
+        "text": "From product to system"
+      },
+      {
+        "tag": "P",
+        "text": "01"
+      },
+      {
+        "tag": "P",
+        "text": "01"
+      },
+      {
+        "tag": "P",
+        "text": "01"
+      },
+      {
+        "tag": "P",
+        "text": "The diagnosis"
+      },
+      {
+        "tag": "H2",
+        "text": "The brief described a UI problem. The work exposed a coordination problem."
+      },
+      {
+        "tag": "H2",
+        "text": "The brief described a UI problem. The work exposed a coordination problem."
+      },
+      {
+        "tag": "H2",
+        "text": "The brief described a UI problem. The work exposed a coordination problem."
+      },
+      {
+        "tag": "P",
+        "text": "Every calculation existed. Every approval existed. Every workflow existed."
+      },
+      {
+        "tag": "P",
+        "text": "And yet the finance teams responsible for keeping the cycle moving still coordinated it through email. One task stalled upstream held twenty-four regional leads downstream. The only mechanism for detecting that stall was somebody asking."
+      },
+      {
+        "tag": "P",
+        "text": "The data was all there. What was missing was any way to act on it."
+      },
+      {
+        "tag": "H2",
+        "text": "A menu, not a coordination tool."
+      },
+      {
+        "tag": "H2",
+        "text": "A menu, not a coordination tool."
+      },
+      {
+        "tag": "H2",
+        "text": "A menu, not a coordination tool."
+      },
+      {
+        "tag": "P",
+        "text": "Evidence 01 / Existing experience"
+      },
+      {
+        "tag": "P",
+        "text": "Evidence 01 / Existing experience"
+      },
+      {
+        "tag": "P",
+        "text": "Everything was available. Nothing was prioritised."
+      },
+      {
+        "tag": "P",
+        "text": "FIRST ATTEMPT"
+      },
+      {
+        "tag": "H2",
+        "text": "My first answer was the one they asked for."
+      },
+      {
+        "tag": "H2",
+        "text": "My first answer was the one they asked for."
+      },
+      {
+        "tag": "H2",
+        "text": "My first answer was the one they asked for."
+      },
+      {
+        "tag": "P",
+        "text": "FIRST APPROACH"
+      },
+      {
+        "tag": "P",
+        "text": "The brief said make it more visual, show the workflow. So I did. I mapped the whole budget process into a single visual flow — every phase, every step, in sequence. It was clearer than what they had."
+      },
+      {
+        "tag": "P",
+        "text": "When I walked the flow through with the people responsible for the process, the same gap kept surfacing. It showed where the stops were, but not where each user was. They could trace the process end to end and still struggled to answer the questions that mattered in the moment: where am I right now, and what is waiting on me?"
+      },
+      {
+        "tag": "P",
+        "text": "The problem was never that the process was hard to see. It was that a user’s own state inside it was invisible. That reframed everything."
+      },
+      {
+        "tag": "P",
+        "text": "The reframe"
+      },
+      {
+        "tag": "P",
+        "text": "This was not a UI problem. It was a workflow architecture problem."
+      },
+      {
+        "tag": "P",
+        "text": "This was not a UI problem. It was a workflow architecture problem."
+      },
+      {
+        "tag": "P",
+        "text": "This was not a UI problem. It was a workflow architecture problem."
+      },
+      {
+        "tag": "P",
+        "text": "Brief"
+      },
+      {
+        "tag": "H3",
+        "text": "Improve consistency and navigation."
+      },
+      {
+        "tag": "P",
+        "text": "Insight"
+      },
+      {
+        "tag": "H3",
+        "text": "UI inconsistency was a symptom."
+      },
+      {
+        "tag": "P",
+        "text": "Challenge"
+      },
+      {
+        "tag": "H3",
+        "text": "Make workflow state visible."
+      },
+      {
+        "tag": "H2",
+        "text": "Four questions the system never answered."
+      },
+      {
+        "tag": "H2",
+        "text": "Four questions the system never answered."
+      },
+      {
+        "tag": "H2",
+        "text": "Four questions the system never answered."
+      },
+      {
+        "tag": "P",
+        "text": "Users held the operating model in memory. Mapping made the gap concrete."
+      },
+      {
+        "tag": "P",
+        "text": "01"
+      },
+      {
+        "tag": "P",
+        "text": "01"
+      },
+      {
+        "tag": "H3",
+        "text": "Progress"
+      },
+      {
+        "tag": "P",
+        "text": "Where am I, and what is complete?"
+      },
+      {
+        "tag": "P",
+        "text": "02"
+      },
+      {
+        "tag": "P",
+        "text": "02"
+      },
+      {
+        "tag": "H3",
+        "text": "Ownership"
+      },
+      {
+        "tag": "P",
+        "text": "Who approves this? Who owns next?"
+      },
+      {
+        "tag": "P",
+        "text": "03"
+      },
+      {
+        "tag": "P",
+        "text": "03"
+      },
+      {
+        "tag": "H3",
+        "text": "Dependencies"
+      },
+      {
+        "tag": "P",
+        "text": "What is blocking me?"
+      },
+      {
+        "tag": "P",
+        "text": "04"
+      },
+      {
+        "tag": "P",
+        "text": "04"
+      },
+      {
+        "tag": "H3",
+        "text": "Next steps"
+      },
+      {
+        "tag": "P",
+        "text": "What should I do now?"
+      },
+      {
+        "tag": "P",
+        "text": "02"
+      },
+      {
+        "tag": "P",
+        "text": "02"
+      },
+      {
+        "tag": "P",
+        "text": "02"
+      },
+      {
+        "tag": "P",
+        "text": "The system"
+      },
+      {
+        "tag": "H2",
+        "text": "Rules first. Screens second."
+      },
+      {
+        "tag": "H2",
+        "text": "Rules first. Screens second."
+      },
+      {
+        "tag": "H2",
+        "text": "Rules first. Screens second."
+      },
+      {
+        "tag": "P",
+        "text": "01"
+      },
+      {
+        "tag": "P",
+        "text": "Visibility before navigation."
+      },
+      {
+        "tag": "P",
+        "text": "02"
+      },
+      {
+        "tag": "P",
+        "text": "Context must survive execution."
+      },
+      {
+        "tag": "P",
+        "text": "03"
+      },
+      {
+        "tag": "P",
+        "text": "Dependencies are product."
+      },
+      {
+        "tag": "P",
+        "text": "04"
+      },
+      {
+        "tag": "P",
+        "text": "Workflow state is never optional."
+      },
+      {
+        "tag": "P",
+        "text": "05"
+      },
+      {
+        "tag": "P",
+        "text": "Actionable before informational."
+      },
+      {
+        "tag": "P",
+        "text": "06"
+      },
+      {
+        "tag": "P",
+        "text": "Roles coordinate. Interfaces should too."
+      },
+      {
+        "tag": "H2",
+        "text": "The coordination layer that was missing."
+      },
+      {
+        "tag": "H2",
+        "text": "The coordination layer that was missing."
+      },
+      {
+        "tag": "H2",
+        "text": "The coordination layer that was missing."
+      },
+      {
+        "tag": "P",
+        "text": "Primary craft evidence"
+      },
+      {
+        "tag": "P",
+        "text": "The persistent status bar survives every screen — the coordination layer that was missing."
+      },
+      {
+        "tag": "P",
+        "text": "What shaped the new workflow experience"
+      },
+      {
+        "tag": "P",
+        "text": "01"
+      },
+      {
+        "tag": "P",
+        "text": "01"
+      },
+      {
+        "tag": "H3",
+        "text": "Persistent workflow status"
+      },
+      {
+        "tag": "P",
+        "text": "A coordination layer you can dismiss is one nobody sees. It stays at the top of every screen."
+      },
+      {
+        "tag": "P",
+        "text": "02"
+      },
+      {
+        "tag": "P",
+        "text": "02"
+      },
+      {
+        "tag": "H3",
+        "text": "Priorities ordered by consequence, not date"
+      },
+      {
+        "tag": "P",
+        "text": "Urgency in a dependency chain is not proximity in a calendar. We ranked by downstream consequence."
+      },
+      {
+        "tag": "P",
+        "text": "03"
+      },
+      {
+        "tag": "P",
+        "text": "03"
+      },
+      {
+        "tag": "H3",
+        "text": "Dependencies as a first-class column"
+      },
+      {
+        "tag": "P",
+        "text": "Showing what work unlocks turns ownership from an item to tick into a position in a chain."
+      },
+      {
+        "tag": "P",
+        "text": "What I considered and didn’t build"
+      },
+      {
+        "tag": "H2",
+        "text": "The senior decision is often the thing you choose not to ship."
+      },
+      {
+        "tag": "H2",
+        "text": "The senior decision is often the thing you choose not to ship."
+      },
+      {
+        "tag": "H2",
+        "text": "The senior decision is often the thing you choose not to ship."
+      },
+      {
+        "tag": "P",
+        "text": "Rejected"
+      },
+      {
+        "tag": "H3",
+        "text": "Status inside existing screens"
+      },
+      {
+        "tag": "P",
+        "text": "Faster and cheaper, but it distributed state across screens instead of showing the whole cycle."
+      },
+      {
+        "tag": "P",
+        "text": "Rejected"
+      },
+      {
+        "tag": "H3",
+        "text": "A breadcrumb instead of dependencies"
+      },
+      {
+        "tag": "P",
+        "text": "It answered where am I, but not what am I blocking — the question that changed behaviour."
+      },
+      {
+        "tag": "P",
+        "text": "Rejected"
+      },
+      {
+        "tag": "H3",
+        "text": "A configurable dashboard"
+      },
+      {
+        "tag": "P",
+        "text": "Requested by stakeholders, but configurability would make workflow state optional. I traded flexibility for a guarantee."
+      },
+      {
+        "tag": "P",
+        "text": "Roles tested"
+      },
+      {
+        "tag": "H2",
+        "text": "They read the state off the screen — without prompting."
+      },
+      {
+        "tag": "H2",
+        "text": "They read the state off the screen — without prompting."
+      },
+      {
+        "tag": "H2",
+        "text": "They read the state off the screen — without prompting."
+      },
+      {
+        "tag": "P",
+        "text": "National Finance Leads, Regional Controllers and Finance PMO could identify stage, blockers, next steps and complete a task without losing workflow context."
+      },
+      {
+        "tag": "P",
+        "text": "3 roles"
+      },
+      {
+        "tag": "P",
+        "text": "3 roles"
+      },
+      {
+        "tag": "P",
+        "text": "3 roles"
+      },
+      {
+        "tag": "P",
+        "text": "LEADERSHIP & ALIGNMENT"
+      },
+      {
+        "tag": "H3",
+        "text": "I turned three local perspectives into one operating model."
+      },
+      {
+        "tag": "P",
+        "text": "I facilitated working sessions with National Finance, regional controllers, agency users, Product and Engineering. A shared decision log separated policy from preference, surfaced conflicts early and made ownership explicit. When flexibility threatened a reliable workflow state, I made the call to standardise the critical path."
+      },
+      {
+        "tag": "P",
+        "text": "03"
+      },
+      {
+        "tag": "P",
+        "text": "03"
+      },
+      {
+        "tag": "P",
+        "text": "03"
+      },
+      {
+        "tag": "P",
+        "text": "From product to system"
+      },
+      {
+        "tag": "H2",
+        "text": "The most durable output wasn’t a screen."
+      },
+      {
+        "tag": "H2",
+        "text": "The most durable output wasn’t a screen."
+      },
+      {
+        "tag": "H2",
+        "text": "The most durable output wasn’t a screen."
+      },
+      {
+        "tag": "P",
+        "text": "24"
+      },
+      {
+        "tag": "P",
+        "text": "24"
+      },
+      {
+        "tag": "P",
+        "text": "24"
+      },
+      {
+        "tag": "H3",
+        "text": "Design rules"
+      },
+      {
+        "tag": "P",
+        "text": "3"
+      },
+      {
+        "tag": "H3",
+        "text": "Roles modelled"
+      },
+      {
+        "tag": "P",
+        "text": "Roles modelled"
+      },
+      {
+        "tag": "P",
+        "text": "06"
+      },
+      {
+        "tag": "P",
+        "text": "06"
+      },
+      {
+        "tag": "P",
+        "text": "06"
+      },
+      {
+        "tag": "H3",
+        "text": "Reusable patterns"
+      },
+      {
+        "tag": "P",
+        "text": "The rule library connected workflow principles, screen behaviour and acceptance criteria — giving future projects proven patterns instead of a blank page."
+      },
+      {
+        "tag": "P",
+        "text": "AI AS A CONSUMER OF THE SYSTEM"
+      },
+      {
+        "tag": "H3",
+        "text": "The 24 rules became more valuable than the screens they produced."
+      },
+      {
+        "tag": "P",
+        "text": "Once decisions were expressed as roles, states, dependencies and exceptions, they could constrain AI-assisted exploration instead of relying on prompts alone. I later applied the same principle in TAP Mindset: stable rules provide the context that makes generated work reviewable, repeatable and safer to ship."
+      },
+      {
+        "tag": "P",
+        "text": "This is the same principle I later applied in TAP Mindset: a rule system becomes the context that makes AI-assisted work reliable. ↗"
+      },
+      {
+        "tag": "P",
+        "text": "This is the same principle I later applied in TAP Mindset: a rule system becomes the context that makes AI-assisted work reliable. ↗"
+      },
+      {
+        "tag": "P",
+        "text": "See how this principle evolved in TAP Design System ↗"
+      },
+      {
+        "tag": "P",
+        "text": "Validation"
+      },
+      {
+        "tag": "H2",
+        "text": "Tested in the context of the real workflow."
+      },
+      {
+        "tag": "H2",
+        "text": "Tested in the context of the real workflow."
+      },
+      {
+        "tag": "H2",
+        "text": "Tested in the context of the real workflow."
+      },
+      {
+        "tag": "H3",
+        "text": "Role-based walkthroughs"
+      },
+      {
+        "tag": "P",
+        "text": "Three role-based walkthroughs used real responsibilities and scenarios from the budgeting cycle. Observing where participants hesitated helped refine the labels, information hierarchy and decision rules before adoption."
+      },
+      {
+        "tag": "H3",
+        "text": "A platform ceiling."
+      },
+      {
+        "tag": "P",
+        "text": "55+ known front-end limitations shaped what was buildable. Documenting them stopped the team rediscovering the same constraints."
+      },
+      {
+        "tag": "P",
+        "text": "What this was actually about"
+      },
+      {
+        "tag": "P",
+        "text": "Adopted by SUEZ for the FY2026 budgeting cycle"
+      },
+      {
+        "tag": "P",
+        "text": "People don’t coordinate work through screens.They coordinate through shared understanding.The product’s job is to make that understanding visible."
+      },
+      {
+        "tag": "P",
+        "text": "People don’t coordinate work through screens.They coordinate through shared understanding.The product’s job is to make that understanding visible."
+      },
+      {
+        "tag": "P",
+        "text": "People don’t coordinate work through screens.They coordinate through shared understanding.The product’s job is to make that understanding visible."
+      },
+      {
+        "tag": "LI",
+        "text": "More Works©"
+      },
+      {
+        "tag": "H1",
+        "text": "More Works©"
+      },
+      {
+        "tag": "LI",
+        "text": "More Works©"
+      },
+      {
+        "tag": "H1",
+        "text": "More Works©"
+      },
+      {
+        "tag": "LI",
+        "text": "More Works©"
+      },
+      {
+        "tag": "H1",
+        "text": "More Works©"
+      },
+      {
+        "tag": "P",
+        "text": "PREVIOUS PROJECT"
+      },
+      {
+        "tag": "P",
+        "text": "Fluxy"
+      },
+      {
+        "tag": "P",
+        "text": "A responsible travel agent for everyday mobility"
+      },
+      {
+        "tag": "P",
+        "text": "NEXT PROJECT"
+      },
+      {
+        "tag": "P",
+        "text": "TAP Design System"
+      },
+      {
+        "tag": "P",
+        "text": "A coded system connecting design and development"
+      },
+      {
+        "tag": "P",
+        "text": "Structured"
+      },
+      {
+        "tag": "P",
+        "text": "Clear"
+      },
+      {
+        "tag": "P",
+        "text": "Scalable"
+      },
+      {
+        "tag": "P",
+        "text": "Connected"
+      },
+      {
+        "tag": "P",
+        "text": "If you're building something complex and need someone who can see the whole system — let's talk."
+      },
+      {
+        "tag": "P",
+        "text": "Let´s connect"
+      },
+      {
+        "tag": "P",
+        "text": "Explore"
+      },
+      {
+        "tag": "P",
+        "text": "About,"
+      },
+      {
+        "tag": "P",
+        "text": "Work,"
+      },
+      {
+        "tag": "P",
+        "text": "Practice,"
+      },
+      {
+        "tag": "P",
+        "text": "Tools"
+      },
+      {
+        "tag": "P",
+        "text": "Based in Madrid"
+      },
+      {
+        "tag": "P",
+        "text": "Product Designer"
+      },
+      {
+        "tag": "P",
+        "text": "Structured"
+      },
+      {
+        "tag": "P",
+        "text": "Clear"
+      },
+      {
+        "tag": "P",
+        "text": "Scalable"
+      },
+      {
+        "tag": "P",
+        "text": "Connected"
+      },
+      {
+        "tag": "P",
+        "text": "If you're building something complex and need someone who can see the whole system — let's talk."
+      },
+      {
+        "tag": "P",
+        "text": "Let´s connect"
+      },
+      {
+        "tag": "P",
+        "text": "Explore"
+      },
+      {
+        "tag": "P",
+        "text": "About,"
+      },
+      {
+        "tag": "P",
+        "text": "Work,"
+      },
+      {
+        "tag": "P",
+        "text": "Practice,"
+      },
+      {
+        "tag": "P",
+        "text": "Tools"
+      },
+      {
+        "tag": "P",
+        "text": "Based in Madrid"
+      },
+      {
+        "tag": "P",
+        "text": "Product Designer"
+      },
+      {
+        "tag": "P",
+        "text": "Structured"
+      },
+      {
+        "tag": "P",
+        "text": "Clear"
+      },
+      {
+        "tag": "P",
+        "text": "Scalable"
+      },
+      {
+        "tag": "P",
+        "text": "Connected"
+      },
+      {
+        "tag": "P",
+        "text": "If you're building something complex and need someone who can see the whole system — let's talk."
+      },
+      {
+        "tag": "P",
+        "text": "Let´s connect"
+      },
+      {
+        "tag": "P",
+        "text": "Explore"
+      },
+      {
+        "tag": "P",
+        "text": "About,"
+      },
+      {
+        "tag": "P",
+        "text": "Work,"
+      },
+      {
+        "tag": "P",
+        "text": "Practice,"
+      },
+      {
+        "tag": "P",
+        "text": "Tools"
+      },
+      {
+        "tag": "P",
+        "text": "Based in Madrid"
+      },
+      {
+        "tag": "P",
+        "text": "Product Designer"
+      },
+      {
+        "tag": "P",
+        "text": "Create a free website with Framer, the website builder loved by startups, designers and agencies."
+      }
+    ],
+    "title": "Debora Moratalla´s Portfolio",
+    "url": "https://deboramoratalla.framer.website/projects/saas"
+  },
+  {
+    "description": "",
+    "links": [
+      {
+        "href": "https://deboramoratalla.framer.website/#top",
+        "text": ""
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#about",
+        "text": "About, .rolling-text-inner-b3917822-9d5f-4ca5-a9b8-4f61fef76b90 { --font-size: 14px; --text: var(--token-af1df47b-ea84-448e-bdf0-a5ce0f875a59, rgb(153, 153, 153"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#work",
+        "text": "Work, .rolling-text-inner-10d5363e-13b0-42d2-beb3-ca1323d2be79 { --font-size: 14px; --text: var(--token-af1df47b-ea84-448e-bdf0-a5ce0f875a59, rgb(153, 153, 153)"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#practice",
+        "text": "Practice, .rolling-text-inner-bfcec305-2e72-4a74-af4c-2d55312c3932 { --font-size: 14px; --text: var(--token-af1df47b-ea84-448e-bdf0-a5ce0f875a59, rgb(153, 153, "
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#tools",
+        "text": "Tools .rolling-text-inner-e500c51f-eca1-4091-af49-e13bda847aaa { --font-size: 14px; --text: var(--token-af1df47b-ea84-448e-bdf0-a5ce0f875a59, rgb(153, 153, 153)"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#top",
+        "text": ""
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#about",
+        "text": "About, .rolling-text-inner-a793db4a-89c9-46f3-a56b-855c3efe6234 { --font-size: 14px; --text: var(--token-af1df47b-ea84-448e-bdf0-a5ce0f875a59, rgb(153, 153, 153"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#work",
+        "text": "Work, .rolling-text-inner-1df311ee-ac2f-4b28-aff3-8cbd2632fd76 { --font-size: 14px; --text: var(--token-af1df47b-ea84-448e-bdf0-a5ce0f875a59, rgb(153, 153, 153)"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#practice",
+        "text": "Practice, .rolling-text-inner-3a9d58b8-0723-4338-9e34-0e2fb5a104f4 { --font-size: 14px; --text: var(--token-af1df47b-ea84-448e-bdf0-a5ce0f875a59, rgb(153, 153, "
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#tools",
+        "text": "Tools .rolling-text-inner-2339f194-471e-49cc-b5dd-d0c0f8bd3b9a { --font-size: 14px; --text: var(--token-af1df47b-ea84-448e-bdf0-a5ce0f875a59, rgb(153, 153, 153)"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#top",
+        "text": ""
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#about",
+        "text": "About, .rolling-text-inner-f94faf8b-dae4-4eb8-9c53-f70356a40c66 { --font-size: 14px; --text: var(--token-af1df47b-ea84-448e-bdf0-a5ce0f875a59, rgb(153, 153, 153"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#work",
+        "text": "Work, .rolling-text-inner-4cfb21d7-6eee-45e9-9500-fe5481df06f5 { --font-size: 14px; --text: var(--token-af1df47b-ea84-448e-bdf0-a5ce0f875a59, rgb(153, 153, 153)"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#practice",
+        "text": "Practice, .rolling-text-inner-84fad312-95e1-4844-8dbc-56b77b02eab7 { --font-size: 14px; --text: var(--token-af1df47b-ea84-448e-bdf0-a5ce0f875a59, rgb(153, 153, "
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#tools",
+        "text": "Tools .rolling-text-inner-fd7a5b4f-3c95-4fb7-8096-ecf9430c94fc { --font-size: 14px; --text: var(--token-af1df47b-ea84-448e-bdf0-a5ce0f875a59, rgb(153, 153, 153)"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/projects/tap-mindset",
+        "text": "The product this system powers → TAP Mindset"
+      },
+      {
+        "href": "https://deboramoratalla-lab.github.io/design-system-showcase/?path=/story/welcome-start-here--start-here",
+        "text": "GO TO STORYBOOK .rolling-text-inner-2cab8182-f72e-4e00-9032-14d4b9895a14 { --font-size: 15px; --text: rgb(255, 255, 255); --line-height-abs: 18px; box-sizing: b"
+      },
+      {
+        "href": "https://deboramoratalla-lab.github.io/design-system-showcase/?path=/story/welcome-start-here--start-here",
+        "text": "GO TO STORYBOOK .rolling-text-inner-5c253c00-6fa8-4fb7-82d7-c0693606026a { --font-size: 14px; --text: rgb(255, 255, 255); --line-height-abs: 17px; box-sizing: b"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/projects/tap-mindset-ds#tap-act-01",
+        "text": "01The problem worth solving"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/projects/tap-mindset-ds#tap-act-02",
+        "text": "02The system & the bet"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/projects/tap-mindset-ds#tap-act-03",
+        "text": "03What it cost, what it taught"
+      },
+      {
+        "href": "https://deboramoratalla-lab.github.io/design-system-showcase/?path=/story/welcome-start-here--start-here",
+        "text": ""
+      },
+      {
+        "href": "https://deboramoratalla-lab.github.io/design-system-showcase/?path=/story/welcome-start-here--start-here",
+        "text": "↗ Explore the live Storybook"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/projects/saas",
+        "text": "PREVIOUS PROJECTBoardEnterprise planning and coordination at scale"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/projects/tap-mindset",
+        "text": "NEXT PROJECTTAP MindsetA role-based mental training product"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/contact",
+        "text": "Let´s connect .rolling-text-inner-66b27a0e-47eb-47af-8f34-4d521dccf968 { --font-size: 15px; --text: rgb(255, 255, 255); --line-height-abs: 18px; box-sizing: bor"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#top",
+        "text": ""
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#about",
+        "text": "About, .rolling-text-inner-5cba8c95-80c6-4bf3-a445-d2b606515f59 { --font-size: 14px; --text: var(--token-af1df47b-ea84-448e-bdf0-a5ce0f875a59, rgb(153, 153, 153"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#work",
+        "text": "Work, .rolling-text-inner-949a4599-0832-4e21-99df-c0fb96956e49 { --font-size: 14px; --text: var(--token-af1df47b-ea84-448e-bdf0-a5ce0f875a59, rgb(153, 153, 153)"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#practice",
+        "text": "Practice, .rolling-text-inner-4cdc73ff-deab-4f64-a910-b08c22a7627b { --font-size: 14px; --text: var(--token-af1df47b-ea84-448e-bdf0-a5ce0f875a59, rgb(153, 153, "
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#tools",
+        "text": "Tools .rolling-text-inner-d6238809-e634-43a8-9be0-531fa75ecf68 { --font-size: 14px; --text: var(--token-af1df47b-ea84-448e-bdf0-a5ce0f875a59, rgb(153, 153, 153)"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/contact",
+        "text": "Let´s connect .rolling-text-inner-36db6396-cf05-4d75-94c2-ea5895008bef { --font-size: 15px; --text: rgb(255, 255, 255); --line-height-abs: 18px; box-sizing: bor"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#top",
+        "text": ""
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#about",
+        "text": "About, .rolling-text-inner-36b19406-76fe-417b-a900-ae9181b7c841 { --font-size: 14px; --text: var(--token-af1df47b-ea84-448e-bdf0-a5ce0f875a59, rgb(153, 153, 153"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#work",
+        "text": "Work, .rolling-text-inner-899209d6-72d8-4e37-b2b2-90813d7058de { --font-size: 14px; --text: var(--token-af1df47b-ea84-448e-bdf0-a5ce0f875a59, rgb(153, 153, 153)"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#practice",
+        "text": "Practice, .rolling-text-inner-bfb89e58-0771-4ae3-ad39-95df301c9494 { --font-size: 14px; --text: var(--token-af1df47b-ea84-448e-bdf0-a5ce0f875a59, rgb(153, 153, "
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#tools",
+        "text": "Tools .rolling-text-inner-e7425b77-ccd8-4d64-8e8a-423a84dddb61 { --font-size: 14px; --text: var(--token-af1df47b-ea84-448e-bdf0-a5ce0f875a59, rgb(153, 153, 153)"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/contact",
+        "text": "Let´s connect .rolling-text-inner-46b273a3-efaf-4383-9c93-bfd70e6d76c9 { --font-size: 14px; --text: rgb(255, 255, 255); --line-height-abs: 17px; box-sizing: bor"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#top",
+        "text": ""
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#about",
+        "text": "About, .rolling-text-inner-05691500-c34d-4d2a-83e8-407659276011 { --font-size: 14px; --text: var(--token-af1df47b-ea84-448e-bdf0-a5ce0f875a59, rgb(153, 153, 153"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#work",
+        "text": "Work, .rolling-text-inner-6421b893-5a2a-467c-a630-8134a7c7ef27 { --font-size: 14px; --text: var(--token-af1df47b-ea84-448e-bdf0-a5ce0f875a59, rgb(153, 153, 153)"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#practice",
+        "text": "Practice, .rolling-text-inner-a06d5ced-c922-4178-af5b-10d826f39a54 { --font-size: 14px; --text: var(--token-af1df47b-ea84-448e-bdf0-a5ce0f875a59, rgb(153, 153, "
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#tools",
+        "text": "Tools .rolling-text-inner-480737a4-3b06-4bc4-b0f7-f038fc9d435c { --font-size: 14px; --text: var(--token-af1df47b-ea84-448e-bdf0-a5ce0f875a59, rgb(153, 153, 153)"
+      },
+      {
+        "href": "https://www.linkedin.com/in/deboramoratallamartin/",
+        "text": ""
+      },
+      {
+        "href": "https://www.framer.com/",
+        "text": "Create a free website with Framer, the website builder loved by startups, designers and agencies."
+      }
+    ],
+    "media": [
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://framerusercontent.com/images/hsX9Ccf2XX8R8GhdWd3PtuJiWE.png?width=320&height=320",
+        "tag": "IMG"
+      },
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://framerusercontent.com/images/hsX9Ccf2XX8R8GhdWd3PtuJiWE.png?width=320&height=320",
+        "tag": "IMG"
+      },
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://framerusercontent.com/images/hsX9Ccf2XX8R8GhdWd3PtuJiWE.png?width=320&height=320",
+        "tag": "IMG"
+      },
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://framerusercontent.com/images/8E3h5foMKSIxJzUkdIrbzLfEFgM.png?scale-down-to=4096&width=6872&height=2941",
+        "tag": "IMG"
+      },
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://framerusercontent.com/images/v0e9L7cLZpgOZ1Yikq3r8RoqLY.png?scale-down-to=4096&width=5020&height=3212",
+        "tag": "IMG"
+      },
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://framerusercontent.com/images/UHTiiwNdPuTkZcoyyv0CB6hTHrY.png?width=1440&height=1000",
+        "tag": "IMG"
+      },
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://framerusercontent.com/assets/VDnyOmgwVTRRwyqN4yVYpCa2Q.mov",
+        "tag": "VIDEO"
+      },
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://framerusercontent.com/assets/VDnyOmgwVTRRwyqN4yVYpCa2Q.mov",
+        "tag": "VIDEO"
+      },
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://framerusercontent.com/assets/DKUq3U6NX0ztkYDZUy6Xg3Y7ww.mov",
+        "tag": "VIDEO"
+      },
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://framerusercontent.com/assets/DKUq3U6NX0ztkYDZUy6Xg3Y7ww.mov",
+        "tag": "VIDEO"
+      },
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://framerusercontent.com/images/hsX9Ccf2XX8R8GhdWd3PtuJiWE.png?width=320&height=320",
+        "tag": "IMG"
+      },
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://framerusercontent.com/images/hsX9Ccf2XX8R8GhdWd3PtuJiWE.png?width=320&height=320",
+        "tag": "IMG"
+      },
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://framerusercontent.com/images/hsX9Ccf2XX8R8GhdWd3PtuJiWE.png?width=320&height=320",
+        "tag": "IMG"
+      },
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://framerusercontent.com/images/fGbG9jaFRAyQSEpEDOgAJdQWVk.png?width=512&height=512",
+        "tag": "IMG"
+      }
+    ],
+    "texts": [
+      {
+        "tag": "P",
+        "text": "Explore"
+      },
+      {
+        "tag": "P",
+        "text": "About,"
+      },
+      {
+        "tag": "P",
+        "text": "Work,"
+      },
+      {
+        "tag": "P",
+        "text": "Practice,"
+      },
+      {
+        "tag": "P",
+        "text": "Tools"
+      },
+      {
+        "tag": "P",
+        "text": "Based in Madrid"
+      },
+      {
+        "tag": "P",
+        "text": "Product Designer"
+      },
+      {
+        "tag": "P",
+        "text": "Explore"
+      },
+      {
+        "tag": "P",
+        "text": "About,"
+      },
+      {
+        "tag": "P",
+        "text": "Work,"
+      },
+      {
+        "tag": "P",
+        "text": "Practice,"
+      },
+      {
+        "tag": "P",
+        "text": "Tools"
+      },
+      {
+        "tag": "P",
+        "text": "Explore"
+      },
+      {
+        "tag": "P",
+        "text": "About,"
+      },
+      {
+        "tag": "P",
+        "text": "Work,"
+      },
+      {
+        "tag": "P",
+        "text": "Practice,"
+      },
+      {
+        "tag": "P",
+        "text": "Tools"
+      },
+      {
+        "tag": "LI",
+        "text": "TAP Mindset Design System & AI Workflow /"
+      },
+      {
+        "tag": "H1",
+        "text": "TAP Mindset Design System & AI Workflow /"
+      },
+      {
+        "tag": "LI",
+        "text": "TAP Mindset Design System & AI Workflow /"
+      },
+      {
+        "tag": "H1",
+        "text": "TAP Mindset Design System & AI Workflow /"
+      },
+      {
+        "tag": "LI",
+        "text": "TAP Mindset Design System & AI Workflow /"
+      },
+      {
+        "tag": "H1",
+        "text": "TAP Mindset Design System & AI Workflow /"
+      },
+      {
+        "tag": "P",
+        "text": "Role:"
+      },
+      {
+        "tag": "P",
+        "text": "Lead Product Designer"
+      },
+      {
+        "tag": "P",
+        "text": "Team:"
+      },
+      {
+        "tag": "P",
+        "text": "Product Manager"
+      },
+      {
+        "tag": "P",
+        "text": "Product Designers x2Developers x2"
+      },
+      {
+        "tag": "P",
+        "text": "Process:"
+      },
+      {
+        "tag": "P",
+        "text": "Scrum (Sprints), Notion"
+      },
+      {
+        "tag": "P",
+        "text": "TL;DR:"
+      },
+      {
+        "tag": "LI",
+        "text": "Audited 28,000+ component instances across the product to decide what should exist"
+      },
+      {
+        "tag": "P",
+        "text": "Audited 28,000+ component instances across the product to decide what should exist"
+      },
+      {
+        "tag": "LI",
+        "text": "Designed foundations and token architecture by hand — no AI"
+      },
+      {
+        "tag": "P",
+        "text": "Designed foundations and token architecture by hand — no AI"
+      },
+      {
+        "tag": "LI",
+        "text": "Built the component library in code, documented in Storybook"
+      },
+      {
+        "tag": "P",
+        "text": "Built the component library in code, documented in Storybook"
+      },
+      {
+        "tag": "LI",
+        "text": "Built two custom Figma plugins to close the gap between code and design"
+      },
+      {
+        "tag": "P",
+        "text": "Built two custom Figma plugins to close the gap between code and design"
+      },
+      {
+        "tag": "LI",
+        "text": "Reduced the public component API from 55 to 38 concepts"
+      },
+      {
+        "tag": "P",
+        "text": "Reduced the public component API from 55 to 38 concepts"
+      },
+      {
+        "tag": "LI",
+        "text": "Cut component documentation from 45 minutes to under 2"
+      },
+      {
+        "tag": "P",
+        "text": "Cut component documentation from 45 minutes to under 2"
+      },
+      {
+        "tag": "P",
+        "text": "A design system built to improve quality without becoming another product the team had to maintain."
+      },
+      {
+        "tag": "P",
+        "text": "The product this system powers → TAP Mindset"
+      },
+      {
+        "tag": "P",
+        "text": "GO TO STORYBOOK"
+      },
+      {
+        "tag": "P",
+        "text": "GO TO STORYBOOK"
+      },
+      {
+        "tag": "P",
+        "text": "I built a design system that connected Figma and code, then used AI-assisted tools to reduce maintenance without turning automation into another system the team had to maintain."
+      },
+      {
+        "tag": "P",
+        "text": "I built a design system that connected Figma and code, then used AI-assisted tools to reduce maintenance without turning automation into another system the team had to maintain."
+      },
+      {
+        "tag": "P",
+        "text": "THE PREMISE"
+      },
+      {
+        "tag": "P",
+        "text": "A design system only scales when the team can keep it alive."
+      },
+      {
+        "tag": "P",
+        "text": "A design system only scales when the team can keep it alive."
+      },
+      {
+        "tag": "P",
+        "text": "A design system only scales when the team can keep it alive."
+      },
+      {
+        "tag": "P",
+        "text": "CASE STUDY INDEX"
+      },
+      {
+        "tag": "P",
+        "text": "01"
+      },
+      {
+        "tag": "P",
+        "text": "The problem worth solving"
+      },
+      {
+        "tag": "P",
+        "text": "02"
+      },
+      {
+        "tag": "P",
+        "text": "The system & the bet"
+      },
+      {
+        "tag": "P",
+        "text": "03"
+      },
+      {
+        "tag": "P",
+        "text": "What it cost, what it taught"
+      },
+      {
+        "tag": "P",
+        "text": "01"
+      },
+      {
+        "tag": "P",
+        "text": "01"
+      },
+      {
+        "tag": "P",
+        "text": "01"
+      },
+      {
+        "tag": "P",
+        "text": "The problem worth solving"
+      },
+      {
+        "tag": "P",
+        "text": "The problem worth solving"
+      },
+      {
+        "tag": "P",
+        "text": "The problem worth solving"
+      },
+      {
+        "tag": "P",
+        "text": "The visible issue was inconsistency. The consequential one was maintenance: how to keep the system alive without slowing the product down."
+      },
+      {
+        "tag": "P",
+        "text": "The visible issue was inconsistency. The consequential one was maintenance: how to keep the system alive without slowing the product down."
+      },
+      {
+        "tag": "P",
+        "text": "The system was not failing because components were missing."
+      },
+      {
+        "tag": "P",
+        "text": "TAP Mindset started as an MVP. Every sprint added flows, features and decisions: eight card variations, six chips and four inputs, most doing the same job. But documenting one component took 45–60 minutes, and that time always lost against the roadmap. Knowledge lived in people, not in the system."
+      },
+      {
+        "tag": "P",
+        "text": "THE BUSINESS CASE"
+      },
+      {
+        "tag": "H3",
+        "text": "Maintenance was consuming roadmap capacity, not just design time."
+      },
+      {
+        "tag": "P",
+        "text": "At 45–60 minutes per component, a full documentation pass represented more than 30 hours of repeat work before a feature moved forward. The business case was continuity: reduce recurring maintenance, protect delivery capacity and make system adoption cheaper than bypassing it."
+      },
+      {
+        "tag": "P",
+        "text": "THE AUDIT"
+      },
+      {
+        "tag": "P",
+        "text": "Not designing. Counting."
+      },
+      {
+        "tag": "P",
+        "text": "Not designing. Counting."
+      },
+      {
+        "tag": "P",
+        "text": "I mapped every flow and audited 28,000+ component instances. That exposed which patterns were load-bearing, which were duplicates and which existed for no reason at all."
+      },
+      {
+        "tag": "P",
+        "text": "I mapped every flow and audited 28,000+ component instances. That exposed which patterns were load-bearing, which were duplicates and which existed for no reason at all."
+      },
+      {
+        "tag": "P",
+        "text": "THE REFRAME"
+      },
+      {
+        "tag": "P",
+        "text": "The problem was never building the design system. It was maintaining it without slowing the product down."
+      },
+      {
+        "tag": "P",
+        "text": "The problem was never building the design system. It was maintaining it without slowing the product down."
+      },
+      {
+        "tag": "P",
+        "text": "The problem was never building the design system. It was maintaining it without slowing the product down."
+      },
+      {
+        "tag": "P",
+        "text": "02"
+      },
+      {
+        "tag": "P",
+        "text": "02"
+      },
+      {
+        "tag": "P",
+        "text": "02"
+      },
+      {
+        "tag": "P",
+        "text": "The system & the bet"
+      },
+      {
+        "tag": "P",
+        "text": "The system & the bet"
+      },
+      {
+        "tag": "P",
+        "text": "The system & the bet"
+      },
+      {
+        "tag": "P",
+        "text": "Establish a source of truth, reduce what the team had to maintain, then close the loop between code and design."
+      },
+      {
+        "tag": "P",
+        "text": "THE SOURCE OF TRUTH"
+      },
+      {
+        "tag": "P",
+        "text": "Foundations by hand. Components from evidence."
+      },
+      {
+        "tag": "P",
+        "text": "Foundations by hand. Components from evidence."
+      },
+      {
+        "tag": "P",
+        "text": "I designed color, type, spacing, elevation, radius, grid and motion without AI. These decisions become the source of truth for everything downstream; if they are wrong, everything is wrong fast."
+      },
+      {
+        "tag": "P",
+        "text": "Usage data shaped the component layer. I reduced the public API from 55 concepts to 38 — merging duplicates, promoting real patterns and archiving what nobody used."
+      },
+      {
+        "tag": "P",
+        "text": "THE SYSTEM, VISIBLE"
+      },
+      {
+        "tag": "P",
+        "text": "A source of truth the team could inspect, use and challenge."
+      },
+      {
+        "tag": "P",
+        "text": "A source of truth the team could inspect, use and challenge."
+      },
+      {
+        "tag": "P",
+        "text": "A source of truth the team could inspect, use and challenge."
+      },
+      {
+        "tag": "P",
+        "text": "Storybook made the system tangible: foundations, brand rules and production components lived together, with implementation and documentation in the same place."
+      },
+      {
+        "tag": "P",
+        "text": "Storybook made the system tangible: foundations, brand rules and production components lived together, with implementation and documentation in the same place."
+      },
+      {
+        "tag": "P",
+        "text": "↗ Explore the live Storybook"
+      },
+      {
+        "tag": "P",
+        "text": "THE BET"
+      },
+      {
+        "tag": "P",
+        "text": "Once code became the source of truth, manual syncing had an expiry date."
+      },
+      {
+        "tag": "P",
+        "text": "Once code became the source of truth, manual syncing had an expiry date."
+      },
+      {
+        "tag": "P",
+        "text": "Once code became the source of truth, manual syncing had an expiry date."
+      },
+      {
+        "tag": "P",
+        "text": "I built a component importer and a documentation generator to keep Storybook and Figma connected without turning maintenance into another product."
+      },
+      {
+        "tag": "P",
+        "text": "I built a component importer and a documentation generator to keep Storybook and Figma connected without turning maintenance into another product."
+      },
+      {
+        "tag": "P",
+        "text": "CODE COMPONENT IMPORTER"
+      },
+      {
+        "tag": "P",
+        "text": "Reads a coded component and rebuilds its structure in Figma."
+      },
+      {
+        "tag": "P",
+        "text": "DOCUMENT GENERATOR"
+      },
+      {
+        "tag": "P",
+        "text": "Clones a master template and generates the full doc page."
+      },
+      {
+        "tag": "P",
+        "text": "THE TRADE-OFF"
+      },
+      {
+        "tag": "P",
+        "text": "Code describes what. Judgment decides how."
+      },
+      {
+        "tag": "P",
+        "text": "Code describes what. Judgment decides how."
+      },
+      {
+        "tag": "P",
+        "text": "Code describes what. Judgment decides how."
+      },
+      {
+        "tag": "P",
+        "text": "The plugins carried structure, not judgment. Code could expose variants, slots and tokens; it could not decide whether a pattern should be one component or five, how properties should be grouped, or when an interface needed to hug or fill. That became the boundary of the system."
+      },
+      {
+        "tag": "P",
+        "text": "The plugins carried structure, not judgment. Code could expose variants, slots and tokens; it could not decide whether a pattern should be one component or five, how properties should be grouped, or when an interface needed to hug or fill. That became the boundary of the system."
+      },
+      {
+        "tag": "P",
+        "text": "03"
+      },
+      {
+        "tag": "P",
+        "text": "03"
+      },
+      {
+        "tag": "P",
+        "text": "03"
+      },
+      {
+        "tag": "P",
+        "text": "What it cost, what it taught"
+      },
+      {
+        "tag": "P",
+        "text": "What it cost, what it taught"
+      },
+      {
+        "tag": "P",
+        "text": "What it cost, what it taught"
+      },
+      {
+        "tag": "P",
+        "text": "The measurable gains mattered. So did the failures: token drift, weak context and the cost of rebuilding work that moved too quickly."
+      },
+      {
+        "tag": "P",
+        "text": "The measurable gains mattered. So did the failures: token drift, weak context and the cost of rebuilding work that moved too quickly."
+      },
+      {
+        "tag": "P",
+        "text": "28,000+"
+      },
+      {
+        "tag": "P",
+        "text": "instances audited"
+      },
+      {
+        "tag": "P",
+        "text": "55 → 38"
+      },
+      {
+        "tag": "P",
+        "text": "component concepts"
+      },
+      {
+        "tag": "P",
+        "text": "45 → <2 min"
+      },
+      {
+        "tag": "P",
+        "text": "documentation time"
+      },
+      {
+        "tag": "P",
+        "text": "The parity audit exposed four brand scales that had silently drifted apart. Weak context produced fast but inconsistent output. A version restore forced part of the consolidation to be rebuilt. AI accelerated execution — and mistakes — with equal efficiency."
+      },
+      {
+        "tag": "P",
+        "text": "The parity audit exposed four brand scales that had silently drifted apart. Weak context produced fast but inconsistent output. A version restore forced part of the consolidation to be rebuilt. AI accelerated execution — and mistakes — with equal efficiency."
+      },
+      {
+        "tag": "P",
+        "text": "LEADERSHIP & AI GOVERNANCE"
+      },
+      {
+        "tag": "H3",
+        "text": "The system needed owners, review gates and a clear boundary for automation."
+      },
+      {
+        "tag": "P",
+        "text": "I established weekly reviews with Design and Engineering, assigned ownership by layer and introduced release checks for token, Figma and Storybook parity. AI could audit repetition, draft documentation and accelerate implementation. It could not change foundations, public APIs or accessibility decisions without human review."
+      },
+      {
+        "tag": "P",
+        "text": "WHAT THIS WAS ACTUALLY ABOUT"
+      },
+      {
+        "tag": "P",
+        "text": "The goal was never consistency. It was continuity."
+      },
+      {
+        "tag": "P",
+        "text": "The goal was never consistency. It was continuity."
+      },
+      {
+        "tag": "P",
+        "text": "The goal was never consistency. It was continuity."
+      },
+      {
+        "tag": "P",
+        "text": "Tools will change. Judgment remains."
+      },
+      {
+        "tag": "LI",
+        "text": "More Works©"
+      },
+      {
+        "tag": "H1",
+        "text": "More Works©"
+      },
+      {
+        "tag": "LI",
+        "text": "More Works©"
+      },
+      {
+        "tag": "H1",
+        "text": "More Works©"
+      },
+      {
+        "tag": "LI",
+        "text": "More Works©"
+      },
+      {
+        "tag": "H1",
+        "text": "More Works©"
+      },
+      {
+        "tag": "P",
+        "text": "PREVIOUS PROJECT"
+      },
+      {
+        "tag": "P",
+        "text": "Board"
+      },
+      {
+        "tag": "P",
+        "text": "Enterprise planning and coordination at scale"
+      },
+      {
+        "tag": "P",
+        "text": "NEXT PROJECT"
+      },
+      {
+        "tag": "P",
+        "text": "TAP Mindset"
+      },
+      {
+        "tag": "P",
+        "text": "A role-based mental training product"
+      },
+      {
+        "tag": "P",
+        "text": "Structured"
+      },
+      {
+        "tag": "P",
+        "text": "Clear"
+      },
+      {
+        "tag": "P",
+        "text": "Scalable"
+      },
+      {
+        "tag": "P",
+        "text": "Connected"
+      },
+      {
+        "tag": "P",
+        "text": "If you're building something complex and need someone who can see the whole system — let's talk."
+      },
+      {
+        "tag": "P",
+        "text": "Let´s connect"
+      },
+      {
+        "tag": "P",
+        "text": "Explore"
+      },
+      {
+        "tag": "P",
+        "text": "About,"
+      },
+      {
+        "tag": "P",
+        "text": "Work,"
+      },
+      {
+        "tag": "P",
+        "text": "Practice,"
+      },
+      {
+        "tag": "P",
+        "text": "Tools"
+      },
+      {
+        "tag": "P",
+        "text": "Based in Madrid"
+      },
+      {
+        "tag": "P",
+        "text": "Product Designer"
+      },
+      {
+        "tag": "P",
+        "text": "Structured"
+      },
+      {
+        "tag": "P",
+        "text": "Clear"
+      },
+      {
+        "tag": "P",
+        "text": "Scalable"
+      },
+      {
+        "tag": "P",
+        "text": "Connected"
+      },
+      {
+        "tag": "P",
+        "text": "If you're building something complex and need someone who can see the whole system — let's talk."
+      },
+      {
+        "tag": "P",
+        "text": "Let´s connect"
+      },
+      {
+        "tag": "P",
+        "text": "Explore"
+      },
+      {
+        "tag": "P",
+        "text": "About,"
+      },
+      {
+        "tag": "P",
+        "text": "Work,"
+      },
+      {
+        "tag": "P",
+        "text": "Practice,"
+      },
+      {
+        "tag": "P",
+        "text": "Tools"
+      },
+      {
+        "tag": "P",
+        "text": "Based in Madrid"
+      },
+      {
+        "tag": "P",
+        "text": "Product Designer"
+      },
+      {
+        "tag": "P",
+        "text": "Structured"
+      },
+      {
+        "tag": "P",
+        "text": "Clear"
+      },
+      {
+        "tag": "P",
+        "text": "Scalable"
+      },
+      {
+        "tag": "P",
+        "text": "Connected"
+      },
+      {
+        "tag": "P",
+        "text": "If you're building something complex and need someone who can see the whole system — let's talk."
+      },
+      {
+        "tag": "P",
+        "text": "Let´s connect"
+      },
+      {
+        "tag": "P",
+        "text": "Explore"
+      },
+      {
+        "tag": "P",
+        "text": "About,"
+      },
+      {
+        "tag": "P",
+        "text": "Work,"
+      },
+      {
+        "tag": "P",
+        "text": "Practice,"
+      },
+      {
+        "tag": "P",
+        "text": "Tools"
+      },
+      {
+        "tag": "P",
+        "text": "Based in Madrid"
+      },
+      {
+        "tag": "P",
+        "text": "Product Designer"
+      },
+      {
+        "tag": "P",
+        "text": "Create a free website with Framer, the website builder loved by startups, designers and agencies."
+      }
+    ],
+    "title": "Debora Moratalla´s Portfolio",
+    "url": "https://deboramoratalla.framer.website/projects/tap-mindset-ds"
+  },
+  {
+    "description": "",
+    "links": [
+      {
+        "href": "https://deboramoratalla.framer.website/projects/tap-mindset-ds",
+        "text": "Read DS case study .rolling-text-inner-0a6ad3a1-29bd-4623-a4c8-1e20743b2538 { --font-size: 15px; --text: rgb(255, 255, 255); --line-height-abs: 18px; box-sizing"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/projects/tap-mindset#tap-chapter-01",
+        "text": "01Reframing the product"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/projects/tap-mindset#tap-chapter-02",
+        "text": "02Designing the system"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/projects/tap-mindset#tap-chapter-03",
+        "text": "03Building the experience"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/projects/tap-mindset#tap-chapter-04",
+        "text": "04What changed"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/projects/tap-mindset-ds",
+        "text": "→ Read the Design System case study"
+      },
+      {
+        "href": "https://deboramoratalla-lab.github.io/design-system-showcase/?path=/story/welcome-start-here--start-here",
+        "text": "↗ Explore Storybook"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/projects/tap-mindset-ds",
+        "text": "PREVIOUS PROJECTTAP Design SystemA coded system connecting design and development"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/projects/fluxy",
+        "text": "NEXT PROJECTFluxyA responsible travel agent for everyday mobility"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/contact",
+        "text": "Let´s connect .rolling-text-inner-18e78bc0-4d00-4b16-bb67-ae220c2804af { --font-size: 15px; --text: rgb(255, 255, 255); --line-height-abs: 18px; box-sizing: bor"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#top",
+        "text": ""
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#about",
+        "text": "About, .rolling-text-inner-0ab5ab9a-9044-4c6c-adae-8c7e47ec3061 { --font-size: 14px; --text: var(--token-af1df47b-ea84-448e-bdf0-a5ce0f875a59, rgb(153, 153, 153"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#work",
+        "text": "Work, .rolling-text-inner-9b69608e-1699-4bb7-bac1-5a9c7d1f4474 { --font-size: 14px; --text: var(--token-af1df47b-ea84-448e-bdf0-a5ce0f875a59, rgb(153, 153, 153)"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#practice",
+        "text": "Practice, .rolling-text-inner-5e49f805-3a19-4f8a-be3f-340c5ac47e25 { --font-size: 14px; --text: var(--token-af1df47b-ea84-448e-bdf0-a5ce0f875a59, rgb(153, 153, "
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#tools",
+        "text": "Tools .rolling-text-inner-19e0cd8c-13fa-4009-acf5-c5c7e06c4810 { --font-size: 14px; --text: var(--token-af1df47b-ea84-448e-bdf0-a5ce0f875a59, rgb(153, 153, 153)"
+      },
+      {
+        "href": "https://www.linkedin.com/in/deboramoratallamartin/",
+        "text": ""
+      },
+      {
+        "href": "https://www.framer.com/",
+        "text": "Create a free website with Framer, the website builder loved by startups, designers and agencies."
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#top",
+        "text": ""
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#about",
+        "text": "About, .rolling-text-inner-441ea9c1-4177-4c8f-8326-c101aaca51c7 { --font-size: 14px; --text: var(--token-af1df47b-ea84-448e-bdf0-a5ce0f875a59, rgb(153, 153, 153"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#work",
+        "text": "Work, .rolling-text-inner-b4616da5-290b-462e-912e-6b10fcd7fe33 { --font-size: 14px; --text: var(--token-af1df47b-ea84-448e-bdf0-a5ce0f875a59, rgb(153, 153, 153)"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#practice",
+        "text": "Practice, .rolling-text-inner-eede137e-a1a7-4b97-9c14-64ac6fe793d7 { --font-size: 14px; --text: var(--token-af1df47b-ea84-448e-bdf0-a5ce0f875a59, rgb(153, 153, "
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#tools",
+        "text": "Tools .rolling-text-inner-0478b684-32ea-4c67-9c52-20a047a923f0 { --font-size: 14px; --text: var(--token-af1df47b-ea84-448e-bdf0-a5ce0f875a59, rgb(153, 153, 153)"
+      }
+    ],
+    "media": [
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://framerusercontent.com/images/8vYUA69ov7JIByTeoOntKRg1Bb4.png?width=1600&height=1012",
+        "tag": "IMG"
+      },
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://framerusercontent.com/images/CJeQTobftuZtlYtEXfM0e7jq7xc.png?scale-down-to=4096&width=5576&height=4182",
+        "tag": "IMG"
+      },
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://framerusercontent.com/images/m8mVArIM9VzKohEm4ONZgSbfY.png?width=1740&height=1200",
+        "tag": "IMG"
+      },
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://framerusercontent.com/images/F2QELFSYF2MG5Cgw8Xr4XZKexlo.png?scale-down-to=4096&width=6279&height=3069",
+        "tag": "IMG"
+      },
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://framerusercontent.com/images/hsX9Ccf2XX8R8GhdWd3PtuJiWE.png?width=320&height=320",
+        "tag": "IMG"
+      },
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://framerusercontent.com/images/fGbG9jaFRAyQSEpEDOgAJdQWVk.png?width=512&height=512",
+        "tag": "IMG"
+      },
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://framerusercontent.com/images/hsX9Ccf2XX8R8GhdWd3PtuJiWE.png?width=320&height=320",
+        "tag": "IMG"
+      },
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://framer.com/edit?framerSiteId=39841b625bfedde28ea1bb4dc77fb5830eb597bc3870245ec8d691c3bbb9f4b4&source=deboramoratalla.framer.website&features=%7B%22editorBarDisableFrameAncestorsSecurity%22%3Afalse%2C%22onPageLocalizationSupport%22%3Atrue%2C%22onPageMoveTool%22%3Atrue%2C%22onPageRichTextBlockSelection%22%3Afalse%7D&loadStart=1784555199475",
+        "tag": "IFRAME"
+      }
+    ],
+    "texts": [
+      {
+        "tag": "LI",
+        "text": "TAP Mindset - Product Redesign/"
+      },
+      {
+        "tag": "H1",
+        "text": "TAP Mindset - Product Redesign/"
+      },
+      {
+        "tag": "LI",
+        "text": "TAP Mindset - Product Redesign/"
+      },
+      {
+        "tag": "H1",
+        "text": "TAP Mindset - Product Redesign/"
+      },
+      {
+        "tag": "LI",
+        "text": "TAP Mindset - Product Redesign/"
+      },
+      {
+        "tag": "H1",
+        "text": "TAP Mindset - Product Redesign/"
+      },
+      {
+        "tag": "P",
+        "text": "Role:"
+      },
+      {
+        "tag": "P",
+        "text": "Lead Product Designer"
+      },
+      {
+        "tag": "P",
+        "text": "Team:"
+      },
+      {
+        "tag": "LI",
+        "text": "Product Designers x2"
+      },
+      {
+        "tag": "P",
+        "text": "Product Designers x2"
+      },
+      {
+        "tag": "LI",
+        "text": "Developer x2"
+      },
+      {
+        "tag": "P",
+        "text": "Developer x2"
+      },
+      {
+        "tag": "P",
+        "text": "Process:"
+      },
+      {
+        "tag": "P",
+        "text": "Scrum (Sprints), Notion"
+      },
+      {
+        "tag": "P",
+        "text": "Platform:"
+      },
+      {
+        "tag": "P",
+        "text": "Mobile (iOS-first)"
+      },
+      {
+        "tag": "P",
+        "text": "Timeline:"
+      },
+      {
+        "tag": "P",
+        "text": "12 months"
+      },
+      {
+        "tag": "P",
+        "text": "TL;DR:"
+      },
+      {
+        "tag": "LI",
+        "text": "Reframed the product architecture around user intent, not features"
+      },
+      {
+        "tag": "P",
+        "text": "Reframed the product architecture around user intent, not features"
+      },
+      {
+        "tag": "LI",
+        "text": "Mapped one product into three role-based experiences (coach, mental coach, athlete)"
+      },
+      {
+        "tag": "P",
+        "text": "Mapped one product into three role-based experiences (coach, mental coach, athlete)"
+      },
+      {
+        "tag": "LI",
+        "text": "Redesigned onboarding to reach first value sooner, personalising progressively"
+      },
+      {
+        "tag": "P",
+        "text": "Redesigned onboarding to reach first value sooner, personalising progressively"
+      },
+      {
+        "tag": "LI",
+        "text": "Established four design principles the team could apply across every flow"
+      },
+      {
+        "tag": "P",
+        "text": "Established four design principles the team could apply across every flow"
+      },
+      {
+        "tag": "LI",
+        "text": "Led a 12-month redesign with two designers, in close partnership with engineering"
+      },
+      {
+        "tag": "P",
+        "text": "Led a 12-month redesign with two designers, in close partnership with engineering"
+      },
+      {
+        "tag": "P",
+        "text": "Read DS case study"
+      },
+      {
+        "tag": "P",
+        "text": "Led the end-to-end redesign of a mental-training platform — from fragmented features to a role-based product architecture."
+      },
+      {
+        "tag": "P",
+        "text": "CASE STUDY INDEX"
+      },
+      {
+        "tag": "P",
+        "text": "01"
+      },
+      {
+        "tag": "P",
+        "text": "Reframing the product"
+      },
+      {
+        "tag": "P",
+        "text": "02"
+      },
+      {
+        "tag": "P",
+        "text": "Designing the system"
+      },
+      {
+        "tag": "P",
+        "text": "03"
+      },
+      {
+        "tag": "P",
+        "text": "Building the experience"
+      },
+      {
+        "tag": "P",
+        "text": "04"
+      },
+      {
+        "tag": "P",
+        "text": "What changed"
+      },
+      {
+        "tag": "P",
+        "text": "01"
+      },
+      {
+        "tag": "P",
+        "text": "Reframing the product"
+      },
+      {
+        "tag": "P",
+        "text": "TAP Mindset helped athletes train the mental side of performance. But as features accumulated, the product became harder to understand precisely when users needed clarity most."
+      },
+      {
+        "tag": "P",
+        "text": "The experience was organised around features, not user intent."
+      },
+      {
+        "tag": "P",
+        "text": "Users faced blurred mental models, inconsistent interactions and too many decisions before reaching a meaningful action. This was not a UI clean-up. It was a product architecture problem."
+      },
+      {
+        "tag": "P",
+        "text": "BUSINESS STAKES"
+      },
+      {
+        "tag": "H3",
+        "text": "A fragmented architecture was becoming a growth constraint."
+      },
+      {
+        "tag": "P",
+        "text": "Every new feature increased the decisions users faced, multiplied role-specific exceptions and created more design and engineering divergence. The risk was not visual inconsistency; it was a product that became harder to adopt and more expensive to evolve."
+      },
+      {
+        "tag": "P",
+        "text": "THE DIAGNOSIS"
+      },
+      {
+        "tag": "P",
+        "text": "Four symptoms. One structural cause."
+      },
+      {
+        "tag": "P",
+        "text": "01"
+      },
+      {
+        "tag": "P",
+        "text": "Cognitive overload"
+      },
+      {
+        "tag": "P",
+        "text": "02"
+      },
+      {
+        "tag": "P",
+        "text": "Blurred mental models"
+      },
+      {
+        "tag": "P",
+        "text": "03"
+      },
+      {
+        "tag": "P",
+        "text": "Inconsistent interactions"
+      },
+      {
+        "tag": "P",
+        "text": "04"
+      },
+      {
+        "tag": "P",
+        "text": "A system that could not scale"
+      },
+      {
+        "tag": "P",
+        "text": "OBSERVE"
+      },
+      {
+        "tag": "P",
+        "text": "Feature-led navigation"
+      },
+      {
+        "tag": "P",
+        "text": "REFRAME"
+      },
+      {
+        "tag": "P",
+        "text": "Intent-led architecture"
+      },
+      {
+        "tag": "P",
+        "text": "DESIGN"
+      },
+      {
+        "tag": "P",
+        "text": "Clear path, progressive depth"
+      },
+      {
+        "tag": "P",
+        "text": "THE REFRAME"
+      },
+      {
+        "tag": "P",
+        "text": "The redesign had to reduce decisions without reducing agency."
+      },
+      {
+        "tag": "P",
+        "text": "02"
+      },
+      {
+        "tag": "P",
+        "text": "Designing the system"
+      },
+      {
+        "tag": "P",
+        "text": "Four principles turned a broad redesign into a decision system the team could use across flows."
+      },
+      {
+        "tag": "P",
+        "text": "01"
+      },
+      {
+        "tag": "P",
+        "text": "Clarity over density"
+      },
+      {
+        "tag": "P",
+        "text": "02"
+      },
+      {
+        "tag": "P",
+        "text": "Design for momentum"
+      },
+      {
+        "tag": "P",
+        "text": "03"
+      },
+      {
+        "tag": "P",
+        "text": "Intent-based structure"
+      },
+      {
+        "tag": "P",
+        "text": "04"
+      },
+      {
+        "tag": "P",
+        "text": "Consistency at scale"
+      },
+      {
+        "tag": "P",
+        "text": "ROLE ARCHITECTURE"
+      },
+      {
+        "tag": "P",
+        "text": "One product. Three different jobs to be done."
+      },
+      {
+        "tag": "P",
+        "text": "Mapping capabilities by role exposed where the experience should be shared, where it needed to diverge and which responsibilities were creating unnecessary overlap."
+      },
+      {
+        "tag": "P",
+        "text": "Shared entry → role-specific experience"
+      },
+      {
+        "tag": "P",
+        "text": "Onboarding"
+      },
+      {
+        "tag": "P",
+        "text": "SELECT PROFILE"
+      },
+      {
+        "tag": "P",
+        "text": "01"
+      },
+      {
+        "tag": "P",
+        "text": "Mental coach"
+      },
+      {
+        "tag": "P",
+        "text": "↓"
+      },
+      {
+        "tag": "P",
+        "text": "ORGANISE"
+      },
+      {
+        "tag": "P",
+        "text": "Academies, groups and"
+      },
+      {
+        "tag": "P",
+        "text": "coach access"
+      },
+      {
+        "tag": "P",
+        "text": "↓"
+      },
+      {
+        "tag": "P",
+        "text": "DEFINE"
+      },
+      {
+        "tag": "P",
+        "text": "Values, training framework and planning"
+      },
+      {
+        "tag": "P",
+        "text": "↓"
+      },
+      {
+        "tag": "P",
+        "text": "SUPERVISE"
+      },
+      {
+        "tag": "P",
+        "text": "Athletes, stats, messages"
+      },
+      {
+        "tag": "P",
+        "text": "and visibility"
+      },
+      {
+        "tag": "P",
+        "text": "02"
+      },
+      {
+        "tag": "P",
+        "text": "Coach"
+      },
+      {
+        "tag": "P",
+        "text": "↓"
+      },
+      {
+        "tag": "P",
+        "text": "MANAGE"
+      },
+      {
+        "tag": "P",
+        "text": "Athletes and"
+      },
+      {
+        "tag": "P",
+        "text": "training groups"
+      },
+      {
+        "tag": "P",
+        "text": "↓"
+      },
+      {
+        "tag": "P",
+        "text": "MONITOR"
+      },
+      {
+        "tag": "P",
+        "text": "Stats, profiles and"
+      },
+      {
+        "tag": "P",
+        "text": "private visibility"
+      },
+      {
+        "tag": "P",
+        "text": "↓"
+      },
+      {
+        "tag": "P",
+        "text": "GUIDE"
+      },
+      {
+        "tag": "P",
+        "text": "Chat, messages"
+      },
+      {
+        "tag": "P",
+        "text": "and training plans"
+      },
+      {
+        "tag": "P",
+        "text": "03"
+      },
+      {
+        "tag": "P",
+        "text": "Athlete"
+      },
+      {
+        "tag": "P",
+        "text": "↓"
+      },
+      {
+        "tag": "P",
+        "text": "REST DAY"
+      },
+      {
+        "tag": "P",
+        "text": "Morning, thoughts, mindfulness and night"
+      },
+      {
+        "tag": "P",
+        "text": "↓"
+      },
+      {
+        "tag": "P",
+        "text": "PRACTICE DAY"
+      },
+      {
+        "tag": "P",
+        "text": "Morning, pre-practice, post-practice and night"
+      },
+      {
+        "tag": "P",
+        "text": "↓"
+      },
+      {
+        "tag": "P",
+        "text": "COMPETITION DAY"
+      },
+      {
+        "tag": "P",
+        "text": "Morning, pre-competition, post-competition and night"
+      },
+      {
+        "tag": "P",
+        "text": "THE FIRST BET"
+      },
+      {
+        "tag": "P",
+        "text": "Activation before personalisation."
+      },
+      {
+        "tag": "P",
+        "text": "We shortened onboarding and delayed personalisation until after the first meaningful session. The trade-off was deliberate: less tailoring upfront, more momentum when motivation was highest."
+      },
+      {
+        "tag": "P",
+        "text": "BEFORE"
+      },
+      {
+        "tag": "P",
+        "text": "Personalise first"
+      },
+      {
+        "tag": "P",
+        "text": "DECISION"
+      },
+      {
+        "tag": "P",
+        "text": "Reach value sooner"
+      },
+      {
+        "tag": "P",
+        "text": "AFTER"
+      },
+      {
+        "tag": "P",
+        "text": "Personalise progressively"
+      },
+      {
+        "tag": "P",
+        "text": "AI IN THE PROCESS"
+      },
+      {
+        "tag": "H3",
+        "text": "Rules before generation."
+      },
+      {
+        "tag": "P",
+        "text": "The product architecture and four principles were defined without AI. Once stable, they became context for AI-assisted flow exploration, edge-case expansion and implementation-ready prototypes. I used the system to constrain output, then reviewed every proposal against role intent, accessibility and buildability."
+      },
+      {
+        "tag": "P",
+        "text": "AI accelerated alternatives. It did not decide what the product should be."
+      },
+      {
+        "tag": "P",
+        "text": "→ Read the Design System case study"
+      },
+      {
+        "tag": "P",
+        "text": "↗ Explore Storybook"
+      },
+      {
+        "tag": "P",
+        "text": "03"
+      },
+      {
+        "tag": "P",
+        "text": "Building the experience"
+      },
+      {
+        "tag": "P",
+        "text": "The interface shifted from disconnected tools to a continuous rhythm: prepare, train, reflect and return."
+      },
+      {
+        "tag": "P",
+        "text": "One clear path, with depth available when needed."
+      },
+      {
+        "tag": "P",
+        "text": "Daily actions and long-term progress became distinct but connected. Navigation communicated what came next, while progressive disclosure kept exploratory routes available without making them compete with the primary task."
+      },
+      {
+        "tag": "P",
+        "text": "THE BRAND SYSTEM"
+      },
+      {
+        "tag": "P",
+        "text": "The identity had to behave like the product: calm, focused and useful."
+      },
+      {
+        "tag": "P",
+        "text": "04"
+      },
+      {
+        "tag": "P",
+        "text": "What changed"
+      },
+      {
+        "tag": "P",
+        "text": "The structural outcome was not a collection of cleaner screens. It was a product that made its own logic visible."
+      },
+      {
+        "tag": "P",
+        "text": "01"
+      },
+      {
+        "tag": "P",
+        "text": "Clear separation between user intents"
+      },
+      {
+        "tag": "P",
+        "text": "02"
+      },
+      {
+        "tag": "P",
+        "text": "Fewer decisions before the first meaningful session"
+      },
+      {
+        "tag": "P",
+        "text": "03"
+      },
+      {
+        "tag": "P",
+        "text": "A structure the product could grow into"
+      },
+      {
+        "tag": "P",
+        "text": "LEADERSHIP & ALIGNMENT"
+      },
+      {
+        "tag": "H3",
+        "text": "I set the product logic, then created the conditions for the team to carry it forward."
+      },
+      {
+        "tag": "P",
+        "text": "Across twelve months, I led two product designers, established the four principles and split the redesign into role architecture, activation and system workstreams. I used critiques to keep decisions consistent, partnered with Product and Engineering to expose constraints early, and made the final calls when role needs, scope and buildability pulled in different directions."
+      },
+      {
+        "tag": "P",
+        "text": "THE CORRECTION"
+      },
+      {
+        "tag": "P",
+        "text": "Simplification became a problem when it removed context."
+      },
+      {
+        "tag": "P",
+        "text": "Early iterations were too restrictive for exploratory users. I reintroduced progressive disclosure: the primary action stayed obvious, but deeper layers remained available when the moment required them."
+      },
+      {
+        "tag": "P",
+        "text": "EVIDENCE, NOT THEATRE"
+      },
+      {
+        "tag": "P",
+        "text": "Early validation supported the direction. Product analytics would test whether it held at scale."
+      },
+      {
+        "tag": "P",
+        "text": "5/6"
+      },
+      {
+        "tag": "P",
+        "text": "Athletes chose the right starting path without prompting"
+      },
+      {
+        "tag": "P",
+        "text": "−38%"
+      },
+      {
+        "tag": "P",
+        "text": "Fewer decisions before reaching a first session"
+      },
+      {
+        "tag": "P",
+        "text": "3 roles"
+      },
+      {
+        "tag": "P",
+        "text": "Validated with product and domain leads in one shared architecture"
+      },
+      {
+        "tag": "P",
+        "text": "4 signals"
+      },
+      {
+        "tag": "P",
+        "text": "Instrumented for beta: comprehension, activation, completion and return"
+      },
+      {
+        "tag": "P",
+        "text": "The redesign reduced ambiguity. The next responsibility was proving that clarity changed behaviour."
+      },
+      {
+        "tag": "LI",
+        "text": "More Works©"
+      },
+      {
+        "tag": "H1",
+        "text": "More Works©"
+      },
+      {
+        "tag": "LI",
+        "text": "More Works©"
+      },
+      {
+        "tag": "H1",
+        "text": "More Works©"
+      },
+      {
+        "tag": "LI",
+        "text": "More Works©"
+      },
+      {
+        "tag": "H1",
+        "text": "More Works©"
+      },
+      {
+        "tag": "LI",
+        "text": "More Works©"
+      },
+      {
+        "tag": "H1",
+        "text": "More Works©"
+      },
+      {
+        "tag": "P",
+        "text": "PREVIOUS PROJECT"
+      },
+      {
+        "tag": "P",
+        "text": "TAP Design System"
+      },
+      {
+        "tag": "P",
+        "text": "A coded system connecting design and development"
+      },
+      {
+        "tag": "P",
+        "text": "NEXT PROJECT"
+      },
+      {
+        "tag": "P",
+        "text": "Fluxy"
+      },
+      {
+        "tag": "P",
+        "text": "A responsible travel agent for everyday mobility"
+      },
+      {
+        "tag": "P",
+        "text": "Structured"
+      },
+      {
+        "tag": "P",
+        "text": "Clear"
+      },
+      {
+        "tag": "P",
+        "text": "Scalable"
+      },
+      {
+        "tag": "P",
+        "text": "Connected"
+      },
+      {
+        "tag": "P",
+        "text": "If you're building something complex and need someone who can see the whole system — let's talk."
+      },
+      {
+        "tag": "P",
+        "text": "Let´s connect"
+      },
+      {
+        "tag": "P",
+        "text": "Explore"
+      },
+      {
+        "tag": "P",
+        "text": "About,"
+      },
+      {
+        "tag": "P",
+        "text": "Work,"
+      },
+      {
+        "tag": "P",
+        "text": "Practice,"
+      },
+      {
+        "tag": "P",
+        "text": "Tools"
+      },
+      {
+        "tag": "P",
+        "text": "Based in Madrid"
+      },
+      {
+        "tag": "P",
+        "text": "Product Designer"
+      },
+      {
+        "tag": "P",
+        "text": "Create a free website with Framer, the website builder loved by startups, designers and agencies."
+      },
+      {
+        "tag": "P",
+        "text": "Explore"
+      },
+      {
+        "tag": "P",
+        "text": "About,"
+      },
+      {
+        "tag": "P",
+        "text": "Work,"
+      },
+      {
+        "tag": "P",
+        "text": "Practice,"
+      },
+      {
+        "tag": "P",
+        "text": "Tools"
+      },
+      {
+        "tag": "P",
+        "text": "Based in Madrid"
+      },
+      {
+        "tag": "P",
+        "text": "Product Designer"
+      }
+    ],
+    "title": "Debora Moratalla´s Portfolio",
+    "url": "https://deboramoratalla.framer.website/projects/tap-mindset"
+  },
+  {
+    "description": "",
+    "links": [
+      {
+        "href": "https://www.figma.com/design/McQVV5wJ9vrs50KyNmthFm/Untitled",
+        "text": "View prototype .rolling-text-inner-fdd04388-684d-4c92-90b1-fd83a5ccdd86 { --font-size: 15px; --text: rgb(255, 255, 255); --line-height-abs: 18px; box-sizing: bo"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/projects/fluxy#mismatch",
+        "text": "01The mismatch"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/projects/fluxy#agent",
+        "text": "02From route planner to agent"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/projects/fluxy#autonomy",
+        "text": "03Designing responsible autonomy"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/projects/fluxy#proof",
+        "text": "04Proving the model"
+      },
+      {
+        "href": "https://fluxy-rho.vercel.app/",
+        "text": "Open the agent in a new tab ↗"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/projects/tap-mindset",
+        "text": "PREVIOUS PROJECTTAP MindsetA role-based mental training product"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/projects/saas",
+        "text": "NEXT PROJECTBoardEnterprise planning and coordination at scale"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/contact",
+        "text": "Let´s connect .rolling-text-inner-2389c91f-c8aa-42f7-b0bf-d8cb5cf6ad56 { --font-size: 15px; --text: rgb(255, 255, 255); --line-height-abs: 18px; box-sizing: bor"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#top",
+        "text": ""
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#about",
+        "text": "About, .rolling-text-inner-9b9884bf-c6e9-4f82-aa40-f670e1c5823b { --font-size: 14px; --text: var(--token-af1df47b-ea84-448e-bdf0-a5ce0f875a59, rgb(153, 153, 153"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#work",
+        "text": "Work, .rolling-text-inner-7ec3c360-46fe-4187-9a8f-27f30ad076b8 { --font-size: 14px; --text: var(--token-af1df47b-ea84-448e-bdf0-a5ce0f875a59, rgb(153, 153, 153)"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#practice",
+        "text": "Practice, .rolling-text-inner-4333ecbd-5ee6-4cc9-ad8f-c69c5a424ed2 { --font-size: 14px; --text: var(--token-af1df47b-ea84-448e-bdf0-a5ce0f875a59, rgb(153, 153, "
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#tools",
+        "text": "Tools .rolling-text-inner-fea1a0ca-1710-4e87-90a7-d62210e8f5d8 { --font-size: 14px; --text: var(--token-af1df47b-ea84-448e-bdf0-a5ce0f875a59, rgb(153, 153, 153)"
+      },
+      {
+        "href": "https://www.linkedin.com/in/deboramoratallamartin/",
+        "text": ""
+      },
+      {
+        "href": "https://www.framer.com/",
+        "text": "Create a free website with Framer, the website builder loved by startups, designers and agencies."
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#top",
+        "text": ""
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#about",
+        "text": "About, .rolling-text-inner-93458355-6c9b-4cee-89d4-65ae4e1fd4c3 { --font-size: 14px; --text: var(--token-af1df47b-ea84-448e-bdf0-a5ce0f875a59, rgb(153, 153, 153"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#work",
+        "text": "Work, .rolling-text-inner-44c72c8a-c228-4910-a8da-c42c9cbea5b0 { --font-size: 14px; --text: var(--token-af1df47b-ea84-448e-bdf0-a5ce0f875a59, rgb(153, 153, 153)"
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#practice",
+        "text": "Practice, .rolling-text-inner-cddc848b-c657-4087-a22f-0dc7da6a699a { --font-size: 14px; --text: var(--token-af1df47b-ea84-448e-bdf0-a5ce0f875a59, rgb(153, 153, "
+      },
+      {
+        "href": "https://deboramoratalla.framer.website/#tools",
+        "text": "Tools .rolling-text-inner-ed37b7b0-ed6f-4abf-81cb-f281cadc3a7a { --font-size: 14px; --text: var(--token-af1df47b-ea84-448e-bdf0-a5ce0f875a59, rgb(153, 153, 153)"
+      }
+    ],
+    "media": [
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://framerusercontent.com/images/2b7YNCK8WXiTCdQRa84XPV7867M.png?scale-down-to=1024&width=1461&height=1956",
+        "tag": "IMG"
+      },
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://fluxy-rho.vercel.app/",
+        "tag": "IFRAME"
+      },
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://framerusercontent.com/images/Mmfb40qOiaxKtQrgIFMJi6A.png?scale-down-to=2048&width=2610&height=1594",
+        "tag": "IMG"
+      },
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://framerusercontent.com/images/3ZRShN2uu7UG2p8p8J3RXWpJg1U.png?scale-down-to=2048&width=3633&height=1769",
+        "tag": "IMG"
+      },
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://framerusercontent.com/images/1OrTKFTrcLckBt1fLOZU36fom5s.png?scale-down-to=1024&width=2628&height=2406",
+        "tag": "IMG"
+      },
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://framerusercontent.com/images/hsX9Ccf2XX8R8GhdWd3PtuJiWE.png?width=320&height=320",
+        "tag": "IMG"
+      },
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://framerusercontent.com/images/fGbG9jaFRAyQSEpEDOgAJdQWVk.png?width=512&height=512",
+        "tag": "IMG"
+      },
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://framerusercontent.com/images/hsX9Ccf2XX8R8GhdWd3PtuJiWE.png?width=320&height=320",
+        "tag": "IMG"
+      },
+      {
+        "alt": "",
+        "poster": "",
+        "src": "https://framer.com/edit?framerSiteId=39841b625bfedde28ea1bb4dc77fb5830eb597bc3870245ec8d691c3bbb9f4b4&source=deboramoratalla.framer.website&features=%7B%22editorBarDisableFrameAncestorsSecurity%22%3Afalse%2C%22onPageLocalizationSupport%22%3Atrue%2C%22onPageMoveTool%22%3Atrue%2C%22onPageRichTextBlockSelection%22%3Afalse%7D&loadStart=1784555201823",
+        "tag": "IFRAME"
+      }
+    ],
+    "texts": [
+      {
+        "tag": "LI",
+        "text": "Fluxy — Product Design Case Study /"
+      },
+      {
+        "tag": "H1",
+        "text": "Fluxy — Product Design Case Study /"
+      },
+      {
+        "tag": "LI",
+        "text": "Fluxy — Product Design Case Study /"
+      },
+      {
+        "tag": "H1",
+        "text": "Fluxy — Product Design Case Study /"
+      },
+      {
+        "tag": "LI",
+        "text": "Fluxy — Product Design Case Study /"
+      },
+      {
+        "tag": "H1",
+        "text": "Fluxy — Product Design Case Study /"
+      },
+      {
+        "tag": "P",
+        "text": "ROLE"
+      },
+      {
+        "tag": "P",
+        "text": "Lead Product Designer"
+      },
+      {
+        "tag": "P",
+        "text": "BRIEF"
+      },
+      {
+        "tag": "P",
+        "text": "Independent concept"
+      },
+      {
+        "tag": "P",
+        "text": "FOCUS"
+      },
+      {
+        "tag": "P",
+        "text": "Product strategy · Agentic interaction · Prototyping"
+      },
+      {
+        "tag": "P",
+        "text": "APP"
+      },
+      {
+        "tag": "P",
+        "text": "Mobile commuting agent · iOS-first"
+      },
+      {
+        "tag": "P",
+        "text": "YEAR"
+      },
+      {
+        "tag": "P",
+        "text": "Design challenge · 2026"
+      },
+      {
+        "tag": "P",
+        "text": "TL;DR"
+      },
+      {
+        "tag": "P",
+        "text": "• Reframed a top-up brief around the full commuting burden• Defined an agentic interaction model• Designed autonomy around consent and transparency• Prototyped three end-to-end moments of trust"
+      },
+      {
+        "tag": "P",
+        "text": "View prototype"
+      },
+      {
+        "tag": "P",
+        "text": "I turned a narrow online top-up brief into Fluxy: an autonomous commuting agent that protects the passenger’s goal, prepares decisions and intervenes only when circumstances change."
+      },
+      {
+        "tag": "P",
+        "text": "THE PREMISE"
+      },
+      {
+        "tag": "P",
+        "text": "The brief asked for a better transaction. The opportunity was to remove the need to manage commuting at all."
+      },
+      {
+        "tag": "P",
+        "text": "An online top-up flow solves one moment. Commuters still have to remember their balance, compare routes, monitor disruption and recover when the network changes. The product question was not how to make one task faster, but which decisions software could responsibly take off the passenger’s plate."
+      },
+      {
+        "tag": "P",
+        "text": "CORE THESIS"
+      },
+      {
+        "tag": "P",
+        "text": "Goals stay stable. Routes, context and recommendations can change."
+      },
+      {
+        "tag": "P",
+        "text": "THE BUSINESS BET"
+      },
+      {
+        "tag": "H3",
+        "text": "The opportunity was fewer failure moments, not more app engagement."
+      },
+      {
+        "tag": "P",
+        "text": "For an operator, the value is operational: prevent low-balance failures, reduce avoidable support contacts and protect journey completion when the network changes. Success would be measured through interventions resolved before travel, recommendation acceptance and fewer payment-related disruptions — not time spent in the interface."
+      },
+      {
+        "tag": "P",
+        "text": "CASE STUDY INDEX"
+      },
+      {
+        "tag": "P",
+        "text": "Four decisions shaped the product."
+      },
+      {
+        "tag": "P",
+        "text": "01"
+      },
+      {
+        "tag": "P",
+        "text": "The mismatch"
+      },
+      {
+        "tag": "P",
+        "text": "02"
+      },
+      {
+        "tag": "P",
+        "text": "From route planner to agent"
+      },
+      {
+        "tag": "P",
+        "text": "03"
+      },
+      {
+        "tag": "P",
+        "text": "Designing responsible autonomy"
+      },
+      {
+        "tag": "P",
+        "text": "04"
+      },
+      {
+        "tag": "P",
+        "text": "Proving the model"
+      },
+      {
+        "tag": "P",
+        "text": "01"
+      },
+      {
+        "tag": "P",
+        "text": "THE MISMATCH"
+      },
+      {
+        "tag": "P",
+        "text": "A top-up problem was only the visible edge of a much larger burden."
+      },
+      {
+        "tag": "P",
+        "text": "Looking across the commute exposed an accumulation of small, repetitive decisions. None was difficult alone. Together they created the cognitive load: checking, anticipating, comparing, remembering and recovering."
+      },
+      {
+        "tag": "P",
+        "text": "BRIEF"
+      },
+      {
+        "tag": "P",
+        "text": "Improve online top-ups."
+      },
+      {
+        "tag": "P",
+        "text": "OBSERVATION"
+      },
+      {
+        "tag": "P",
+        "text": "People manage the network continuously."
+      },
+      {
+        "tag": "P",
+        "text": "REFRAME"
+      },
+      {
+        "tag": "P",
+        "text": "Protect the passenger’s goal."
+      },
+      {
+        "tag": "P",
+        "text": "Prepare"
+      },
+      {
+        "tag": "P",
+        "text": "Check balance, weather and timing before leaving."
+      },
+      {
+        "tag": "P",
+        "text": "Monitor"
+      },
+      {
+        "tag": "P",
+        "text": "Watch delays, transfers and remaining time."
+      },
+      {
+        "tag": "P",
+        "text": "React"
+      },
+      {
+        "tag": "P",
+        "text": "Compare alternatives when the network changes."
+      },
+      {
+        "tag": "P",
+        "text": "Recover"
+      },
+      {
+        "tag": "P",
+        "text": "Re-plan the rest of the journey after disruption."
+      },
+      {
+        "tag": "P",
+        "text": "02"
+      },
+      {
+        "tag": "P",
+        "text": "FROM ROUTE PLANNER TO AGENT"
+      },
+      {
+        "tag": "P",
+        "text": "The strategic move was not another dashboard. It was a product that decides when interaction is necessary."
+      },
+      {
+        "tag": "P",
+        "text": "Fluxy works in the background until the passenger’s objective is threatened. It observes context, evaluates options and prepares a recommendation. The interface appears at the decision boundary — not before."
+      },
+      {
+        "tag": "P",
+        "text": "GOAL"
+      },
+      {
+        "tag": "P",
+        "text": "Arrive at work by 08:45"
+      },
+      {
+        "tag": "P",
+        "text": "CONTEXT"
+      },
+      {
+        "tag": "P",
+        "text": "Balance, disruption and timing change"
+      },
+      {
+        "tag": "P",
+        "text": "AGENT"
+      },
+      {
+        "tag": "P",
+        "text": "Fluxy evaluates and prepares options"
+      },
+      {
+        "tag": "P",
+        "text": "DECISION BOUNDARY"
+      },
+      {
+        "tag": "P",
+        "text": "Passenger confirms consequential actions"
+      },
+      {
+        "tag": "P",
+        "text": "The product’s value is not the number of decisions it automates. It is knowing which decisions should disappear, which can be prepared and which must remain human."
+      },
+      {
+        "tag": "P",
+        "text": "INTERACTIVE MODEL"
+      },
+      {
+        "tag": "P",
+        "text": "See how Fluxy reasons before it intervenes."
+      },
+      {
+        "tag": "P",
+        "text": "The demo makes the agent’s operating model tangible: start with a passenger goal, introduce a change in context and see how Fluxy prepares a recommendation while keeping the final decision explicit."
+      },
+      {
+        "tag": "P",
+        "text": "Open the agent in a new tab ↗"
+      },
+      {
+        "tag": "P",
+        "text": "03"
+      },
+      {
+        "tag": "P",
+        "text": "DESIGNING RESPONSIBLE AUTONOMY"
+      },
+      {
+        "tag": "P",
+        "text": "Trust needed an interaction model, not a reassuring tone of voice."
+      },
+      {
+        "tag": "P",
+        "text": "An agent can only reduce effort if people understand what it is doing, why it intervenes and where their control begins. I turned those requirements into four rules used across the journey."
+      },
+      {
+        "tag": "P",
+        "text": "Invisible by default"
+      },
+      {
+        "tag": "P",
+        "text": "Do not ask for attention when the goal remains achievable."
+      },
+      {
+        "tag": "P",
+        "text": "Explain the trigger"
+      },
+      {
+        "tag": "P",
+        "text": "Every intervention must reveal what changed."
+      },
+      {
+        "tag": "P",
+        "text": "Prepare, don’t presume"
+      },
+      {
+        "tag": "P",
+        "text": "Fluxy can recommend and stage an action; consequential choices require consent."
+      },
+      {
+        "tag": "P",
+        "text": "Protect the goal"
+      },
+      {
+        "tag": "P",
+        "text": "Optimise for the passenger’s objective, not simply the fastest route."
+      },
+      {
+        "tag": "P",
+        "text": "PRODUCT LEADERSHIP & AI PROCESS"
+      },
+      {
+        "tag": "H3",
+        "text": "I treated the agent as a policy system, not a chat surface."
+      },
+      {
+        "tag": "P",
+        "text": "I translated fare policy, accessibility, operations and passenger trust into explicit autonomy rules, then used AI to simulate edge cases and generate auditable decision traces. The model accelerated scenario coverage; it did not define the boundaries. Payments, personal-data expansion and major journey changes always remained behind human approval."
+      },
+      {
+        "tag": "P",
+        "text": "04"
+      },
+      {
+        "tag": "P",
+        "text": "PROVING THE MODEL"
+      },
+      {
+        "tag": "P",
+        "text": "Three moments tested whether an autonomous product could still feel understandable and controlled."
+      },
+      {
+        "tag": "P",
+        "text": "The prototype focused on moments with different levels of urgency and consequence. Together they tested whether Fluxy could be useful when quiet, persuasive when needed and transparent when asking for consent."
+      },
+      {
+        "tag": "P",
+        "text": "DAILY BRIEF"
+      },
+      {
+        "tag": "P",
+        "text": "Build trust before disruption"
+      },
+      {
+        "tag": "P",
+        "text": "A single morning view communicates the plan, confidence and anything worth knowing — without turning commuting into another dashboard."
+      },
+      {
+        "tag": "P",
+        "text": "One glance replaces four checks — balance, weather, timing and route confidence, before the passenger leaves home."
+      },
+      {
+        "tag": "P",
+        "text": "Fluxy stages the top-up and shows why — but the payment button stays with the passenger. This is the autonomy boundary made visible."
+      },
+      {
+        "tag": "P",
+        "text": "SMART RECHARGE"
+      },
+      {
+        "tag": "P",
+        "text": "Autonomy stops at payment"
+      },
+      {
+        "tag": "P",
+        "text": "Fluxy monitors balance and recommends a recharge only when necessary. It prepares the action; the passenger authorises the transaction."
+      },
+      {
+        "tag": "P",
+        "text": "GOAL PROTECTION"
+      },
+      {
+        "tag": "P",
+        "text": "The objective survives change"
+      },
+      {
+        "tag": "P",
+        "text": "When disruption threatens arrival, Fluxy explains what changed and recommends a new route in terms of the passenger’s priority."
+      },
+      {
+        "tag": "P",
+        "text": "The route changes, but the arrival goal does not — the recommendation explains the trade-off and leaves the final choice with the passenger."
+      },
+      {
+        "tag": "P",
+        "text": "WHAT THE PROJECT DEMONSTRATED"
+      },
+      {
+        "tag": "P",
+        "text": "The strongest product decision was deciding when the product should disappear."
+      },
+      {
+        "tag": "P",
+        "text": "The challenge started with online top-ups and ended as an exploration of agentic commuting. The work was less about adding features than defining a boundary: software can monitor, prepare and recommend, but it must remain legible and return consequential decisions to the passenger."
+      },
+      {
+        "tag": "P",
+        "text": "EARLY VALIDATION SIGNALS"
+      },
+      {
+        "tag": "P",
+        "text": "5/6"
+      },
+      {
+        "tag": "P",
+        "text": "Passengers understood why Fluxy intervened without additional explanation"
+      },
+      {
+        "tag": "P",
+        "text": "6/6"
+      },
+      {
+        "tag": "P",
+        "text": "Expected payment to require confirmation — the autonomy boundary was clear"
+      },
+      {
+        "tag": "P",
+        "text": "12"
+      },
+      {
+        "tag": "P",
+        "text": "Routine, disruption and low-balance scenarios tested against the same rule set"
+      },
+      {
+        "tag": "P",
+        "text": "Good design isn’t about adding more interactions. It’s about removing the unnecessary ones."
+      },
+      {
+        "tag": "LI",
+        "text": "More Works©"
+      },
+      {
+        "tag": "H1",
+        "text": "More Works©"
+      },
+      {
+        "tag": "LI",
+        "text": "More Works©"
+      },
+      {
+        "tag": "H1",
+        "text": "More Works©"
+      },
+      {
+        "tag": "LI",
+        "text": "More Works©"
+      },
+      {
+        "tag": "H1",
+        "text": "More Works©"
+      },
+      {
+        "tag": "LI",
+        "text": "More Works©"
+      },
+      {
+        "tag": "H1",
+        "text": "More Works©"
+      },
+      {
+        "tag": "P",
+        "text": "PREVIOUS PROJECT"
+      },
+      {
+        "tag": "P",
+        "text": "TAP Mindset"
+      },
+      {
+        "tag": "P",
+        "text": "A role-based mental training product"
+      },
+      {
+        "tag": "P",
+        "text": "NEXT PROJECT"
+      },
+      {
+        "tag": "P",
+        "text": "Board"
+      },
+      {
+        "tag": "P",
+        "text": "Enterprise planning and coordination at scale"
+      },
+      {
+        "tag": "P",
+        "text": "Structured"
+      },
+      {
+        "tag": "P",
+        "text": "Clear"
+      },
+      {
+        "tag": "P",
+        "text": "Scalable"
+      },
+      {
+        "tag": "P",
+        "text": "Connected"
+      },
+      {
+        "tag": "P",
+        "text": "If you're building something complex and need someone who can see the whole system — let's talk."
+      },
+      {
+        "tag": "P",
+        "text": "Let´s connect"
+      },
+      {
+        "tag": "P",
+        "text": "Explore"
+      },
+      {
+        "tag": "P",
+        "text": "About,"
+      },
+      {
+        "tag": "P",
+        "text": "Work,"
+      },
+      {
+        "tag": "P",
+        "text": "Practice,"
+      },
+      {
+        "tag": "P",
+        "text": "Tools"
+      },
+      {
+        "tag": "P",
+        "text": "Based in Madrid"
+      },
+      {
+        "tag": "P",
+        "text": "Product Designer"
+      },
+      {
+        "tag": "P",
+        "text": "Create a free website with Framer, the website builder loved by startups, designers and agencies."
+      },
+      {
+        "tag": "P",
+        "text": "Explore"
+      },
+      {
+        "tag": "P",
+        "text": "About,"
+      },
+      {
+        "tag": "P",
+        "text": "Work,"
+      },
+      {
+        "tag": "P",
+        "text": "Practice,"
+      },
+      {
+        "tag": "P",
+        "text": "Tools"
+      },
+      {
+        "tag": "P",
+        "text": "Based in Madrid"
+      },
+      {
+        "tag": "P",
+        "text": "Product Designer"
+      }
+    ],
+    "title": "Debora Moratalla´s Portfolio",
+    "url": "https://deboramoratalla.framer.website/projects/fluxy"
+  }
+]
