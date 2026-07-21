@@ -2,18 +2,14 @@
 
 import { useEffect, useRef, useState } from "react"
 
-const tools = [
-  { name: "Figma", icon: "figma", use: "Product design & systems", group: "Design" },
-  { name: "Storybook", icon: "storybook", use: "Coded component libraries", group: "Systems" },
-  { name: "React", icon: "react", use: "Prototypes & production UI", group: "Build" },
-  { name: "GitHub", icon: "github", use: "Versioned collaboration", group: "Build" },
-  { name: "Vercel", icon: "vercel", use: "Shipping live prototypes", group: "Build" },
-  { name: "Claude", icon: "anthropic", use: "Research & exploration", group: "AI" },
-  { name: "Cursor", icon: "cursor", use: "AI-assisted implementation", group: "AI" },
-  { name: "Maze", icon: "maze", use: "Prototype testing", group: "Research" },
-  { name: "Linear", icon: "linear", use: "Product delivery", group: "Product" },
-  { name: "Notion", icon: "notion", use: "Decisions & documentation", group: "Product" },
+const groups = [
+  { label: "Design & systems", tools: [{ name: "Figma", icon: "figma" }, { name: "FigJam", icon: "figma" }, { name: "Storybook", icon: "storybook" }, { name: "Supernova", icon: "storybook" }] },
+  { label: "Build & prototype", tools: [{ name: "Framer", icon: "framer" }, { name: "React", icon: "react" }, { name: "HTML / CSS", icon: "html5" }, { name: "GitHub", icon: "github" }, { name: "Vercel", icon: "vercel" }] },
+  { label: "AI & automation", tools: [{ name: "Claude", icon: "anthropic" }, { name: "Cursor", icon: "cursor" }, { name: "Codex", icon: "openai" }] },
+  { label: "Research & delivery", tools: [{ name: "Maze", icon: "maze" }, { name: "Linear", icon: "linear" }, { name: "Notion", icon: "notion" }] },
 ]
+
+const tools = groups.flatMap(group => group.tools.map(tool => ({ ...tool, group: group.label })))
 
 export function ToolShowcase() {
   const [active, setActive] = useState<number | null>(null)
@@ -34,33 +30,22 @@ export function ToolShowcase() {
   const selected = active === null ? null : tools[active]
 
   return <div className="tool-showcase" onMouseLeave={() => setActive(null)}>
-    <div className="tool-stage" aria-hidden="true">
-      <div className={`tool-orbit ${selected ? "is-active" : ""}`}>
-        <span className="orbit-line orbit-one" />
-        <span className="orbit-line orbit-two" />
-        <span className="orbit-dot" />
-        {selected && <img key={selected.icon} src={`/tools/${selected.icon}.svg`} alt="" />}
-      </div>
-      <p>{selected ? selected.group : "Hover to explore"}</p>
-      <strong>{selected ? selected.name : "The stack changes. The way I think doesn’t."}</strong>
+    <div className="tool-groups">
+      {groups.map((group, groupIndex) => <div className="tool-group" key={group.label}>
+        <span className="tool-group-index">0{groupIndex + 1}</span><p>{group.label}</p>
+        <div className="tool-pills">{group.tools.map(tool => {
+          const index = tools.findIndex(item => item.name === tool.name)
+          return <button type="button" key={tool.name} data-index={index} ref={el => { rows.current[index] = el }} className={active === index ? "is-active" : ""} onMouseEnter={() => setActive(index)} onFocus={() => setActive(index)} onClick={() => setActive(index)}>
+            <img src={`/tools/${tool.icon}.svg`} alt="" /><span>{tool.name}</span>
+          </button>
+        })}</div>
+      </div>)}
     </div>
-
-    <div className="tool-list">
-      {tools.map((tool, index) => <button
-        type="button"
-        key={tool.name}
-        data-index={index}
-        ref={element => { rows.current[index] = element }}
-        className={active === index ? "is-active" : ""}
-        onMouseEnter={() => setActive(index)}
-        onFocus={() => setActive(index)}
-        onClick={() => setActive(index)}
-      >
-        <span className="tool-index">{String(index + 1).padStart(2, "0")}</span>
-        <span className="tool-name">{tool.name}</span>
-        <span className="tool-use">{tool.use}</span>
-        <span className="tool-arrow">↗</span>
-      </button>)}
+    <div className="tool-stage" aria-hidden="true">
+      <p>Explore the stack</p>
+      <strong>{selected ? selected.name : "Hover to explore"}</strong>
+      <span>{selected ? selected.group : "Tools change. The way I use them matters more."}</span>
+      <div className={`tool-logo ${selected ? "is-active" : ""}`}>{selected && <img key={selected.icon} src={`/tools/${selected.icon}.svg`} alt="" />}</div>
     </div>
   </div>
 }
