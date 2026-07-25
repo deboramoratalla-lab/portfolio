@@ -70,3 +70,21 @@ main { overflow:clip; }.section{padding:120px 24px;max-width:1480px;margin:0 aut
 /* Keep the lateral reel monochrome and restrained */
 .hero-reel video{filter:grayscale(1) contrast(1.08)}
 .hero-reel:after{background:linear-gradient(135deg,rgba(0,0,0,.05),rgba(0,0,0,.18))}
+
+/* Framer-style two-stage opening: splash first, complete hero second */
+.home-hero>.hero-intro-copy,
+.home-hero>.hero-reel,
+.home-hero>.hero-ticker,
+.home-hero>.hero-system-wrap{opacity:0;animation:home-content-in .45s 2.65s ease-out forwards}
+.intro-sequence{position:fixed;inset:0;z-index:99;display:grid;place-items:center;overflow:hidden;background:#000;pointer-events:none;animation:intro-stage-out .55s 2.35s ease-in forwards}
+.intro-sequence span{color:#fff;font-size:clamp(100px,18vw,300px);font-weight:620;line-height:1;letter-spacing:-.085em;opacity:0;transform:scale(.62);animation:intro-word-grow 2.45s .35s cubic-bezier(.16,1,.3,1) forwards}
+.hero-system-wrap{height:42vh;min-height:300px;align-items:flex-start;padding-top:7vh}
+.hero-system{max-width:100%;font-size:clamp(120px,19vw,300px);line-height:.82;white-space:nowrap;opacity:1;transform:none;animation:none}
+@keyframes intro-word-grow{0%{opacity:0;transform:scale(.62)}35%{opacity:.07}78%{opacity:.16;transform:scale(1)}100%{opacity:.12;transform:scale(1.08)}}
+@keyframes intro-stage-out{0%{opacity:1;visibility:visible}100%{opacity:0;visibility:hidden}}
+@keyframes home-content-in{from{opacity:0}to{opacity:1}}
+@media (max-width:800px){
+  .hero-system-wrap{height:29vh;min-height:190px;padding-top:5vh}
+  .hero-system{font-size:25vw;line-height:.86}
+  .intro-sequence span{font-size:25vw}
+}
