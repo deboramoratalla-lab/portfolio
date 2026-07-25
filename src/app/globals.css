@@ -23,7 +23,8 @@ main { overflow:clip; }.section{padding:120px 24px;max-width:1480px;margin:0 aut
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.project-image img,.project-card,.tool-pills button{transition:none}.tool-logo img,.hero-system,.intro-curtain{animation:none}.hero-system{opacity:1;transform:none}.intro-curtain{display:none}}
 
 /* Exact surfaces and editorial structure from the published case studies. */
-.hero-ticker{width:calc(100% + 48px);margin-left:-24px;padding:7px 24px;font-size:14px;line-height:1}
+.hero-ticker{width:calc(100% + 48px);margin-left:-24px}
+.hero-ticker,.footer-ticker{padding-top:7px;padding-bottom:7px;font-size:16px;font-weight:650;line-height:normal;letter-spacing:normal}
 .case-sidebar{display:flex;flex-direction:column;gap:28px}
 .tldr{display:grid;grid-template-columns:70px 1fr;gap:14px;margin:0}
 .tldr>span{color:#777;font-size:9px;text-transform:uppercase}
@@ -64,4 +65,4 @@ main { overflow:clip; }.section{padding:120px 24px;max-width:1480px;margin:0 aut
 .case-fluxy #chapter-04 .case-section:nth-of-type(2){background:#e9e6df;color:#12151c}
 .case-fluxy #chapter-04 .case-section:nth-of-type(3){background:#12151c;color:#f5f3ef}
 .case-fluxy #chapter-02 .case-media{background:#1b1f28}
-@media (max-width:800px){.hero-ticker{width:calc(100% + 40px);margin-left:-20px;padding:7px 20px;font-size:12px}.case-sidebar{gap:24px}.tldr{grid-template-columns:62px 1fr;margin:0}.chapter-header{margin:0;padding:40px 20px}.case-intro-grid{gap:34px}}
+@media (max-width:800px){.hero-ticker{width:calc(100% + 40px);margin-left:-20px;padding-left:20px;padding-right:20px}.case-sidebar{gap:24px}.tldr{grid-template-columns:62px 1fr;margin:0}.chapter-header{margin:0;padding:40px 20px}.case-intro-grid{gap:34px}}
