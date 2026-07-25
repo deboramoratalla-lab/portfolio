@@ -11,15 +11,16 @@ export function ProjectPage({ project }: { project: Project }) {
     <section className="case-hero" id="top">
       <span className="case-kicker">Case study · {project.number}</span><h1>{project.title}</h1>
       <div className="case-intro-grid">
-        <div className="case-meta"><div><span>Role</span><strong>{project.role}</strong></div><div><span>Team</span><strong>{project.context}</strong></div><div><span>Time</span><strong>{project.timeline}</strong></div></div>
+        <div className="case-sidebar"><div className="case-meta"><div><span>Role</span><strong>{project.role}</strong></div><div><span>Team</span><strong>{project.context}</strong></div><div><span>Time</span><strong>{project.timeline}</strong></div></div>
+          <div className="tldr"><span>TL;DR</span><ul>{project.tldr.map(item => <li key={item}>{item}</li>)}</ul></div>
+        </div>
         <p className="case-premise">{project.premise}</p>
       </div>
-      <div className="tldr">{project.tldr.map(item => <p key={item}>{item}</p>)}</div>
     </section>
     <nav className="case-index" aria-label="Case study index">{project.chapters.map(chapter => <Link key={chapter.number} href={`#chapter-${chapter.number}`}><span>{chapter.number}</span><strong>{chapter.title}</strong></Link>)}</nav>
     {project.chapters.map(chapter => <section className="chapter" id={`chapter-${chapter.number}`} key={chapter.number}>
-      <header className="chapter-header"><span>{chapter.number}</span><div><p>{chapter.title}</p><h2>{chapter.thesis}</h2></div></header>
-      {chapter.sections.map((section, sectionIndex) => <article className={`case-section tone-${sectionIndex % 3}`} key={`${section.title}-${sectionIndex}`}>
+      <header className={`chapter-header tone-${chapter.tone ?? "dark"}`}><span>{chapter.number}</span><div><p>{chapter.title}</p><h2>{chapter.thesis}</h2></div></header>
+      {chapter.sections.map((section, sectionIndex) => <article className={`case-section tone-${section.tone ?? "dark"} layout-${section.layout ?? "split"}`} key={`${section.title}-${sectionIndex}`}>
         <div className="case-section-inner"><div className="section-copy">{section.eyebrow && <p className="eyebrow">{section.eyebrow}</p>}<h3>{section.title}</h3>{section.body.map(paragraph => <p key={paragraph}>{paragraph}</p>)}</div>
         {section.points && <div className="point-grid">{section.points.map(([label, value]) => <div key={`${label}-${value}`}><span>{label}</span><p>{value}</p></div>)}</div>}
         {section.metrics && <div className="metrics">{section.metrics.map(([value, label]) => <div key={label}><strong>{value}</strong><span>{label}</span></div>)}</div>}
