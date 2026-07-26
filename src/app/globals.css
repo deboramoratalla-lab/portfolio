@@ -89,7 +89,7 @@ main { overflow:clip; }.section{padding:120px 24px;max-width:1480px;margin:0 aut
   .hero-reel{position:absolute;top:97px;right:24px;width:43.83vw;max-width:none;height:53.2vh}
   .hero-ticker{position:absolute;top:55.56vh;left:-24px;width:calc(100% + 48px);height:24px;margin:0;padding:0 24px;line-height:24px}
   .hero-system-wrap{position:absolute;top:62vh;left:-24px;width:calc(100% + 48px);height:51vh;min-height:364px;padding:0 5vw;align-items:flex-start;overflow:visible}
-  .hero-system{font-size:23.67vw;line-height:1.2;letter-spacing:-.025em}
+  .hero-system{font-size:23.67vw;line-height:1.2;letter-spacing:-.055em}
 }
 @media (max-width:800px){
   .hero-system-wrap{height:29vh;min-height:190px;padding-top:5vh}
