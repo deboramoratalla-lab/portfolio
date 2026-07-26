@@ -136,9 +136,11 @@ main { overflow:clip; }.section{padding:120px 24px;max-width:1480px;margin:0 aut
 .tool-heading{grid-template-columns:1fr}
 .tool-heading span{grid-column:1}
 .tools .tool-showcase{margin-top:0}
+.project-stack,.tools .tool-showcase,.earlier-grid{width:calc(100% + 48px);margin-left:-24px}
 
 @media (max-width:800px){
   .section{padding:80px 20px}
   .about,.practice{padding-top:80px;padding-bottom:80px}
   .section-title{margin-bottom:48px}
+  .project-stack,.tools .tool-showcase,.earlier-grid{width:100%;margin-left:0}
 }
