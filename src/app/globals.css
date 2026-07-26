@@ -100,7 +100,7 @@ main { overflow:clip; }.section{padding:120px 24px;max-width:1480px;margin:0 aut
 /* Tools — preserve the compact editorial composition from Framer */
 .tools{max-width:1480px}
 .tool-showcase{display:grid;grid-template-columns:minmax(0,2.08fr) minmax(300px,1fr);grid-template-rows:auto 1fr;column-gap:40px;row-gap:28px;margin-top:0;padding:34px 32px 22px;border:1px solid #292929;border-radius:14px;background:#111}
-.tool-heading{grid-column:1;grid-row:1;display:grid;grid-template-columns:auto 1fr;align-items:start;margin:0;padding-bottom:28px;border-bottom:1px solid #292929;color:#f5f5f2;font-size:clamp(54px,6vw,78px);font-weight:450;line-height:1;letter-spacing:-.06em}
+.tool-heading{grid-column:1;grid-row:1;display:grid;grid-template-columns:auto 1fr;align-items:start;margin:0;padding-bottom:28px;border-bottom:0;color:#f5f5f2;font-size:clamp(54px,6vw,78px);font-weight:450;line-height:1;letter-spacing:-.06em}
 .tool-heading span{grid-column:1}
 .tool-heading span:last-of-type{width:auto;white-space:nowrap}
 .tool-heading sup{grid-column:2;grid-row:1;padding:4px 0 0 18px;color:#777;font-size:30px;line-height:1;letter-spacing:0}
