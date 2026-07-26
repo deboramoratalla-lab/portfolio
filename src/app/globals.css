@@ -82,12 +82,13 @@ main { overflow:clip; }.section{padding:120px 24px;max-width:1480px;margin:0 aut
 @keyframes intro-word-grow{0%{opacity:0;transform:translateZ(0) scale(.72)}30%{opacity:.07}100%{opacity:.15;transform:translateZ(0) scale(1)}}
 @keyframes intro-stage-out{0%{opacity:1;visibility:visible}100%{opacity:0;visibility:hidden}}
 @media (min-width:801px){
+  .home-hero{height:122svh;min-height:880px}
   .hero-intro-copy{position:absolute;top:115px;left:24px;width:520px;max-width:520px}
   .hero-small-words{font-size:49px;line-height:62px}
   .hero-intro-copy p{width:520px;max-width:520px;margin-top:16px;font-size:16px;line-height:19.2px}
-  .hero-reel{position:absolute;top:97px;right:-4.8vw;width:43.83vw;max-width:none;height:53.2vh}
+  .hero-reel{position:absolute;top:97px;right:24px;width:43.83vw;max-width:none;height:53.2vh}
   .hero-ticker{position:absolute;top:55.56vh;left:-24px;width:calc(100% + 48px);height:24px;margin:0;padding:0 24px;line-height:24px}
-  .hero-system-wrap{position:absolute;top:67.64vh;left:-24px;width:calc(100% + 48px);height:45.3vh;min-height:0;padding:0 5vw;align-items:flex-start}
+  .hero-system-wrap{position:absolute;top:67.64vh;left:-24px;width:calc(100% + 48px);height:51vh;min-height:364px;padding:0 5vw;align-items:flex-start}
   .hero-system{font-size:23.67vw;line-height:1.2;letter-spacing:-.025em}
 }
 @media (max-width:800px){
