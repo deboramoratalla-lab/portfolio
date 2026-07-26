@@ -128,3 +128,17 @@ main { overflow:clip; }.section{padding:120px 24px;max-width:1480px;margin:0 aut
   .tool-group>p,.tool-pills{grid-column:1}
   .tool-stage{grid-column:1;grid-row:3;min-height:180px;margin-top:18px}
 }
+
+/* Home spacing system: shared outer grid and section hierarchy */
+.section{max-width:1480px;padding:112px clamp(32px,4vw,56px)}
+.about,.practice{padding-top:112px;padding-bottom:112px}
+.section-title{margin-bottom:72px}
+.tool-heading{grid-template-columns:1fr}
+.tool-heading span{grid-column:1}
+.tools .tool-showcase{margin-top:0}
+
+@media (max-width:800px){
+  .section{padding:80px 20px}
+  .about,.practice{padding-top:80px;padding-bottom:80px}
+  .section-title{margin-bottom:48px}
+}

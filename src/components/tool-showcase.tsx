@@ -30,7 +30,7 @@ export function ToolShowcase() {
   const selected = active === null ? null : tools[active]
 
   return <div className="tool-showcase" onMouseLeave={() => setActive(null)}>
-    <h3 className="tool-heading"><span>Tools change.</span><sup>04</sup><span>Judgment compounds.</span></h3>
+    <h3 className="tool-heading"><span>Tools change.</span><span>Judgment compounds.</span></h3>
     <div className="tool-groups">
       {groups.map((group, groupIndex) => <div className="tool-group" key={group.label}>
         <p><span>0{groupIndex + 1}</span> · {group.label}</p>
