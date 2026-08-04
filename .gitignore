@@ -66,3 +66,7 @@ Thumbs.db
 # cache
 .cache/
 .parcel-cache/
+.env*
+
+# local scratch
+/tmp/
