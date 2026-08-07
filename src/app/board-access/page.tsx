@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import { cookies } from "next/headers"
+import Link from "next/link"
 import { redirect } from "next/navigation"
 import { BOARD_COOKIE, boardAccessToken } from "@/lib/board-auth"
 
@@ -35,7 +36,7 @@ export default async function BoardAccess({ searchParams }: { searchParams: Prom
         {error === "invalid" && <small role="alert">That password isn’t correct. Please try again.</small>}
         {error === "config" && <small role="alert">Access is temporarily unavailable.</small>}
       </form>
-      <a href="/">← Back to selected work</a>
+      <Link href="/">← Back to selected work</Link>
     </section>
   </main>
 }
