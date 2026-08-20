@@ -159,77 +159,6 @@
   }
 }
 
-/* Final route-level footer normalization. This intentionally comes last so
-   legacy page-specific rules cannot change the shared home footer. */
-body:has(.aeye-home-preview, .lab-page, .experience-page, .lab-article, .tap-ds, .tap-story, .fluxy-story, .board-page, .career-log, .case-study) > .site-footer {
-  background: var(--black-850) !important;
-  color: var(--paper-150) !important;
-  border: 0 !important;
-  box-sizing: border-box !important;
-}
-
-body:has(.aeye-home-preview, .lab-page, .experience-page, .lab-article, .tap-ds, .tap-story, .fluxy-story, .board-page, .career-log, .case-study) > .site-footer .footer-cta > span,
-body:has(.aeye-home-preview, .lab-page, .experience-page, .lab-article, .tap-ds, .tap-story, .fluxy-story, .board-page, .career-log, .case-study) > .site-footer .footer-bottom > div > span,
-body:has(.aeye-home-preview, .lab-page, .experience-page, .lab-article, .tap-ds, .tap-story, .fluxy-story, .board-page, .career-log, .case-study) > .site-footer .footer-bottom nav,
-body:has(.aeye-home-preview, .lab-page, .experience-page, .lab-article, .tap-ds, .tap-story, .fluxy-story, .board-page, .career-log, .case-study) > .site-footer .footer-location p {
-  font-size: var(--type-label) !important;
-}
-
-body:has(.aeye-home-preview, .lab-page, .experience-page, .lab-article, .tap-ds, .tap-story, .fluxy-story, .board-page, .career-log, .case-study) > .site-footer .footer-actions > a {
-  border-radius: 999px !important;
-  min-height: 40px !important;
-  height: 40px !important;
-  font: 500 var(--type-label)/1 var(--font-mono, monospace) !important;
-}
-
-@media (max-width: 800px) {
-  body:has(.aeye-home-preview, .lab-page, .experience-page, .lab-article, .tap-ds, .tap-story, .fluxy-story, .board-page, .career-log, .case-study) > .site-footer {
-    display: block !important;
-    min-height: 0 !important;
-    height: auto !important;
-    padding: 52px var(--space-sm) var(--space-md) !important;
-  }
-  body:has(.aeye-home-preview, .lab-page, .experience-page, .lab-article, .tap-ds, .tap-story, .fluxy-story, .board-page, .career-log, .case-study) > .site-footer .footer-cta {
-    display: block !important;
-    padding: 0 0 40px !important;
-    border-bottom: 1px solid #3b3b38 !important;
-    text-align: left !important;
-  }
-  body:has(.aeye-home-preview, .lab-page, .experience-page, .lab-article, .tap-ds, .tap-story, .fluxy-story, .board-page, .career-log, .case-study) > .site-footer .footer-cta > p {
-    max-width: 100% !important;
-    margin: 0 0 26px !important;
-    font-size: clamp(24px, 6.9vw, 34px) !important;
-    line-height: 1.04 !important;
-    overflow-wrap: anywhere !important;
-  }
-  body:has(.aeye-home-preview, .lab-page, .experience-page, .lab-article, .tap-ds, .tap-story, .fluxy-story, .board-page, .career-log, .case-study) > .site-footer .footer-actions {
-    display: flex !important;
-    flex-wrap: wrap !important;
-    gap: 10px !important;
-    margin: 0 !important;
-  }
-  body:has(.aeye-home-preview, .lab-page, .experience-page, .lab-article, .tap-ds, .tap-story, .fluxy-story, .board-page, .career-log, .case-study) > .site-footer .footer-bottom {
-    display: grid !important;
-    grid-template-columns: 1fr !important;
-    gap: var(--space-md) !important;
-    padding-top: var(--space-md) !important;
-    text-align: left !important;
-  }
-  body:has(.aeye-home-preview, .lab-page, .experience-page, .lab-article, .tap-ds, .tap-story, .fluxy-story, .board-page, .career-log, .case-study) > .site-footer .footer-bottom > div,
-  body:has(.aeye-home-preview, .lab-page, .experience-page, .lab-article, .tap-ds, .tap-story, .fluxy-story, .board-page, .career-log, .case-study) > .site-footer .footer-location {
-    width: 100% !important;
-    min-width: 0 !important;
-    justify-self: start !important;
-    text-align: left !important;
-  }
-  body:has(.aeye-home-preview, .lab-page, .experience-page, .lab-article, .tap-ds, .tap-story, .fluxy-story, .board-page, .career-log, .case-study) > .site-footer .footer-bottom nav {
-    display: flex !important;
-    flex-wrap: wrap !important;
-    gap: var(--space-xs) 18px !important;
-    margin-top: 10px !important;
-  }
-}
-
 /* Shared footer contract: every route uses the exact home footer treatment. */
 body > .site-footer {
   box-sizing: border-box !important;
@@ -974,17 +903,17 @@ body:has(.aeye-home-preview, .lab-page, .experience-page, .lab-article, .tap-ds,
 /* Experience: one coherent mobile layout. Keep the desktop story intact while
    giving the timeline a real 16px page gutter and enough room for its nodes. */
 @media (max-width: 800px) {
-  body:has(.experience-page) .experience-page {
+  .experience-page {
     padding-inline: var(--space-sm) !important;
     box-sizing: border-box !important;
   }
 
-  body:has(.experience-page) .experience-page > .editorial-section,
-  body:has(.experience-page) .experience-page > .experience-cta {
+  .experience-page > .editorial-section,
+  .experience-page > .experience-cta {
     padding-inline: 0 !important;
   }
 
-  body:has(.experience-page) .experience-support {
+  .experience-support {
     width: 100% !important;
     max-width: 100% !important;
     margin: 0 !important;
@@ -993,14 +922,14 @@ body:has(.aeye-home-preview, .lab-page, .experience-page, .lab-article, .tap-ds,
     overflow: visible !important;
   }
 
-  body:has(.experience-page) .experience-support .editorial-section-header {
+  .experience-support .editorial-section-header {
     width: 100% !important;
     max-width: 100% !important;
     margin: 0 0 36px !important;
     display: block !important;
   }
 
-  body:has(.experience-page) .experience-support .editorial-section-header h2 {
+  .experience-support .editorial-section-header h2 {
     max-width: 100% !important;
     margin-top: var(--space-sm) !important;
     font-size: clamp(38px, 11vw, 56px) !important;
@@ -1008,14 +937,14 @@ body:has(.aeye-home-preview, .lab-page, .experience-page, .lab-article, .tap-ds,
     overflow-wrap: normal !important;
   }
 
-  body:has(.experience-page) .experience-support .editorial-section-header p {
+  .experience-support .editorial-section-header p {
     max-width: 100% !important;
     margin-top: var(--space-md) !important;
     font-size: var(--type-body-compact) !important;
     line-height: 1.45 !important;
   }
 
-  body:has(.experience-page) .experience-support .support-grid {
+  .experience-support .support-grid {
     width: 100% !important;
     max-width: 100% !important;
     margin: 0 !important;
@@ -1024,20 +953,20 @@ body:has(.aeye-home-preview, .lab-page, .experience-page, .lab-article, .tap-ds,
     box-sizing: border-box !important;
   }
 
-  body:has(.experience-page) .experience-support .support-grid article {
+  .experience-support .support-grid article {
     width: 100% !important;
     min-height: 0 !important;
     padding: 22px var(--space-base) 28px !important;
     box-sizing: border-box !important;
   }
 
-  body:has(.experience-page) .experience-support .support-grid h3 {
+  .experience-support .support-grid h3 {
     margin: 28px 0 var(--space-sm) !important;
     font-size: 28px !important;
     line-height: 1.05 !important;
   }
 
-  body:has(.experience-page) .experience-support .support-grid p {
+  .experience-support .support-grid p {
     max-width: 100% !important;
     margin: 0 0 10px !important;
     font-size: var(--type-body-small) !important;

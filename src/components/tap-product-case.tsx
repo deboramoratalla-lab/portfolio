@@ -1,6 +1,7 @@
 import Image from "next/image"
 import type { Project } from "@/data/projects"
-import { CaseClosingReveal, CasePremiseReveal } from "@/components/case-premise-reveal"
+import { CaseClosingReveal } from "@/components/case-premise-reveal"
+import { CaseHero } from "@/components/case-hero"
 import { CaseMoreWorks } from "@/components/case-more-works"
 import { CaseStudyIndex } from "@/components/case-study-index"
 import { CaseSectionLabel } from "@/components/case-section-label"
@@ -28,25 +29,20 @@ const roles = [
 
 export function TapProductCase({ project }: { project: Project }) {
   return <main className="tap-story">
-    <section className="tap-story-hero case-hero-unified" id="top">
-      <div className="tap-story-kicker case-hero-kicker-unified">
+    <CaseHero className="tap-story-hero" kickerClassName="tap-story-kicker" kicker={<>
         <span>[CASE STUDY / 03]</span><span>&gt; PRODUCT REDESIGN</span><i />
         <nav className="tap-story-store-links" aria-label="Download TAP Mindset">
           <ArrowLink variant="primary" tone="purple" href="https://apps.apple.com/il/app/tap-mindset/id6443626525" target="_blank" rel="noreferrer">App Store</ArrowLink>
           <ArrowLink variant="primary" tone="green" href="https://play.google.com/store/apps/details?id=com.tap_mindset&hl=es_419&pli=1" target="_blank" rel="noreferrer">Google Play</ArrowLink>
         </nav>
-      </div>
-      <h1 className="case-hero-title-unified">{project.shortTitle}<br />Product redesign /</h1>
-      <CasePremiseReveal>
+      </>} title={<>{project.shortTitle}<br />Product redesign /</>} premise={<>
         I led the redesign of a mental-training product that had grown one feature at a time. The work was not to make it cleaner. It was to decide what the product was, for whom, and how the team could keep building it.
-      </CasePremiseReveal>
-      <div className="tap-story-meta case-hero-meta-unified">
+      </>} meta={<div className="tap-story-meta case-hero-meta-unified">
         <div><small>ROLE</small><p>Lead Product Designer · Product direction</p></div>
         <div><small>TEAM</small><p>Product designers ×2 · Engineers ×2</p></div>
         <div><small>STACK</small><p>Figma · Notion · iOS-first product</p></div>
         <div className="tap-story-ownership"><small>MY OWNERSHIP</small><p>{project.ownership}</p></div>
-      </div>
-    </section>
+      </div>} />
 
     <CaseStudyIndex introduction="From a fragmented product to a role-based structure the team could extend." chapters={chapters} hrefForChapter={number => `#tap-${number}`} />
 

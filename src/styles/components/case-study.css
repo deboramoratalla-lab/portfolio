@@ -1,0 +1,17 @@
+/* Shared case-study contracts. Art direction belongs to each route; these
+   rules own semantic defaults and keep shared components predictable. */
+
+.case-hero-unified { isolation: isolate; }
+
+.case-hero-title-unified { text-wrap: balance; }
+
+.case-hero-kicker-unified { min-width: 0; }
+
+.case-story-nav a:focus-visible,
+.case-hero-kicker-unified a:focus-visible {
+  outline-color: var(--accent-purple-on-dark);
+}
+
+.case-section-label { font-variant-numeric: tabular-nums; }
+
+.case-story-nav strong { text-wrap: pretty; }

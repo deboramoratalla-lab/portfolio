@@ -1,6 +1,6 @@
 import Image from "next/image"
 import type { Project } from "@/data/projects"
-import { CasePremiseReveal } from "@/components/case-premise-reveal"
+import { CaseHero } from "@/components/case-hero"
 import { CaseMoreWorks } from "@/components/case-more-works"
 import { CaseStudyIndex } from "@/components/case-study-index"
 import { CaseSectionLabel } from "@/components/case-section-label"
@@ -56,12 +56,7 @@ const autonomyPaths = [
 
 export function FluxyCase({ project }: { project: Project }) {
   return <main className="fluxy-story" style={{ "--fx-accent": project.accent } as React.CSSProperties}>
-    <section className="fx-hero case-hero-unified" id="top">
-      <div className="fx-kicker case-hero-kicker-unified"><span>[CASE STUDY / 04]</span><span>&gt; AGENTIC PRODUCT DESIGN</span><i/><ArrowRouteLink variant="primary" tone="purple" href="/projects/fluxy/agent">Explore the agent</ArrowRouteLink></div>
-      <h1 className="case-hero-title-unified">Fluxy — A commuting agent that steps in when the journey changes.</h1>
-      <CasePremiseReveal className="fx-premise">I turned a narrow online top-up brief into a product that protects the passenger&apos;s goal, prepares the next decision and leaves consequential choices in human hands.</CasePremiseReveal>
-      <div className="fx-meta case-hero-meta-unified"><div><small>ROLE</small><p>Lead Product Designer · AI Product Designer</p></div><div><small>TEAM</small><p>Independent concept · End-to-end ownership</p></div><div><small>STACK</small><p>Figma · React prototype · Vercel</p></div><div className="fx-ownership"><small>MY OWNERSHIP</small><p>{project.ownership}</p></div></div>
-    </section>
+    <CaseHero className="fx-hero" kickerClassName="fx-kicker" kicker={<><span>[CASE STUDY / 04]</span><span>&gt; AGENTIC PRODUCT DESIGN</span><i/><ArrowRouteLink variant="primary" tone="purple" href="/projects/fluxy/agent">Explore the agent</ArrowRouteLink></>} title="Fluxy — A commuting agent that steps in when the journey changes." premiseClassName="fx-premise" premise={<>I turned a narrow online top-up brief into a product that protects the passenger&apos;s goal, prepares the next decision and leaves consequential choices in human hands.</>} meta={<div className="fx-meta case-hero-meta-unified"><div><small>ROLE</small><p>Lead Product Designer · AI Product Designer</p></div><div><small>TEAM</small><p>Independent concept · End-to-end ownership</p></div><div><small>STACK</small><p>Figma · React prototype · Vercel</p></div><div className="fx-ownership"><small>MY OWNERSHIP</small><p>{project.ownership}</p></div></div>} />
 
     <CaseStudyIndex introduction="From repeated passenger effort to bounded, testable autonomy." chapters={chapters} hrefForChapter={number => `#fluxy-${number}`} />
 

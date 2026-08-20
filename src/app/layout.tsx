@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import "./tokens.css"
 import "./globals.css"
 import "./site-header.css"
+import "../styles/index.css"
 import "./responsive.css"
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
@@ -26,5 +27,5 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const personSchema = { "@context": "https://schema.org", "@type": "Person", name: "Debora Moratalla Martín", url: "https://deboramoratalla.com", jobTitle: "Product Designer", sameAs: ["https://www.linkedin.com/in/deboramoratallamartin/"], knowsAbout: ["Technical Product Design", "Enterprise Product Design", "Design Systems", "AI Product Design", "Design Engineering", "Product Strategy"] }
-  return <html lang="en" data-scroll-behavior="smooth"><body><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }} /><SiteHeader />{children}<SiteFooter /><PortfolioAgent /><BackToTop /><Analytics /><SpeedInsights /></body></html>
+  return <html lang="en" data-scroll-behavior="smooth"><body className="portfolio"><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }} /><SiteHeader />{children}<SiteFooter /><PortfolioAgent /><BackToTop /><Analytics /><SpeedInsights /></body></html>
 }

@@ -1,6 +1,7 @@
 import Image from "next/image"
 import type { Project } from "@/data/projects"
-import { CasePremiseReveal } from "@/components/case-premise-reveal"
+import { CaseHero } from "@/components/case-hero"
+import { CaseChapter } from "@/components/case-chapter"
 import { CaseMoreWorks } from "@/components/case-more-works"
 import { CaseStudyIndex } from "@/components/case-study-index"
 import { ArrowRouteLink } from "@/components/ui-links"
@@ -8,20 +9,14 @@ import { CaseSectionLabel } from "@/components/case-section-label"
 
 export function TapDsCase({ project }: { project: Project }) {
   return <main className="tap-ds" style={{ "--accent": project.accent } as React.CSSProperties}>
-    <section className="tap-ds-hero case-hero-unified" id="top">
-      <div className="tap-ds-context case-hero-kicker-unified"><span>[CASE STUDY / 02]</span><span>&gt; DESIGN SYSTEM</span><i /><span className="tap-ds-context-links">{(project.heroLinks ?? (project.heroLink ? [project.heroLink] : [])).map(([label, href], index) => <ArrowRouteLink variant="secondary" tone={index % 2 ? "green" : "purple"} href={href} target="_blank" rel="noreferrer" key={href}>{label}</ArrowRouteLink>)}</span></div>
-      <h1 className="case-hero-title-unified">{project.title}</h1>
-      <CasePremiseReveal>{project.premise}</CasePremiseReveal>
-      <div className="tap-ds-meta case-hero-meta-unified">
+    <CaseHero className="tap-ds-hero" kickerClassName="tap-ds-context" kicker={<><span>[CASE STUDY / 02]</span><span>&gt; DESIGN SYSTEM</span><i /><span className="tap-ds-context-links">{(project.heroLinks ?? (project.heroLink ? [project.heroLink] : [])).map(([label, href], index) => <ArrowRouteLink variant="secondary" tone={index % 2 ? "green" : "purple"} href={href} target="_blank" rel="noreferrer" key={href}>{label}</ArrowRouteLink>)}</span></>} title={project.title} premise={project.premise} meta={<div className="tap-ds-meta case-hero-meta-unified">
         {project.meta?.slice(0,3).map(([label,value]) => <div key={label}><span>{label.replace(":","")}</span><p>{value}</p></div>)}
         <div className="tap-ds-ownership"><span>MY OWNERSHIP</span><p>{project.ownership}</p></div>
-      </div>
-    </section>
+      </div>} />
 
     <CaseStudyIndex introduction="From product evidence to a coded system Design and Engineering could share." chapters={project.chapters.map(chapter => [chapter.number, chapter.title] as const)} hrefForChapter={number => `#tap-${number}`} />
 
-    {project.chapters.map(chapter => <section className="tap-ds-chapter" id={`tap-${chapter.number}`} key={chapter.number}>
-      <header><CaseSectionLabel as="p" number={`${chapter.number}.00`} level="chapter" dark={chapter.tone === "dark"}>{chapter.title}</CaseSectionLabel><h2>{chapter.thesis}</h2></header>
+    {project.chapters.map(chapter => <CaseChapter className="tap-ds-chapter" id={`tap-${chapter.number}`} key={chapter.number} label={<CaseSectionLabel as="p" number={`${chapter.number}.00`} level="chapter" dark={chapter.tone === "dark"}>{chapter.title}</CaseSectionLabel>} title={chapter.thesis}>
       <div className={`tap-ds-sections tap-ds-sections-${chapter.number}`}>
         {chapter.sections.map((section, index) => <article className={`tap-ds-block tap-ds-${section.layout ?? "split"} tap-ds-block-${String(index + 1).padStart(2,"0")}`} key={`${section.title}-${index}`}>
           <div className="tap-ds-copy"><CaseSectionLabel as="span" number={`${chapter.number}.${String(index + 1).padStart(2,"0")}`} dark={chapter.tone === "dark"} className="tap-ds-block-label">{section.eyebrow ?? (chapter.number === "01" && index === 0 ? "Diagnosis" : "Evidence")}</CaseSectionLabel>{section.title && <h3>{section.title}</h3>}{section.body.map(text => <p key={text}>{text}</p>)}</div>
@@ -36,7 +31,7 @@ export function TapDsCase({ project }: { project: Project }) {
           {section.links && <div className="tap-ds-links">{section.links.map(([label, href], linkIndex) => <ArrowRouteLink variant="secondary" tone={linkIndex % 2 ? "green" : "purple"} href={href} target="_blank" rel="noreferrer" key={href}>{label}</ArrowRouteLink>)}</div>}
         </article>)}
       </div>
-    </section>)}
+    </CaseChapter>)}
     <CaseMoreWorks previous={{ href:"/projects/saas",title:"Board",description:"Making workflow state visible across a €1.2B budgeting system." }} next={{ href:"/projects/tap-mindset",title:"TAP Mindset",description:"Reframing one product into three role-based experiences." }} />
   </main>
 }

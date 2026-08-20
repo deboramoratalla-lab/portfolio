@@ -1,0 +1,4 @@
+/* Public stylesheet entry point.
+   Foundations → reusable components → route-specific legacy migration. */
+@import "./foundations/base.css";
+@import "./components/case-study.css";

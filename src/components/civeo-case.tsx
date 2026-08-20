@@ -1,6 +1,7 @@
 import Image from "next/image"
 import Link from "next/link"
-import { CasePremiseReveal } from "@/components/case-premise-reveal"
+import { CaseHero } from "@/components/case-hero"
+import { CaseEvidence } from "@/components/case-evidence"
 import { CaseMoreWorks } from "@/components/case-more-works"
 import { CaseStudyIndex } from "@/components/case-study-index"
 import { CaseSectionLabel } from "@/components/case-section-label"
@@ -21,17 +22,12 @@ const widgetActions = [
 
 export function CiveoCase() {
   return <main className="civeo-page">
-    <section className="civeo-hero case-hero-unified" id="top">
-      <div className="civeo-hero-kicker case-hero-kicker-unified"><span>[CASE STUDY / 05]</span><span>&gt; MUNICIPAL OPERATIONS</span><i /><Link href="/civeo/index.html" target="_blank">Open prototype ↗</Link></div>
-      <h1 className="case-hero-title-unified">Civeo /</h1>
-      <CasePremiseReveal className="civeo-hero-premise">I turned an Excel-led service process into one readable operating surface for internal teams working with municipal diputaciones.</CasePremiseReveal>
-      <dl className="civeo-hero-meta case-hero-meta-unified">
+    <CaseHero className="civeo-hero" kickerClassName="civeo-hero-kicker" kicker={<><span>[CASE STUDY / 05]</span><span>&gt; MUNICIPAL OPERATIONS</span><i /><Link href="/civeo/index.html" target="_blank">Open prototype ↗</Link></>} title="Civeo /" premiseClassName="civeo-hero-premise" premise="I turned an Excel-led service process into one readable operating surface for internal teams working with municipal diputaciones." meta={<dl className="civeo-hero-meta case-hero-meta-unified">
         <div><dt>Role</dt><dd>POC Product Designer</dd></div>
         <div><dt>Users</dt><dd>15 internal workers as users and testers</dd></div>
         <div><dt>Stack</dt><dd>HTML · CSS · JavaScript · Leaflet · Open-Meteo</dd></div>
         <div><dt>My ownership</dt><dd>Product framing · Information architecture · Prototype</dd></div>
-      </dl>
-    </section>
+      </dl>} />
 
     <CaseStudyIndex introduction="From fragmented service views to a shared operational model." chapters={[["01", "Find the lost context"], ["02", "Turn the hierarchy into a product"], ["03", "Make live data trustworthy"], ["04", "Keep the agent grounded"]]} hrefForChapter={number => `#civeo-${number}`} />
 
@@ -61,7 +57,7 @@ export function CiveoCase() {
     <section className="civeo-section civeo-workshop">
       <div className="civeo-section-head"><CaseSectionLabel number="01.01" dark className="civeo-label">Workshop evidence</CaseSectionLabel><h2>I listened for the moments where people lost the thread.</h2><p>The workshop and walkthrough material helped separate a navigation symptom from the deeper continuity problem.</p></div>
       <div className="civeo-workshop-grid">
-        <figure><Image src="/media/civeo-workshop-research.png" alt="Civeo workshop research and synthesis" width={1376} height={768} /><figcaption>Research synthesis: context, questions and operational signals.</figcaption></figure>
+        <CaseEvidence><Image src="/media/civeo-workshop-research.png" alt="Civeo workshop research and synthesis" width={1376} height={768} /><figcaption>Research synthesis: context, questions and operational signals.</figcaption></CaseEvidence>
       </div>
     </section>
 
