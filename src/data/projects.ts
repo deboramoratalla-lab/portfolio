@@ -57,7 +57,7 @@ export const projects: Project[] = [
     complexity: "Distributed approvals, dependencies and regional roles.",
     ownership: "Framed the workflow problem and defined the reusable rule system.",
     tags: ["Product design", "Enterprise workflow"], accent: "#ffe67c",
-    cover: "/media/U83YozysM0D05lMq82nlFdYG1M.png", hero: "/media/fL9YsjcUWjmuDS7xICXN72fDkpY.png",
+    cover: "/media/suez-enterprise-planning-cover.png", hero: "/media/fL9YsjcUWjmuDS7xICXN72fDkpY.png",
     role: "Solo Senior Product Designer", context: "SUEZ × Board", timeline: "6 months",
     meta: [["Role","Solo Senior Product Designer"],["Team","SUEZ Finance · Product · Engineering"],["Stack","Board platform · Figma · Enterprise workflows"],["My ownership","Problem framing · Interaction design · Rule system"]],
     premiseLabel: "Annual budget coordinated · €1.2B",
@@ -139,7 +139,7 @@ export const projects: Project[] = [
     problem: "One feature-led product was serving three jobs with overlapping paths.",
     complexity: "Role-specific onboarding, shared capabilities and progressive personalisation.",
     ownership: "Led product architecture and the 12-month redesign with design and engineering.", tags: ["Product design", "Sports"], accent: "#e5f4d6",
-    cover: "/media/KSw5kmupZz4s4LoheYzh4rnIY.png", hero: "/media/8vYUA69ov7JIByTeoOntKRg1Bb4.png",
+    cover: "/media/tap-mindset-product-cover.png", hero: "/media/8vYUA69ov7JIByTeoOntKRg1Bb4.png",
     role: "Lead Product Designer", context: "Product Design ×2 · Engineering ×2", timeline: "12 months",
     meta: [["Role:","Lead Product Designer · Product direction"],["Team:","Product Designers ×2 · Engineers ×2"],["Stack:","Figma · Notion · iOS-first product"],["My ownership:","Led product architecture, direction, critique and final design decisions"]],
     heroLink: ["Read DS case study","/projects/tap-mindset-ds"],
@@ -182,7 +182,7 @@ export const projects: Project[] = [
     problem: "A narrow top-up brief hid the larger burden of managing a changing commute.",
     complexity: "Goal protection, proactive suggestions, consent and uncertain network conditions.",
     ownership: "Defined the autonomy model, journey logic and interaction prototype.", tags: ["Agentic design", "Mobility"], accent: "#ffe9ca",
-    cover: "/media/ASHNp23jYU6G6rS2Bcba6Rz5TUY.png", hero: "/media/2b7YNCK8WXiTCdQRa84XPV7867M.png",
+    cover: "/media/fluxy-cover.png", hero: "/media/2b7YNCK8WXiTCdQRa84XPV7867M.png",
     role: "Lead Product Designer", context: "Independent concept", timeline: "2026",
     meta: [["Role","Lead Product Designer · AI Product Designer"],["Team","Independent concept · End-to-end ownership"],["Stack","Figma · React prototype · Vercel"],["My ownership","Defined the autonomy model, journey logic and interaction prototype"]],
     heroLink: ["Explore the agent", "/projects/fluxy/agent"],
@@ -208,6 +208,21 @@ export const projects: Project[] = [
         { tone: "dark", layout: "results", eyebrow: "What the project demonstrated", title: "The strongest product decision was deciding when the product should disappear.", body: ["The challenge started with online top-ups and ended as an exploration of agentic commuting. The work was less about adding features than defining a boundary: software can monitor, prepare and recommend, but it must remain legible and return consequential decisions to the passenger."], metrics: [["5/6","Passengers understood why Fluxy intervened without additional explanation"],["6/6","Expected payment to require confirmation — the autonomy boundary was clear"],["12","Routine, disruption and low-balance scenarios tested"]] }
       ]}
     ]
+  },
+  {
+    slug: "civeo", number: "05", title: "Civeo — Municipal Operations /", shortTitle: "Civeo",
+    strapline: "A municipal operations surface that preserves context from overview to action.",
+    problem: "Teams relied on Excel and separate service views to reconstruct the state of municipal operations.",
+    complexity: "Four-level navigation, editable widgets, live data states and a grounded contextual assistant.",
+    ownership: "Defined the product model, information architecture, interaction rules and working POC.",
+    tags: ["Product design", "Design engineering"], accent: "#bcffff",
+    cover: "/media/civeo-mockup.png", hero: "/media/civeo-dashboard.png",
+    role: "POC Product Designer", context: "Internal teams · municipal operations", timeline: "Exploratory POC",
+    meta: [["Role", "POC Product Designer"], ["Users", "15 internal workers"], ["Stack", "HTML · CSS · JavaScript · Leaflet · Open-Meteo"], ["My ownership", "Product framing · Information architecture · Prototype"]],
+    heroLink: ["Open prototype", "/civeo/index.html"],
+    premise: "I turned an Excel-led service process into one readable operating surface for internal teams working with municipal diputaciones.",
+    tldr: ["Four-level operational hierarchy", "Editable widget system with persistence and reset", "Explicit live, timeout and offline states", "Grounded contextual assistant"],
+    chapters: []
   }
 ]
 

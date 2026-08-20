@@ -1,0 +1,884 @@
+.msi{font-family:'Material Symbols Outlined';font-weight:400;font-style:normal;
+    font-size:20px;line-height:1;letter-spacing:normal;text-transform:none;
+    display:inline-block;white-space:nowrap;word-wrap:normal;direction:ltr;
+    -webkit-font-feature-settings:'liga';font-feature-settings:'liga';
+    -webkit-font-smoothing:antialiased;vertical-align:middle;
+    font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;}
+  :root{
+    --bg:#eef1ec;
+    --card:#ffffff;
+    --ink:#182420;
+    --ink-dim:#66756f;
+    --blue:#2b6cb0;
+    --blue-deep:#173a6b;
+    --green:#2f8f5b;
+    --green-dark:#1f6b43;
+    --green-pale:#bfe3cd;
+    --yellow:#0fb8ac; /* acento azul-verdoso tech, antes amarillo */
+    --line:rgba(24,36,32,.08);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:"Plus Jakarta Sans",-apple-system,"Segoe UI",sans-serif;}
+  .stage{max-width:1180px;margin:0 auto;padding:28px;}
+
+  .hero{
+    position:relative;border-radius:26px;overflow:hidden;height:460px;
+    background:
+      url('../img/civeo-city.png') 50% 50%/cover no-repeat,
+      linear-gradient(135deg,#173a6b,#2f8f5b);
+    padding:22px 26px;color:#fff;
+  }
+  .hero::before{content:"";position:absolute;inset:0;
+    background:linear-gradient(115deg, rgba(6,14,26,.72) 0%, rgba(6,14,26,.5) 35%, rgba(6,14,26,.28) 65%, rgba(6,14,26,.55) 100%);
+  }
+  .topnav{position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;}
+  .brand{display:flex;align-items:center;gap:8px;font-weight:700;font-size:16px;}
+  .brand .mark{width:22px;height:22px;background:var(--yellow);border-radius:6px;display:inline-block;}
+  .brand .mark-img{width:28px;height:28px;object-fit:contain;vertical-align:middle;}
+  .crumbs{display:flex;align-items:center;gap:10px;font-size:13px;color:rgba(255,255,255,.6);}
+  .crumbs span{padding:4px 0;}
+  .crumbs span.current{color:#fff;font-weight:700;box-shadow:0 2px 0 var(--yellow);}
+  .crumbs .sep{color:rgba(255,255,255,.3);}
+  .navicons{display:flex;gap:8px;}
+  .navicons span{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.16);
+    border:1px solid rgba(255,255,255,.22);display:flex;align-items:center;justify-content:center;
+    font-size:14px;backdrop-filter:blur(6px);}
+  .datetime{position:relative;z-index:2;display:flex;align-items:center;gap:6px;font-size:13px;color:rgba(255,255,255,.85);}
+  .datetime-sep{color:rgba(255,255,255,.35);}
+  #live-updated{color:rgba(255,255,255,.6);font-size:12px;}
+  .avatar{width:36px;height:36px;border-radius:50%;object-fit:cover;background:linear-gradient(135deg,var(--yellow),#0a7f76);
+    border:2px solid rgba(255,255,255,.5);cursor:pointer;}
+
+  /* ===== menú de cuenta =====
+     position:fixed + coordenadas calculadas en JS (positionDropdown()) en vez
+     de absolute: así el desplegable nunca se queda recortado ni tapado, sea
+     cual sea la pantalla o el ancestro que tenga por medio (el mismo patrón
+     que el selector de fechas). */
+  .account-menu{position:relative;display:flex;align-items:center;}
+  .account-dropdown{position:fixed;width:244px;
+    background:#fff;border-radius:14px;box-shadow:0 24px 50px -18px rgba(10,16,14,.4);
+    z-index:500;padding:8px;opacity:0;transform:translateY(-6px);pointer-events:none;
+    transition:opacity .14s ease, transform .14s ease;}
+  .account-menu.open .account-dropdown{opacity:1;transform:translateY(0);pointer-events:auto;}
+
+  /* variante del menú de cuenta cuando vive en el rail (visible en cualquier
+     pantalla, no solo en el dashboard): mismo tamaño que un rail-item. */
+  .rail-account{width:42px;height:42px;border-radius:11px;justify-content:center;
+    cursor:pointer;flex:0 0 auto;}
+  .rail-account:hover{background:rgba(255,255,255,.10);}
+  .rail-account .avatar{flex:0 0 auto;}
+  .rail.expanded .rail-account{width:100%;height:auto;justify-content:flex-start;padding:8px 10px;}
+  .account-head{display:flex;align-items:center;gap:10px;padding:10px 10px 12px;
+    border-bottom:1px solid var(--line);margin-bottom:6px;}
+  .account-head .avatar{width:40px;height:40px;cursor:default;flex:0 0 auto;}
+  .account-head .who{flex:1;min-width:0;}
+  .account-head .who .name{font-size:13.5px;font-weight:700;color:var(--ink);line-height:1.25;
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .account-head .who .email{font-size:11.5px;color:var(--ink-dim);line-height:1.25;
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .account-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:9px;
+    font-size:13.5px;color:var(--ink);cursor:pointer;}
+  .account-item .msi{font-size:18px;color:var(--ink-dim);}
+  .account-item:hover{background:var(--bg);}
+  .account-item.danger{color:#b3413a;}
+  .account-item.danger .msi{color:#b3413a;}
+  .account-sep{height:1px;background:var(--line);margin:6px 2px;}
+
+  /* ===== centro de notificaciones (campana) ===== */
+  .notif-bell-icon{font-size:19px;color:rgba(255,255,255,.7);}
+  .rail.expanded .notif-bell .notif-bell-icon{margin-right:11px;}
+  .notif-badge{position:absolute;top:4px;right:6px;min-width:15px;height:15px;padding:0 3px;
+    border-radius:8px;background:#e2534a;color:#fff;font-size:9.5px;font-weight:700;
+    display:flex;align-items:center;justify-content:center;line-height:1;
+    box-shadow:0 0 0 2px #0f2542;}
+  .rail.expanded .notif-badge{top:6px;right:auto;left:30px;}
+  .notif-dropdown{width:308px;padding:0;max-height:70vh;display:flex;flex-direction:column;}
+  .notif-head{display:flex;align-items:center;justify-content:space-between;
+    padding:12px 14px;border-bottom:1px solid var(--line);font-size:13.5px;font-weight:700;color:var(--ink);}
+  .notif-mark-all{font-size:11.5px;font-weight:600;color:var(--blue);cursor:pointer;}
+  .notif-mark-all:hover{text-decoration:underline;}
+  .notif-list{overflow-y:auto;padding:6px;}
+  .notif-item{display:flex;gap:10px;padding:10px 8px;border-radius:10px;cursor:pointer;position:relative;}
+  .notif-item:hover{background:var(--bg);}
+  .notif-item .notif-icon{flex:0 0 auto;width:32px;height:32px;border-radius:9px;
+    display:flex;align-items:center;justify-content:center;font-size:16px;
+    background:rgba(15,184,172,.12);color:#0a7f76;}
+  .notif-item.warn .notif-icon{background:rgba(226,83,74,.12);color:#b3413a;}
+  .notif-item .notif-body{flex:1;min-width:0;}
+  .notif-item .notif-text{font-size:12.5px;color:var(--ink);line-height:1.4;}
+  .notif-item .notif-time{font-size:11px;color:var(--ink-dim);margin-top:2px;}
+  .notif-item.unread{background:rgba(15,184,172,.06);}
+  .notif-item.unread::after{content:"";position:absolute;top:14px;right:8px;
+    width:7px;height:7px;border-radius:50%;background:#0fb8ac;}
+  .notif-empty{padding:28px 14px;text-align:center;font-size:12.5px;color:var(--ink-dim);}
+
+  h1.title{position:relative;z-index:2;font-size:36px;font-weight:700;margin:60px 0 0;letter-spacing:-.5px;}
+
+  /* floating reports card */
+  .reports-card{
+    position:absolute;top:200px;right:26px;width:400px;z-index:3;
+    background:rgba(255,255,255,.14);
+    backdrop-filter:blur(22px) saturate(140%);
+    -webkit-backdrop-filter:blur(22px) saturate(140%);
+    border:1px solid rgba(255,255,255,.28);border-radius:20px;padding:20px 22px;color:#fff;
+    box-shadow:0 30px 60px -30px rgba(9,20,35,.5);
+  }
+  .reports-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+  .reports-head h3{margin:0;font-size:15px;font-weight:600;}
+  .reports-head .pill{background:rgba(255,255,255,.18);border-radius:999px;padding:5px 12px;font-size:12px;}
+  .reports-nums{display:flex;gap:28px;margin-bottom:14px;}
+  .reports-nums div span{display:block;font-size:11.5px;color:rgba(255,255,255,.65);margin-bottom:4px;}
+  .reports-nums div b{font-size:20px;font-weight:600;}
+  .hatch-chart{position:relative;height:110px;border-radius:14px;overflow:hidden;
+    background:repeating-linear-gradient(45deg, rgba(255,255,255,.06) 0 2px, transparent 2px 12px);}
+  .hatch-chart svg{position:absolute;inset:0;}
+  .tooltip-box{position:absolute;top:14px;left:38%;background:#fff;color:var(--ink);border-radius:10px;
+    padding:8px 12px;font-size:11px;box-shadow:0 10px 24px -10px rgba(0,0,0,.4);min-width:110px;}
+  .tooltip-box b{display:block;font-size:12.5px;}
+  .chart-dates{display:flex;justify-content:space-between;font-size:10.5px;color:rgba(255,255,255,.55);margin-top:6px;}
+
+  /* bottom grid */
+  .grid{margin-top:22px;display:grid;grid-template-columns:repeat(4,1fr);gap:18px;}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:18px 20px;
+    box-shadow:0 14px 30px -24px rgba(24,36,32,.3);}
+  .card-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+  .card-head h4{margin:0;font-size:14px;font-weight:600;}
+  .card-head .ic{width:26px;height:26px;border-radius:8px;background:var(--bg);display:flex;
+    align-items:center;justify-content:center;font-size:12px;color:var(--ink-dim);}
+
+  /* order status */
+  .stat-line{font-size:13px;color:var(--ink-dim);margin-bottom:10px;}
+  .stat-line b{color:var(--ink);font-size:20px;}
+  .segbar{display:flex;gap:4px;height:52px;border-radius:12px;overflow:hidden;margin-bottom:12px;}
+  .segbar div{flex:1;}
+  .seg1{background:var(--green-dark);}
+  .seg2{background:var(--blue);flex:.5 !important;}
+  .seg3{background:var(--green-pale);}
+  .legend-row{display:flex;justify-content:space-between;font-size:11.5px;color:var(--ink-dim);}
+  .legend-row span{display:flex;align-items:center;gap:5px;}
+  .legend-row i{width:7px;height:7px;border-radius:50%;display:inline-block;}
+
+  /* weekly summary line chart */
+  .wk-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;}
+  .wk-top b{font-size:20px;}
+  .wk-top small{color:var(--green);font-size:12px;}
+  .linechart{height:90px;}
+  .linechart svg{width:100%;height:100%;}
+  .axis{display:flex;justify-content:space-between;font-size:10px;color:var(--ink-dim);margin-top:4px;}
+
+  /* hex chart */
+  .hexwrap{display:flex;justify-content:center;margin:6px 0 14px;}
+  .hexgrid{display:grid;grid-template-columns:repeat(7,14px);gap:3px;}
+  .hex{width:14px;height:16px;clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);}
+  .cityrow{display:flex;justify-content:space-between;font-size:12px;padding:5px 0;color:var(--ink-dim);}
+  .cityrow b{color:var(--ink);font-weight:500;}
+  .cityrow i{width:7px;height:7px;border-radius:50%;display:inline-block;margin-right:6px;}
+
+  /* occupation bars */
+  .occ-top{display:flex;justify-content:space-between;font-size:12px;color:var(--ink-dim);margin-bottom:10px;}
+  .occ-top b{color:var(--ink);font-size:18px;}
+  .barchart{display:flex;align-items:flex-end;gap:8px;height:90px;}
+  .barchart .bar{flex:1;background:var(--green-pale);border-radius:6px 6px 2px 2px;position:relative;}
+  .barchart .bar.pat-stripe{background-image:repeating-linear-gradient(45deg, rgba(255,255,255,.4) 0 3px, transparent 3px 7px);}
+  .barchart .bar.pat-dots{background-image:radial-gradient(rgba(255,255,255,.55) 1.3px, transparent 1.3px);background-size:7px 7px;}
+  .barchart .bar.hi{background:var(--green-dark);}
+  .badge80{position:absolute;top:-22px;left:50%;transform:translateX(-50%);background:var(--yellow);
+    color:#fff;font-size:10.5px;font-weight:700;padding:2px 7px;border-radius:999px;}
+  .barlabels{display:flex;justify-content:space-between;font-size:10px;color:var(--ink-dim);margin-top:6px;}
+  .hbar-chart{display:flex;flex-direction:column;justify-content:center;gap:6px;height:100%;min-height:0;}
+  .hbar-row{display:flex;align-items:center;gap:8px;font-size:10px;}
+  .hbar-row.hi .hbar-name,.hbar-row.hi .hbar-val{font-weight:700;color:var(--ink);}
+  .hbar-name{flex:0 0 60px;color:var(--ink-dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .hbar-track{flex:1;height:7px;border-radius:4px;background:var(--bg);overflow:hidden;}
+  .hbar-fill{display:block;height:100%;border-radius:4px;}
+  .hbar-val{flex:0 0 32px;text-align:right;font-weight:600;color:var(--ink);}
+
+  .footnote{text-align:center;font-size:12px;color:var(--ink-dim);margin-top:22px;}
+
+  /* ===== shell — un solo rail de navegación + toolbar contextual + drawer bajo demanda ===== */
+  .app-shell{display:flex;min-height:100vh;}
+  .stage{flex:1;min-width:0;}
+
+  /* rail único izquierdo: SOLO navegación (inicio, buscar, categorías) */
+  .rail{width:76px;flex:0 0 76px;background:#0f2542;display:flex;flex-direction:column;
+    align-items:center;padding:18px 0;gap:8px;position:relative;z-index:30;
+    transition:width .18s ease, flex-basis .18s ease;}
+  .rail .logo{width:auto;height:auto;display:flex;align-items:center;margin-bottom:20px;}
+  .rail .logo .logo-word-mark{width:60px;height:auto;flex:0 0 auto;}
+  .rail-divider{width:26px;height:1px;background:rgba(255,255,255,.14);margin:8px 0;align-self:center;}
+  .rail-item{position:relative;width:42px;height:42px;border-radius:11px;display:flex;
+    align-items:center;justify-content:center;color:rgba(255,255,255,.55);font-size:16px;cursor:pointer;
+    flex:0 0 auto;}
+  .rail-item:hover,.rail-item.active{background:rgba(255,255,255,.10);color:#fff;}
+  .rail-item.current-section::after{content:"";position:absolute;bottom:2px;left:50%;
+    transform:translateX(-50%);width:4px;height:4px;border-radius:50%;background:var(--yellow);}
+  .rail-item.cmdk{font-size:10px;font-weight:600;letter-spacing:.02em;color:rgba(255,255,255,.4);
+    border:1px solid rgba(255,255,255,.18);margin-bottom:4px;}
+
+  /* ===== rail colapsable: por defecto solo iconos (76px), se puede expandir para
+     ver el nombre completo de cada sección sin depender del tooltip/hover ===== */
+  .rail-label{display:none;margin-left:11px;font-size:13px;font-weight:600;
+    color:rgba(255,255,255,.85);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .rail.expanded{width:238px;flex:0 0 238px;align-items:stretch;padding:18px 12px;}
+  .rail.expanded .logo{align-self:flex-start;padding:0 5px;}
+  .rail.expanded .rail-item{width:100%;height:auto;justify-content:flex-start;padding:10px 10px;}
+  .rail.expanded .rail-item.current-section::after{left:8px;bottom:auto;top:50%;
+    transform:translateY(-50%);}
+  .rail.expanded .rail-label{display:inline-block;}
+  .rail.expanded .rail-divider{width:100%;align-self:stretch;}
+  .rail.expanded .flyout{left:calc(100% + 4px);}
+  .rail-toggle{margin-top:auto;flex:0 0 auto;width:42px;height:34px;border-radius:10px;
+    display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.5);
+    cursor:pointer;align-self:center;}
+  .rail-toggle:hover{background:rgba(255,255,255,.08);color:#fff;}
+  .rail-toggle .msi{transition:transform .18s ease;font-size:18px;}
+  .rail.expanded .rail-toggle{align-self:flex-end;width:auto;padding:0 8px;}
+  .rail.expanded .rail-toggle .msi{transform:rotate(180deg);}
+
+  .flyout{position:absolute;left:100%;top:0;min-width:230px;background:#0f2542;
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:0 12px 12px 0;padding:6px 0 8px;box-shadow:20px 0 40px -20px rgba(0,0,0,.5);
+    display:none;}
+  /* el flyout NO se abre por :hover puro — con items tan pegados verticalmente,
+     mover el ratón hacia el contenido de un flyout alto (p. ej. Riego expandido)
+     puede rozar el icono de abajo y abrir dos flyouts superpuestos. Lo gestiona
+     JS (mouseenter/mouseleave con un pequeño margen) para que solo haya uno abierto. */
+  .rail-item.flyout-open .flyout{display:block;}
+  .flyout .fy-title{padding:10px 18px 8px;font-size:11px;font-weight:700;text-transform:uppercase;
+    letter-spacing:.05em;color:rgba(255,255,255,.45);border-bottom:1px solid rgba(255,255,255,.1);margin-bottom:4px;}
+  .flyout .fy-item{padding:9px 18px;font-size:13px;color:rgba(255,255,255,.75);cursor:pointer;
+    border-radius:8px;margin:1px 8px;width:calc(100% - 16px);}
+  .flyout .fy-item:hover{background:rgba(255,255,255,.07);color:#fff;}
+  .flyout .fy-item.on{background:rgba(15,184,172,.16);color:#8fe8e0;font-weight:600;
+    box-shadow:inset 3px 0 0 var(--yellow);}
+  .flyout .fy-parent{display:flex;align-items:center;cursor:pointer;}
+  .flyout .fy-parent .msi{color:#8fe8e0;}
+  /* "on" = estás dentro de esta sección (resaltado, no controla si se ve el submenú).
+     "expanded" = el submenú está desplegado — SIEMPRE arranca replegado y solo se
+     abre con un clic; no se abre solo porque la vista actual esté dentro de Riego. */
+  .flyout .fy-sub{display:none;margin:0 8px 4px;padding-left:10px;border-left:2px solid rgba(255,255,255,.12);}
+  .flyout .fy-parent.expanded + .fy-sub{display:block;}
+  .flyout .fy-parent .msi{transition:transform .15s ease;}
+  .flyout .fy-parent.expanded .msi{transform:rotate(180deg);}
+  .flyout .fy-sub-item{padding:7px 10px;font-size:12px;color:rgba(255,255,255,.6);cursor:pointer;
+    border-radius:7px;}
+  .flyout .fy-sub-item:hover{background:rgba(255,255,255,.06);color:#fff;}
+  .flyout .fy-sub-item.current{color:#fff;font-weight:600;background:rgba(255,255,255,.08);}
+
+  /* toolbar contextual — junto al título, no un rail permanente */
+  .toolbar{position:relative;z-index:2;display:flex;align-items:center;gap:8px;margin-top:14px;}
+  .tool-pill{display:flex;align-items:center;gap:7px;background:rgba(255,255,255,.12);
+    border:1px solid rgba(255,255,255,.2);color:#fff;border-radius:999px;padding:8px 14px;
+    font-size:12.5px;backdrop-filter:blur(8px);cursor:pointer;}
+  .tool-pill.primary{background:#fff;color:var(--blue-deep);font-weight:600;border-color:#fff;}
+  .tool-icon{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.12);
+    border:1px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;
+    color:#fff;font-size:14px;cursor:pointer;backdrop-filter:blur(8px);}
+
+  /* ===== estados de widget: loading / vacío / error ===== */
+  .widget-host{position:relative;}
+  .widget-overlay{position:absolute;inset:0;z-index:8;border-radius:inherit;display:none;
+    flex-direction:column;align-items:stretch;justify-content:flex-start;gap:8px;
+    background:var(--card);padding:14px;text-align:center;}
+  .widget-host[data-wstate="loading"] .widget-overlay.ov-loading{display:flex;}
+  .widget-host[data-wstate="empty"] .widget-overlay.ov-empty{display:flex;}
+  .widget-host[data-wstate="error"] .widget-overlay.ov-error{display:flex;}
+  .widget-host.dark .widget-overlay{background:rgba(10,20,35,.94);}
+  .w-skel{border-radius:8px;background:linear-gradient(90deg,rgba(24,36,32,.08) 25%,rgba(24,36,32,.16) 37%,rgba(24,36,32,.08) 63%);
+    background-size:400% 100%;animation:w-shimmer 1.3s ease-in-out infinite;}
+  .widget-host.dark .w-skel{background:linear-gradient(90deg,rgba(255,255,255,.08) 25%,rgba(255,255,255,.18) 37%,rgba(255,255,255,.08) 63%);
+    background-size:400% 100%;}
+  @keyframes w-shimmer{0%{background-position:100% 0;}100%{background-position:0 0;}}
+  .w-skel-line{height:11px;margin-bottom:8px;}
+  .w-skel-block{flex:1;min-height:40px;}
+  .widget-empty-body,.widget-error-body{flex:1;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;gap:6px;color:var(--ink-dim);}
+  .widget-host.dark .widget-empty-body,.widget-host.dark .widget-error-body{color:rgba(255,255,255,.7);}
+  .widget-empty-body .msi,.widget-error-body .msi{font-size:26px;opacity:.55;}
+  .widget-empty-body .wtxt,.widget-error-body .wtxt{font-size:12.5px;max-width:220px;line-height:1.4;}
+  .widget-error-body .wtxt{color:#b3413a;}
+  .widget-host.dark .widget-error-body .wtxt{color:#ff9b91;}
+  .widget-retry{margin-top:2px;font-size:11.5px;font-weight:600;color:var(--yellow);
+    border:1px solid var(--yellow);border-radius:20px;padding:4px 12px;cursor:pointer;background:none;}
+  .widget-host.dark .widget-retry{color:#8fd8cf;border-color:#8fd8cf;}
+
+  /* ===== notificaciones (toast) ===== */
+  .toast-stack{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);
+    z-index:300;display:flex;flex-direction:column-reverse;gap:8px;
+    align-items:center;pointer-events:none;}
+  .toast{display:flex;align-items:center;gap:9px;background:#182420;color:#fff;
+    border-radius:999px;padding:10px 18px 10px 14px;font-size:13px;font-weight:500;
+    box-shadow:0 18px 40px -16px rgba(10,16,14,.5);opacity:0;
+    transform:translateY(10px) scale(.96);
+    transition:opacity .18s ease, transform .18s ease;pointer-events:auto;}
+  .toast.show{opacity:1;transform:translateY(0) scale(1);}
+  .toast.leaving{opacity:0;transform:translateY(6px) scale(.97);}
+  .toast .msi{font-size:17px;color:var(--yellow);}
+  .toast.error .msi{color:#ff9b91;}
+
+  /* ===== selector de rango de fechas (pill de la toolbar + drawer) ===== */
+  .date-menu{position:relative;display:inline-flex;}
+  .date-pill{cursor:pointer;}
+  /* position:fixed (no :absolute) y calculado por JS al abrir: la cabecera del
+     dashboard tiene overflow:hidden (para redondear la foto de fondo) y eso
+     recortaba el desplegable si se posicionaba relativo a su contenedor. */
+  .date-popover{position:fixed;width:260px;
+    background:#fff;border-radius:14px;box-shadow:0 24px 50px -18px rgba(10,16,14,.4);
+    z-index:70;padding:8px;display:none;color:var(--ink);}
+  .date-popover.open{display:block;}
+  .date-popover .wmenu-label{font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;
+    color:var(--ink-dim);padding:8px 8px 4px;}
+  .date-preset{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:9px;
+    font-size:13px;color:var(--ink);cursor:pointer;}
+  .date-preset:hover{background:var(--bg);}
+  .date-preset.active{color:var(--yellow);font-weight:700;}
+  .date-preset .msi{font-size:16px;color:var(--ink-dim);}
+  .date-preset.active .msi{color:var(--yellow);}
+  .date-sep{height:1px;background:var(--line);margin:6px 2px;}
+  .date-custom{padding:8px 10px 6px;}
+  .date-custom-fields{display:flex;align-items:center;gap:6px;}
+  .date-custom-fields input[type="date"]{flex:1;min-width:0;border:1px solid var(--line);
+    border-radius:8px;padding:6px 7px;font-size:12px;font-family:inherit;color:var(--ink);}
+  .date-apply{width:100%;margin-top:8px;background:var(--blue-deep);color:#fff;border:none;
+    border-radius:9px;padding:8px;font-size:12.5px;font-weight:600;cursor:pointer;font-family:inherit;}
+  .date-apply:hover{background:var(--blue);}
+
+  /* ===== tour guiado de primera visita =====
+     el fondo NO bloquea clics (pointer-events:none): es solo una guía visual, no
+     un modal. Así puedes interactuar de verdad con lo que está resaltado (p. ej.
+     pulsar el buscador) sin que el tour se cierre por accidente; solo se cierra
+     con "Saltar"/"Siguiente"/Esc, o si navegas a otra pantalla. */
+  .tour-scrim{position:fixed;inset:0;z-index:200;display:none;pointer-events:none;}
+  .tour-scrim.open{display:block;}
+  .tour-spotlight{position:fixed;border-radius:14px;
+    box-shadow:0 0 0 9999px rgba(10,16,14,.62);pointer-events:none;
+    transition:top .22s ease, left .22s ease, width .22s ease, height .22s ease;}
+  .tour-tooltip{position:fixed;width:280px;background:#fff;border-radius:14px;
+    box-shadow:0 24px 50px -18px rgba(10,16,14,.5);padding:16px 18px;z-index:201;
+    pointer-events:auto;transition:top .22s ease, left .22s ease;}
+  .tour-step-count{font-size:11px;color:var(--ink-dim);font-weight:700;letter-spacing:.04em;margin-bottom:6px;}
+  .tour-tooltip h4{margin:0 0 6px;font-size:15px;color:var(--ink);}
+  .tour-tooltip p{margin:0 0 14px;font-size:13px;line-height:1.5;color:var(--ink-dim);}
+  .tour-actions{display:flex;justify-content:space-between;align-items:center;gap:10px;}
+  .tour-skip{background:none;border:none;color:var(--ink-dim);font-size:12.5px;
+    cursor:pointer;font-family:inherit;padding:6px 4px;}
+  .tour-skip:hover{color:var(--ink);}
+  .tour-next{background:var(--blue-deep);color:#fff;border:none;border-radius:999px;
+    padding:8px 16px;font-size:12.5px;font-weight:600;cursor:pointer;font-family:inherit;}
+  .tour-next:hover{background:var(--blue);}
+
+  /* menú contextual "más opciones" de cada widget, para simular estados */
+  .wmenu-pop{position:absolute;top:30px;right:0;width:190px;background:#fff;border-radius:12px;
+    box-shadow:0 20px 44px -16px rgba(10,16,14,.4);z-index:20;padding:6px;display:none;}
+  .wmenu-pop.open{display:block;}
+  .wmenu-pop .wmenu-label{font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;
+    color:var(--ink-dim);padding:8px 8px 4px;}
+  .wmenu-pop .wmenu-item{display:flex;align-items:center;gap:8px;padding:7px 8px;border-radius:8px;
+    font-size:12.5px;color:var(--ink);cursor:pointer;}
+  .wmenu-pop .wmenu-item:hover{background:var(--bg);}
+  .wmenu-pop .wmenu-item.active{color:var(--yellow);font-weight:700;}
+  .wmenu-pop .wmenu-item .msi{font-size:16px;color:var(--ink-dim);}
+  .wmenu-pop .wmenu-item.active .msi{color:var(--yellow);}
+
+  /* drawer derecho — aparece SOLO al pulsar "Editar / Configurar" */
+  #drawer-toggle{display:none;}
+  .drawer{position:fixed;top:0;right:-320px;width:300px;height:100vh;background:#fff;
+    border-left:1px solid var(--line);box-shadow:-24px 0 50px -24px rgba(24,36,32,.35);
+    z-index:50;transition:right .28s ease, width .2s ease;padding:22px;overflow-y:auto;}
+  #drawer-toggle:checked ~ .drawer{right:0;}
+  body.editing-widgets .drawer{width:340px;right:-360px;}
+  body.editing-widgets #drawer-toggle:checked ~ .drawer{right:0;}
+  .drawer-scrim{position:fixed;inset:0;background:rgba(10,16,14,0);pointer-events:none;
+    transition:background .28s ease;z-index:40;}
+  #drawer-toggle:checked ~ .drawer-scrim{background:rgba(10,16,14,.28);pointer-events:auto;}
+
+  /* ===== buscador global (⌘K) ===== */
+  .search-scrim{position:fixed;inset:0;background:rgba(10,16,14,0);z-index:90;
+    display:none;pointer-events:none;transition:background .18s ease;}
+  .search-scrim.open{display:block;pointer-events:auto;background:rgba(10,16,14,.42);}
+  .search-modal{position:fixed;top:12%;left:50%;transform:translateX(-50%) translateY(-8px);
+    width:min(560px,88vw);max-height:70vh;background:#fff;border-radius:16px;
+    box-shadow:0 30px 70px -20px rgba(10,16,14,.45);z-index:91;display:none;
+    flex-direction:column;overflow:hidden;opacity:0;transition:opacity .16s ease, transform .16s ease;}
+  .search-scrim.open .search-modal{display:flex;opacity:1;transform:translateX(-50%) translateY(0);}
+  .search-field{display:flex;align-items:center;gap:10px;padding:16px 18px;
+    border-bottom:1px solid var(--line);flex:0 0 auto;}
+  .search-field .msi{color:var(--ink-dim);font-size:22px;}
+  .search-field input{flex:1;border:none;outline:none;font-size:16px;font-family:inherit;
+    color:var(--ink);background:transparent;}
+  .search-field input::placeholder{color:var(--ink-dim);}
+  .search-field .search-esc{font-size:11px;color:var(--ink-dim);border:1px solid var(--line);
+    border-radius:6px;padding:3px 7px;font-family:inherit;}
+  .search-results{overflow-y:auto;padding:8px;}
+  .search-group-label{font-size:11px;text-transform:uppercase;letter-spacing:.06em;
+    color:var(--ink-dim);padding:10px 10px 4px;}
+  .search-result{display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:10px;
+    cursor:pointer;color:var(--ink);}
+  .search-result .msi{font-size:19px;color:var(--ink-dim);width:22px;text-align:center;}
+  .search-result .sr-label{flex:1;font-size:14px;}
+  .search-result .sr-hint{font-size:11.5px;color:var(--ink-dim);}
+  .search-result:hover,.search-result.active{background:var(--bg);}
+  .search-result.active .msi{color:var(--yellow);}
+  .search-empty{padding:28px 18px;text-align:center;color:var(--ink-dim);font-size:13.5px;}
+  .drawer h3{margin:0 0 4px;font-size:16px;}
+  .drawer .sub{font-size:12.5px;color:var(--ink-dim);margin-bottom:18px;}
+  .drawer-close{position:absolute;top:20px;right:20px;cursor:pointer;color:var(--ink-dim);font-size:15px;}
+  .drawer-section{margin-bottom:22px;}
+  .drawer-section .label{font-size:11px;text-transform:uppercase;letter-spacing:.06em;
+    color:var(--ink-dim);margin-bottom:8px;}
+  .drawer-row{display:flex;align-items:center;justify-content:space-between;padding:11px 12px;
+    border-radius:10px;font-size:13.5px;cursor:pointer;}
+  .drawer-row:hover{background:var(--bg);}
+  .drawer-row .r-ic{color:var(--ink-dim);}
+  .drawer-sub{padding-left:12px;margin-top:4px;}
+  .drawer-sub .fy-item{padding:8px 12px;font-size:12.5px;color:var(--ink-dim);border-radius:8px;cursor:pointer;}
+  .drawer-sub .fy-item:hover{background:var(--bg);color:var(--ink);}
+  .drawer-sub .fy-item.on{background:rgba(47,143,91,.12);color:var(--green-dark);font-weight:600;}
+
+  /* ===== formato desktop, sin scroll de página — cabecera compacta + todos los widgets =====
+     por debajo del ancho de diseño (1280px) el layout reordena de verdad (ver media
+     queries al final de este bloque), en vez de encogerse o generar scroll horizontal. */
+  html,body{height:100%;}
+  body{overflow-y:hidden;overflow-x:hidden;}
+  .stage{padding:18px 22px;height:100vh;display:flex;flex-direction:column;max-width:none;min-width:0;}
+  /* el JS solo pone display:flex por inline style — sin flex-direction:column aquí,
+     por defecto sería "row" y la cabecera + los widgets quedarían uno al lado del otro
+     en vez de apilados, empujando las tarjetas fuera de la pantalla */
+  #view-dashboard{flex-direction:column;flex:1;min-height:0;min-width:0;}
+
+  /* ===== responsive real por debajo del ancho de diseño (1280px) =====
+     el dashboard deja de ser "todo cabe en una pantalla sin scroll" y pasa a
+     apilarse verticalmente con scroll de página normal; nada se corta ni se
+     superpone. Dos rupturas: tablet (≤1279px) y móvil (≤760px). */
+  @media (max-width: 1279px){
+    html,body{height:auto;}
+    body{overflow-y:auto;overflow-x:hidden;}
+    .stage{height:auto;min-height:100vh;padding:16px 18px;}
+    /* deja que sea la página (body) la que haga scroll, no un contenedor interno anidado */
+    #view-dashboard{flex:none;overflow-y:visible;}
+    .dash{flex:none;overflow-y:visible;}
+
+    /* cabecera: mapa debajo en vez de al lado */
+    .head-compact.tall{height:auto;flex-direction:column;padding-bottom:14px;}
+    .head-main{height:auto;}
+    .map-in-header{max-width:100%;flex:0 0 200px;margin-top:10px;}
+
+    /* los 4 kpi pasan de 1 fila a una rejilla de 2×2 */
+    .kpi-row{flex-wrap:wrap;}
+    .kpi-glass{flex:1 1 calc(50% - 10px);min-width:200px;height:auto;min-height:150px;}
+
+    /* las filas de widgets del dashboard se apilan en vez de desbordar */
+    .dash{overflow-y:visible;}
+    .dash-row{flex-direction:column;min-height:0;}
+    .dash-row .card{min-height:220px;}
+
+    /* grid de entrada (diputaciones/categorías): 3 → 2 columnas */
+    .cat-grid{grid-template-columns:repeat(2, 1fr);}
+
+    .grid{grid-template-columns:repeat(2,1fr);}
+  }
+
+  @media (max-width: 760px){
+    .rail{width:60px;flex:0 0 60px;padding:14px 0;}
+    .rail .logo .logo-word-mark{width:44px;}
+    .stage{padding:12px 14px;}
+
+    .head-compact.tall{padding:10px 14px 14px;}
+    .head-compact h1.title{font-size:18px;}
+    .topnav{flex-wrap:wrap;gap:8px;}
+    .crumbs{flex-wrap:wrap;row-gap:4px;}
+    .datetime{font-size:11.5px;gap:8px;}
+
+    .kpi-glass{flex:1 1 100%;}
+
+    .cat-grid{grid-template-columns:1fr;}
+    .flow-title{font-size:17px;}
+
+    .grid{grid-template-columns:1fr;}
+
+    /* el buscador y los menús contextuales se adaptan a pantallas estrechas */
+    .search-modal{width:92vw;top:8%;}
+    .account-dropdown{width:200px;}
+  }
+
+  .head-compact{position:relative;border-radius:16px;overflow:hidden;flex:0 0 auto;
+    display:flex;align-items:stretch;
+    background:url('../img/civeo-city.png') 30% 20%/cover no-repeat, linear-gradient(120deg,#173a6b,#2f8f5b);
+    color:#fff;padding:12px 20px 14px;}
+  .head-compact::before{content:"";position:absolute;inset:0;
+    background:linear-gradient(100deg, rgba(6,14,26,.78) 0%, rgba(6,14,26,.5) 55%, rgba(6,14,26,.3) 100%);}
+  .head-compact > *{position:relative;z-index:2;}
+  /* min-height, no height fija: con 4 paneles de clima + mapa dentro, el
+     contenido a veces superaba los 360px y la foto (overflow:hidden) los
+     recortaba por abajo — ahora crece si hace falta en vez de cortar nada. */
+  .head-compact.tall{padding:6px 20px 16px;min-height:360px;}
+  .kpi-row{display:flex;gap:10px;margin-top:auto;flex:0 0 auto;}
+  .kpi-glass{flex:1;height:150px;display:flex;flex-direction:column;background:rgba(255,255,255,.10);
+    border:1px solid rgba(255,255,255,.2);border-radius:14px;padding:14px 16px;backdrop-filter:blur(8px);}
+  .kpi-top .k{display:block;font-size:12.5px;color:rgba(255,255,255,.78);margin-bottom:2px;font-weight:500;}
+  .kpi-value{font-size:21px;font-weight:700;color:#fff;letter-spacing:-.3px;flex:0 0 auto;transition:opacity .2s ease;}
+  .kpi-value-tick{opacity:.5;}
+  /* insignia "en vivo": marca los KPI de clima que están conectados de verdad
+     a la API pública de Open-Meteo (no simulados como el resto). Si la petición
+     falla (sin conexión, red bloqueada…) pasa a modo "offline" en vez de mentir. */
+  .kpi-live-badge{font-size:9px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+    color:#7be6da;background:rgba(15,184,172,.16);border:1px solid rgba(143,216,207,.35);
+    border-radius:5px;padding:2px 5px;margin-left:6px;margin-right:auto;white-space:nowrap;}
+  .kpi-live-badge.offline{color:rgba(255,255,255,.5);background:rgba(255,255,255,.08);
+    border-color:rgba(255,255,255,.18);}
+  .kpi-live-badge[hidden]{display:none;}
+  .kpi-chart{flex:1;min-height:0;margin-top:6px;}
+  .kpi-chart svg{width:100%;height:100%;}
+  .kpi-chart-legend{display:flex;gap:10px;font-size:9.5px;color:rgba(255,255,255,.75);flex:0 0 auto;margin-top:2px;}
+  .kpi-chart-legend span{display:flex;align-items:center;gap:4px;}
+  .kpi-chart-legend i{width:7px;height:7px;border-radius:50%;display:inline-block;}
+  .kpi-chart-legend i.dash{background:none;border:1.5px dashed;width:9px;height:0;border-radius:0;}
+  .kpi-segbar{flex:1;min-height:0;display:flex;gap:4px;margin-top:8px;border-radius:8px;overflow:hidden;}
+  .kpi-bars div{flex:1;background:rgba(255,255,255,.28);border-radius:4px 4px 1px 1px;position:relative;}
+  .kpi-bars div.hi{background:#fff;}
+  .kpi-top{display:flex;align-items:flex-start;justify-content:space-between;}
+  .kpi-more{color:rgba(255,255,255,.6);}
+  .kpi-ring-row{flex:1;min-height:0;display:flex;align-items:center;gap:10px;margin-top:4px;}
+  .kpi-ring{position:relative;width:52px;height:52px;flex:0 0 auto;}
+  .kpi-ring svg{width:100%;height:100%;}
+  .kpi-ring-num{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;}
+  .kpi-ring-num .msi{color:rgba(255,255,255,.75);margin-bottom:0px;}
+  .kpi-ring-num b{font-size:13px;font-weight:800;line-height:1;}
+  .kpi-ring-num b small{font-size:8.5px;font-weight:600;color:rgba(255,255,255,.75);}
+  .kpi-agg-note{flex:1;min-width:0;font-size:10px;line-height:1.35;color:rgba(255,255,255,.78);}
+  .kpi-agg-note b{color:#fff;font-weight:700;}
+  .kpi-gauge-note{font-size:9.5px;color:rgba(255,255,255,.75);flex:0 0 auto;text-align:center;margin-top:2px;}
+  .kpi-foot{display:flex;align-items:center;justify-content:flex-end;margin-top:4px;
+    font-size:10px;color:rgba(255,255,255,.6);flex:0 0 auto;}
+  .kpi-bars div.hi span{position:absolute;top:-20px;left:50%;transform:translateX(-50%);
+    background:var(--yellow);color:#fff;font-size:9.5px;font-weight:700;padding:1px 6px;border-radius:999px;white-space:nowrap;}
+  .kpi-gauge{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;}
+  .head-main{flex:1;min-width:0;display:flex;flex-direction:column;height:100%;}
+  .head-compact .crumbs{margin-top:8px;font-size:13px;}
+  .head-compact .crumbs span{color:rgba(255,255,255,.82);}
+  .head-compact .crumbs .sep{color:rgba(255,255,255,.4);}
+  .head-compact h1.title{font-size:22px;margin:6px 0 0;}
+  .head-compact .toolbar{margin-top:8px;}
+  .head-compact .tool-pill,.head-compact .tool-icon{padding:5px 12px;font-size:12px;}
+  .head-compact .tool-icon{width:28px;height:28px;}
+  /* accesibilidad: foco visible en todo elemento interactivo */
+  .rail-item:focus-visible,.tool-pill:focus-visible,.tool-icon:focus-visible,
+  .fy-item:focus-visible,.drawer-row:focus-visible,.card-head .ic:focus-visible,
+  .ic:focus-visible,.kpi-more:focus-visible,.pg-btn:focus-visible,.pg-num:focus-visible,
+  .kpi-foot .msi:focus-visible,.fy-sub-item:focus-visible,.fy-parent:focus-visible,
+  .edit-handle:focus-visible,.edit-delete:focus-visible,.edit-resize:focus-visible,
+  .catalog-item:focus-visible,.wl-del:focus-visible,.wl-step-btn:focus-visible{
+    outline:2px solid #8fd8cf;outline-offset:2px;border-radius:6px;}
+  .rail-item:focus-within .flyout{display:block;}
+  /* en la pantalla de inicio (elegir diputación) las categorías del rail no tienen
+     todavía un destino con sentido —no hay diputación seleccionada—, así que se
+     atenúan y quedan inertes en vez de duplicar/adelantar el flujo de tarjetas. */
+  .rail.nav-locked .rail-item[data-nav]{opacity:.32;pointer-events:none;}
+  .rail.nav-locked .rail-item[data-nav] .flyout{display:none!important;}
+
+  /* mapa embebido en la cabecera — 1/4 del ancho, translúcido sobre la foto */
+  .map-in-header{flex:0 0 25%;max-width:25%;display:flex;flex-direction:column;
+    padding-left:18px;margin-left:18px;border-left:1px solid rgba(255,255,255,.16);}
+  .map-in-header .card-head{margin-bottom:6px;}
+  .map-in-header h4{font-size:11.5px;font-weight:600;}
+  .map-canvas.translucent{flex:1;min-height:0;border-radius:12px;overflow:hidden;
+    background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);}
+  .map-canvas.translucent .pin{background:#ff5a3c;border-color:#fff;box-shadow:0 3px 8px rgba(0,0,0,.45);}
+  .map-canvas.translucent .pin.cluster{background:var(--yellow);color:#fff;border-color:#fff;}
+  #leaflet-map{position:absolute;inset:0;width:100%;height:100%;filter:saturate(.85) brightness(1.02);}
+  .civeo-marker{width:14px;height:14px;border-radius:50%;background:var(--yellow);
+    border:2.5px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.4);}
+  .civeo-marker.cluster{width:24px;height:24px;background:var(--blue-deep);color:#fff;
+    display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;
+    border:2.5px solid #fff;}
+  .leaflet-popup-content-wrapper{border-radius:10px;font-family:'Plus Jakarta Sans',sans-serif;}
+  .leaflet-control-attribution{font-size:8px !important;}
+
+  .dash{flex:1;min-height:0;min-width:0;display:flex;flex-direction:column;gap:7px;margin-top:9px;}
+  .dash-row{display:flex;gap:10px;flex:1;min-height:0;min-width:0;}
+  .dash-row.stats{flex:0 0 50px;}
+  /* min-width:0 es imprescindible en items flex: sin esto, un elemento ancho por dentro
+     (como la tabla de luminarias) fuerza a toda la fila a desbordar hacia la derecha
+     en vez de encogerse — es la causa de que los widgets se salieran de la pantalla */
+  .card{display:flex;flex-direction:column;min-height:0;min-width:0;padding:8px 11px;}
+  .card-head{margin-bottom:5px;flex:0 0 auto;}
+  .card-head h4{font-size:11px;}
+  .card-body{flex:1;min-height:0;min-width:0;overflow:auto;}
+  .stat-mini{padding:5px 12px;}
+  .stat-mini .k{font-size:9.5px;}
+  .stat-mini .v{font-size:15px;}
+  table.mini th{padding:3px 5px;font-size:8.5px;}
+  table.mini td{padding:3.5px 5px;font-size:10px;}
+
+  /* mapa */
+  .map-widget{flex:2;}
+  .map-canvas{position:relative;flex:1;border-radius:12px;overflow:hidden;min-height:0;
+    background:
+      radial-gradient(18% 24% at 22% 30%,rgba(43,108,176,.18),transparent),
+      radial-gradient(16% 22% at 68% 62%,rgba(47,143,91,.18),transparent),
+      repeating-linear-gradient(0deg, rgba(24,36,32,.04) 0 1px, transparent 1px 34px),
+      repeating-linear-gradient(90deg, rgba(24,36,32,.04) 0 1px, transparent 1px 34px),
+      #eef2ee;}
+  .pin{position:absolute;width:24px;height:24px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);
+    background:var(--blue);border:2px solid #fff;box-shadow:0 4px 10px -3px rgba(0,0,0,.4);}
+  .pin.cluster{border-radius:50%;transform:none;display:flex;align-items:center;justify-content:center;
+    color:#fff;font-size:11px;font-weight:700;background:var(--blue-deep);width:26px;height:26px;}
+  .pin-pop{position:absolute;background:#fff;border-radius:10px;padding:10px 12px;font-size:11.5px;
+    box-shadow:0 16px 30px -14px rgba(24,36,32,.4);min-width:150px;color:var(--ink);}
+  .pin-pop b{display:block;font-size:12.5px;margin-bottom:4px;}
+  .pin-pop .d{color:var(--ink-dim);font-size:10.5px;}
+
+  /* tabla widget */
+  table.mini{width:100%;border-collapse:collapse;font-size:11.5px;}
+  table.mini th{position:sticky;top:0;background:var(--card);text-align:left;color:var(--ink-dim);
+    font-weight:600;font-size:9.5px;text-transform:uppercase;letter-spacing:.04em;padding:5px 6px;
+    border-bottom:1px solid var(--line);}
+  table.mini td{padding:6px 6px;border-bottom:1px solid var(--line);white-space:nowrap;}
+  .status-dot{display:inline-flex;align-items:center;gap:4px;}
+  .status-dot i{width:6px;height:6px;border-radius:50%;display:inline-block;}
+
+  .card-pager{display:flex;align-items:center;gap:4px;flex:0 0 auto;margin-top:6px;padding-top:6px;
+    border-top:1px solid var(--line);font-size:10px;color:var(--ink-dim);}
+
+  /* ===== modo edición: personalizar widgets ===== */
+  .edit-handle,.edit-delete,.edit-resize{display:none;}
+  body.editing-widgets .card{position:relative;cursor:default;
+    outline:1.5px dashed rgba(43,108,176,.35);outline-offset:2px;border-radius:20px;
+    transition:outline-color .15s ease, box-shadow .15s ease;}
+  body.editing-widgets .card:hover{outline-color:var(--blue);box-shadow:0 8px 24px -14px rgba(23,58,107,.35);}
+  body.editing-widgets .card.dragging{opacity:.4;}
+  body.editing-widgets .card.drop-before{box-shadow:inset 3px 0 0 var(--blue), 0 8px 24px -14px rgba(23,58,107,.35);}
+  body.editing-widgets .card.drop-after{box-shadow:inset -3px 0 0 var(--blue), 0 8px 24px -14px rgba(23,58,107,.35);}
+  body.editing-widgets .edit-handle,body.editing-widgets .edit-delete,body.editing-widgets .edit-resize{
+    display:flex;align-items:center;justify-content:center;position:absolute;z-index:5;
+    background:var(--blue-deep);color:#fff;border-radius:7px;cursor:pointer;}
+  .edit-handle{top:-10px;left:12px;width:24px;height:20px;cursor:grab;font-size:15px;}
+  .edit-handle:active{cursor:grabbing;}
+  .edit-handle .msi{font-size:15px;}
+  .edit-delete{top:-10px;right:12px;width:20px;height:20px;background:#c0392b;font-size:13px;}
+  .edit-delete .msi{font-size:13px;}
+  .edit-delete:hover{background:#9c2c1f;}
+  .edit-resize{bottom:-9px;right:-9px;width:20px;height:20px;cursor:nwse-resize;
+    background:var(--blue);transform:rotate(90deg);}
+  .edit-resize .msi{font-size:13px;}
+  .resize-badge{position:fixed;z-index:200;background:var(--ink);color:#fff;font-size:11px;
+    font-weight:600;padding:4px 9px;border-radius:999px;pointer-events:none;transform:translate(-50%,-140%);}
+
+  .catalog-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px;}
+  .catalog-item{display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 6px;
+    border:1px solid var(--line);border-radius:12px;cursor:pointer;text-align:center;font-size:11px;color:var(--ink-dim);}
+  .catalog-item:hover{border-color:var(--blue);color:var(--ink);background:var(--bg);}
+  .catalog-item .msi{font-size:22px;color:var(--blue-deep);}
+
+  .widget-list-row{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;padding:9px 10px;
+    border-radius:10px;font-size:12.5px;border:1px solid transparent;}
+  .widget-list-row:hover{background:var(--bg);}
+  .widget-list-row .msi.grip{color:var(--ink-dim);font-size:16px;cursor:grab;flex:0 0 auto;}
+  .widget-list-row .wl-name{flex:1;min-width:60%;color:var(--ink);font-weight:500;
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .widget-list-row .wl-del{color:var(--ink-dim);cursor:pointer;font-size:16px;flex:0 0 auto;}
+  .widget-list-row .wl-del:hover{color:#c0392b;}
+  .widget-list-row.dragging{opacity:.4;}
+  .widget-list-row.drop-above{box-shadow:inset 0 3px 0 var(--blue);}
+  .widget-list-row.drop-below{box-shadow:inset 0 -3px 0 var(--blue);}
+  .wl-section{margin-bottom:14px;border:1px solid transparent;border-radius:12px;
+    padding:2px;transition:background .12s ease, border-color .12s ease;}
+  .wl-section:last-child{margin-bottom:0;}
+  .wl-section.drop-target{background:rgba(43,108,176,.06);border-color:var(--blue);}
+  .wl-section-label{font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;
+    color:var(--ink-dim);padding:4px 8px 6px;}
+  .wl-stepper{display:flex;align-items:center;gap:6px;margin-left:22px;flex:0 0 auto;}
+  .wl-stepper-label{font-size:10px;color:var(--ink-dim);}
+  .wl-stepper-ctrl{display:flex;align-items:center;gap:0;border:1px solid var(--line);border-radius:8px;overflow:hidden;}
+  .wl-step-btn{width:20px;height:20px;border:none;background:var(--card);color:var(--ink-dim);
+    cursor:pointer;font-size:13px;line-height:1;font-family:inherit;}
+  .wl-step-btn:hover{background:var(--bg);color:var(--ink);}
+  .wl-step-val{width:18px;text-align:center;font-size:11.5px;font-weight:700;color:var(--ink);}
+  .edit-footer{position:sticky;bottom:0;display:flex;gap:8px;padding:14px 0 4px;margin-top:8px;
+    background:#fff;border-top:1px solid var(--line);}
+  .edit-footer button{flex:1;padding:10px;border-radius:10px;border:none;font-size:13px;font-weight:600;
+    cursor:pointer;font-family:inherit;}
+  .edit-footer .btn-save{background:var(--blue-deep);color:#fff;}
+  .edit-footer .btn-cancel{background:var(--bg);color:var(--ink-dim);}
+  .edit-hint{font-size:11px;color:var(--ink-dim);margin:4px 0 10px;line-height:1.4;}
+  .add-widget-btn{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;
+    padding:9px;border-radius:10px;border:1px dashed var(--blue);background:none;color:var(--blue-deep);
+    font-size:12.5px;font-weight:600;cursor:pointer;font-family:inherit;margin-top:10px;}
+  .add-widget-btn:hover{background:rgba(43,108,176,.08);}
+  .normal-panel,.edit-panel{display:block;}
+  body.editing-widgets .normal-panel{display:none;}
+  body:not(.editing-widgets) .edit-panel{display:none;}
+
+  /* transición breve al cambiar de vista: sin esto el cambio era un corte
+     seco e instantáneo, muy poco "app real". */
+  .app-view{transition:opacity .2s ease, transform .2s ease;}
+  .app-view.view-entering{opacity:0;transform:translateY(6px);}
+
+  /* ===== flujo de entrada: elegir diputación → elegir categoría → dashboard =====
+     estructura deliberadamente simple (bloque normal, sin flex/grid anidados)
+     para que no dependa de ninguna resolución de altura en cascada. */
+  .app-view.flow-view{height:auto;max-height:100%;display:block;box-sizing:border-box;
+    width:100%;overflow-y:auto;padding:4px 4px 24px;}
+  .flow-brand{display:flex;align-items:center;gap:7px;margin-bottom:14px;
+    font-weight:700;font-size:14px;color:var(--ink);letter-spacing:.01em;}
+  .flow-top .crumbs{font-size:13px;color:var(--ink-dim);margin-bottom:18px;}
+  .flow-top .crumbs .current{color:var(--ink);font-weight:600;}
+  .flow-top .crumbs .crumb-link{cursor:pointer;color:var(--blue-deep);}
+  .flow-top .crumbs .crumb-link:hover{text-decoration:underline;}
+  .flow-title{font-size:20px;font-weight:700;color:var(--ink);text-align:center;margin:0 0 24px;}
+  .cat-grid{width:100%;max-width:1040px;margin:0 auto;
+    display:grid;grid-template-columns:repeat(3, 1fr);grid-auto-rows:170px;gap:20px;}
+  .cat-card{position:relative;width:100%;height:170px;border-radius:16px;overflow:hidden;cursor:pointer;
+    box-shadow:0 14px 30px -20px rgba(24,36,32,.4);
+    outline:2px solid transparent;outline-offset:2px;transition:outline-color .15s ease, transform .15s ease;}
+  .cat-card:hover{transform:translateY(-2px);outline-color:var(--blue);}
+  .cat-card:hover .cat-icon{background:rgba(15,184,172,.5);}
+  .cat-card.cat-g1{background:linear-gradient(135deg,#173a6b,#2b6cb0);}
+  .cat-card.cat-g2{background:linear-gradient(135deg,#1f6b43,#2f8f5b);}
+  .cat-card.cat-g3{background:linear-gradient(135deg,#0a7f76,#0fb8ac);}
+  /* onda decorativa tipo "flow lines" (inspirada en las láminas de olas/mesh que pasaste):
+     varias líneas curvas superpuestas con color de marca + un cluster de puntos, como
+     SVG inline (sin peticiones de red). Misma pieza en TODAS las cards, con foto o sin ella. */
+  .cat-card::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+    background-image:url("data:image/svg+xml,%3Csvg%20width%3D%222050%22%20height%3D%221023%22%20viewBox%3D%220%200%202050%201023%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%20%3Cpath%20d%3D%22M233.298%201018.86C240.495%20868.363%20324.301%20726.5%20452.25%20647.012C517.024%20606.708%20592.034%20583.038%20668.323%20577.92C755.008%20572.002%20825.06%20602.23%20908.067%20617.584C972.681%20629.579%201039.85%20632.458%201103.51%20614.385C1169.4%20595.833%201228.9%20555.049%201270%20500.351C1338.77%20409.028%201327.42%20293.714%201372.2%20192.475C1412.66%20100.831%201498.23%2030.4597%201595.95%208.3886C1693.67%20-13.6825%201801.15%2013.1867%201877.12%2078.6004%22%20stroke%3D%22%23F2F2F2%22%20stroke-width%3D%221.59936%22%20stroke-miterlimit%3D%2210%22%2F%3E%20%3Cpath%20d%3D%22M222.262%201019.18C228.98%20870.122%20311.346%20729.379%20437.376%20649.731C502.47%20608.308%20578.279%20584.157%20655.208%20579.039C678.079%20577.44%20699.83%20578.56%20721.102%20581.119C780.758%20588.316%20835.616%20608.308%20897.191%20620.303C909.346%20622.702%20921.661%20624.621%20933.816%20626.38C987.555%20633.577%201042.25%20632.938%201094.55%20618.064C1123.34%20609.907%201150.69%20597.432%201175.96%20581.119C1208.91%20559.847%201237.85%20532.498%201261.2%20500.991C1264.56%20496.353%201267.92%20491.714%201270.96%20487.076C1322.14%20409.028%201328.22%20320.583%201359.09%20240.455C1363.88%20228.14%201369.16%20215.825%201375.24%20203.99C1400.51%20155.05%201439.69%20113.466%201487.35%2083.0786C1522.54%2060.6876%201562.36%2044.3742%201604.27%2035.8976C1632.9%2030.1399%201662.32%2028.0607%201691.43%2029.3402C1763.08%2032.379%201833.61%2054.6101%201884.79%2094.594%22%20stroke%3D%22%23E7EBEC%22%20stroke-width%3D%221.59936%22%20stroke-miterlimit%3D%2210%22%2F%3E%20%3Cpath%20d%3D%22M211.227%201019.34C217.464%20871.722%20298.712%20732.418%20422.662%20652.45C488.236%20610.227%20564.685%20585.277%20642.414%20580.319C665.444%20578.879%20687.516%20579.839%20708.947%20582.398C769.243%20589.915%20824.58%20610.387%20886.636%20622.862C898.951%20625.261%20911.266%20627.5%20923.581%20629.259C977.799%20636.936%201033.3%20636.776%201085.92%20621.582C1114.86%20613.266%201142.53%20600.471%201167.8%20583.518C1200.75%20561.606%201229.22%20533.458%201252.73%20501.47C1256.09%20496.832%201259.45%20492.034%201262.48%20487.396C1314.46%20408.228%201326.3%20323.622%201361%20249.092C1366.28%20237.576%201372.2%20226.221%201378.76%20215.345C1405.95%20170.244%201446.25%20132.499%201494.55%20105.31C1530.22%2085.1577%201570.52%2070.7635%201612.9%2063.2466C1641.85%2058.1286%201671.6%2056.2094%201701.03%2057.169C1773.48%2059.2481%201844.49%2076.8411%201893.11%20110.588%22%20stroke%3D%22%23DDE4E6%22%20stroke-width%3D%221.59936%22%20stroke-miterlimit%3D%2210%22%2F%3E%20%3Cpath%20d%3D%22M200.191%201019.5C205.949%20873.321%20285.757%20735.137%20407.948%20655.169C473.841%20611.986%20551.09%20586.396%20629.619%20581.438C652.809%20579.999%20675.2%20580.959%20696.952%20583.678C757.887%20591.354%20813.865%20612.306%20876.239%20625.421C888.555%20627.98%20901.029%20630.379%20913.504%20632.138C968.362%20640.455%201024.34%20640.455%201077.44%20624.941C1106.55%20616.464%201134.38%20603.35%201159.81%20585.757C1192.75%20563.206%201220.9%20534.257%201244.41%20501.95C1247.93%20497.152%201251.13%20492.514%201254.33%20487.716C1307.11%20407.588%201324.54%20326.501%201363.08%20257.728C1369%20247.173%201375.4%20236.777%201382.44%20226.541C1411.7%20185.278%201452.97%20151.531%201502.07%20127.381C1538.37%20109.628%201579%2096.9931%201621.86%2090.4357C1651.13%2085.9575%201681.04%2084.3582%201710.94%2084.838C1784.19%2086.1174%201855.69%2098.9123%201901.59%20126.261%22%20stroke%3D%22%23D2DDE1%22%20stroke-width%3D%221.59936%22%20stroke-miterlimit%3D%2210%22%2F%3E%20%3Cpath%20d%3D%22M189.155%201019.66C194.433%20874.92%20272.802%20737.855%20393.073%20657.728C459.287%20613.745%20537.175%20587.516%20616.663%20582.558C640.174%20581.118%20662.565%20582.078%20684.636%20584.957C746.051%20592.794%20802.829%20614.385%20865.523%20627.98C877.998%20630.699%20890.473%20633.098%20903.108%20635.177C958.446%20643.973%201015.22%20644.293%201068.64%20628.619C1098.07%20619.983%201125.9%20606.548%201151.33%20588.476C1184.28%20565.285%201211.94%20535.537%201235.77%20502.75C1239.29%20497.952%201242.49%20493.154%201245.69%20488.356C1299.27%20407.108%201322.3%20329.859%201364.68%20266.685C1371.24%20256.929%201378.12%20247.493%201385.63%20238.216C1416.82%20200.791%201459.2%20171.043%201508.94%20150.092C1545.73%20134.578%201586.99%20123.862%201630.18%20118.265C1659.76%20114.426%201689.99%20112.987%201720.22%20113.147C1794.11%20113.626%201866.24%20121.623%201909.58%20142.575%22%20stroke%3D%22%23C7D6DB%22%20stroke-width%3D%221.59936%22%20stroke-miterlimit%3D%2210%22%2F%3E%20%3Cpath%20d%3D%22M177.96%201019.82C182.758%20876.52%20259.687%20740.574%20378.2%20660.447C444.573%20615.505%20523.421%20588.635%20603.709%20583.677C627.379%20582.238%20650.09%20583.358%20672.321%20586.236C734.376%20594.393%20791.793%20616.304%20854.808%20630.539C867.443%20633.417%20880.078%20635.976%20892.713%20638.056C948.69%20647.492%201006.11%20647.972%201060.01%20631.978C1089.59%20623.182%201117.74%20609.427%201143.17%20590.715C1176.12%20566.884%201203.47%20536.336%201227.3%20503.07C1230.82%20498.272%201234.18%20493.314%201237.37%20488.516C1291.75%20406.309%201320.38%20332.738%201366.76%20275.001C1373.96%20266.205%201381.32%20257.568%201389.31%20249.252C1422.42%20215.505%201465.92%20189.916%201516.46%20172.003C1553.73%20158.728%201595.47%20149.932%201639.13%20145.134C1669.04%20141.935%201699.59%20140.655%201730.14%20140.495C1804.83%20140.176%201877.6%20143.374%201918.06%20157.928%22%20stroke%3D%22%23BCCFD5%22%20stroke-width%3D%221.59936%22%20stroke-miterlimit%3D%2210%22%2F%3E%20%3Cpath%20d%3D%22M166.925%201019.98C171.243%20878.119%20246.892%20743.293%20363.486%20663.166C430.179%20617.264%20509.827%20589.755%20590.914%20584.957C614.745%20583.518%20637.775%20584.637%20660.166%20587.676C722.861%20595.993%20780.758%20618.543%20844.252%20633.258C856.887%20636.296%20869.682%20638.855%20882.477%20641.094C938.934%20651.01%20996.991%20651.97%201051.37%20635.657C1081.12%20626.7%201109.43%20612.626%201135.02%20593.274C1167.8%20568.644%201194.83%20537.296%201218.82%20503.71C1222.34%20498.752%201225.7%20493.954%201228.9%20488.996C1284.08%20405.829%201318.3%20335.777%201368.52%20283.798C1376.2%20275.801%201384.2%20268.124%201392.67%20260.767C1427.7%20230.859%201472.16%20209.108%201523.5%20194.394C1561.4%20183.518%201603.47%20176.481%201647.61%20172.643C1677.84%20170.084%201708.7%20168.964%201739.41%20168.484C1814.74%20167.205%201888.15%20165.765%201925.9%20174.082%22%20stroke%3D%22%23B2C8CF%22%20stroke-width%3D%221.59936%22%20stroke-miterlimit%3D%2210%22%2F%3E%20%3Cpath%20d%3D%22M155.889%201020.14C159.727%20879.719%20233.937%20746.012%20348.611%20665.725C415.624%20618.863%20496.072%20590.715%20577.799%20585.917C601.789%20584.477%20624.98%20585.597%20647.851%20588.635C711.185%20597.112%20769.722%20620.143%20833.536%20635.657C846.331%20638.695%20859.126%20641.574%20872.081%20643.973C929.178%20654.529%20987.874%20655.649%201042.57%20639.015C1072.48%20629.899%201100.95%20615.505%201126.7%20595.513C1159.49%20570.243%201186.19%20538.096%201210.18%20504.03C1213.7%20499.072%201217.06%20494.114%201220.42%20489.156C1276.56%20404.869%201316.22%20338.656%201370.28%20292.275C1378.6%20285.237%201387.07%20278.36%201396.03%20271.963C1433.14%20245.893%201478.56%20228.14%201530.7%20216.465C1569.08%20207.829%201611.78%20202.711%201656.25%20199.832C1686.79%20197.913%201717.98%20197.113%201749.01%20196.153C1825.14%20194.074%201899.03%20187.837%201934.21%20189.756%22%20stroke%3D%22%23A7C1C9%22%20stroke-width%3D%221.59936%22%20stroke-miterlimit%3D%2210%22%2F%3E%20%3Cpath%20d%3D%22M144.854%201020.46C148.212%20881.478%20220.983%20748.891%20333.898%20668.603C401.23%20620.783%20482.318%20591.994%20565.005%20587.356C589.155%20585.917%20612.666%20587.196%20635.696%20590.235C699.671%20599.031%20758.847%20622.542%20822.981%20638.535C835.936%20641.734%20848.891%20644.773%20861.845%20647.172C919.422%20658.208%20978.758%20659.647%201033.94%20642.694C1064.16%20633.418%201092.63%20618.703%201118.54%20598.232C1151.33%20572.162%201177.56%20539.375%201201.71%20504.829C1205.23%20499.871%201208.59%20494.753%201211.94%20489.795C1268.88%20404.549%201313.98%20341.855%201372.2%20301.231C1381%20294.994%201390.11%20289.076%201399.55%20283.638C1438.57%20261.407%201485.11%20247.653%201537.89%20239.176C1576.92%20232.938%201619.94%20229.58%201664.88%20227.661C1695.75%20226.381%201727.26%20225.741%201758.6%20224.462C1835.53%20221.583%201909.9%20210.707%201942.37%20206.069%22%20stroke%3D%22%239CBAC4%22%20stroke-width%3D%221.59936%22%20stroke-miterlimit%3D%2210%22%2F%3E%20%3Cpath%20d%3D%22M133.658%201020.62C136.537%20883.237%20207.868%20751.45%20319.024%20671.162C386.676%20622.222%20468.563%20592.954%20552.05%20588.316C576.36%20587.036%20600.191%20588.156%20623.381%20591.354C687.995%20600.311%20747.651%20624.301%20812.265%20640.934C825.22%20644.293%20838.335%20647.332%20851.45%20649.891C909.666%20661.566%20969.642%20663.166%201025.14%20646.052C1055.53%20636.616%201084.32%20621.582%201110.07%20600.471C1142.85%20573.761%201168.76%20540.175%201192.91%20505.149C1196.43%20500.031%201199.95%20494.913%201203.31%20489.955C1261.05%20403.59%201311.74%20344.734%201373.8%20309.708C1383.24%20304.43%201392.83%20299.312%201402.75%20294.834C1443.69%20276.281%201491.35%20266.525%201544.93%20261.247C1584.44%20257.249%201628.1%20255.809%201673.36%20254.85C1704.55%20254.21%201736.37%20253.73%201768.04%20252.291C1845.61%20248.612%201920.62%20232.938%201950.37%20221.903%22%20stroke%3D%22%2392B3BE%22%20stroke-width%3D%221.59936%22%20stroke-miterlimit%3D%2210%22%2F%3E%20%3Cpath%20d%3D%22M122.622%201020.78C125.021%20884.836%20194.913%20754.169%20304.149%20673.881C372.122%20623.981%20454.809%20594.073%20539.095%20589.595C563.725%20588.316%20587.715%20589.435%20611.226%20592.794C676.48%20601.91%20736.776%20626.54%20801.709%20643.653C814.824%20647.172%20827.939%20650.371%20841.214%20653.09C899.91%20665.245%20960.685%20667.324%201016.5%20649.731C1047.05%20640.135%201076%20624.781%201101.91%20603.03C1134.7%20575.681%201160.13%20541.294%201184.44%20505.789C1187.95%20500.671%201191.47%20495.553%201194.83%20490.435C1253.37%20403.11%201309.51%20347.772%201375.56%20318.344C1385.63%20313.866%201395.71%20309.708%201406.11%20306.189C1449.13%20291.475%201497.75%20285.717%201552.13%20283.478C1592.11%20281.719%201636.25%20282.199%201682%20282.039C1713.5%20282.039%201745.49%20281.719%201777.48%20279.959C1855.85%20275.481%201931.5%20255.01%201958.52%20237.736%22%20stroke%3D%22%2387ACB8%22%20stroke-width%3D%221.59936%22%20stroke-miterlimit%3D%2210%22%2F%3E%20%3Cpath%20d%3D%22M111.587%201020.94C113.506%20886.436%20181.798%20756.728%20289.435%20676.6C357.568%20625.741%20441.054%20595.193%20526.3%20590.715C551.09%20589.435%20575.24%20590.555%20599.071%20594.073C664.804%20603.35%20725.9%20628.459%20791.154%20646.212C804.268%20649.891%20817.543%20653.09%20830.978%20655.968C890.154%20668.763%20951.569%20671.002%201008.03%20653.25C1038.89%20643.493%201067.84%20627.82%201093.91%20605.589C1126.54%20577.6%201151.81%20542.414%201176.12%20506.429C1179.64%20501.151%201183.16%20496.033%201186.67%20490.915C1246.01%20402.47%201307.59%20350.811%201377.8%20327.141C1388.35%20323.622%201399.07%20320.423%201409.94%20317.704C1454.89%20306.829%201504.63%20305.069%201559.64%20305.869C1600.27%20306.509%201644.73%20308.748%201690.95%20309.548C1722.78%20310.187%201755.09%20310.187%201787.39%20307.948C1866.4%20302.51%201942.69%20277.401%201967%20253.73%22%20stroke%3D%22%237CA6B2%22%20stroke-width%3D%221.59936%22%20stroke-miterlimit%3D%2210%22%2F%3E%20%3Cpath%20d%3D%22M100.551%201021.1C101.991%20888.035%20168.844%20759.447%20274.721%20679.159C343.174%20627.34%20427.46%20596.152%20513.505%20591.834C538.455%20590.555%20562.925%20591.834%20586.916%20595.193C653.289%20604.789%20715.024%20630.379%20780.758%20648.611C794.033%20652.29%20807.467%20655.808%20820.902%20658.687C880.718%20671.962%20942.773%20674.521%20999.55%20656.448C1030.58%20646.532%201059.69%20630.539%201085.92%20607.668C1118.54%20579.039%201143.33%20542.894%201167.8%20506.588C1171.32%20501.31%201174.84%20496.033%201178.36%20490.915C1238.49%20401.511%201305.67%20353.53%201379.72%20335.457C1390.91%20332.738%201402.11%20330.499%201413.46%20328.74C1460.32%20321.703%201511.02%20323.782%201567%20327.94C1608.11%20330.819%201653.21%20334.977%201699.75%20336.737C1731.9%20338.016%201764.52%20338.176%201797.15%20335.617C1876.96%20329.38%201953.73%20299.472%201975.48%20269.404%22%20stroke%3D%22%23719FAC%22%20stroke-width%3D%221.59936%22%20stroke-miterlimit%3D%2210%22%2F%3E%20%3Cpath%20d%3D%22M89.5156%201021.26C90.4752%20889.634%20155.889%20762.006%20259.847%20681.878C328.62%20628.939%20413.705%20597.432%20500.391%20592.954C525.5%20591.674%20550.29%20592.954%20574.441%20596.472C641.454%20606.228%20703.669%20632.298%20769.882%20651.33C783.317%20655.169%20796.751%20658.687%20810.346%20661.886C870.642%20675.8%20933.337%20678.519%20990.594%20660.287C1021.78%20650.211%201051.21%20633.897%201077.44%20610.387C1110.07%20581.119%201134.54%20544.173%201159.01%20507.388C1162.52%20502.11%201166.04%20496.672%201169.72%20491.555C1230.82%20401.031%201303.27%20356.729%201381.32%20344.414C1392.99%20342.494%201404.83%20341.215%201416.66%20340.415C1465.6%20337.057%201517.26%20343.294%201573.88%20350.491C1615.46%20355.769%201661.04%20361.687%201708.07%20364.406C1740.37%20366.325%201773.48%20366.645%201806.43%20363.766C1887.03%20356.729%201964.28%20322.023%201983.31%20285.557%22%20stroke%3D%22%236798A6%22%20stroke-width%3D%221.59936%22%20stroke-miterlimit%3D%2210%22%2F%3E%20%3Cpath%20d%3D%22M78.3198%201021.42C78.7996%20891.234%20142.614%20764.565%20244.973%20684.437C313.905%20630.539%20399.951%20598.391%20487.435%20594.073C512.705%20592.794%20537.655%20594.073%20562.285%20597.752C629.938%20607.668%20692.793%20634.377%20759.326%20653.889C772.761%20657.888%20786.355%20661.566%20800.11%20664.765C861.045%20679.159%20924.38%20682.358%20981.957%20663.645C1013.46%20653.569%201042.89%20636.936%201069.12%20612.626C1101.75%20582.718%201125.74%20544.973%201150.37%20507.708C1153.89%20502.27%201157.57%20496.992%201161.08%20491.554C1222.98%20400.071%201300.87%20359.288%201382.92%20352.73C1395.23%20351.771%201407.55%20351.291%201419.86%20351.451C1470.72%20351.93%201523.5%20362.166%201580.92%20372.402C1623.14%20379.919%201669.04%20387.756%201716.54%20391.275C1749.17%20393.834%201782.59%20394.313%201815.86%20391.115C1897.11%20383.278%201975%20343.774%201991.31%20301.071%22%20stroke%3D%22%235C91A1%22%20stroke-width%3D%221.59936%22%20stroke-miterlimit%3D%2210%22%2F%3E%20%3Cpath%20d%3D%22M67.2847%201021.74C67.2847%20892.993%20129.66%20767.284%20230.259%20687.316C299.511%20632.298%20386.197%20599.671%20474.641%20595.353C500.071%20594.073%20525.341%20595.513%20550.131%20599.191C618.423%20609.427%20681.918%20636.456%20748.771%20656.608C762.365%20660.766%20776.12%20664.605%20789.874%20667.804C851.29%20682.838%20915.424%20686.196%20973.321%20667.324C1004.99%20657.088%201034.74%20640.135%201060.97%20615.345C1093.59%20584.797%201117.26%20546.252%201142.05%20508.508C1145.57%20503.07%201149.25%20497.632%201152.93%20492.194C1215.62%20399.751%201299.11%20362.326%201385.16%20361.527C1398.11%20361.367%201410.9%20361.847%201423.7%20362.806C1476.48%20367.125%201530.38%20381.359%201588.43%20394.633C1631.14%20404.389%201677.68%20414.146%201725.5%20418.624C1758.45%20421.822%201792.19%20422.622%201825.62%20418.944C1907.67%20410.147%201986.03%20366.005%201999.79%20316.905%22%20stroke%3D%22%23518A9B%22%20stroke-width%3D%221.59936%22%20stroke-miterlimit%3D%2210%22%2F%3E%20%3Cpath%20d%3D%22M56.2489%201021.9C55.7691%20894.593%20116.545%20769.843%20215.385%20690.035C284.797%20634.057%20372.442%20600.791%20461.686%20596.632C487.276%20595.353%20512.865%20596.792%20537.815%20600.631C606.748%20611.026%20670.722%20638.695%20738.055%20659.327C751.809%20663.485%20765.564%20667.484%20779.478%20671.002C841.533%20686.516%20906.147%20690.195%20964.684%20671.002C996.511%20660.607%201026.42%20643.334%201052.81%20617.904C1085.44%20586.556%201108.63%20547.372%201133.58%20509.148C1137.25%20503.71%201140.77%20498.112%201144.45%20492.674C1207.95%20399.112%201296.87%20365.365%201386.91%20370.323C1400.35%20371.123%201413.78%20372.402%201427.06%20374.322C1481.92%20382.478%201536.77%20400.551%201595.63%20417.184C1638.97%20429.34%201685.83%20440.695%201734.13%20446.293C1767.4%20450.131%201801.47%20451.091%201835.21%20447.092C1917.9%20437.496%201997.07%20388.716%202007.94%20333.058%22%20stroke%3D%22%23478395%22%20stroke-width%3D%221.59936%22%20stroke-miterlimit%3D%2210%22%2F%3E%20%3Cpath%20d%3D%22M45.2136%201022.06C44.254%20896.192%20103.59%20772.402%20200.671%20692.594C270.243%20635.497%20358.848%20601.75%20448.891%20597.592C474.801%20596.472%20500.391%20597.752%20525.82%20601.59C595.233%20612.146%20660.007%20640.295%20727.659%20661.566C741.414%20665.884%20755.328%20670.043%20769.403%20673.561C831.937%20689.715%20897.351%20693.713%20956.208%20674.201C988.355%20663.645%201018.26%20646.052%201044.81%20619.983C1077.44%20587.996%201100.31%20547.852%201125.26%20509.307C1128.94%20503.71%201132.46%20498.272%201136.3%20492.674C1200.59%20398.152%201295.11%20367.924%201388.99%20378.64C1403.07%20380.239%201416.98%20382.478%201430.74%20385.357C1487.51%20397.192%201543.49%20419.423%201602.99%20439.095C1646.81%20453.49%201694.15%20466.764%201742.93%20473.322C1776.52%20477.8%201810.9%20478.919%201844.97%20474.601C1928.46%20464.205%202008.1%20410.627%202016.42%20348.572%22%20stroke%3D%22%233C7C8F%22%20stroke-width%3D%221.59936%22%20stroke-miterlimit%3D%2210%22%2F%3E%20%3Cpath%20d%3D%22M34.018%201022.22C32.5786%20897.791%2090.3154%20774.801%20185.797%20695.312C255.689%20637.096%20345.093%20602.87%20435.936%20598.871C462.006%20597.752%20487.916%20599.031%20513.505%20603.03C583.557%20613.905%20648.971%20642.534%20716.944%20664.445C730.858%20668.923%20744.772%20673.081%20759.007%20676.92C822.181%20693.553%20888.075%20697.871%20947.411%20678.039C979.718%20667.324%201009.95%20649.411%201036.5%20622.862C1069.12%20590.235%201091.51%20549.291%201116.62%20510.427C1120.3%20504.829%201123.98%20499.231%201127.66%20493.634C1192.75%20397.992%201292.71%20371.443%201390.75%20387.916C1405.31%20390.315%201419.86%20393.514%201434.1%20397.352C1492.79%20413.026%201549.89%20439.255%201610.18%20461.966C1654.49%20478.76%201702.47%20493.794%201751.57%20501.151C1785.47%20506.269%201820.02%20507.548%201854.57%20503.07C1938.69%20491.874%202018.98%20433.498%202024.58%20365.205%22%20stroke%3D%22%23317589%22%20stroke-width%3D%221.59936%22%20stroke-miterlimit%3D%2210%22%2F%3E%20%3Cpath%20d%3D%22M22.9825%201022.38C21.0633%20899.391%2077.2007%20777.36%20170.923%20698.032C240.975%20638.695%20331.179%20603.989%20422.822%20599.991C449.051%20598.871%20475.281%20600.311%20501.03%20604.309C571.722%20615.345%20637.775%20644.453%20706.068%20667.004C720.142%20671.642%20734.217%20675.96%20748.451%20679.799C812.105%20697.072%20878.799%20701.55%20938.455%20681.558C970.922%20670.683%201001.31%20652.45%201027.86%20625.261C1060.49%20591.994%201082.56%20550.251%201107.67%20510.907C1111.35%20505.149%201115.02%20499.551%201118.86%20493.954C1184.92%20397.352%201290.31%20374.002%201392.19%20396.553C1407.39%20399.911%201422.42%20403.91%201437.13%20408.708C1497.75%20428.22%201555.81%20458.288%201616.9%20484.197C1661.84%20503.23%201710.14%20520.183%201759.72%20528.5C1793.95%20534.257%201828.82%20535.857%201863.52%20530.899C1948.45%20518.744%202029.22%20455.729%202032.1%20381.039%22%20stroke%3D%22%23266E84%22%20stroke-width%3D%221.59936%22%20stroke-miterlimit%3D%2210%22%2F%3E%20%3Cpath%20d%3D%22M11.9466%201022.54C9.54753%20900.99%2063.9257%20779.759%20156.209%20700.591C226.26%20640.135%20317.584%20604.949%20410.027%20601.111C436.416%20599.991%20462.805%20601.43%20488.875%20605.589C560.206%20616.784%20626.74%20646.532%20695.512%20669.563C709.586%20674.361%20723.82%20678.679%20738.215%20682.678C802.509%20700.431%20869.842%20705.229%20929.818%20684.917C962.445%20673.881%20992.992%20655.329%201019.7%20627.5C1052.33%20593.594%201073.92%20551.051%201099.19%20511.227C1102.87%20505.469%201106.55%20499.711%201110.39%20494.114C1177.24%20396.393%201288.23%20376.881%201393.95%20404.869C1409.78%20409.028%201425.3%20414.146%201440.49%20419.743C1503.19%20443.094%201562.2%20477.16%201624.1%20506.269C1669.52%20527.54%201718.3%20546.413%201768.36%20555.689C1802.91%20562.086%201838.09%20563.846%201873.12%20558.568C1958.84%20545.613%202040.09%20477.8%202040.41%20396.713%22%20stroke%3D%22%231C677E%22%20stroke-width%3D%221.59936%22%20stroke-miterlimit%3D%2210%22%2F%3E%20%3Cpath%20d%3D%22M0.911234%201022.7C-1.96761%20902.589%2050.9712%20782.318%20141.495%20703.309C232.018%20624.301%20358.208%20587.996%20476.88%20606.868C563.725%20620.623%20643.533%20661.726%20727.979%20685.717C828.099%20714.025%20935.736%20710.826%201011.55%20630.059C1048.81%20590.395%201071.2%20539.535%201102.07%20494.593C1169.72%20395.913%201286.31%20379.919%201396.03%20413.666C1479.68%20439.416%201553.73%20488.676%201631.46%20528.66C1709.34%20568.644%201796.51%20600.311%201882.88%20586.556C1969.24%20572.802%202051.29%20500.191%202048.73%20412.706%22%20stroke%3D%22%23116078%22%20stroke-width%3D%221.59936%22%20stroke-miterlimit%3D%2210%22%2F%3E%20%3Cpath%20d%3D%22M22.9827%201022.54C23.9423%20905.148%2079.28%20790.155%20169.804%20713.066C180.199%20704.269%20190.915%20695.952%20202.111%20688.116C288.476%20627.98%20396.912%20599.351%20499.111%20611.666C546.772%20617.424%20592.194%20631.338%20637.456%20646.052C672.322%20657.408%20707.188%20669.083%20743.013%20677.56C839.934%20700.91%20944.212%20694.193%201018.9%20614.225C1055.69%20574.881%201078.56%20524.821%201109.59%20480.679C1177.08%20384.398%201292.07%20367.924%201400.19%20400.871C1420.66%20407.108%201440.65%20414.785%201460.32%20423.422C1519.5%20449.651%201574.84%20484.677%201632.58%20514.425C1645.69%20521.303%201659.29%20527.86%201672.88%20533.938C1738.77%20563.526%201810.1%20582.718%201880.64%20571.682C1965.88%20558.248%202046.97%20488.036%202046.81%20402.79%22%20stroke%3D%22%2311677E%22%20stroke-width%3D%221.59936%22%20stroke-miterlimit%3D%2210%22%2F%3E%20%3Cpath%20d%3D%22M45.0535%201022.38C49.6916%20907.867%20107.588%20798.151%20198.112%20722.981C208.508%20714.345%20219.223%20706.188%20230.419%20698.511C316.304%20639.335%20422.182%20608.787%20521.662%20616.784C568.043%20620.463%20612.026%20631.978%20655.848%20644.133C689.754%20653.409%20723.501%20663.166%20758.047%20669.723C851.929%20688.116%20952.689%20677.88%201026.1%20598.711C1062.4%20559.527%201085.76%20510.427%201116.94%20467.244C1184.44%20373.682%201297.67%20356.569%201404.35%20388.396C1424.66%20394.474%201444.33%20401.991%201463.68%20410.467C1522.06%20436.217%201576.6%20471.083%201633.38%20500.671C1646.33%20507.388%201659.6%20513.946%201673.04%20520.023C1737.97%20549.291%201808.34%20568.004%201878.08%20557.288C1962.2%20544.333%202042.33%20476.361%202044.57%20393.194%22%20stroke%3D%22%23126E85%22%20stroke-width%3D%221.59936%22%20stroke-miterlimit%3D%2210%22%2F%3E%20%3Cpath%20d%3D%22M67.1245%201022.22C75.6011%20910.426%20135.897%20805.988%20226.42%20732.897C236.816%20724.581%20247.532%20716.584%20258.568%20709.067C343.973%20650.851%20447.452%20618.224%20543.893%20621.902C588.995%20623.502%20631.698%20632.458%20674.081%20642.054C706.867%20649.411%20739.494%20656.928%20772.921%20661.886C863.605%20675.161%20961.005%20661.566%201033.3%20583.038C1069.12%20544.013%201092.95%20495.873%201124.3%20453.49C1191.79%20362.486%201303.27%20344.894%201408.35%20375.601C1428.34%20381.519%201447.85%20388.876%201467.04%20397.192C1524.78%20422.462%201578.36%20457.168%201634.33%20486.437C1647.13%20493.154%201660.24%20499.551%201673.52%20505.629C1737.65%20534.577%201807.07%20552.81%201875.84%20542.414C1959%20529.939%202038.01%20464.205%202042.65%20383.118%22%20stroke%3D%22%2312748B%22%20stroke-width%3D%221.59936%22%20stroke-miterlimit%3D%2210%22%2F%3E%20%3Cpath%20d%3D%22M89.1956%201022.06C101.351%20913.145%20164.205%20813.985%20254.729%20742.654C265.125%20734.497%20275.841%20726.66%20286.876%20719.303C371.802%20662.206%20472.561%20627.5%20566.284%20626.86C609.946%20626.54%20651.37%20632.938%20692.473%20639.975C724.14%20645.413%20755.808%20650.851%20788.115%20653.889C875.76%20662.046%20969.642%20645.253%201040.65%20567.364C1076%20528.5%201100.15%20481.319%201131.82%20439.895C1199.31%20351.451%201309.03%20333.218%201412.66%20363.126C1432.5%20368.884%201451.69%20375.921%201470.56%20384.238C1527.5%20409.188%201580.28%20443.574%201635.29%20472.682C1647.93%20479.399%201660.72%20485.797%201673.84%20491.715C1737.01%20520.343%201805.63%20538.096%201873.44%20528.02C1955.49%20515.865%202033.53%20452.53%202040.57%20373.682%22%20stroke%3D%22%23137B92%22%20stroke-width%3D%221.59936%22%20stroke-miterlimit%3D%2210%22%2F%3E%20%3Cpath%20d%3D%22M111.267%201021.9C127.26%20915.704%20192.514%20821.822%20283.038%20752.57C293.434%20744.573%20304.149%20737.056%20315.025%20729.699C399.471%20673.561%20497.831%20636.936%20588.675%20631.818C631.058%20629.419%20671.202%20633.258%20710.706%20637.896C741.254%20641.414%20771.801%20644.773%20802.989%20646.052C887.435%20649.251%20978.118%20628.939%201047.69%20551.85C1082.56%20513.306%201107.19%20467.084%201139.01%20426.301C1206.35%20340.415%201314.46%20321.703%201416.5%20350.491C1436.01%20355.929%201455.05%20362.966%201473.76%20371.123C1529.9%20395.593%201581.88%20429.819%201636.09%20458.768C1648.57%20465.325%201661.2%20471.723%201674.16%20477.64C1736.37%20505.949%201804.03%20523.222%201871.04%20513.626C1951.97%20501.95%202029.06%20440.855%202038.49%20364.086%22%20stroke%3D%22%23138298%22%20stroke-width%3D%221.59936%22%20stroke-miterlimit%3D%2210%22%2F%3E%20%3Cpath%20d%3D%22M133.338%201021.74C153.17%20918.263%20220.823%20829.659%20311.347%20762.486C321.742%20754.809%20332.458%20747.292%20343.334%20740.255C427.3%20685.077%20523.101%20646.372%20611.226%20636.936C652.33%20632.458%20691.034%20633.897%20729.259%20635.977C758.847%20637.576%20788.115%20638.855%20818.183%20638.216C899.43%20636.456%20986.755%20612.626%201055.21%20536.337C1089.43%20497.952%201114.54%20452.69%201146.69%20412.706C1214.02%20329.22%201320.38%20310.028%201420.98%20338.016C1440.33%20343.294%201459.05%20350.171%201477.44%20358.168C1532.94%20382.159%201583.96%20416.225%201637.37%20444.853C1649.53%20451.411%201662%20457.648%201674.8%20463.566C1736.05%20491.715%201802.91%20508.348%201868.96%20499.072C1948.77%20487.876%202024.9%20429.02%202036.73%20354.49%22%20stroke%3D%22%2313899F%22%20stroke-width%3D%221.59936%22%20stroke-miterlimit%3D%2210%22%2F%3E%20%3Cpath%20d%3D%22M155.409%201021.58C178.92%20920.982%20249.132%20837.655%20339.655%20772.242C350.051%20764.725%20360.607%20757.527%20371.482%20750.49C454.969%20696.272%20548.211%20655.648%20633.457%20641.894C673.281%20635.337%20710.706%20634.217%20747.491%20633.897C775.96%20633.577%20804.268%20632.778%20833.217%20630.219C911.425%20623.341%20995.232%20596.152%201062.4%20520.503C1096.15%20482.278%201121.74%20437.976%201154.21%20398.952C1221.38%20318.024%201326.3%20298.352%201425.14%20325.221C1444.17%20330.339%201462.72%20337.056%201480.96%20344.893C1535.65%20368.564%201585.71%20402.31%201638.33%20430.779C1650.33%20437.336%201662.64%20443.574%201675.12%20449.331C1735.41%20477.16%201801.31%20493.314%201866.56%20484.357C1945.25%20473.482%202020.42%20417.024%202034.65%20344.573%22%20stroke%3D%22%23148FA5%22%20stroke-width%3D%221.59936%22%20stroke-miterlimit%3D%2210%22%2F%3E%20%3Cpath%20d%3D%22M177.48%201021.26C204.829%20923.381%20277.44%20845.332%20367.964%20781.998C378.359%20774.801%20388.915%20767.604%20399.791%20760.726C482.798%20707.628%20573.481%20664.925%20656.008%20646.692C694.552%20638.056%20730.538%20634.537%20765.884%20631.498C793.233%20629.099%20820.422%20626.38%20848.251%20622.062C923.261%20610.227%201003.71%20579.519%201069.76%20504.669C1103.03%20466.764%201128.94%20423.262%201161.72%20385.037C1228.74%20306.669%201332.06%20286.517%201429.46%20312.427C1448.17%20317.385%201466.56%20323.782%201484.47%20331.459C1538.53%20354.65%201587.63%20388.236%201639.45%20416.545C1651.29%20422.942%201663.44%20429.18%201675.76%20434.937C1735.09%20462.446%201800.19%20478.12%201864.48%20469.483C1942.05%20459.088%202016.26%20404.869%202032.89%20334.498%22%20stroke%3D%22%231496AB%22%20stroke-width%3D%221.59936%22%20stroke-miterlimit%3D%2210%22%2F%3E%20%3Cpath%20d%3D%22M199.711%201021.1C230.739%20925.94%20305.909%20853.169%20396.432%20791.754C406.828%20784.717%20417.384%20777.839%20428.1%20771.122C510.626%20718.983%20598.751%20674.201%20678.399%20651.65C715.504%20641.094%20750.37%20634.857%20784.276%20629.419C810.506%20625.101%20836.576%20620.303%20863.285%20614.065C935.096%20597.272%201012.18%20563.046%201076.96%20488.995C1109.75%20451.251%201136.14%20408.708%201169.08%20371.443C1235.93%20295.633%201337.65%20274.842%201433.46%20299.792C1452.01%20304.59%201470.08%20310.827%201487.83%20318.344C1541.09%20341.055%201589.39%20374.482%201640.25%20402.47C1651.93%20408.868%201663.76%20414.945%201675.92%20420.703C1734.29%20447.892%201798.59%20463.086%201861.92%20454.769C1938.37%20444.693%202011.78%20392.714%202030.66%20324.741%22%20stroke%3D%22%23149DB2%22%20stroke-width%3D%221.59936%22%20stroke-miterlimit%3D%2210%22%2F%3E%20%3Cpath%20d%3D%22M221.783%201020.94C256.649%20928.659%20334.217%20861.166%20424.741%20801.67C435.137%20794.793%20445.693%20788.075%20456.248%20781.518C538.295%20730.339%20624.021%20683.637%20700.79%20656.768C736.616%20644.133%20770.042%20635.497%20802.509%20627.5C827.779%20621.262%20852.569%20614.385%20878.319%20606.388C946.931%20584.637%201020.82%20546.892%201084.32%20473.482C1116.62%20435.897%201143.33%20394.314%201176.6%20357.848C1243.29%20284.438%201343.41%20263.326%201437.77%20287.157C1456.01%20291.795%201473.92%20297.872%201491.35%20305.229C1543.97%20327.46%201591.31%20360.727%201641.37%20388.556C1652.89%20394.953%201664.56%20401.031%201676.56%20406.629C1734.13%20433.498%201797.31%20448.212%201859.84%20440.375C1935.17%20430.779%202007.62%20381.039%202028.9%20315.145%22%20stroke%3D%22%2315A4B8%22%20stroke-width%3D%221.59936%22%20stroke-miterlimit%3D%2210%22%2F%3E%20%3Cpath%20d%3D%22M243.853%201020.78C282.398%20931.218%20362.526%20869.003%20453.049%20811.586C463.445%20805.029%20474.001%20798.471%20484.557%20791.914C566.124%20741.694%20649.29%20693.074%20723.181%20661.726C757.727%20647.012%20789.874%20635.817%20820.901%20625.421C845.052%20617.264%20868.882%20608.468%20893.352%20598.392C958.766%20571.682%201029.3%20530.579%201091.51%20457.808C1123.34%20420.543%201150.53%20379.759%201183.96%20344.254C1250.49%20273.402%201349.01%20251.651%201441.77%20274.682C1459.84%20279.16%201477.44%20285.078%201494.55%20292.275C1546.37%20314.186%201592.91%20347.293%201642.17%20374.801C1653.53%20381.039%201664.88%20387.116%201676.72%20392.714C1733.33%20419.264%201795.71%20433.498%201857.28%20425.981C1931.5%20416.865%202002.99%20369.364%202026.66%20305.709%22%20stroke%3D%22%2315AABF%22%20stroke-width%3D%221.59936%22%20stroke-miterlimit%3D%2210%22%2F%3E%20%3Cpath%20d%3D%22M265.925%201020.62C308.308%20933.777%20390.834%20876.84%20481.358%20821.342C491.754%20814.944%20502.31%20808.707%20512.705%20802.31C593.793%20753.209%20674.4%20702.35%20745.572%20666.844C778.838%20650.051%20809.706%20636.456%20839.294%20623.341C862.325%20613.266%20885.036%20602.39%20908.386%20590.555C970.761%20558.887%201037.77%20514.265%201098.71%20442.294C1130.06%20405.189%201157.57%20365.365%201191.31%20330.659C1257.69%20262.207%201354.61%20240.136%201445.93%20262.047C1463.68%20266.365%201481.12%20271.963%201498.07%20279.16C1549.25%20300.591%201594.83%20333.538%201643.13%20360.727C1654.17%20366.964%201665.52%20372.882%201677.04%20378.48C1732.7%20404.869%201794.27%20418.624%201854.89%20411.267C1927.98%20402.47%201998.51%20357.368%202024.58%20295.793%22%20stroke%3D%22%2316B1C5%22%20stroke-width%3D%221.59936%22%20stroke-miterlimit%3D%2210%22%2F%3E%20%3Cpath%20d%3D%22M287.996%201020.46C334.058%20936.496%20419.143%20884.836%20509.667%20831.258C520.063%20825.18%20530.459%20818.943%20541.014%20812.705C621.782%20764.565%20699.671%20711.786%20767.963%20671.802C799.95%20653.089%20829.378%20636.776%20857.527%20621.262C879.598%20609.107%20901.03%20596.312%20923.421%20582.558C982.597%20546.093%201046.25%20497.792%201106.07%20426.621C1136.93%20389.675%201164.92%20350.811%201198.83%20316.905C1265.04%20251.011%201360.37%20228.46%201450.09%20249.412C1467.68%20253.41%201484.8%20259.008%201501.43%20266.045C1551.81%20286.997%201596.59%20319.784%201644.09%20346.813C1654.97%20353.05%201666.16%20358.968%201677.52%20364.406C1732.22%20390.475%201792.83%20403.75%201852.65%20396.713C1924.78%20388.396%201994.19%20345.533%202022.66%20286.037%22%20stroke%3D%22%2316B8CC%22%20stroke-width%3D%221.59936%22%20stroke-miterlimit%3D%2210%22%2F%3E%20%3Cpath%20d%3D%22M310.067%201020.3C359.967%20939.055%20447.452%20892.673%20537.976%20841.174C548.371%20835.256%20558.767%20829.339%20569.163%20823.101C649.451%20775.92%20724.78%20721.222%20790.354%20676.76C820.902%20655.968%20849.21%20637.256%20875.92%20619.183C896.871%20605.109%20917.183%20590.235%20938.455%20574.561C994.432%20533.138%201054.73%20481.319%201113.26%20410.787C1143.65%20374.002%201171.96%20336.097%201206.35%20303.15C1272.4%20239.656%201366.12%20216.625%201454.25%20236.617C1471.52%20240.455%201488.47%20245.893%201504.95%20252.77C1554.69%20273.402%201598.51%20305.869%201645.21%20332.578C1655.93%20338.656%201666.8%20344.574%201678%20350.011C1731.74%20375.761%201791.55%20388.556%201850.41%20381.839C1921.42%20373.842%201989.87%20333.378%202020.74%20276.121%22%20stroke%3D%22%2316BFD2%22%20stroke-width%3D%221.59936%22%20stroke-miterlimit%3D%2210%22%2F%3E%20%3Cpath%20d%3D%22M332.138%201019.98C385.877%20941.454%20475.761%20900.35%20566.284%20850.77C576.68%20845.012%20587.076%20839.255%20597.472%20833.337C677.28%20787.116%20750.05%20730.339%20812.745%20681.718C842.013%20658.847%20868.883%20637.576%20894.312%20617.104C914.144%20601.111%20933.497%20584.317%20953.489%20566.724C1006.43%20520.503%201063.36%20465.005%201120.62%20395.273C1150.53%20358.808%201179.16%20321.703%201213.86%20289.556C1279.76%20228.46%201371.88%20205.11%201458.57%20223.982C1475.52%20227.661%201492.31%20232.938%201508.47%20239.656C1557.41%20259.808%201600.27%20292.115%201646.17%20318.664C1656.73%20324.742%201667.44%20330.499%201678.48%20335.937C1731.26%20361.367%201790.27%20373.682%201848.17%20367.444C1918.06%20359.927%201985.55%20321.703%202018.82%20266.525%22%20stroke%3D%22%2317C5D8%22%20stroke-width%3D%221.59936%22%20stroke-miterlimit%3D%2210%22%2F%3E%20%3Cpath%20d%3D%22M354.209%201019.82C411.626%20944.173%20504.069%20908.347%20594.752%20860.686C605.148%20855.248%20615.544%20849.651%20625.78%20843.733C705.108%20798.631%20775.32%20739.775%20835.136%20686.676C863.124%20661.726%20888.714%20637.896%20912.545%20614.865C931.257%20596.792%20949.49%20578.08%20968.522%20558.568C1018.26%20507.388%201071.84%20448.372%201127.82%20379.44C1157.09%20343.134%201186.19%20306.989%201221.22%20275.801C1286.79%20217.105%201377.64%20193.274%201462.56%20211.347C1479.36%20214.866%201495.83%20219.824%201511.82%20226.381C1559.96%20246.053%201602.03%20278.2%201647.13%20304.59C1657.53%20310.667%201667.92%20316.425%201678.8%20321.703C1730.62%20346.813%201788.67%20358.648%201845.77%20352.73C1914.54%20345.693%201981.08%20309.707%202016.74%20256.769%22%20stroke%3D%22%2317CCDF%22%20stroke-width%3D%221.59936%22%20stroke-miterlimit%3D%2210%22%2F%3E%20%3Cpath%20d%3D%22M376.28%201019.66C437.536%20946.732%20532.218%20916.184%20623.061%20870.442C633.457%20865.164%20643.853%20859.727%20654.089%20853.969C732.937%20809.827%20800.75%20749.051%20857.687%20691.474C884.396%20664.445%20908.546%20638.216%20931.097%20612.626C948.69%20592.634%20965.963%20571.842%20983.716%20550.571C1030.42%20494.593%201080.48%20431.899%201135.34%20363.606C1164.12%20327.461%201193.55%20292.275%201228.9%20261.887C1294.31%20205.749%201383.56%20181.439%201467.04%20198.392C1483.52%20201.751%201499.83%20206.549%201515.5%20212.947C1563%20232.299%201604.11%20264.126%201648.25%20290.195C1658.33%20296.273%201668.72%20301.871%201679.28%20307.149C1730.3%20331.939%201787.39%20343.294%201843.53%20337.696C1911.18%20330.979%201976.76%20297.393%202014.82%20246.533%22%20stroke%3D%22%2317D3E5%22%20stroke-width%3D%221.59936%22%20stroke-miterlimit%3D%2210%22%2F%3E%20%3Cpath%20d%3D%22M398.352%201019.5C463.285%20949.45%20560.527%20924.181%20651.37%20880.358C661.766%20875.4%20672.162%20870.122%20682.237%20864.524C760.606%20821.342%20825.86%20758.487%20879.918%20696.752C905.348%20667.804%20928.059%20638.855%20949.33%20610.866C965.804%20588.955%20981.957%20566.084%20998.59%20542.894C1042.25%20481.958%201088.79%20415.905%201142.37%20348.252C1170.68%20312.426%201200.59%20277.88%201236.09%20248.452C1301.19%20194.554%201388.99%20170.084%201470.88%20186.077C1487.19%20189.276%201503.19%20193.914%201518.7%20200.152C1565.4%20219.024%201605.71%20250.691%201649.05%20276.601C1658.96%20282.518%201669.2%20288.276%201679.6%20293.394C1729.66%20318.024%201785.79%20328.74%201841.13%20323.462C1907.66%20317.224%201972.28%20285.877%202012.74%20237.097%22%20stroke%3D%22%2318DAEC%22%20stroke-width%3D%221.59936%22%20stroke-miterlimit%3D%2210%22%2F%3E%20%3Cpath%20d%3D%22M420.423%201019.34C489.195%20952.01%20588.835%20932.018%20679.678%20890.274C690.074%20885.476%20700.31%20880.358%20710.386%20874.92C788.275%20832.697%20850.969%20767.923%20902.309%20701.71C926.299%20670.683%20947.891%20639.175%20967.563%20608.787C983.076%20584.797%20998.11%20560.167%201013.46%20535.057C1053.93%20469.323%201097.11%20399.591%201149.41%20332.738C1177.24%20297.073%201207.47%20263.486%201243.29%20235.018C1308.23%20183.518%201394.43%20158.568%201474.88%20173.602C1490.87%20176.641%201506.55%20181.119%201521.9%20187.197C1567.96%20205.589%201607.31%20237.097%201649.85%20262.846C1659.6%20268.764%201669.52%20274.362%201679.76%20279.32C1728.86%20303.63%201784.19%20313.866%201838.57%20308.908C1903.99%20302.99%201967.8%20274.042%202010.5%20227.501%22%20stroke%3D%22%2318E0F2%22%20stroke-width%3D%221.59936%22%20stroke-miterlimit%3D%2210%22%2F%3E%20%3Cpath%20d%3D%22M442.494%201019.18C514.945%20954.568%20617.144%20939.854%20707.987%20900.03C718.383%20895.392%20728.619%20890.594%20738.695%20885.156C816.104%20844.053%20876.239%20777.2%20924.7%20706.668C947.411%20673.561%20967.563%20639.655%20985.955%20606.708C1000.35%20580.799%201014.26%20554.089%201028.66%20527.06C1066.24%20456.369%201105.91%20383.118%201156.93%20317.065C1184.28%20281.559%201214.82%20248.932%201250.97%20221.263C1315.58%20172.163%201400.35%20146.893%201479.2%20160.967C1495.03%20163.686%201510.38%20168.164%201525.58%20174.082C1570.84%20192.155%201609.39%20223.342%201650.97%20248.772C1660.56%20254.69%201670.32%20260.128%201680.4%20265.086C1728.54%20289.076%201783.08%20298.832%201836.49%20294.354C1900.79%20288.916%201963.64%20262.207%202008.74%20217.745%22%20stroke%3D%22%2319E7F9%22%20stroke-width%3D%221.59936%22%20stroke-miterlimit%3D%2210%22%2F%3E%20%3Cpath%20d%3D%22M464.565%201019.02C549.651%20950.09%20669.922%20946.252%20766.843%20895.712C879.758%20836.696%20951.249%20715.784%201004.19%20604.629C1071.04%20464.685%201127.82%20302.351%201258.33%20207.509C1335.57%20151.371%201440.01%20125.781%201528.94%20160.807C1583.79%20182.399%201628.1%20224.462%201680.72%20250.851C1784.67%20302.99%201919.66%20285.237%202006.66%20207.988%22%20stroke%3D%22%2319EEFF%22%20stroke-width%3D%221.59936%22%20stroke-miterlimit%3D%2210%22%2F%3E%20%3C%2Fsvg%3E");
+    background-repeat:no-repeat;
+    background-position:center 58%;
+    background-size:170% auto;
+    transform-origin:center;
+    opacity:.85;
+    filter:brightness(1.15) contrast(1.05);}
+  /* misma onda, pero rotada/desplazada/con matiz distinto según el grupo de color de la
+     tarjeta (g1/g2/g3) para que las 16 no se vean como copias exactas */
+  .cat-card.cat-g1::before{background-position:35% 45%;filter:brightness(1.15) contrast(1.05);}
+  .cat-card.cat-g2::before{background-position:65% 35%;filter:hue-rotate(-8deg) brightness(1.15) contrast(1.05);}
+  .cat-card.cat-g3::before{background-position:50% 55%;filter:hue-rotate(10deg) brightness(1.15) contrast(1.05);}
+  .cat-icon{position:absolute;left:14px;top:14px;z-index:2;width:38px;height:38px;border-radius:11px;
+    display:flex;align-items:center;justify-content:center;font-size:20px;color:#fff;
+    background:rgba(15,184,172,.32);border:1px solid rgba(95,227,214,.5);
+    backdrop-filter:blur(3px);transition:background .15s ease;}
+  .cat-card::after{content:"";position:absolute;inset:0;z-index:1;
+    background:linear-gradient(0deg, rgba(6,14,26,.6) 0%, rgba(6,14,26,.05) 58%, transparent 100%);}
+  /* tarjetas con foto real: antes llevaban ENCIMA la onda decorativa blanca
+     (::before, opacity .85) pensada para las tarjetas de color plano, más el
+     mismo tinte "multiply" del degradado — entre las dos capas la foto
+     quedaba casi ilegible. Aquí se apaga la onda por completo y se deja solo
+     un oscurecido sutil de abajo arriba, lo justo para que el texto del pie
+     se lea — la foto se ve limpia en el resto de la tarjeta. */
+  .cat-card.has-photo::before{display:none;}
+  .cat-card.has-photo::after{
+    background:linear-gradient(0deg, rgba(6,14,26,.88) 0%, rgba(6,14,26,.55) 16%, rgba(6,14,26,.06) 36%, transparent 52%);}
+  .cat-card.has-photo .cat-icon{background:rgba(15,184,172,.34);border-color:rgba(95,227,214,.5);}
+  .cat-card.active::before{box-shadow:inset 0 0 0 2.5px var(--yellow);border-radius:16px;}
+  .cat-card.cat-active::before{box-shadow:inset 0 0 0 2.5px var(--yellow);border-radius:16px;}
+  .cat-label{position:absolute;left:14px;right:14px;bottom:12px;z-index:2;color:#fff;
+    font-size:13.5px;font-weight:600;line-height:1.25;letter-spacing:-.1px;}
+  .cat-stat{position:absolute;left:14px;bottom:36px;z-index:2;display:inline-flex;align-items:center;gap:4px;
+    color:#fff;font-size:11px;font-weight:600;letter-spacing:.1px;
+    background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.22);
+    padding:3px 9px 3px 6px;border-radius:20px;}
+  .cat-stat .msi{font-size:13px;}
+  /* los habitantes de las diputaciones van abajo-derecha en vez de junto al icono */
+  #view-home .cat-stat{left:auto;right:14px;bottom:12px;}
+  #view-home .cat-label{right:110px;}
+  .pg-btn,.pg-num{width:20px;height:20px;border-radius:6px;display:flex;align-items:center;
+    justify-content:center;cursor:pointer;color:var(--ink-dim);}
+  .pg-btn:hover,.pg-num:hover{background:var(--bg);}
+  .pg-num.on{background:var(--blue-deep);color:#fff;font-weight:700;}
+  .pg-total{margin-left:auto;}
+
+  /* gauge widget */
+  .gauge-mini{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;min-height:0;}
+  .gauge-ring{position:relative;width:140px;height:140px;flex:0 0 auto;}
+  .gauge-ring svg{transform:rotate(-90deg);}
+  .gauge-num{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;}
+  .gauge-num b{font-size:22px;display:block;}
+  .gauge-num small{font-size:10px;color:var(--ink-dim);}
+  .gauge-legend{margin-top:8px;font-size:10.5px;display:flex;gap:12px;color:var(--ink-dim);flex:0 0 auto;}
+  .gauge-legend span{display:flex;align-items:center;gap:4px;}
+  .gauge-legend i{width:6px;height:6px;border-radius:50%;display:inline-block;}
+
+  /* stat mini */
+  .stat-mini{flex:1;display:flex;flex-direction:column;justify-content:center;padding:8px 14px;}
+  .stat-mini .k{font-size:11px;color:var(--ink-dim);margin-bottom:2px;}
+  .stat-mini .v{font-size:19px;font-weight:600;}
+
+  /* ===== copiloto IA =====
+     Botón flotante + panel de chat, position:fixed sobre toda la app (fuera
+     del flujo del rail/stage) para que funcione igual en cualquier vista.
+     Motor local de coincidencia de intención con memoria de conversación
+     sobre los datos reales del DOM, más un modo avanzado opcional (modelo
+     pequeño corriendo en el dispositivo, gratis, sin servidor). De cara a
+     la persona que lo usa, ambos se sienten como el mismo asistente. */
+  .copilot-launcher{position:fixed;right:22px;bottom:22px;z-index:800;
+    width:56px;height:56px;border-radius:50%;border:none;cursor:pointer;
+    background:linear-gradient(135deg,#0fb8ac,#0a7f76);color:#fff;
+    display:flex;align-items:center;justify-content:center;font-size:26px;
+    box-shadow:0 14px 30px -10px rgba(10,60,55,.55);
+    transition:transform .16s ease, box-shadow .16s ease;}
+  .copilot-launcher:hover{transform:translateY(-2px) scale(1.04);}
+  .copilot-launcher .copilot-dot{position:absolute;top:2px;right:2px;width:12px;height:12px;
+    border-radius:50%;background:var(--yellow, #ffc84a);border:2px solid #fff;}
+  .copilot-panel{position:fixed;right:22px;bottom:90px;z-index:800;width:360px;max-width:calc(100vw - 32px);
+    height:min(520px, calc(100vh - 130px));background:#fff;border-radius:18px;
+    box-shadow:0 30px 60px -20px rgba(10,16,14,.45);display:flex;flex-direction:column;overflow:hidden;
+    opacity:0;transform:translateY(12px) scale(.98);pointer-events:none;
+    transition:opacity .16s ease, transform .16s ease;}
+  .copilot-panel.open{opacity:1;transform:translateY(0) scale(1);pointer-events:auto;}
+  .copilot-head{display:flex;align-items:center;gap:10px;padding:14px 14px 12px;
+    background:linear-gradient(135deg,#0a2e2a,#0fb8ac);color:#fff;flex:0 0 auto;}
+  .copilot-head .msi{font-size:20px;}
+  .copilot-head .copilot-titles{flex:1;min-width:0;}
+  .copilot-head .copilot-titles .t1{font-size:13.5px;font-weight:700;line-height:1.2;}
+  .copilot-head .copilot-titles .t2{font-size:11px;color:rgba(255,255,255,.75);}
+  .copilot-close{background:none;border:none;color:#fff;cursor:pointer;
+    font-size:18px;padding:4px;border-radius:8px;line-height:1;}
+  .copilot-close:hover{background:rgba(255,255,255,.15);}
+  .copilot-body{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;background:var(--bg);}
+  .copilot-msg{max-width:86%;padding:10px 12px;border-radius:13px;font-size:13px;line-height:1.45;}
+  .copilot-msg.bot{align-self:flex-start;background:#fff;color:var(--ink);border:1px solid var(--line);
+    border-bottom-left-radius:4px;}
+  .copilot-msg.user{align-self:flex-end;background:#0fb8ac;color:#fff;border-bottom-right-radius:4px;}
+  .copilot-msg .copilot-src{display:block;margin-top:6px;font-size:10px;font-weight:700;
+    letter-spacing:.02em;text-transform:uppercase;opacity:.6;}
+  .copilot-msg-action{display:inline-flex;align-items:center;gap:4px;margin-top:8px;font-size:11.5px;
+    font-weight:700;color:#0a7f76;cursor:pointer;text-decoration:underline;}
+  .copilot-suggestions{display:flex;flex-wrap:wrap;gap:6px;padding:10px 14px 14px;
+    flex:0 0 auto;border-top:1px solid var(--line);background:#fff;}
+  .copilot-chip{font-size:11.5px;padding:6px 10px;border-radius:20px;background:#fff;
+    border:1px solid var(--line);color:var(--ink);cursor:pointer;}
+  .copilot-chip:hover{border-color:#0fb8ac;color:#0a7f76;}
+  .copilot-suggestions.busy{opacity:.5;pointer-events:none;}
+  .copilot-typing{align-self:flex-start;display:flex;gap:4px;padding:10px 12px;background:#fff;
+    border:1px solid var(--line);border-radius:13px;border-bottom-left-radius:4px;}
+  .copilot-typing i{width:6px;height:6px;border-radius:50%;background:var(--ink-dim);
+    animation:copilot-bounce 1s infinite ease-in-out;}
+  .copilot-typing i:nth-child(2){animation-delay:.15s;}
+  .copilot-typing i:nth-child(3){animation-delay:.3s;}
+  @keyframes copilot-bounce{0%,60%,100%{transform:translateY(0);opacity:.5;}30%{transform:translateY(-4px);opacity:1;}}
+  .copilot-highlight{outline:3px solid #ffc84a !important;outline-offset:3px;border-radius:14px;
+    box-shadow:0 0 0 6px rgba(255,200,74,.28) !important;
+    transition:outline-color .2s ease, box-shadow .2s ease;}
+  @media (max-width:560px){
+    .copilot-panel{right:12px;left:12px;width:auto;bottom:82px;}
+    .copilot-launcher{right:16px;bottom:16px;}
+  }
+
+  /* The portfolio iframe is a few pixels narrower than the desktop breakpoint.
+     Preserve the desktop dashboard contract there instead of activating the
+     tablet stack and its nested page scroll. */
+  @media (min-width:900px){
+    html.is-embedded,html.is-embedded body{height:100%;overflow:hidden;}
+    html.is-embedded .stage{height:100vh;min-height:0;padding:18px 22px;}
+    html.is-embedded #view-dashboard{flex:1;min-height:0;overflow:hidden;}
+    html.is-embedded .head-compact.tall{height:auto;min-height:360px;flex-direction:row;padding:6px 20px 16px;}
+    html.is-embedded .head-main{height:100%;}
+    html.is-embedded .map-in-header{max-width:25%;flex:0 0 25%;margin-top:0;}
+    html.is-embedded .kpi-row{flex-wrap:nowrap;}
+    html.is-embedded .kpi-glass{flex:1 1 0;min-width:0;height:150px;min-height:0;}
+    html.is-embedded .dash{flex:1;min-height:0;overflow:hidden;}
+    html.is-embedded .dash-row{flex:1;min-height:0;flex-direction:row;}
+    html.is-embedded .dash-row .card{min-height:0;}
+    html.is-embedded .cat-grid{grid-template-columns:repeat(3,1fr);}
+    html.is-embedded .grid{grid-template-columns:repeat(4,1fr);}
+  }

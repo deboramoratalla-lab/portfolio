@@ -2,6 +2,7 @@ import Image from "next/image"
 import type { Project } from "@/data/projects"
 import { CaseMoreWorks } from "@/components/case-more-works"
 import { CaseStudyIndex } from "@/components/case-study-index"
+import { CaseSectionLabel } from "@/components/case-section-label"
 import { ArrowLink, ArrowRouteLink } from "@/components/ui-links"
 
 const chapters = [
@@ -61,10 +62,10 @@ export function FluxyCase({ project }: { project: Project }) {
       <div className="fx-meta case-hero-meta-unified"><div><small>ROLE</small><p>Lead Product Designer · AI Product Designer</p></div><div><small>TEAM</small><p>Independent concept · End-to-end ownership</p></div><div><small>STACK</small><p>Figma · React prototype · Vercel</p></div><div className="fx-ownership"><small>MY OWNERSHIP</small><p>{project.ownership}</p></div></div>
     </section>
 
-    <CaseStudyIndex className="fx-index" chapters={chapters} hrefForChapter={number => `#fluxy-${number}`} />
+    <CaseStudyIndex introduction="From repeated passenger effort to bounded, testable autonomy." chapters={chapters} hrefForChapter={number => `#fluxy-${number}`} />
 
     <section className="fx-chapter" id="fluxy-01">
-      <header><p>[01.00] <b>&gt;</b> READ THE BURDEN</p><h2>The top-up was one transaction inside a commute people had to manage continuously.</h2></header>
+      <header><CaseSectionLabel as="p" number="01.00" level="chapter">Read the burden</CaseSectionLabel><h2>The top-up was one transaction inside a commute people had to manage continuously.</h2></header>
       <article className="fx-reframe"><div><span>THE BRIEF</span><p>Improve online top-ups.</p></div><i>→</i><div><span>THE QUESTION I CHOSE</span><p>Which commuting decisions could software responsibly remove?</p></div></article>
       <article className="fx-burden"><div><span>&gt; WHAT I MAPPED</span><h3>None of the decisions was difficult. Their accumulation was.</h3><p>Before leaving, passengers checked balance, weather and timing. During travel they monitored delays and transfers. When the network changed, they compared alternatives and rebuilt the rest of the journey.</p></div><ol><li><small>01</small><strong>Prepare</strong><p>Balance, weather and timing before leaving.</p></li><li><small>02</small><strong>Monitor</strong><p>Delays, transfers and remaining time.</p></li><li><small>03</small><strong>React</strong><p>Options when the network changes.</p></li><li><small>04</small><strong>Recover</strong><p>The rest of the journey after disruption.</p></li></ol></article>
       <article className="fx-benchmark"><div><span>&gt; COMPETITIVE BENCHMARK</span><h3>Transport apps informed passengers. They rarely carried the decision forward.</h3><p>I compared local operators, journey planners and mobility products across eight behaviours. I marked partial support instead of rounding it up: the opportunity only became visible when information, anticipation and consent were considered together.</p></div><div className="fx-benchmark-matrix" role="table" aria-label="Cross-product feature benchmark"><div className="fx-benchmark-head" role="row"><span role="columnheader">BEHAVIOUR</span>{benchmarkProducts.map(product=><b role="columnheader" key={product}>{product}</b>)}</div>{benchmarkRows.map(([feature,...states])=><div className="fx-benchmark-row" role="row" key={feature}><span role="rowheader">{feature}</span>{states.map((state,index)=><b role="cell" className={`is-${state}`} key={`${feature}-${benchmarkProducts[index]}`} aria-label={state}>{benchmarkMark[state]}</b>)}</div>)}<div className="fx-benchmark-key"><span><i className="is-full">✓</i> Full</span><span><i className="is-partial">◐</i> Partial</span><span><i className="is-none">×</i> Not supported</span><span><i className="is-na">—</i> N/A</span></div></div></article>
@@ -73,7 +74,7 @@ export function FluxyCase({ project }: { project: Project }) {
     </section>
 
     <section className="fx-chapter fx-dark" id="fluxy-02">
-      <header><p>[02.00] <b>&gt;</b> DEFINE THE AGENT</p><h2>The strategic move was a product that decides when interaction is necessary.</h2></header>
+      <header><CaseSectionLabel as="p" number="02.00" level="chapter" dark>Define the agent</CaseSectionLabel><h2>The strategic move was a product that decides when interaction is necessary.</h2></header>
       <article className="fx-why-agent"><div><span>&gt; WHY AN AGENT?</span><h3>The problem was not access to information. It was who had to do the work.</h3></div><div><p>At that point, I changed my position. A better dashboard would still require the passenger to wake, check, decide and act every day.</p><p>So I defined Fluxy as an agent that observes, anticipates and recommends continuously — then asks for approval at the boundary where human judgement matters.</p></div></article>
       <article className="fx-agent-journey">
         <div className="fx-agent-journey-intro"><span>&gt; AGENT-ASSISTED JOURNEY</span><h3>One goal. Three levels of autonomy.</h3><p>I mapped the agent as a decision system: first understand the passenger&apos;s goal, then classify the impact of change before choosing whether to act, ask or step back.</p></div>
@@ -88,7 +89,7 @@ export function FluxyCase({ project }: { project: Project }) {
     </section>
 
     <section className="fx-chapter" id="fluxy-03">
-      <header><p>[03.00] <b>&gt;</b> BOUND AUTONOMY</p><h2>Trust needed an interaction model, not a reassuring tone of voice.</h2></header>
+      <header><CaseSectionLabel as="p" number="03.00" level="chapter">Bound autonomy</CaseSectionLabel><h2>Trust needed an interaction model, not a reassuring tone of voice.</h2></header>
       <article className="fx-principles"><div className="fx-principles-intro"><span>&gt; FOUR AUTONOMY RULES</span><p>These rules defined when Fluxy could stay silent, prepare context, ask for consent or admit the goal could not be protected.</p></div><ol className="fx-rule-deck">{principles.map(([number,title,trigger,permission,boundary])=><li key={number}><div className="fx-rule-top"><small>{number}</small><strong>{title}</strong></div><div className="fx-rule-body"><p><b>When</b><span>{trigger}</span></p><p><b>Fluxy may</b><span>{permission}</span></p><p><b>Limit</b><span>{boundary}</span></p></div></li>)}</ol></article>
       <article className="fx-policy"><span>&gt; PRODUCT LEADERSHIP & AI</span><div className="fx-policy-content"><h3>I treated the agent as a policy system, not a chat surface.</h3><div className="fx-policy-notes"><div><small>THE WORK</small><p>I translated fare policy, accessibility, operations and passenger trust into explicit autonomy rules, then used AI to simulate edge cases and produce auditable decision traces.</p></div><div><small>THE BOUNDARY</small><p>AI expanded scenario coverage. It did not define the boundaries: payment, personal-data expansion and major journey changes always remained behind human approval.</p></div></div></div></article>
       <article className="fx-visual-language">
@@ -112,7 +113,7 @@ export function FluxyCase({ project }: { project: Project }) {
     </section>
 
     <section className="fx-chapter" id="fluxy-04">
-      <header><p>[04.00] <b>&gt;</b> MAKE IT TESTABLE</p><h2>Three moments made the autonomy model concrete enough to inspect, challenge and test.</h2></header>
+      <header><CaseSectionLabel as="p" number="04.00" level="chapter">Make it testable</CaseSectionLabel><h2>Three moments made the autonomy model concrete enough to inspect, challenge and test.</h2></header>
       <article className="fx-proof"><div><span>01 / DAILY BRIEF</span><h3>Build trust before disruption.</h3><p>One glance replaces checks for balance, weather, timing and route confidence.</p></div><figure><Image src="/media/Mmfb40qOiaxKtQrgIFMJi6A.png" alt="Fluxy daily commute brief" fill sizes="58vw"/></figure></article>
       <article className="fx-proof fx-proof-reverse"><div><span>02 / SMART RECHARGE</span><h3>Autonomy stops at payment.</h3><p>Fluxy monitors balance and stages the top-up. The passenger still authorises the transaction.</p></div><figure><Image src="/media/3ZRShN2uu7UG2p8p8J3RXWpJg1U.png" alt="Fluxy smart recharge consent flow" fill sizes="58vw"/></figure></article>
       <article className="fx-proof"><div><span>03 / GOAL PROTECTION</span><h3>The objective survives change.</h3><p>When disruption threatens arrival, Fluxy explains the trigger and recommends a route in terms of the passenger&apos;s priority.</p></div><figure><Image src="/media/1OrTKFTrcLckBt1fLOZU36fom5s.png" alt="Fluxy disruption and route recommendation flow" fill sizes="58vw"/></figure></article>

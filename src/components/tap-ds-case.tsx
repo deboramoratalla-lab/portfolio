@@ -4,6 +4,7 @@ import { CasePremiseReveal } from "@/components/case-premise-reveal"
 import { CaseMoreWorks } from "@/components/case-more-works"
 import { CaseStudyIndex } from "@/components/case-study-index"
 import { ArrowRouteLink } from "@/components/ui-links"
+import { CaseSectionLabel } from "@/components/case-section-label"
 
 export function TapDsCase({ project }: { project: Project }) {
   return <main className="tap-ds" style={{ "--accent": project.accent } as React.CSSProperties}>
@@ -17,13 +18,13 @@ export function TapDsCase({ project }: { project: Project }) {
       </div>
     </section>
 
-    <CaseStudyIndex className="tap-ds-index" chapters={project.chapters.map(chapter => [chapter.number, chapter.title] as const)} hrefForChapter={number => `#tap-${number}`} />
+    <CaseStudyIndex introduction="From product evidence to a coded system Design and Engineering could share." chapters={project.chapters.map(chapter => [chapter.number, chapter.title] as const)} hrefForChapter={number => `#tap-${number}`} />
 
     {project.chapters.map(chapter => <section className="tap-ds-chapter" id={`tap-${chapter.number}`} key={chapter.number}>
-      <header><p><em>[{chapter.number}.00]</em><b>&gt;</b>{chapter.title}</p><h2>{chapter.thesis}</h2><div className="tap-ds-chapter-mark" aria-hidden="true"><span>{chapter.number}</span><i /><i /><i /></div></header>
+      <header><CaseSectionLabel as="p" number={`${chapter.number}.00`} level="chapter" dark={chapter.tone === "dark"}>{chapter.title}</CaseSectionLabel><h2>{chapter.thesis}</h2></header>
       <div className={`tap-ds-sections tap-ds-sections-${chapter.number}`}>
         {chapter.sections.map((section, index) => <article className={`tap-ds-block tap-ds-${section.layout ?? "split"} tap-ds-block-${String(index + 1).padStart(2,"0")}`} key={`${section.title}-${index}`}>
-          <div className="tap-ds-copy"><span className="tap-ds-block-label"><i>[{chapter.number}.{String(index + 1).padStart(2,"0")}]</i><b>&gt;</b>{section.eyebrow ?? (chapter.number === "01" && index === 0 ? "Diagnosis" : "Evidence")}</span>{section.title && <h3>{section.title}</h3>}{section.body.map(text => <p key={text}>{text}</p>)}</div>
+          <div className="tap-ds-copy"><CaseSectionLabel as="span" number={`${chapter.number}.${String(index + 1).padStart(2,"0")}`} dark={chapter.tone === "dark"} className="tap-ds-block-label">{section.eyebrow ?? (chapter.number === "01" && index === 0 ? "Diagnosis" : "Evidence")}</CaseSectionLabel>{section.title && <h3>{section.title}</h3>}{section.body.map(text => <p key={text}>{text}</p>)}</div>
           {section.points && <div className="tap-ds-points">{section.points.map(([label,value]) => <div key={`${label}-${value}`}><small>{label}</small><p>{value}</p></div>)}</div>}
           {section.metrics && <div className="tap-ds-metrics">{section.metrics.map(([value,label], metricIndex) => <div key={label} className={metricIndex % 2 ? "green" : "purple"}><strong>{value}</strong><span>{label}</span></div>)}</div>}
           {section.layout === "bridge" && <div className="tap-ds-system-route" aria-label="Code to Figma workflow"><small>[ SYSTEM ROUTE ]</small><div><span><i>01</i>TS props</span><b>→</b><span><i>02</i>Catalogue</span><b>→</b><span><i>03</i>Plugin</span><b>→</b><span><i>04</i>Figma</span></div></div>}

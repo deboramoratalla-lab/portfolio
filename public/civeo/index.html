@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Civeo — panel de operaciones municipal</title>
+<meta name="description" content="Civeo — dashboard operativo para gestión de servicios municipales inteligentes (riego, alumbrado, calidad del aire, movilidad) con asistente de panel integrado.">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='64' y2='64' gradientUnits='userSpaceOnUse'%3E%3Cstop offset='0' stop-color='%235fe3d6'/%3E%3Cstop offset='1' stop-color='%230fb8ac'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='%230f2542'/%3E%3Ccircle cx='32' cy='30' r='16' fill='url(%23g)'/%3E%3Ccircle cx='39' cy='23' r='4.5' fill='%23fbbf24'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<!-- fuentes e iconos cargados sin bloquear el primer pintado: si la red va lenta
+     o está restringida, la página se ve igualmente (con fuentes de sistema) -->
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,300..500,0..1,0"
+  onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+  onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"
+  onload="this.onload=null;this.rel='stylesheet'">
+<noscript>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,300..500,0..1,0" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+</noscript>
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<div class="app-shell">
+<input type="checkbox" id="drawer-toggle">
+
+  <!-- rail único: SOLO navegación. Inicio, buscar (⌘K), categorías con flyout de subcategorías -->
+  <nav class="rail">
+    <div class="logo" title="Civeo" aria-label="Civeo">
+      <svg viewBox="0 0 177 85" class="logo-word-mark" role="img" aria-label="Civeo">
+        <defs>
+          <linearGradient id="civeo-word-grad" x1="0" y1="0" x2="177" y2="85" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#5fe3d6"/>
+            <stop offset="1" stop-color="#0fb8ac"/>
+          </linearGradient>
+        </defs>
+        <path d="M81.4698 69.7336H78V44.2842H81.4698V69.7336Z" fill="url(#civeo-word-grad)"/>
+        <path d="M108.862 44.2842L98.417 69.7336H95.3049L84.8599 44.2842H87.6321C87.9421 44.2842 88.1925 44.3611 88.3833 44.515C88.5741 44.6689 88.7171 44.8643 88.8125 45.1011L96.0382 63.056C96.1932 63.4586 96.3423 63.8966 96.4854 64.3702C96.6404 64.8438 96.7775 65.3411 96.8967 65.862C97.016 65.3411 97.1412 64.8438 97.2723 64.3702C97.4035 63.8966 97.5466 63.4586 97.7016 63.056L104.909 45.1011C104.981 44.8998 105.118 44.7163 105.321 44.5505C105.535 44.373 105.792 44.2842 106.09 44.2842H108.862Z" fill="url(#civeo-word-grad)"/>
+        <path d="M128.044 66.9276L128.026 69.7336H112.234V44.2842H128.026V47.0902H115.703V55.5437H125.683V58.2432H115.703V66.9276H128.044Z" fill="url(#civeo-word-grad)"/>
+        <path d="M156 57.0178C156 58.924 155.696 60.6762 155.088 62.2746C154.48 63.8611 153.621 65.2286 152.512 66.377C151.403 67.5255 150.068 68.4194 148.506 69.0587C146.956 69.6862 145.239 70 143.355 70C141.471 70 139.754 69.6862 138.204 69.0587C136.654 68.4194 135.325 67.5255 134.216 66.377C133.107 65.2286 132.248 63.8611 131.64 62.2746C131.032 60.6762 130.728 58.924 130.728 57.0178C130.728 55.1116 131.032 53.3652 131.64 51.7787C132.248 50.1803 133.107 48.8069 134.216 47.6585C135.325 46.4982 136.654 45.5984 138.204 44.959C139.754 44.3197 141.471 44 143.355 44C145.239 44 146.956 44.3197 148.506 44.959C150.068 45.5984 151.403 46.4982 152.512 47.6585C153.621 48.8069 154.48 50.1803 155.088 51.7787C155.696 53.3652 156 55.1116 156 57.0178ZM152.441 57.0178C152.441 55.4549 152.226 54.0519 151.797 52.8087C151.368 51.5656 150.76 50.5178 149.973 49.6653C149.186 48.801 148.232 48.138 147.111 47.6762C145.99 47.2145 144.738 46.9836 143.355 46.9836C141.984 46.9836 140.738 47.2145 139.617 47.6762C138.496 48.138 137.536 48.801 136.737 49.6653C135.951 50.5178 135.342 51.5656 134.913 52.8087C134.484 54.0519 134.269 55.4549 134.269 57.0178C134.269 58.5806 134.484 59.9836 134.913 61.2268C135.342 62.4581 135.951 63.5059 136.737 64.3702C137.536 65.2227 138.496 65.8798 139.617 66.3415C140.738 66.7914 141.984 67.0164 143.355 67.0164C144.738 67.0164 145.99 66.7914 147.111 66.3415C148.232 65.8798 149.186 65.2227 149.973 64.3702C150.76 63.5059 151.368 62.4581 151.797 61.2268C152.226 59.9836 152.441 58.5806 152.441 57.0178Z" fill="url(#civeo-word-grad)"/>
+        <path d="M47.6052 30.1129L46.7571 32.3766C44.6902 31.6249 43.5467 31.4077 41.3268 31.7248C39.1119 32.0101 37.0735 32.829 35.2115 34.1816C32.1881 36.378 30.3839 39.3222 29.7989 43.0142C29.2139 46.7063 30.0196 50.064 32.2159 53.0874C34.4123 56.1108 37.3565 57.915 41.0485 58.5C44.7406 59.085 48.0983 58.2793 51.1217 56.083C52.9837 54.7303 54.3927 53.0449 55.3487 51.0267C56.3231 48.9951 56.7724 46.8803 56.6965 44.6822L59.1441 44.6785C59.2231 47.2686 58.6907 49.7536 57.5469 52.1336C56.4031 54.5135 54.7435 56.4937 52.5681 58.074C50.8167 59.3463 48.8913 60.2239 46.7919 60.7069C44.711 61.1766 42.6679 61.2525 40.6627 60.9348C38.6576 60.6171 36.7381 59.9133 34.9042 58.8234C33.057 57.715 31.4972 56.2851 30.2249 54.5338C28.9526 52.7824 28.0817 50.8662 27.612 48.7853C27.129 46.6859 27.0464 44.6336 27.3641 42.6284C27.6818 40.6233 28.3856 38.7038 29.4755 36.8699C30.5839 35.0227 32.0138 33.4629 33.7651 32.1906C35.9589 30.5969 38.371 29.6332 41.0014 29.2996C43.6184 28.9475 45.153 29.2186 47.6052 30.1129ZM49.2486 25.4548L48.3729 27.7386C45.5623 26.7386 43.6474 26.448 40.6283 26.8669C37.6143 27.2539 34.8444 28.3648 32.3187 30.1996C29.6087 32.1683 27.5995 34.6558 26.2912 37.6623C24.9695 40.6503 24.466 43.7761 24.7809 47.0398C25.1142 50.29 26.2652 53.2702 28.2339 55.9802C30.2026 58.6902 32.6809 60.7061 35.6689 62.0278C38.6754 63.3361 41.8104 63.8329 45.0741 63.518C48.3243 63.1847 51.3045 62.0337 54.0145 60.065C56.5401 58.2303 58.4621 55.9328 59.7803 53.1726C61.0986 50.4124 61.71 47.5321 61.6144 44.5316L64.0696 44.4801C64.1817 47.8911 63.4847 51.1575 61.9786 54.2795C60.4909 57.388 58.3183 59.9802 55.4608 62.056C52.4006 64.2792 49.0216 65.5791 45.3241 65.9557C41.6265 66.3323 38.0777 65.77 34.6776 64.2688C31.2776 62.7676 28.466 60.4868 26.2429 57.4265C24.0197 54.3663 22.7198 50.9873 22.3432 47.2898C21.9666 43.5922 22.5289 40.0434 24.0301 36.6433C25.5313 33.2433 27.8121 30.4317 30.8724 28.2086C33.7298 26.1327 36.8667 24.8679 40.2829 24.4141C43.7175 23.9468 46.0394 24.2937 49.2486 25.4548ZM50.9599 20.8319L50.0842 23.1157C46.5031 21.8305 43.7942 21.4549 39.9575 21.9889C36.1258 22.4911 32.6153 23.9006 29.426 26.2175C26.8634 28.0791 24.7731 30.358 23.155 33.0544C21.5369 35.7507 20.4959 38.563 20.0319 41.4912C19.573 44.3875 19.6962 47.3679 20.4015 50.4324C21.1068 53.4969 22.3903 56.3104 24.2518 58.8729C26.1134 61.4355 28.3923 63.5258 31.0887 65.1439C33.785 66.762 36.5881 67.8097 39.4978 68.2871C42.4126 68.7326 45.4022 68.6027 48.4667 67.8974C51.5312 67.1921 54.3447 65.9086 56.9072 64.0471C60.115 61.7168 62.5499 58.8073 64.212 55.3185C65.8741 51.8298 66.6476 48.1839 66.5323 44.381L69 44.4049C69.1184 48.5999 68.2526 52.6226 66.4027 56.4732C64.5578 60.2918 61.8748 63.4801 58.3536 66.0381C54.5743 68.7835 50.4045 70.3904 45.8441 70.8587C41.2703 71.3086 36.8781 70.6126 32.6674 68.7709C28.4751 66.9158 25.0062 64.0986 22.2608 60.3193C19.5154 56.54 17.9085 52.3702 17.4402 47.8098C16.9903 43.236 17.6929 38.853 19.5481 34.6607C21.3898 30.45 24.2003 26.972 27.9796 24.2265C31.5192 21.6552 35.4126 20.0942 39.6598 19.5436C43.8935 18.9747 46.9936 19.4041 50.9599 20.8319ZM52.5757 16.1939L51.7 18.4776C47.3618 16.9257 43.8748 16.4676 39.2389 17.1034C34.6214 17.7258 30.3862 19.4365 26.5332 22.2355C23.4361 24.4854 20.9099 27.25 18.9547 30.5291C17.0046 33.7765 15.7497 37.1666 15.1899 40.6995C14.6301 44.2324 14.7731 47.8603 15.6188 51.5833C16.4695 55.2744 18.0198 58.6685 20.2698 61.7657C22.5197 64.8628 25.275 67.3957 28.5358 69.3643C31.8016 71.301 35.2009 72.5492 38.7338 73.109C42.2667 73.6688 45.8854 73.5325 49.5899 72.7002C53.2995 71.8361 56.7028 70.2791 59.8 68.0291C63.653 65.2301 66.5917 61.7153 68.616 57.4845C70.6404 53.2538 71.5851 48.8358 71.4502 44.2303L73.938 44.2819C74.0627 49.2609 73.0281 54.04 70.8344 58.6191C68.6272 63.1797 65.4312 66.9801 61.2464 70.0202C57.8727 72.471 54.1644 74.151 50.1214 75.0601C46.1102 75.9744 42.1858 76.1356 38.348 75.5438C34.5153 74.9202 30.8236 73.5604 27.2731 71.4644C23.7277 69.3365 20.7296 66.5858 18.2787 63.2121C15.8279 59.8384 14.1454 56.146 13.2312 52.1348C12.322 48.0918 12.17 44.1607 12.7752 40.3413C13.3854 36.4902 14.7452 32.7986 16.8546 29.2665C18.9691 25.7026 21.7131 22.6953 25.0868 20.2444C29.2901 17.191 33.9082 15.3289 38.9412 14.6581C43.9741 13.9873 47.8523 14.4993 52.5757 16.1939Z" fill="url(#civeo-word-grad)"/>
+        <circle cx="42.6809" cy="45.5774" r="5" transform="rotate(-42.4688 42.6809 45.5774)" fill="#8fe8e0"/>
+      </svg>
+    </div>
+    <!-- cuenta: accesible desde cualquier pantalla (antes solo vivía en la cabecera
+         del dashboard, así que no se veía en inicio/categorías/servicios) -->
+    <div class="account-menu rail-account" id="account-menu">
+      <img class="avatar" style="width:34px;height:34px;" id="account-avatar-btn" tabindex="0" role="button"
+        aria-haspopup="true" aria-expanded="false" aria-label="Menú de cuenta"
+        src="https://ui-avatars.com/api/?name=Debora+Moratalla&background=0fb8ac&color=fff&rounded=true&bold=true&size=64" alt="Debora Moratalla">
+      <span class="rail-label">Debora Moratalla</span>
+      <div class="account-dropdown" role="menu">
+        <div class="account-head">
+          <img class="avatar" src="https://ui-avatars.com/api/?name=Debora+Moratalla&background=0fb8ac&color=fff&rounded=true&bold=true&size=64" alt="">
+          <div class="who"><div class="name">Debora Moratalla</div><div class="email">debora.moratalla@gmail.com</div></div>
+        </div>
+        <div class="account-item" role="menuitem" tabindex="0"><span class="msi">person</span>Perfil</div>
+        <div class="account-item" role="menuitem" tabindex="0"><span class="msi">tune</span>Preferencias</div>
+        <div class="account-item" id="account-restart-tour" role="menuitem" tabindex="0"><span class="msi">school</span>Ver tour guiado</div>
+        <div class="account-sep"></div>
+        <div class="account-item danger" role="menuitem" tabindex="0"><span class="msi">logout</span>Cerrar sesión</div>
+      </div>
+    </div>
+
+    <!-- centro de notificaciones: alertas simuladas de sensores, accesible
+         desde cualquier pantalla igual que el menú de cuenta -->
+    <div class="account-menu rail-account notif-bell" id="notif-bell">
+      <span class="msi notif-bell-icon" tabindex="0" role="button" aria-haspopup="true"
+        aria-expanded="false" aria-label="Notificaciones" id="notif-bell-btn">notifications</span>
+      <span class="rail-label">Notificaciones</span>
+      <span class="notif-badge" id="notif-badge" hidden>0</span>
+      <div class="account-dropdown notif-dropdown" role="menu" aria-label="Notificaciones">
+        <div class="notif-head">
+          <span>Notificaciones</span>
+          <span class="notif-mark-all" id="notif-mark-all" role="button" tabindex="0">Marcar todas como leídas</span>
+        </div>
+        <div class="notif-list" id="notif-list"></div>
+      </div>
+    </div>
+    <div class="rail-divider"></div>
+
+    <div class="rail-item active" tabindex="0" role="button" aria-label="Página de inicio" title="Página de inicio"><span class="msi">home</span><span class="rail-label">Página de inicio</span></div>
+    <div class="rail-item cmdk" tabindex="0" role="button" aria-label="Buscar" title="Buscar (⌘K)"><span class="msi" style="font-size:18px;">search</span><span class="rail-label">Búsqueda</span></div>
+    <div class="rail-divider"></div>
+
+    <div class="rail-item" data-nav="dashboard" tabindex="0" role="button" aria-haspopup="true" aria-label="Edificios inteligentes" title="Edificios inteligentes"><span class="msi">apartment</span><span class="rail-label">Edificios inteligentes y eficiencia energética</span>
+      <div class="flyout">
+        <div class="fy-title">Edificios inteligentes y eficiencia energética</div>
+        <div class="fy-item" data-nav="dashboard" tabindex="0">BETA Edificios inteligentes</div>
+        <div class="fy-item" data-nav="dashboard" tabindex="0">Edificios inteligentes</div>
+        <div class="fy-item" data-nav="dashboard" tabindex="0">Eficiencia hídrica</div>
+        <div class="fy-item" data-nav="dashboard" tabindex="0">Eficiencia energética</div>
+      </div>
+    </div>
+
+    <div class="rail-item active current-section" data-nav="subcats" tabindex="0" role="button" aria-haspopup="true" aria-label="Medio ambiente y sostenibilidad (en Riego)" title="Medio ambiente y sostenibilidad — Riego"><span class="msi">eco</span><span class="rail-label">Medio ambiente y sostenibilidad</span>
+      <div class="flyout">
+        <div class="fy-title">Medio ambiente y sostenibilidad</div>
+        <div class="fy-item" data-nav="dashboard" tabindex="0">Calidad del aire en interiores</div>
+        <div class="fy-item" data-nav="dashboard" tabindex="0">Medio ambiente</div>
+        <div class="fy-item" data-nav="dashboard" tabindex="0">Residuos</div>
+
+        <div class="fy-item fy-parent" id="fy-parent-riego" tabindex="0" role="button" aria-expanded="false">Riego
+          <span class="msi" style="font-size:16px;margin-left:auto;">expand_more</span></div>
+        <div class="fy-sub">
+          <div class="fy-sub-item" data-nav="dashboard" tabindex="0">Administración</div>
+          <div class="fy-sub-item" id="fy-sub-estado-general" data-nav="dashboard" tabindex="0">Estado general</div>
+          <div class="fy-sub-item" data-nav="dashboard" tabindex="0">Histórico</div>
+          <div class="fy-sub-item" data-nav="dashboard" tabindex="0">Programaciones</div>
+          <div class="fy-sub-item" data-nav="dashboard" tabindex="0">Tiempo real</div>
+        </div>
+
+        <div class="fy-item" data-nav="dashboard" tabindex="0">Sostenibilidad</div>
+      </div>
+    </div>
+
+    <div class="rail-item" data-nav="dashboard" tabindex="0" role="button" aria-haspopup="true" aria-label="Movilidad y transporte" title="Movilidad y transporte"><span class="msi">tram</span><span class="rail-label">Movilidad y transporte</span>
+      <div class="flyout">
+        <div class="fy-title">Movilidad y transporte</div>
+        <div class="fy-item" data-nav="dashboard" tabindex="0">Aparcamiento</div>
+        <div class="fy-item" data-nav="dashboard" tabindex="0">Tráfico</div>
+        <div class="fy-item" data-nav="dashboard" tabindex="0">Transporte público</div>
+      </div>
+    </div>
+
+    <div class="rail-item" data-nav="dashboard" tabindex="0" role="button" aria-label="Turismo" title="Turismo"><span class="msi">attractions</span><span class="rail-label">Turismo y destino turístico inteligente</span></div>
+    <div class="rail-item" data-nav="dashboard" tabindex="0" role="button" aria-label="Tecnología y datos" title="Tecnología y datos"><span class="msi">database</span><span class="rail-label">Tecnología y datos</span></div>
+    <div class="rail-item" data-nav="dashboard" tabindex="0" role="button" aria-label="Participación ciudadana" title="Participación ciudadana"><span class="msi">groups</span><span class="rail-label">Participación ciudadana y transparencia</span></div>
+    <div class="rail-item" data-nav="dashboard" tabindex="0" role="button" aria-label="Demografía y urbanismo" title="Demografía y urbanismo"><span class="msi">location_city</span><span class="rail-label">Demografía y urbanismo</span></div>
+
+    <div class="rail-toggle" id="rail-toggle" tabindex="0" role="button" aria-label="Expandir menú" aria-expanded="false" title="Expandir menú">
+      <span class="msi">chevron_right</span><span class="rail-label">Contraer</span>
+    </div>
+  </nav>
+
+<!-- ===== copiloto IA =====
+     Botón flotante accesible desde cualquier vista. Por defecto responde con
+     un motor local de coincidencia de intención (con memoria de la última
+     pregunta, para follow-ups tipo "cuéntame más") que lee los valores
+     REALES que hay en pantalla (clima en vivo, KPIs, tablas) — no inventa
+     datos, solo los interpreta y narra. Desde "Ajustes" se puede activar un
+     modo avanzado: un modelo pequeño que se descarga una vez y corre
+     enteramente en el dispositivo, gratis y sin servidor. De cara a quien
+     usa el copiloto, esto es invisible — la distinción solo importa para
+     quien lee el código o mantiene el producto. -->
+<button type="button" class="copilot-launcher" id="copilot-launcher" aria-label="Abrir asistente de panel" aria-haspopup="dialog" aria-expanded="false" title="Asistente de panel">
+  <span class="msi" aria-hidden="true">auto_awesome</span>
+  <span class="copilot-dot" id="copilot-dot" hidden></span>
+</button>
+
+<div class="copilot-panel" id="copilot-panel" role="dialog" aria-modal="false" aria-label="Asistente de panel de Civeo" aria-describedby="copilot-body" tabindex="-1">
+  <div class="copilot-head">
+    <span class="msi" aria-hidden="true">auto_awesome</span>
+    <div class="copilot-titles">
+      <div class="t1">Asistente de panel</div>
+      <div class="t2">Consultas sobre los indicadores en pantalla</div>
+    </div>
+    <button type="button" class="copilot-close" id="copilot-close" aria-label="Cerrar asistente">
+      <span class="msi" aria-hidden="true">close</span>
+    </button>
+  </div>
+
+  <div class="copilot-body" id="copilot-body" aria-live="polite"></div>
+
+  <div class="copilot-suggestions" id="copilot-suggestions">
+  </div>
+
+</div>
+
+<div class="stage">
+
+<div id="view-dashboard" class="app-view">
+  <div class="head-compact tall">
+    <div class="head-main">
+      <div class="topnav">
+        <div class="crumbs" style="margin-top:0;" id="dash-crumbs"></div>
+        <div class="datetime"><span class="msi" style="font-size:15px;">schedule</span> <span id="live-clock">Hoy, 17:45</span><span class="datetime-sep">·</span><span id="live-updated">actualizado hace unos segundos</span></div>
+      </div>
+      <h1 class="title" id="dash-title"></h1>
+      <div class="toolbar">
+        <div class="date-menu" id="date-menu">
+          <span class="tool-pill date-pill" id="date-pill" tabindex="0" role="button" aria-haspopup="true" aria-expanded="false">
+            <span class="msi" style="font-size:14px;">calendar_today</span><span id="date-pill-label">Últimos 7 días</span></span>
+          <div class="date-popover" id="date-popover" role="menu">
+            <div class="wmenu-label">Rango de fechas</div>
+            <div class="date-preset active" data-preset="7" role="menuitem" tabindex="0"><span class="msi">today</span>Últimos 7 días</div>
+            <div class="date-preset" data-preset="1" role="menuitem" tabindex="0"><span class="msi">event</span>Hoy</div>
+            <div class="date-preset" data-preset="30" role="menuitem" tabindex="0"><span class="msi">date_range</span>Últimos 30 días</div>
+            <div class="date-preset" data-preset="month" role="menuitem" tabindex="0"><span class="msi">calendar_month</span>Este mes</div>
+            <div class="date-sep"></div>
+            <div class="date-custom">
+              <div class="wmenu-label" style="padding:0 0 6px;">Rango personalizado</div>
+              <div class="date-custom-fields">
+                <input type="date" id="date-from" aria-label="Fecha inicial">
+                <span style="color:var(--ink-dim);font-size:12px;">–</span>
+                <input type="date" id="date-to" aria-label="Fecha final">
+              </div>
+              <button type="button" class="date-apply" id="date-apply">Aplicar rango</button>
+            </div>
+          </div>
+        </div>
+        <span class="tool-icon" tabindex="0" role="button" aria-label="Actualizar datos" title="Actualizar"><span class="msi" style="font-size:16px;">refresh</span></span>
+        <span class="tool-icon" id="btn-export-csv" tabindex="0" role="button" aria-label="Exportar datos a CSV" title="Exportar a CSV"><span class="msi" style="font-size:16px;">download</span></span>
+        <label for="drawer-toggle" class="tool-pill primary" id="btn-editar"><span class="msi" style="font-size:14px;">edit</span> Editar</label>
+      </div>
+
+      <div class="kpi-row">
+
+        <div class="kpi-glass">
+          <div class="kpi-top"><span class="k">Temperatura</span><span class="kpi-live-badge" id="kpi-live-badge-temp" title="Dato meteorológico real vía Open-Meteo">en vivo</span>
+            <span class="msi kpi-more" tabindex="0" role="button" aria-label="Más opciones" style="font-size:16px;">more_vert</span></div>
+          <div class="kpi-value" id="kpi-temp-value">13.09 °C</div>
+          <div class="kpi-chart">
+            <svg viewBox="0 0 160 60" preserveAspectRatio="none">
+              <polyline points="0,45 25,40 50,42 75,28 100,32 125,15 150,20 160,12"
+                fill="none" stroke="#8fd8cf" stroke-width="2.2" stroke-dasharray="3 4"/>
+              <polyline points="0,50 25,48 50,38 75,40 100,25 125,28 150,10 160,15"
+                fill="none" stroke="#fff" stroke-width="2.4"/>
+            </svg>
+          </div>
+          <div class="kpi-chart-legend">
+            <span><i style="background:#fff;"></i>Actual</span>
+            <span><i class="dash" style="border-color:#8fd8cf;"></i>Media semanal</span>
+          </div>
+          <div class="kpi-foot">
+            <span class="msi" tabindex="0" role="button" aria-label="Más información de esta métrica" style="font-size:13px;">info</span>
+          </div>
+        </div>
+
+        <div class="kpi-glass">
+          <div class="kpi-top"><span class="k">Humedad absoluta</span>
+            <span class="msi kpi-more" tabindex="0" role="button" aria-label="Más opciones" style="font-size:16px;">more_vert</span></div>
+          <div class="kpi-value">517,90 g/m³</div>
+          <div class="kpi-segbar">
+            <div style="flex:2;background:#0a2f57;"></div>
+            <div style="flex:.6;background:rgba(255,255,255,.35);"></div>
+            <div style="flex:1.4;background:#8fd8cf;"></div>
+          </div>
+          <div class="kpi-chart-legend">
+            <span><i style="background:#0a2f57;"></i>Interior</span>
+            <span><i style="background:rgba(255,255,255,.55);"></i>Ambiente</span>
+            <span><i style="background:#8fd8cf;"></i>Exterior</span>
+          </div>
+          <div class="kpi-foot">
+            <span class="msi" tabindex="0" role="button" aria-label="Más información de esta métrica" style="font-size:13px;">info</span>
+          </div>
+        </div>
+
+        <div class="kpi-glass">
+          <div class="kpi-top"><span class="k">Humedad relativa</span><span class="kpi-live-badge" id="kpi-live-badge-humidity" title="Dato meteorológico real vía Open-Meteo">en vivo</span>
+            <span class="msi kpi-more" tabindex="0" role="button" aria-label="Más opciones" style="font-size:16px;">more_vert</span></div>
+          <div class="kpi-ring-row">
+            <div class="kpi-ring">
+              <svg viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="40" fill="none" stroke="rgba(255,255,255,.18)" stroke-width="9"/>
+                <circle cx="50" cy="50" r="40" fill="none" stroke="#8fd8cf" stroke-width="9" stroke-linecap="round"
+                  stroke-dasharray="204 251" transform="rotate(-90 50 50)" id="kpi-humidity-ring-circle"/>
+              </svg>
+              <div class="kpi-ring-num"><span class="msi" style="font-size:13px;">humidity_percentage</span><b id="kpi-humidity-value">81<small>%</small></b></div>
+            </div>
+            <span class="kpi-agg-note" id="kpi-humidity-note">Media de los últimos <b>7 días</b>, agregación por promedio horario.</span>
+          </div>
+          <div class="kpi-foot">
+            <span class="msi" tabindex="0" role="button" aria-label="Más información de esta métrica" style="font-size:13px;">info</span>
+          </div>
+        </div>
+
+        <div class="kpi-glass">
+          <div class="kpi-top"><span class="k">Tasa de precipitación</span><span class="kpi-live-badge" id="kpi-live-badge-precip" title="Dato meteorológico real vía Open-Meteo">en vivo</span>
+            <span class="msi kpi-more" tabindex="0" role="button" aria-label="Más opciones" style="font-size:16px;">more_vert</span></div>
+          <div class="kpi-value" id="kpi-precip-value">64 l/m²</div>
+          <div class="kpi-gauge">
+            <svg width="70" height="70" viewBox="0 0 76 76" style="transform:rotate(-90deg)">
+              <circle cx="38" cy="38" r="31" fill="none" stroke="rgba(255,255,255,.22)" stroke-width="8"/>
+              <circle cx="38" cy="38" r="31" fill="none" stroke="#fff" stroke-width="8"
+                stroke-dasharray="195" stroke-dashoffset="50" stroke-linecap="round"/>
+            </svg>
+            <span class="kpi-gauge-note">75% de la media histórica de agosto</span>
+          </div>
+          <div class="kpi-foot">
+            <span class="msi" tabindex="0" role="button" aria-label="Más información de esta métrica" style="font-size:13px;">info</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- mapa translúcido embebido en la cabecera, 1/4 del contenedor -->
+    <div class="map-in-header">
+      <div class="card-head" style="color:#fff;"><h4 style="color:#fff;">Localización global de activos</h4>
+        <span class="ic" tabindex="0" role="button" aria-label="Ver mapa a pantalla completa" style="background:rgba(255,255,255,.14);color:#fff;"><span class="msi" style="font-size:14px;">fullscreen</span></span></div>
+      <div class="map-canvas translucent">
+        <div id="leaflet-map"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="dash">
+
+    <!-- fila 2: entidades por tipo + potencia luminarias -->
+    <div class="dash-row">
+      <div class="card" id="w-entidades" data-widget-name="Número de entidades por tipo" draggable="true" style="flex:1.1;">
+        <span class="edit-handle" tabindex="0" role="button" aria-label="Arrastrar para reordenar"><span class="msi">drag_indicator</span></span>
+        <span class="edit-delete" tabindex="0" role="button" aria-label="Eliminar widget"><span class="msi">delete</span></span>
+        <div class="card-head"><h4>Número de entidades por tipo</h4>
+          <span class="ic" tabindex="0" role="button" aria-label="Más opciones"><span class="msi" style="font-size:15px;">more_vert</span></span></div>
+        <div class="card-body">
+          <div class="hbar-chart">
+            <div class="hbar-row"><span class="hbar-name">Tuberías</span>
+              <span class="hbar-track"><span class="hbar-fill" style="width:66%;background:var(--blue-deep);"></span></span>
+              <span class="hbar-val">340</span></div>
+            <div class="hbar-row"><span class="hbar-name">Bombas</span>
+              <span class="hbar-track"><span class="hbar-fill" style="width:17%;background:var(--blue);"></span></span>
+              <span class="hbar-val">86</span></div>
+            <div class="hbar-row"><span class="hbar-name">Estaciones</span>
+              <span class="hbar-track"><span class="hbar-fill" style="width:11%;background:var(--blue);opacity:.65;"></span></span>
+              <span class="hbar-val">54</span></div>
+            <div class="hbar-row"><span class="hbar-name">Cuadros</span>
+              <span class="hbar-track"><span class="hbar-fill" style="width:25%;background:var(--green-dark);"></span></span>
+              <span class="hbar-val">128</span></div>
+            <div class="hbar-row"><span class="hbar-name">Depósitos</span>
+              <span class="hbar-track"><span class="hbar-fill" style="width:8%;background:var(--green);"></span></span>
+              <span class="hbar-val">42</span></div>
+            <div class="hbar-row"><span class="hbar-name">Pozos</span>
+              <span class="hbar-track"><span class="hbar-fill" style="width:13%;background:var(--green);opacity:.65;"></span></span>
+              <span class="hbar-val">67</span></div>
+            <div class="hbar-row"><span class="hbar-name">Alcantarillas</span>
+              <span class="hbar-track"><span class="hbar-fill" style="width:47%;background:var(--yellow);"></span></span>
+              <span class="hbar-val">240</span></div>
+            <div class="hbar-row hi"><span class="hbar-name">Contadores</span>
+              <span class="hbar-track"><span class="hbar-fill" style="width:100%;background:#0a8f86;"></span></span>
+              <span class="hbar-val">512</span></div>
+          </div>
+        </div>
+        <span class="edit-resize" tabindex="0" role="slider" aria-label="Redimensionar widget"><span class="msi">drag_handle</span></span>
+      </div>
+
+      <div class="card" id="w-luminarias" data-widget-name="Potencia luminarias (instantáneo)" draggable="true" style="flex:1.3;">
+        <span class="edit-handle" tabindex="0" role="button" aria-label="Arrastrar para reordenar"><span class="msi">drag_indicator</span></span>
+        <span class="edit-delete" tabindex="0" role="button" aria-label="Eliminar widget"><span class="msi">delete</span></span>
+        <div class="card-head"><h4>Potencia luminarias (instantáneo)</h4>
+          <span class="ic" tabindex="0" role="button" aria-label="Más opciones"><span class="msi" style="font-size:15px;">more_vert</span></span></div>
+        <div class="card-body">
+          <table class="mini">
+            <tr><th>Título</th><th>Estado</th></tr>
+            <tr><td>ENT-LUM-061</td><td><span class="status-dot" style="color:#dc2626"><span class="msi" style="font-size:14px;">error</span>Apagada</span></td></tr>
+            <tr><td>ENT-LUM-062</td><td><span class="status-dot" style="color:#b8860b"><span class="msi" style="font-size:14px;">report</span>Fundida</span></td></tr>
+            <tr><td>ENT-LUM-063</td><td><span class="status-dot" style="color:var(--green-dark)"><span class="msi" style="font-size:14px;">check_circle</span>Encendida</span></td></tr>
+            <tr><td>ENT-LUM-065</td><td><span class="status-dot" style="color:var(--blue)"><span class="msi" style="font-size:14px;">info</span>Instalada</span></td></tr>
+            <tr><td>ENT-LUM-066</td><td><span class="status-dot" style="color:var(--blue)"><span class="msi" style="font-size:14px;">info</span>Instalada</span></td></tr>
+            <tr><td>ENT-LUM-067</td><td><span class="status-dot" style="color:var(--green-dark)"><span class="msi" style="font-size:14px;">check_circle</span>Encendida</span></td></tr>
+          </table>
+        </div>
+        <div class="card-pager">
+          <span class="pg-btn" tabindex="0" role="button" aria-label="Primera página"><span class="msi" style="font-size:13px;">first_page</span></span>
+          <span class="pg-btn" tabindex="0" role="button" aria-label="Página anterior"><span class="msi" style="font-size:13px;">chevron_left</span></span>
+          <span class="pg-num on" tabindex="0" aria-current="page">1</span>
+          <span class="pg-num" tabindex="0">2</span>
+          <span class="pg-num" tabindex="0">3</span>
+          <span class="pg-btn" tabindex="0" role="button" aria-label="Página siguiente"><span class="msi" style="font-size:13px;">chevron_right</span></span>
+          <span class="pg-btn" tabindex="0" role="button" aria-label="Última página"><span class="msi" style="font-size:13px;">last_page</span></span>
+          <span class="pg-total">Páginas: 12</span>
+        </div>
+        <span class="edit-resize" tabindex="0" role="slider" aria-label="Redimensionar widget"><span class="msi">drag_handle</span></span>
+      </div>
+    </div>
+
+    <!-- fila 3: lista de indicadores, ahora a ancho completo (el gauge subió al header como KPI) -->
+    <div class="dash-row">
+      <div class="card" id="w-indicadores" data-widget-name="Lista de indicadores" draggable="true" style="flex:1;">
+        <span class="edit-handle" tabindex="0" role="button" aria-label="Arrastrar para reordenar"><span class="msi">drag_indicator</span></span>
+        <span class="edit-delete" tabindex="0" role="button" aria-label="Eliminar widget"><span class="msi">delete</span></span>
+        <div class="card-head"><h4>Lista de indicadores</h4>
+          <span class="ic" tabindex="0" role="button" aria-label="Más opciones"><span class="msi" style="font-size:15px;">more_vert</span></span></div>
+        <div class="card-body">
+          <table class="mini">
+            <tr><th>Área</th><th>Subárea</th><th>Nombre</th><th>Año</th></tr>
+            <tr><td>Gobernanza</td><td>dti</td><td>Competencia DTI</td><td>2024</td></tr>
+            <tr><td>Gobernanza</td><td>dti</td><td>Mesa de coordinación</td><td>2024</td></tr>
+            <tr><td>Gobernanza</td><td>dti</td><td>Organigrama del Ente gestor</td><td>2023</td></tr>
+            <tr><td>Gobernanza</td><td>dti</td><td>Plan Director</td><td>2023</td></tr>
+            <tr><td>Gobernanza</td><td>dti</td><td>Participación ciudadana</td><td>2025</td></tr>
+            <tr><td>Innovación</td><td>dti</td><td>Transparencia en la contratación</td><td>2025</td></tr>
+            <tr><td>Innovación</td><td>dti</td><td>Acciones medioambientales</td><td>2025</td></tr>
+            <tr><td>Innovación</td><td>dti</td><td>Estrategia y compromiso</td><td>2026</td></tr>
+          </table>
+        </div>
+        <span class="edit-resize" tabindex="0" role="slider" aria-label="Redimensionar widget"><span class="msi">drag_handle</span></span>
+      </div>
+    </div>
+
+  </div>
+</div><!-- /view-dashboard -->
+
+<!-- ===== flujo de entrada: 1) elegir diputación → 2) elegir categoría → 3) dashboard ===== -->
+<div id="view-home" class="app-view flow-view" style="display:none;">
+  <div class="flow-top">
+    <div class="crumbs"><span class="current">Diputación provincial</span></div>
+  </div>
+  <h2 class="flow-title">Selecciona una diputación</h2>
+  <div class="cat-grid">
+    <div class="cat-card cat-g1 has-photo" data-nav="categories" data-province="Ávila" tabindex="0" role="button" style="background:url(img/avila.jpg) center/cover no-repeat;"><span class="msi cat-icon">location_city</span><span class="cat-stat"><span class="msi">groups</span>155.256 hab.</span><span class="cat-label">Ávila</span></div>
+    <div class="cat-card cat-g2 has-photo" data-nav="categories" data-province="Burgos" tabindex="0" role="button" style="background:url(img/burgos.jpg) center/cover no-repeat;"><span class="msi cat-icon">location_city</span><span class="cat-stat"><span class="msi">groups</span>356.958 hab.</span><span class="cat-label">Burgos</span></div>
+    <div class="cat-card cat-g3 has-photo" data-nav="categories" data-province="León" tabindex="0" role="button" style="background:url(img/leon.jpg) center/cover no-repeat;"><span class="msi cat-icon">location_city</span><span class="cat-stat"><span class="msi">groups</span>438.293 hab.</span><span class="cat-label">León</span></div>
+    <div class="cat-card cat-g1 has-photo" data-nav="categories" data-province="Palencia" tabindex="0" role="button" style="background:url(img/palencia.jpg) center/cover no-repeat;"><span class="msi cat-icon">location_city</span><span class="cat-stat"><span class="msi">groups</span>155.988 hab.</span><span class="cat-label">Palencia</span></div>
+    <div class="cat-card cat-g2 active has-photo" data-nav="categories" data-province="Salamanca" tabindex="0" role="button" style="background:url(img/salamanca.jpg) center/cover no-repeat;"><span class="msi cat-icon">location_city</span><span class="cat-stat"><span class="msi">groups</span>330.815 hab.</span><span class="cat-label">Salamanca</span></div>
+    <div class="cat-card cat-g3 has-photo" data-nav="categories" data-province="Segovia" tabindex="0" role="button" style="background:url(img/segovia.jpg) center/cover no-repeat;"><span class="msi cat-icon">location_city</span><span class="cat-stat"><span class="msi">groups</span>153.148 hab.</span><span class="cat-label">Segovia</span></div>
+    <div class="cat-card cat-g1 has-photo" data-nav="categories" data-province="Soria" tabindex="0" role="button" style="background:url(img/soria.jpg) center/cover no-repeat;"><span class="msi cat-icon">location_city</span><span class="cat-stat"><span class="msi">groups</span>88.575 hab.</span><span class="cat-label">Soria</span></div>
+    <div class="cat-card cat-g2 has-photo" data-nav="categories" data-province="Valladolid" tabindex="0" role="button" style="background:url(img/valladolid.jpg) center/cover no-repeat;"><span class="msi cat-icon">location_city</span><span class="cat-stat"><span class="msi">groups</span>518.226 hab.</span><span class="cat-label">Valladolid</span></div>
+    <div class="cat-card cat-g3 has-photo" data-nav="categories" data-province="Zamora" tabindex="0" role="button" style="background:url(img/zamora.jpg) center/cover no-repeat;"><span class="msi cat-icon">location_city</span><span class="cat-stat"><span class="msi">groups</span>160.361 hab.</span><span class="cat-label">Zamora</span></div>
+  </div>
+</div>
+
+<div id="view-categories" class="app-view flow-view" style="display:none;">
+  <div class="flow-top">
+    <div class="crumbs">
+      <span class="crumb-link" data-nav="home" tabindex="0" role="button">Diputación provincial</span><span class="sep">›</span>
+      <span class="current">Diputación de <span class="province-name" id="crumb-province-categories">Salamanca</span></span>
+    </div>
+  </div>
+  <h2 class="flow-title">Categorías de la Diputación de <span class="province-name" id="flow-title-province">Salamanca</span></h2>
+  <div class="cat-grid">
+    <div class="cat-card cat-g1 has-photo" data-nav="dashboard" tabindex="0" role="button" style="background:url(img/edificios-inteligentes.jpg) center/cover no-repeat;"><span class="msi cat-icon">apartment</span><span class="cat-stat"><span class="msi">bolt</span>18 indicadores activos</span><span class="cat-label">Edificios inteligentes y eficiencia energética</span></div>
+    <div class="cat-card cat-g2 cat-active has-photo" data-nav="subcats" tabindex="0" role="button" style="background:url(img/sostenibilidad.jpg) center/cover no-repeat;"><span class="msi cat-icon">eco</span><span class="cat-stat"><span class="msi">bolt</span>32 indicadores activos</span><span class="cat-label">Medio ambiente y sostenibilidad</span></div>
+    <div class="cat-card cat-g3 has-photo" data-nav="dashboard" tabindex="0" role="button" style="background:url(img/movilidad.jpg) center/cover no-repeat;"><span class="msi cat-icon">tram</span><span class="cat-stat"><span class="msi">bolt</span>14 indicadores activos</span><span class="cat-label">Movilidad y transporte</span></div>
+    <div class="cat-card cat-g1 has-photo" data-nav="dashboard" tabindex="0" role="button" style="background:url(img/turismo.jpg) center/cover no-repeat;"><span class="msi cat-icon">attractions</span><span class="cat-stat"><span class="msi">bolt</span>9 indicadores activos</span><span class="cat-label">Turismo y destino turístico inteligente</span></div>
+    <div class="cat-card cat-g2 has-photo" data-nav="dashboard" tabindex="0" role="button" style="background:url(img/tecnologia.jpg) center/cover no-repeat;"><span class="msi cat-icon">database</span><span class="cat-stat"><span class="msi">bolt</span>21 indicadores activos</span><span class="cat-label">Tecnología y datos</span></div>
+    <div class="cat-card cat-g3 has-photo" data-nav="dashboard" tabindex="0" role="button" style="background:url(img/participacion-ciudadana.jpg) center/cover no-repeat;"><span class="msi cat-icon">groups</span><span class="cat-stat"><span class="msi">bolt</span>11 indicadores activos</span><span class="cat-label">Participación ciudadana y transparencia</span></div>
+    <div class="cat-card cat-g1 has-photo" data-nav="dashboard" tabindex="0" role="button" style="background:url(img/demografia.jpg) center/cover no-repeat;"><span class="msi cat-icon">location_city</span><span class="cat-stat"><span class="msi">bolt</span>16 indicadores activos</span><span class="cat-label">Demografía y urbanismo</span></div>
+  </div>
+</div>
+
+<!-- paso 3: dentro de Medio ambiente y sostenibilidad, elegir servicio (Riego, etc.) -->
+<div id="view-subcats" class="app-view flow-view" style="display:none;">
+  <div class="flow-top">
+    <div class="crumbs">
+      <span class="crumb-link" data-nav="home" tabindex="0" role="button">Diputación provincial</span><span class="sep">›</span>
+      <span class="crumb-link" data-nav="categories" tabindex="0" role="button">Diputación de <span class="province-name" id="crumb-province-subcats">Salamanca</span></span><span class="sep">›</span>
+      <span class="current">Medio ambiente y sostenibilidad</span>
+    </div>
+  </div>
+  <h2 class="flow-title">Selecciona un servicio</h2>
+  <div class="cat-grid">
+    <div class="cat-card cat-g3 cat-active has-photo" data-nav="pages" tabindex="0" role="button" style="background:url(img/riego.jpg) center/cover no-repeat;"><span class="msi cat-icon">water_drop</span><span class="cat-stat"><span class="msi">bolt</span>32 indicadores activos</span><span class="cat-label">Riego</span></div>
+    <div class="cat-card cat-g2 has-photo" data-nav="dashboard" tabindex="0" role="button" style="background:url(img/alumbrado.jpg) center/cover no-repeat;"><span class="msi cat-icon">emoji_objects</span><span class="cat-stat"><span class="msi">bolt</span>19 indicadores activos</span><span class="cat-label">Alumbrado inteligente</span></div>
+    <div class="cat-card cat-g1 has-photo" data-nav="dashboard" tabindex="0" role="button" style="background:url(img/calidad-aire.jpg) center/cover no-repeat;"><span class="msi cat-icon">air</span><span class="cat-stat"><span class="msi">bolt</span>12 indicadores activos</span><span class="cat-label">Calidad del aire</span></div>
+    <div class="cat-card cat-g3 has-photo" data-nav="dashboard" tabindex="0" role="button" style="background:url(img/espacios-verdes.jpg) center/cover no-repeat;"><span class="msi cat-icon">park</span><span class="cat-stat"><span class="msi">bolt</span>8 indicadores activos</span><span class="cat-label">Espacios verdes</span></div>
+    <div class="cat-card cat-g2 has-photo" data-nav="dashboard" tabindex="0" role="button" style="background:url(img/gestion-residuos.jpg) center/cover no-repeat;"><span class="msi cat-icon">recycling</span><span class="cat-stat"><span class="msi">bolt</span>15 indicadores activos</span><span class="cat-label">Gestión de residuos</span></div>
+    <div class="cat-card cat-g1 has-photo" data-nav="dashboard" tabindex="0" role="button" style="background:url(img/eficiencia-energetica.jpg) center/cover no-repeat;"><span class="msi cat-icon">bolt</span><span class="cat-stat"><span class="msi">bolt</span>10 indicadores activos</span><span class="cat-label">Eficiencia energética</span></div>
+  </div>
+</div>
+
+<!-- paso 4: dentro de Riego, elegir sección (coincide con el submenú del rail) -->
+<div id="view-pages" class="app-view flow-view" style="display:none;">
+  <div class="flow-top">
+    <div class="crumbs">
+      <span class="crumb-link" data-nav="home" tabindex="0" role="button">Diputación provincial</span><span class="sep">›</span>
+      <span class="crumb-link" data-nav="categories" tabindex="0" role="button">Diputación de <span class="province-name" id="crumb-province-pages">Salamanca</span></span><span class="sep">›</span>
+      <span class="crumb-link" data-nav="subcats" tabindex="0" role="button">Medio ambiente y sostenibilidad</span><span class="sep">›</span>
+      <span class="current">Riego</span>
+    </div>
+  </div>
+  <h2 class="flow-title">Riego: selecciona una sección</h2>
+  <div class="cat-grid">
+    <div class="cat-card cat-g1 has-photo" data-nav="dashboard" tabindex="0" role="button" style="background:url(img/administracion.jpg) center/cover no-repeat;"><span class="msi cat-icon">tune</span><span class="cat-label">Administración</span></div>
+    <div class="cat-card cat-g3 cat-active has-photo" data-nav="dashboard" tabindex="0" role="button" style="background:url(img/estado-general.jpg) center/cover no-repeat;"><span class="msi cat-icon">space_dashboard</span><span class="cat-label">Estado general</span></div>
+    <div class="cat-card cat-g2 has-photo" data-nav="dashboard" tabindex="0" role="button" style="background:url(img/historico.jpg) center/cover no-repeat;"><span class="msi cat-icon">history</span><span class="cat-label">Histórico</span></div>
+    <div class="cat-card cat-g1 has-photo" data-nav="dashboard" tabindex="0" role="button" style="background:url(img/programaciones.jpg) center/cover no-repeat;"><span class="msi cat-icon">event_repeat</span><span class="cat-label">Programaciones</span></div>
+    <div class="cat-card cat-g3 has-photo" data-nav="dashboard" tabindex="0" role="button" style="background:url(img/tiempo-real.jpg) center/cover no-repeat;"><span class="msi cat-icon">sensors</span><span class="cat-label">Tiempo real</span></div>
+  </div>
+</div>
+</div><!-- /.stage -->
+
+  <!-- panel de herramientas — solo visible al pulsar "Editar" arriba, no ocupa espacio permanente -->
+  <label for="drawer-toggle" class="drawer-scrim"></label>
+  <aside class="drawer">
+    <label for="drawer-toggle" class="drawer-close"><span class="msi" style="font-size:18px;">close</span></label>
+    <h3 class="normal-panel">Herramientas de vista</h3>
+    <div class="sub normal-panel">Riego › Estado general</div>
+
+    <div class="drawer-section normal-panel">
+      <div class="label">Edición</div>
+      <div class="drawer-row" id="btn-open-edit" tabindex="0" role="button"><span>Personalizar widgets</span><span class="r-ic msi" style="font-size:18px;">dashboard_customize</span></div>
+    </div>
+
+    <div class="drawer-section normal-panel">
+      <div class="label">Datos</div>
+      <div class="drawer-row" id="drawer-select-date" tabindex="0" role="button"><span>Seleccionar fecha</span><span class="r-ic msi" style="font-size:18px;">calendar_today</span></div>
+      <div class="drawer-row" tabindex="0" role="button"><span>Seleccionar datos</span><span class="r-ic msi" style="font-size:18px;">tune</span></div>
+      <div class="drawer-sub">
+        <div class="fy-item on">Riego</div>
+        <div class="fy-item">Calidad del aire</div>
+        <div class="fy-item">Residuos</div>
+      </div>
+    </div>
+
+    <div class="drawer-section normal-panel">
+      <div class="label">General</div>
+      <div class="drawer-row" tabindex="0" role="button"><span>Configuración</span><span class="r-ic msi" style="font-size:18px;">settings</span></div>
+      <div class="drawer-row"><span>Actualizado</span><span class="r-ic" style="font-size:12px;">Hoy, 12:23 h</span></div>
+    </div>
+
+    <!-- panel de edición: aparece al pulsar "Personalizar widgets" o "Editar" -->
+    <div class="edit-panel">
+      <h3>Personalizar widgets</h3>
+      <div class="sub">Arrastra una tarjeta por el icono <span class="msi" style="font-size:13px;vertical-align:-2px;">drag_indicator</span>, tira de la esquina para redimensionar.</div>
+
+      <div class="drawer-section">
+        <div class="label">Widgets en esta vista</div>
+        <div id="widget-list"></div>
+        <button type="button" class="add-widget-btn" id="btn-add-widget">
+          <span class="msi" style="font-size:16px;">add</span> Añadir widget
+        </button>
+      </div>
+
+      <div class="drawer-section" id="catalog-section" style="display:none;">
+        <div class="label">Widgets disponibles · Riego</div>
+        <div class="catalog-grid">
+          <div class="catalog-item" data-type="consumo" tabindex="0" role="button"><span class="msi">water_drop</span>Consumo de agua</div>
+          <div class="catalog-item" data-type="valvulas" tabindex="0" role="button"><span class="msi">toggle_on</span>Estado de válvulas</div>
+          <div class="catalog-item" data-type="presion" tabindex="0" role="button"><span class="msi">speed</span>Presión en red</div>
+          <div class="catalog-item" data-type="alertas" tabindex="0" role="button"><span class="msi">warning</span>Alertas activas</div>
+          <div class="catalog-item" data-type="programaciones" tabindex="0" role="button"><span class="msi">event</span>Próximas programaciones</div>
+          <div class="catalog-item" data-type="historico" tabindex="0" role="button"><span class="msi">history</span>Histórico por zona</div>
+        </div>
+      </div>
+
+      <div class="edit-footer">
+        <button type="button" class="btn-cancel" id="btn-edit-cancel">Cancelar</button>
+        <button type="button" class="btn-save" id="btn-edit-save">Guardar</button>
+      </div>
+    </div>
+  </aside>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+
+
+
+
+
+
+<!-- ===== buscador global (⌘K) ===== -->
+<div class="search-scrim" id="search-scrim">
+  <div class="search-modal" id="search-modal" role="dialog" aria-modal="true" aria-label="Buscador">
+    <div class="search-field">
+      <span class="msi">search</span>
+      <input type="text" id="search-input" placeholder="Buscar diputaciones, categorías, servicios..." autocomplete="off">
+      <span class="search-esc">ESC</span>
+    </div>
+    <div class="search-results" id="search-results"></div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- ===== notificaciones (toast) ===== -->
+<div class="toast-stack" id="toast-stack"></div>
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- ===== tour guiado de primera visita ===== -->
+<div class="tour-scrim" id="tour-scrim">
+  <div class="tour-spotlight" id="tour-spotlight"></div>
+  <div class="tour-tooltip" id="tour-tooltip" role="dialog" aria-modal="true" aria-label="Tour guiado">
+    <div class="tour-step-count" id="tour-step-count">1 / 5</div>
+    <h4 id="tour-title"></h4>
+    <p id="tour-text"></p>
+    <div class="tour-actions">
+      <button type="button" class="tour-skip" id="tour-skip">Saltar</button>
+      <button type="button" class="tour-next" id="tour-next">Siguiente</button>
+    </div>
+  </div>
+</div>
+
+
+  <script>if(new URLSearchParams(location.search).get('embed')==='1')document.documentElement.classList.add('is-embedded');</script>
+  <script src="js/app.js"></script>
+</body>
+</html>

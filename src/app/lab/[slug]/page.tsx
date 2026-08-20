@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
+import { CaseSectionLabel } from "@/components/case-section-label"
 import { ArrowLink, ArrowRouteLink } from "@/components/ui-links"
 import { OpenPortfolioAgentLink } from "@/components/open-portfolio-agent-link"
 import { getLabEntry, labEntries } from "@/data/lab"
@@ -324,12 +325,12 @@ export default async function LabArticle({ params }: { params: Promise<{ slug: s
     </header>
     <article className="lab-prose">
       <header className="lab-article-opening">
-        <span>[ 00 / Premise ]</span>
+        <CaseSectionLabel number="00.00" level="chapter">Premise</CaseSectionLabel>
         <p className="lab-lead">{content.lead}</p>
       </header>
       {content.sections.map((section, index) => <section className="lab-article-section" key={section.title}>
         <header>
-          <span>{`[ 0${index + 1} / 04 ]`}</span>
+          <CaseSectionLabel number={`0${index + 1}.00`} level="chapter">Section {String(index + 1).padStart(2, "0")}</CaseSectionLabel>
           <h2>{section.title}</h2>
         </header>
         <div className="lab-article-section-copy">

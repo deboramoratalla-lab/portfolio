@@ -7,6 +7,7 @@ import { TapDsCase } from "@/components/tap-ds-case"
 import { TapProductCase } from "@/components/tap-product-case"
 import { FluxyCase } from "@/components/fluxy-case"
 import { BoardCase } from "@/components/board-case"
+import { CiveoCase } from "@/components/civeo-case"
 
 function RoleArchitectureMap() {
   const roles = [
@@ -22,6 +23,7 @@ export function ProjectPage({ project }: { project: Project }) {
   if (project.slug === "tap-mindset-ds") return <TapDsCase project={project} />
   if (project.slug === "tap-mindset") return <TapProductCase project={project} />
   if (project.slug === "fluxy") return <FluxyCase project={project} />
+  if (project.slug === "civeo") return <CiveoCase />
   const index = projects.findIndex(item => item.slug === project.slug)
   const previous = projects[(index - 1 + projects.length) % projects.length]
   const next = projects[(index + 1) % projects.length]
