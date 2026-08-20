@@ -1,4 +1,4 @@
-import Link from "next/link"
+import { ArrowRouteLink } from "@/components/ui-links"
 
 type ProjectLink = {
   href: string
@@ -8,14 +8,9 @@ type ProjectLink = {
 
 export function CaseMoreWorks({ previous, next }: { previous: ProjectLink; next: ProjectLink }) {
   return <section className="board-more" aria-label="More Works">
-    <div className="board-more-marquee">
-      <div className="board-more-track" aria-hidden="true">
-        {Array.from({ length: 4 }, (_, index) => <span key={index}>More Works©</span>)}
-      </div>
-    </div>
+    <header><span>[N. NEXT]</span><p>&gt; MORE WORK</p></header>
     <nav>
-      <Link href={previous.href}><small>Previous project</small><strong>{previous.title}</strong><p>{previous.description}</p></Link>
-      <Link href={next.href}><small>Next project</small><strong>{next.title}</strong><p>{next.description}</p></Link>
+      {[previous, next].map((project, index) => <ArrowRouteLink key={project.href} href={project.href}><small>{index === 0 ? "Previous project" : "Next project"}</small><strong>{project.title}</strong><p>{project.description}</p><b>View case study</b></ArrowRouteLink>)}
     </nav>
   </section>
 }

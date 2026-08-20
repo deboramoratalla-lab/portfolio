@@ -1,9 +1,12 @@
 import Image from "next/image"
 import Link from "next/link"
 import { projects, type Project } from "@/data/projects"
-import { BoardCase } from "@/components/board-case"
 import { CasePremiseReveal } from "@/components/case-premise-reveal"
 import { CaseMoreWorks } from "@/components/case-more-works"
+import { TapDsCase } from "@/components/tap-ds-case"
+import { TapProductCase } from "@/components/tap-product-case"
+import { FluxyCase } from "@/components/fluxy-case"
+import { BoardCase } from "@/components/board-case"
 
 function RoleArchitectureMap() {
   const roles = [
@@ -16,12 +19,16 @@ function RoleArchitectureMap() {
 
 export function ProjectPage({ project }: { project: Project }) {
   if (project.slug === "saas") return <BoardCase />
+  if (project.slug === "tap-mindset-ds") return <TapDsCase project={project} />
+  if (project.slug === "tap-mindset") return <TapProductCase project={project} />
+  if (project.slug === "fluxy") return <FluxyCase project={project} />
   const index = projects.findIndex(item => item.slug === project.slug)
   const previous = projects[(index - 1 + projects.length) % projects.length]
   const next = projects[(index + 1) % projects.length]
   const closing = project.slug === "saas" ? "People don’t coordinate work through screens. They coordinate through shared understanding." : project.slug === "tap-mindset-ds" ? "The goal was never consistency. It was continuity." : project.slug === "tap-mindset" ? "A product becomes scalable when its logic is clear enough to survive the next feature." : "Good design isn’t about adding more interactions. It’s about removing the unnecessary ones."
   return <main className={`case-study case-${project.slug}`} style={{ "--accent": project.accent } as React.CSSProperties}>
     <section className="case-hero" id="top">
+      <div className="case-hero-context"><span>[CASE STUDY / {String(index + 1).padStart(2, "0")}]</span><p>&gt; {project.tags[0]}</p><i aria-hidden="true" />{project.heroLink && <Link className="case-hero-link" href={project.heroLink[1]} target={project.heroLink[1].startsWith("http") ? "_blank" : undefined} rel={project.heroLink[1].startsWith("http") ? "noreferrer" : undefined}>{project.heroLink[0]} <b aria-hidden="true">↗</b></Link>}</div>
       <div className="case-title-marquee" aria-label={project.title}>
         <div className="case-title-track">
           <h1>{project.title}</h1><span aria-hidden="true">{project.title}</span><span aria-hidden="true">{project.title}</span>
@@ -30,7 +37,6 @@ export function ProjectPage({ project }: { project: Project }) {
       <div className="case-intro-grid">
         <div className="case-sidebar"><div className="case-meta">{(project.meta ?? [["Role",project.role],["Team",project.context],["Time",project.timeline]]).map(([label,value]) => <div key={label}><span>{label}</span><strong>{value}</strong></div>)}</div>
           <div className="tldr"><span>TL;DR</span><ul>{project.tldr.map(item => <li key={item}>{item}</li>)}</ul></div>
-          {project.heroLink && <Link className="case-hero-link" href={project.heroLink[1]}>{project.heroLink[0]} ↗</Link>}
         </div>
         <div className="case-premise-wrap">{project.premiseLabel && <span>{project.premiseLabel}</span>}{["tap-mindset-ds", "tap-mindset"].includes(project.slug) ? <CasePremiseReveal>{project.premise}</CasePremiseReveal> : <p className="case-premise">{project.premise}</p>}{project.slug === "fluxy" && project.hero && <div className="fluxy-hero-image"><Image src={project.hero} alt="Passenger travelling through the Underground" fill sizes="280px" /></div>}{project.heroStat && <div className="hero-stat"><strong>{project.heroStat[0]}</strong><span>{project.heroStat[1]}</span></div>}</div>
       </div>

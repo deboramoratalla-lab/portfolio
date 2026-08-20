@@ -4,6 +4,9 @@ export type Project = {
   title: string
   shortTitle: string
   strapline: string
+  problem?: string
+  complexity?: string
+  ownership?: string
   tags: string[]
   accent: string
   cover: string
@@ -13,6 +16,7 @@ export type Project = {
   timeline: string
   meta?: Array<[string, string]>
   heroLink?: [string, string]
+  heroLinks?: Array<[string, string]>
   premiseLabel?: string
   heroStat?: [string, string]
   premise: string
@@ -29,7 +33,7 @@ export type Project = {
       title: string
       body: string[]
       tone?: "dark" | "light" | "ivory" | "lime" | "blue" | "cyan" | "lavender" | "peach" | "green" | "orange" | "fluxy-dark" | "fluxy-panel"
-      layout?: "split" | "stack" | "feature" | "compact" | "reframe" | "principles" | "plugin" | "proof" | "business" | "bridge" | "results" | "governance"
+      layout?: "split" | "stack" | "feature" | "compact" | "reframe" | "principles" | "plugin" | "proof" | "business" | "bridge" | "results" | "governance" | "storybook"
       media?: string
       video?: string
       embed?: string
@@ -48,11 +52,14 @@ export type Project = {
 export const projects: Project[] = [
   {
     slug: "saas", number: "01", title: "Enterprise Planning /", shortTitle: "Board",
-    strapline: "Making workflow state visible across a €1.2B budgeting system.",
+    strapline: "A budgeting product where status had become a coordination problem.",
+    problem: "Finance teams could see the process, but not what was blocked or who owned the next move.",
+    complexity: "Distributed approvals, dependencies and regional roles.",
+    ownership: "Framed the workflow problem and defined the reusable rule system.",
     tags: ["Product design", "Enterprise workflow"], accent: "#ffe67c",
     cover: "/media/U83YozysM0D05lMq82nlFdYG1M.png", hero: "/media/fL9YsjcUWjmuDS7xICXN72fDkpY.png",
     role: "Solo Senior Product Designer", context: "SUEZ × Board", timeline: "6 months",
-    meta: [["Role","Solo Senior Product Designer"],["Scope","Problem framing → Interaction design → Rule system."],["Timeline","6 months"],["Context","Suez × Board"]],
+    meta: [["Role","Solo Senior Product Designer"],["Team","SUEZ Finance · Product · Engineering"],["Stack","Board platform · Figma · Enterprise workflows"],["My ownership","Problem framing · Interaction design · Rule system"]],
     premiseLabel: "Annual budget coordinated · €1.2B",
     heroStat: ["€1.2B", "24 regions · 186 agencies · one dependency chain"],
     premise: "How a homepage redesign became a coordination system for finance teams — and a reusable foundation for the work that followed.",
@@ -80,48 +87,61 @@ export const projects: Project[] = [
   },
   {
     slug: "tap-mindset-ds", number: "02", title: "TAP Mindset Design System & AI Workflow /", shortTitle: "TAP Design System",
-    strapline: "Building the system that keeps product, design and code in sync.", tags: ["Design system", "AI workflows"], accent: "#bce7f0",
+    strapline: "Keeping product, design and code in sync as the system grows.",
+    problem: "Component drift made each release slower to document and harder to keep aligned.",
+    complexity: "Figma, code, tokens, Storybook and a 28,000-instance product surface.",
+    ownership: "Led foundations, API reduction and the bridge between design and implementation.", tags: ["Design system", "AI workflows"], accent: "#bce7f0",
     cover: "/media/7WRS2B1Dd4dOwKjpPVAjEylA44.png", hero: "/media/8E3h5foMKSIxJzUkdIrbzLfEFgM.png",
     role: "Lead Product Designer", context: "Product, Design ×2, Engineering ×2", timeline: "Ongoing",
-    meta: [["Role:","Lead Product Designer"],["Team:","Product Manager · Product Designers ×2 · Developers ×2"],["Process:","Scrum (Sprints), Notion"]],
+    meta: [["Role:","Lead Product Designer · Design Engineer"],["Team:","Product Manager · Product Designers ×3 · Engineers ×2"],["Stack:","React · TypeScript · Storybook · Style Dictionary · Figma Plugins"],["My ownership:","Led foundations, API reduction and the bridge between design and implementation"]],
     heroLink: ["Go to Storybook","https://deboramoratalla-lab.github.io/design-system-showcase/?path=/story/welcome-start-here--start-here"],
-    premise: "I built a design system that connected Figma and code, then used AI-assisted tools to reduce maintenance without turning automation into another system to maintain.",
+    heroLinks: [
+      ["Inspect Storybook","https://deboramoratalla-lab.github.io/design-system-showcase/?path=/story/welcome-start-here--start-here"],
+      ["Inspect source","https://github.com/deboramoratalla-lab/design-system-showcase"],
+    ],
+    premise: "I started by deciding what the product genuinely needed, then built the system in code and created a practical AI workflow to keep React, Storybook and Figma in sync — without asking automation to make design decisions for us.",
     tldr: [
       "Audited 28,000+ component instances across the product to decide what should exist",
-      "Designed foundations and token architecture by hand — no AI",
-      "Built the component library in code, documented in Storybook",
-      "Built two custom Figma plugins to close the gap between code and design",
+      "Turned design decisions into versioned tokens and React component contracts",
+      "Built the component library and its inspectable API in Storybook",
+      "Built a TypeScript catalogue pipeline and two Figma plugins to close the code–design loop",
       "Reduced the public component API from 55 to 38 concepts",
       "Cut component documentation from 45 minutes to under 2"
     ],
     chapters: [
-      { number: "01", title: "The problem worth solving", thesis: "The visible issue was inconsistency. The consequential one was maintenance.", tone: "light", sections: [
-        { tone: "light", layout: "feature", title: "The system was not failing because components were missing.", body: ["TAP Mindset started as an MVP. Every sprint added flows, features and decisions: eight card variations, six chips and four inputs, most doing the same job. But documenting one component took 45–60 minutes, and that time always lost against the roadmap. Knowledge lived in people, not in the system."] },
-        { tone: "light", layout: "business", eyebrow: "The business case", title: "At 45–60 minutes per component, a full documentation pass represented more than 30 hours of repeat work before a feature moved forward. The business case was continuity: reduce recurring maintenance, protect delivery capacity and make system adoption cheaper than bypassing it.", body: [] },
-        { tone: "dark", layout: "stack", eyebrow: "The audit", title: "Not designing. Counting.", body: ["I mapped every flow and audited 28,000+ component instances. That exposed which patterns were load-bearing, which were duplicates and which existed for no reason at all."], media: "/media/8E3h5foMKSIxJzUkdIrbzLfEFgM.png" },
-        { tone: "blue", layout: "reframe", eyebrow: "The reframe", title: "The problem was never building the design system. It was maintaining it without slowing the product down.", body: [] }
+      { number: "01", title: "Work out what was worth keeping", thesis: "The product did not need a bigger component library. It needed fewer decisions that the whole team could understand and reuse.", tone: "light", sections: [
+        { tone: "light", layout: "feature", title: "We had plenty of components. That was part of the problem.", body: ["TAP Mindset had grown one sprint at a time. We ended up with eight kinds of card, six chips and four inputs, often doing almost the same job. Documenting a single component took 45–60 minutes, so it was understandably postponed whenever the roadmap became busy. The real system lived in people’s heads."] },
+        { tone: "light", layout: "business", eyebrow: "Why it mattered", title: "The team was paying for the same decisions again and again.", body: ["A full documentation pass meant more than 30 hours of repetitive work before we had even moved a feature forward. I wanted the shared route to be the easiest route — useful enough that nobody needed to create an exception just to keep working."] },
+        { tone: "dark", layout: "stack", eyebrow: "The audit", title: "I stopped drawing and started counting.", body: ["At that point, I decided not to design another component until I understood what we already had. I mapped the product flow by flow and inspected more than 28,000 component instances.", "The numbers changed the conversation. They showed which patterns the product truly depended on, which ones were duplicates and which ones had simply survived because nobody had challenged them."], media: "/media/8E3h5foMKSIxJzUkdIrbzLfEFgM.png" },
+        { tone: "blue", layout: "reframe", eyebrow: "What changed", title: "The maintenance problem", body: ["The difficult part was not creating a design system. It was making one the team could keep useful while the product continued to move."] }
       ]},
-      { number: "02", title: "The system & the bet", thesis: "Establish a source of truth, reduce what the team had to maintain, then close the loop between code and design.", tone: "light", sections: [
-        { tone: "light", layout: "feature", eyebrow: "The source of truth", title: "Foundations by hand. Components from evidence.", body: ["I designed color, type, spacing, elevation, radius, grid and motion without AI. These decisions become the source of truth for everything downstream; if they are wrong, everything is wrong fast.", "Usage data shaped the component layer. I reduced the public API from 55 concepts to 38 — merging duplicates, promoting real patterns and archiving what nobody used."], media: "/media/v0e9L7cLZpgOZ1Yikq3r8RoqLY.png" },
-        { tone: "light", layout: "feature", title: "A source of truth the team could inspect, use and challenge.", body: ["Storybook made the system tangible: foundations, brand rules and production components lived together, with implementation and documentation in the same place."], media: "/media/UHTiiwNdPuTkZcoyyv0CB6hTHrY.png", link: ["↗ Explore the live Storybook", "https://deboramoratalla-lab.github.io/design-system-showcase/?path=/story/welcome-start-here--start-here"] },
-        { tone: "dark", layout: "bridge", title: "Once code became the source of truth, manual syncing had an expiry date.", body: ["I built a component importer and a documentation generator to keep Storybook and Figma connected without turning maintenance into another product."] },
-        { tone: "dark", layout: "plugin", eyebrow: "Code component importer", title: "", body: [], video: "/media/VDnyOmgwVTRRwyqN4yVYpCa2Q.mov", caption: "Reads a coded component and rebuilds its structure in Figma." },
-        { tone: "dark", layout: "plugin", eyebrow: "Document generator", title: "", body: [], video: "/media/DKUq3U6NX0ztkYDZUy6Xg3Y7ww.mov", caption: "Clones a master template and generates the full doc page." },
+      { number: "02", title: "Build it where the team could use it", thesis: "The system became useful when a designer could understand it in Figma and an engineer could inspect the same decision in code.", tone: "light", sections: [
+        { tone: "light", layout: "feature", eyebrow: "Starting with the foundations", title: "I made the core decisions before I automated anything.", body: ["With the audit in front of me, I decided to rebuild from the foundations up: colour, type, spacing, elevation, radius, grid and motion. AI could help later, but automating a weak rule would only spread it faster.", "Then I used the evidence to reduce 55 public concepts to 38. I merged duplicates, kept the patterns the product actually relied on and retired the rest."], media: "/media/v0e9L7cLZpgOZ1Yikq3r8RoqLY.png" },
+        { tone: "dark", layout: "proof", eyebrow: "How it works", title: "A design decision has one path through the system.", body: ["Once the foundations were stable, I got to work on the coded system. I turned tokens into CSS properties, design choices into TypeScript props and component behaviour into inspectable stories.", "I published the implementation because I wanted the technical story to be checked, not simply believed. Tokens, React components, stories and tests live together in the same repository."], points: [["Tokens","A JSON value is transformed into a CSS custom property"],["Components","TypeScript props define the React component’s public options"],["Checks","Storybook makes states, accessibility and behaviour visible"]], links: [["↗ Inspect token pipeline", "https://github.com/deboramoratalla-lab/design-system-showcase/tree/main/design-tokens"],["↗ Inspect React components", "https://github.com/deboramoratalla-lab/design-system-showcase/tree/main/src/components"]] },
+        { tone: "light", layout: "storybook", eyebrow: "A place to inspect the work", title: "Storybook gave Design and Engineering the same reference point.", body: ["The next decision was where the team should meet. I chose Storybook because it could show foundations, brand rules, real components and their documentation in one place.", "That changed the handoff. A designer could check intent and states; an engineer could inspect the API and implementation without translating a separate specification. The repository is public, so each claim here can be followed into a working story or the code behind it."], media: "/media/UHTiiwNdPuTkZcoyyv0CB6hTHrY.png", links: [["↗ Open the live Storybook", "https://deboramoratalla-lab.github.io/design-system-showcase/?path=/story/welcome-start-here--start-here"],["↗ Inspect the GitHub repository", "https://github.com/deboramoratalla-lab/design-system-showcase"]] },
+        { tone: "dark", layout: "bridge", eyebrow: "Connecting code and Figma", title: "I automated the parts nobody should have to copy by hand.", body: ["At first, I was still treating Figma as the place where the system had to be recreated and maintained. I changed my position once the coded component became the more reliable description of what actually shipped.", "So I built a TypeScript catalogue builder, a component importer and a documentation generator. The catalogue reads props, variants, booleans, slots, defaults, CSS token references and Storybook metadata. The plugins carry that structure into Figma instead of guessing from a screenshot."], links: [["↗ Inspect all Figma tools", "https://github.com/deboramoratalla-lab/design-system-showcase/tree/main/tools"],["↗ Read the catalogue builder", "https://github.com/deboramoratalla-lab/design-system-showcase/blob/main/tools/figma-code-component-importer/scripts/build-catalog.mjs"]] },
+        { tone: "dark", layout: "plugin", eyebrow: "01 · Code component importer", title: "", body: [], video: "/media/VDnyOmgwVTRRwyqN4yVYpCa2Q.mov", caption: "Reads the coded component catalogue and rebuilds an editable component structure in Figma. Visual adapters handle the places where arbitrary JSX and CSS cannot be translated safely.", links: [["↗ Inspect importer source", "https://github.com/deboramoratalla-lab/design-system-showcase/tree/main/tools/figma-code-component-importer"]] },
+        { tone: "dark", layout: "plugin", eyebrow: "02 · Documentation generator", title: "", body: [], video: "/media/DKUq3U6NX0ztkYDZUy6Xg3Y7ww.mov", caption: "Turns a selected component set into linked Overview and Variants & states documentation. If validation fails, it reports the stage and removes the temporary frames.", links: [["↗ Inspect generator source", "https://github.com/deboramoratalla-lab/design-system-showcase/tree/main/tools/figma-component-docs-generator"]] },
         { tone: "peach", layout: "reframe", title: "Code describes what. Judgment decides how.", body: ["The plugins carried structure, not judgment. Code could expose variants, slots and tokens; it could not decide whether a pattern should be one component or five, how properties should be grouped, or when an interface needed to hug or fill. That became the boundary of the system."] }
       ]},
-      { number: "03", title: "What it cost, what it taught", thesis: "The measurable gains mattered. So did the failures: token drift, weak context and the cost of rebuilding work that moved too quickly.", tone: "dark", sections: [
-        { tone: "dark", layout: "results", title: "", body: ["The parity audit exposed four brand scales that had silently drifted apart. Weak context produced fast but inconsistent output. A version restore forced part of the consolidation to be rebuilt. AI accelerated execution — and mistakes — with equal efficiency."], metrics: [["28,000+","Instances audited"],["55 → 38","Component concepts"],["45 → <2 min","Documentation time"]] },
-        { tone: "dark", layout: "governance", eyebrow: "Leadership & AI governance", title: "I established weekly reviews with Design and Engineering, assigned ownership by layer and introduced release checks for token, Figma and Storybook parity. AI could audit repetition, draft documentation and accelerate implementation. It could not change foundations, public APIs or accessibility decisions without human review.", body: [] },
-        { tone: "green", layout: "reframe", title: "The goal was never consistency. It was continuity.", body: ["Tools will change. Judgment remains."] }
+      { number: "03", title: "Use AI without giving away the decisions", thesis: "AI saved time once we gave it good context, a narrow job and a clear point where a person had to review the result.", tone: "dark", sections: [
+        { tone: "dark", layout: "principles", eyebrow: "Where AI helped", title: "AI was useful after the rules were clear — not before.", body: ["Only then did I bring AI into the workflow. I used it to find repetition, explore edge cases, prepare documentation and speed up implementation.", "I also changed how I thought about it. The useful question was no longer ‘what can AI generate?’ but ‘which decisions are clear enough to delegate safely?’ It could extend an explicit pattern. It could not redefine foundations, change the public API or make accessibility decisions without review."], points: [["Find","Spot repeated patterns and possible drift"],["Prepare","Draft documentation and implementation starting points"],["Check","Compare Figma, tokens and Storybook before release"],["Stop","Return foundation, API and accessibility decisions to a person"]] },
+        { tone: "light", layout: "proof", eyebrow: "How the team used it", title: "The system stopped belonging to one designer.", body: ["By the end, three product designers and two engineers were using the library in day-to-day product work. Foundations, component decisions and documentation had moved out of individual files and into places everyone could inspect and question.", "It is still being used after my direct involvement. For me, that is the strongest result: the team can extend the product without needing me to return and explain the original decisions."], points: [["5 people","3 product designers · 2 engineers"],["Shared decisions","Design and Engineering review changes together"],["Still in use","The library remains part of the product workflow"]] },
+        { tone: "dark", layout: "governance", eyebrow: "Keeping it healthy", title: "We made maintenance part of the team’s routine.", body: ["I introduced a weekly Design and Engineering review, gave each layer a clear owner and added release checks for parity between tokens, Figma and Storybook. Automation could prepare the work and flag inconsistencies. A person still approved any change that affected foundations, the public API or accessibility."] },
+        { tone: "dark", layout: "results", eyebrow: "What improved — and what broke", title: "", body: ["The numbers were useful, but the failures taught me more. A parity check uncovered four brand scales that had quietly drifted apart. Poor context produced quick but inconsistent output. A version restore forced us to rebuild part of the consolidation. AI made good execution faster, and bad execution faster too."], metrics: [["28,000+","Instances audited"],["55 → 38","Component concepts"],["45 → <2 min","Documentation time"]] },
+        { tone: "green", layout: "reframe", title: "The goal was never consistency. It was continuity.", body: ["Tools change. The system preserves the decisions that matter."] }
       ]}
     ]
   },
   {
     slug: "tap-mindset", number: "03", title: "TAP Mindset — Product Redesign /", shortTitle: "TAP Mindset",
-    strapline: "Reframing one product into three role-based experiences.", tags: ["Product design", "Sports"], accent: "#e5f4d6",
+    strapline: "Turning one feature-led product into three role-based experiences.",
+    problem: "One feature-led product was serving three jobs with overlapping paths.",
+    complexity: "Role-specific onboarding, shared capabilities and progressive personalisation.",
+    ownership: "Led product architecture and the 12-month redesign with design and engineering.", tags: ["Product design", "Sports"], accent: "#e5f4d6",
     cover: "/media/KSw5kmupZz4s4LoheYzh4rnIY.png", hero: "/media/8vYUA69ov7JIByTeoOntKRg1Bb4.png",
     role: "Lead Product Designer", context: "Product Design ×2 · Engineering ×2", timeline: "12 months",
-    meta: [["Role:","Lead Product Designer"],["Team:","• Product Designers ×2\n• Developers ×2"],["Process:","Scrum (Sprints), Notion"],["Platform:","Mobile (iOS-first)"],["Timeline:","12 months"]],
+    meta: [["Role:","Lead Product Designer · Product direction"],["Team:","Product Designers ×2 · Engineers ×2"],["Stack:","Figma · Notion · iOS-first product"],["My ownership:","Led product architecture, direction, critique and final design decisions"]],
     heroLink: ["Read DS case study","/projects/tap-mindset-ds"],
     premise: "Led the end-to-end redesign of a mental-training platform — from fragmented features to a role-based product architecture.",
     tldr: [
@@ -133,10 +153,10 @@ export const projects: Project[] = [
     ],
     chapters: [
       { number: "01", title: "Reframing the product", thesis: "The experience was organised around features, not user intent.", tone: "light", sections: [
-        { tone: "light", layout: "feature", title: "A fragmented architecture was becoming a growth constraint.", body: ["Users faced blurred mental models, inconsistent interactions and too many decisions before reaching a meaningful action. This was not a UI clean-up. It was a product architecture problem."] },
-        { tone: "light", layout: "business", eyebrow: "Business stakes", title: "Every new feature increased the decisions users faced, multiplied role-specific exceptions and created more design and engineering divergence. The risk was not visual inconsistency; it was a product that became harder to adopt and more expensive to evolve.", body: [] },
-        { tone: "dark", layout: "compact", title: "Four symptoms. One structural cause.", body: [], points: [["01","Cognitive overload"],["02","Blurred mental models"],["03","Inconsistent interactions"],["04","A system that could not scale"]], signals: [["Observe","Feature-led navigation"],["Reframe","Intent-led architecture"],["Design","Clear path, progressive depth"]] },
-        { tone: "blue", layout: "reframe", title: "The redesign had to reduce decisions without reducing agency.", body: [] }
+        { tone: "light", layout: "feature", eyebrow: "What I reviewed", title: "The product had grown one feature at a time.", body: ["I mapped navigation, onboarding and the recurring journeys for mental coaches, coaches and athletes. The same capabilities appeared under different labels, while role-specific actions competed inside shared flows."] },
+        { tone: "light", layout: "business", eyebrow: "What the review exposed", title: "Each addition increased the number of decisions the product had to explain.", body: ["For users, that meant unclear starting points and inconsistent interactions. For the team, it meant more exceptions, duplicated design decisions and increasing divergence between design and implementation."] },
+        { tone: "dark", layout: "compact", title: "The evidence pointed to one structural problem.", body: [], points: [["Navigation","Capabilities grouped by feature, not by user goal"],["Roles","Shared functions mixed with role-specific responsibilities"],["Interaction","Equivalent actions behaved differently across flows"],["Scale","Every new feature created another exception to maintain"]], signals: [["Observation","Feature-led architecture"],["Decision","Organise around role and intent"],["Design rule","One clear path, depth when needed"]] },
+        { tone: "blue", layout: "reframe", title: "The brief changed: reduce decisions without reducing agency.", body: [] }
       ]},
       { number: "02", title: "Designing the system", thesis: "Four principles turned a broad redesign into a decision system the team could use across flows.", tone: "light", sections: [
         { tone: "light", layout: "principles", title: "", body: [], points: [["01","Clarity over density"],["02","Design for momentum"],["03","Intent-based structure"],["04","Consistency at scale"]] },
@@ -145,7 +165,7 @@ export const projects: Project[] = [
         { tone: "green", layout: "split", eyebrow: "AI in the process", title: "Rules before generation.", body: ["The product architecture and four principles were defined without AI. Once stable, they became context for AI-assisted flow exploration, edge-case expansion and implementation-ready prototypes. I used the system to constrain output, then reviewed every proposal against role intent, accessibility and buildability."], statement: "AI accelerated alternatives. It did not decide what the product should be.", links: [["→ Read the Design System case study", "/projects/tap-mindset-ds"],["↗ Explore Storybook", "https://deboramoratalla-lab.github.io/design-system-showcase/?path=/story/welcome-start-here--start-here"]] }
       ]},
       { number: "03", title: "Building the experience", thesis: "The interface shifted from disconnected tools to a continuous rhythm: prepare, train, reflect and return.", tone: "dark", sections: [
-        { tone: "dark", layout: "feature", title: "One clear path, with depth available when needed.", body: ["Daily actions and long-term progress became distinct but connected. Navigation communicated what came next, while progressive disclosure kept exploratory routes available without making them compete with the primary task."], media: "/media/CJeQTobftuZtlYtEXfM0e7jq7xc.png" },
+        { tone: "dark", layout: "feature", title: "One clear path, with depth available when needed.", body: ["Daily actions and long-term progress became distinct but connected. Navigation communicated what came next, while progressive disclosure kept exploratory routes available without making them compete with the primary task."], media: "/media/tap-product/before-after-foundations.png" },
         { tone: "lavender", layout: "feature", eyebrow: "The brand system", title: "The identity had to behave like the product: calm, focused and useful.", body: [], media: "/media/m8mVArIM9VzKohEm4ONZgSbfY.png" }
       ]},
       { number: "04", title: "What changed", thesis: "The structural outcome was not a collection of cleaner screens. It was a product that made its own logic visible.", tone: "light", sections: [
@@ -158,11 +178,14 @@ export const projects: Project[] = [
   },
   {
     slug: "fluxy", number: "04", title: "Fluxy — Product Design Case Study /", shortTitle: "Fluxy",
-    strapline: "Designing an agent that earns autonomy through legibility and consent.", tags: ["Agentic design", "Mobility"], accent: "#ffe9ca",
+    strapline: "An autonomous commuting agent that knows when to act — and when to wait.",
+    problem: "A narrow top-up brief hid the larger burden of managing a changing commute.",
+    complexity: "Goal protection, proactive suggestions, consent and uncertain network conditions.",
+    ownership: "Defined the autonomy model, journey logic and interaction prototype.", tags: ["Agentic design", "Mobility"], accent: "#ffe9ca",
     cover: "/media/ASHNp23jYU6G6rS2Bcba6Rz5TUY.png", hero: "/media/2b7YNCK8WXiTCdQRa84XPV7867M.png",
     role: "Lead Product Designer", context: "Independent concept", timeline: "2026",
-    meta: [["Role","Lead Product Designer"],["Brief","Independent concept"],["Focus","Product strategy · Agentic interaction · Prototyping"],["App","Mobile commuting agent · iOS-first"],["Year","2026"]],
-    heroLink: ["View prototype","https://www.figma.com/design/McQVV5wJ9vrs50KyNmthFm/Untitled"],
+    meta: [["Role","Lead Product Designer · AI Product Designer"],["Team","Independent concept · End-to-end ownership"],["Stack","Figma · React prototype · Vercel"],["My ownership","Defined the autonomy model, journey logic and interaction prototype"]],
+    heroLink: ["Explore the agent", "/projects/fluxy/agent"],
     premiseLabel: "The premise",
     premise: "I turned a narrow online top-up brief into Fluxy: an autonomous commuting agent that protects the passenger’s goal, prepares decisions and intervenes only when circumstances change.",
     tldr: ["Reframed a top-up brief around the full commuting burden", "Defined an agentic interaction model", "Designed autonomy around consent and transparency", "Prototyped three end-to-end moments of trust"],

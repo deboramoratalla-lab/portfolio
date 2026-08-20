@@ -4,7 +4,8 @@ import { motion, MotionValue, useReducedMotion, useScroll, useTransform } from "
 import { useRef } from "react"
 
 function Word({ children, progress, start, end }: { children: string; progress: MotionValue<number>; start: number; end: number }) {
-  const color = useTransform(progress, [start, end], ["#666", "#f4f3ed"])
+  const middle = start + (end - start) * .58
+  const color = useTransform(progress, [start, middle, end], ["#5f5f5a", "#786cf4", "#f4f3ed"])
   return <motion.span style={{ color }}>{children}&nbsp;</motion.span>
 }
 

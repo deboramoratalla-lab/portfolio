@@ -1,5 +1,4 @@
 import type { Metadata } from "next"
-import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import { ArrowLink, ArrowRouteLink } from "@/components/ui-links"
@@ -8,38 +7,6 @@ import { getLabEntry, labEntries } from "@/data/lab"
 
 type ArticleSection = { title: string; paragraphs: string[]; points?: string[] }
 type ArticleContent = { lead: string; quote: string; sections: ArticleSection[]; metrics?: [string, string][]; close: string }
-type ReusableResource = { title: string; description: string; href: string; label: string }
-
-const dsRepo = "https://github.com/deboramoratalla-lab/design-system-showcase"
-const portfolioRepo = "https://github.com/deboramoratalla-lab/portfolio"
-
-const reusableResources: Record<string, ReusableResource[]> = {
-  "design-systems-need-evidence": [
-    { title: "Layered token source", description: "Core, semantic and component decisions expressed as inspectable JSON aliases.", href: `${dsRepo}/blob/main/design-tokens/tokens.json`, label: "Open tokens.json" },
-    { title: "Component anatomy", description: "A real component kept beside its styles, story and public export.", href: `${dsRepo}/tree/main/src/components/AppHeader`, label: "Inspect AppHeader" },
-    { title: "Published token inventory", description: "The maintained token source exposed where the team reviews the system.", href: "https://deboramoratalla-lab.github.io/design-system-showcase/?path=/story/foundations-design-tokens--token-index", label: "Open Storybook" },
-  ],
-  "storybook-source-of-truth": [
-    { title: "Typed public API", description: "The Tag contract, defaults and rendered attributes in the shipped React component.", href: `${dsRepo}/blob/main/src/components/Tag/Tag.tsx`, label: "Read Tag.tsx" },
-    { title: "Inspectable stories", description: "The examples that turn supported states into reviewable behaviour.", href: `${dsRepo}/blob/main/src/components/Tag/Tag.stories.tsx`, label: "Read Tag stories" },
-    { title: "Live documentation", description: "The component API and its rendered output in the published Storybook.", href: "https://deboramoratalla-lab.github.io/design-system-showcase/?path=/docs/components-primitives-tag--docs", label: "Open Tag docs" },
-  ],
-  "figma-plugin-component-apis": [
-    { title: "Catalogue builder", description: "The interchange layer that extracts component structure before Figma imports it.", href: `${dsRepo}/blob/main/tools/figma-code-component-importer/scripts/build-catalog.mjs`, label: "Read the builder" },
-    { title: "Plugin implementation", description: "Manifest, plugin process and UI kept together in a small inspectable tool.", href: `${dsRepo}/tree/main/tools/figma-code-component-importer`, label: "Inspect the plugin" },
-    { title: "Source component", description: "The typed Checkbox contract used to create editable Figma properties.", href: `${dsRepo}/blob/main/src/components/Checkbox/Checkbox.tsx`, label: "Read Checkbox.tsx" },
-  ],
-  "smallest-useful-accessibility-pipeline": [
-    { title: "Component-level gate", description: "Storybook is configured to fail the test run when detectable violations appear.", href: `${dsRepo}/blob/main/.storybook/preview.ts`, label: "Read the a11y config" },
-    { title: "Pull-request workflow", description: "The same browser checks run automatically on pull requests and changes to main.", href: `${dsRepo}/blob/main/.github/workflows/ui-accessibility.yml`, label: "Inspect the workflow" },
-    { title: "Live reproduction", description: "Open the published story and inspect the Accessibility panel beside the component.", href: "https://deboramoratalla-lab.github.io/design-system-showcase/?path=/story/components-primitives-badge--notification", label: "Reproduce the check" },
-  ],
-  "building-an-agent": [
-    { title: "Decision model", description: "The visible product surface for observing, interpreting and choosing whether to act.", href: `${portfolioRepo}/blob/main/src/components/portfolio-agent.tsx`, label: "Inspect the agent UI" },
-    { title: "Server boundary", description: "The route that keeps model access and product context outside the browser.", href: `${portfolioRepo}/blob/main/src/app/api/portfolio-agent/route.ts`, label: "Inspect the API route" },
-    { title: "Try the behaviour", description: "Use the agent in the portfolio and question the decisions behind the work.", href: "/", label: "Open the agent" },
-  ],
-}
 
 const articles: Record<string, ArticleContent> = {
   "design-systems-need-evidence": {
@@ -127,182 +94,6 @@ function ArticleActions({ slug }: { slug: string }) {
   </>
 }
 
-const designSystemEvidence = [
-  {
-    number: "01",
-    eyebrow: "Code inventory",
-    title: "First, I made the real maintenance surface visible.",
-    body: "Each component lived with its implementation, styles, Storybook story and public export. The inventory let me compare product concepts instead of relying on a collection of screenshots.",
-    src: "/media/lab-code-inventory.png",
-    alt: "VS Code repository showing the component inventory and the files that make up AppHeader.",
-    width: 1850,
-    height: 1654,
-    href: `${dsRepo}/tree/main/src/components/AppHeader`,
-    linkLabel: "Inspect the component files",
-  },
-  {
-    number: "02",
-    eyebrow: "Token architecture",
-    title: "Then I separated values from meaning and component decisions.",
-    body: "Core, semantic and component layers use typed JSON and aliases. Style Dictionary transforms the same inspectable source instead of asking every component to store its own interpretation.",
-    src: "/media/lab-token-architecture.png",
-    alt: "VS Code showing tokens.json with core, semantic and component layers and token aliases.",
-    width: 2376,
-    height: 1560,
-    href: `${dsRepo}/blob/main/design-tokens/tokens.json`,
-    linkLabel: "Open tokens.json",
-  },
-  {
-    number: "03",
-    eyebrow: "Shared reference",
-    title: "Finally, the decisions became visible where the team reviewed the work.",
-    body: "Storybook connects the token inventory with the components that actually ship. Designers can inspect intent and states; engineers can follow the same decision into its API and source.",
-    src: "/media/storybook-design-tokens-library.png",
-    alt: "Storybook Design Tokens Library showing token categories, downloadable JSON files and token values.",
-    width: 3024,
-    height: 1634,
-    href: `${dsRepo}/blob/main/src/stories/Foundations/DesignTokens.stories.tsx`,
-    linkLabel: "Inspect the token story",
-  },
-]
-
-function DesignSystemEvidence() {
-  return <section className="lab-evidence-dossier" aria-labelledby="lab-evidence-title">
-    <header>
-      <span>[ Technical evidence ]</span>
-      <div>
-        <h2 id="lab-evidence-title">Three artefacts. One inspectable system.</h2>
-        <p>The proof follows the same path as the work: inventory what exists, structure the decisions, then publish the result where Design and Engineering can question it together.</p>
-      </div>
-    </header>
-    <div className="lab-evidence-list">
-      {designSystemEvidence.map((evidence, index) => <figure className={`lab-evidence-item lab-evidence-item-${index + 1}`} key={evidence.number}>
-        <div className="lab-evidence-copy">
-          <span>{evidence.number} / {evidence.eyebrow}</span>
-          <h3>{evidence.title}</h3>
-          <p>{evidence.body}</p>
-          <EvidenceLink href={evidence.href}>{evidence.linkLabel}</EvidenceLink>
-        </div>
-        <div className="lab-evidence-media">
-          <Image src={evidence.src} alt={evidence.alt} width={evidence.width} height={evidence.height} sizes="(max-width: 800px) 100vw, 68vw" />
-        </div>
-      </figure>)}
-    </div>
-  </section>
-}
-
-function EvidenceLink({ href, children }: { href: string; children: React.ReactNode }) {
-  return <div className="lab-evidence-link"><ArrowLink variant="secondary" tone="purple" href={href} target="_blank" rel="noreferrer">{children}</ArrowLink></div>
-}
-
-function StorybookEvidence() {
-  return <section className="lab-evidence-dossier lab-evidence-dossier-single" aria-labelledby="storybook-evidence-title">
-    <header>
-      <span>[ Technical evidence ]</span>
-      <div>
-        <h2 id="storybook-evidence-title">One contract, followed from code to behaviour.</h2>
-        <p>The evidence is not three versions of the component. It is one decision moving through the system: TypeScript defines the API, Storybook makes it controllable and the stories expose the supported results.</p>
-      </div>
-    </header>
-    <div className="lab-evidence-list">
-      <figure className="lab-evidence-item">
-        <div className="lab-evidence-copy"><span>01 / TypeScript contract</span><h3>The public options start in code.</h3><p>The union type and component interface make tone, selection, icon behaviour and label explicit. Defaults and rendered attributes are inspectable in the same implementation.</p><EvidenceLink href={`${dsRepo}/blob/main/src/components/Tag/Tag.tsx`}>Read Tag.tsx</EvidenceLink></div>
-        <div className="lab-evidence-media"><Image src="/media/lab-storybook-typescript-contract.png" alt="TypeScript implementation of the Tag component showing its tone union, public props and rendered data attributes." width={1464} height={1498} sizes="(max-width: 800px) 100vw, 68vw" /></div>
-      </figure>
-      <figure className="lab-evidence-item">
-        <div className="lab-evidence-copy"><span>02 / Interactive documentation</span><h3>The same API becomes visible and testable.</h3><p>The rendered component, property types, defaults and controls stay together. The team can change an option and inspect the result without translating a separate specification.</p><EvidenceLink href="https://deboramoratalla-lab.github.io/design-system-showcase/?path=/docs/components-primitives-tag--docs">Open the live API</EvidenceLink></div>
-        <div className="lab-evidence-media"><Image src="/media/lab-storybook-component-api.png" alt="Real Storybook documentation for the Tag component showing its rendered state, typed properties, defaults and interactive controls." width={2554} height={1475} sizes="(max-width: 800px) 100vw, 68vw" /></div>
-      </figure>
-      <figure className="lab-evidence-item">
-        <div className="lab-evidence-copy"><span>03 / Rendered states</span><h3>Supported variations are shown, not implied.</h3><p>Tones, selected treatments and the version without an icon are documented as real outputs. Consumers can see the intended boundaries before introducing another local variant.</p><EvidenceLink href={`${dsRepo}/blob/main/src/components/Tag/Tag.stories.tsx`}>Read the stories</EvidenceLink></div>
-        <div className="lab-evidence-media"><Image src="/media/lab-storybook-rendered-variations.png" alt="Storybook component variations showing Tag tones, selected treatments and variants without an icon." width={1878} height={1190} sizes="(max-width: 800px) 100vw, 68vw" /></div>
-      </figure>
-    </div>
-  </section>
-}
-
-function FigmaPluginEvidence() {
-  return <section className="lab-evidence-dossier lab-evidence-dossier-single" aria-labelledby="figma-plugin-evidence-title">
-    <header>
-      <span>[ Technical evidence ]</span>
-      <div>
-        <h2 id="figma-plugin-evidence-title">From a coded catalogue to an editable component.</h2>
-        <p>The plugin carries component structure into Figma without flattening it. Selection begins with the maintained catalogue; the output preserves the properties designers need to work with the component.</p>
-      </div>
-    </header>
-    <div className="lab-evidence-list lab-plugin-evidence-list">
-      <figure className="lab-evidence-item">
-        <div className="lab-evidence-copy"><span>01 / Source contract</span><h3>The component already describes its usable structure.</h3><p>CheckboxSize, visual states, booleans and defaults are explicit in TypeScript. The importer has a typed contract to interpret instead of inferring variants from pixels.</p><EvidenceLink href={`${dsRepo}/blob/main/src/components/Checkbox/Checkbox.tsx`}>Read Checkbox.tsx</EvidenceLink></div>
-        <div className="lab-evidence-media"><Image src="/media/lab-figma-plugin-source-contract.png" alt="TypeScript source for Checkbox showing size, visual state, checked and indeterminate properties and their defaults." width={1628} height={1610} sizes="(max-width: 800px) 100vw, 68vw" /></div>
-      </figure>
-      <figure className="lab-evidence-item">
-        <div className="lab-evidence-copy"><span>02 / Catalogue to Figma</span><h3>The importer begins with a real coded component.</h3><p>Inside Figma, the plugin exposes the components available in the local design-system catalogue. Selection replaces rebuilding structure from a screenshot or remembering another naming convention.</p><EvidenceLink href={`${dsRepo}/blob/main/tools/figma-code-component-importer/scripts/build-catalog.mjs`}>Read the catalogue builder</EvidenceLink></div>
-        <div className="lab-evidence-media"><Image src="/media/lab-figma-plugin-catalogue.png" alt="Code Component Importer running inside Figma with the catalogue dropdown open over the Checkbox component documentation." width={1848} height={1772} sizes="(max-width: 800px) 100vw, 68vw" /></div>
-      </figure>
-      <figure className="lab-evidence-item">
-        <div className="lab-evidence-copy"><span>03 / Editable output</span><h3>The result is a component set, not a pasted picture.</h3><p>The generated Checkbox keeps 36 variants and exposes Size, Selection and State as editable Figma properties. Its source path remains visible, making the relationship with code inspectable.</p><EvidenceLink href={`${dsRepo}/tree/main/tools/figma-code-component-importer`}>Inspect the plugin source</EvidenceLink></div>
-        <div className="lab-evidence-media"><Image src="/media/lab-figma-plugin-editable-output.png" alt="Generated Checkbox component set in Figma with 36 variants and editable Size, Selection and State properties." width={2212} height={996} sizes="(max-width: 800px) 100vw, 68vw" /></div>
-      </figure>
-    </div>
-  </section>
-}
-
-function AccessibilityEvidence() {
-  return <section className="lab-evidence-dossier lab-evidence-dossier-single" aria-labelledby="accessibility-evidence-title">
-    <header>
-      <span>[ Evidence 01 / Review loop ]</span>
-      <div>
-        <h2 id="accessibility-evidence-title">The check appears beside the component.</h2>
-        <p>Storybook runs the automated accessibility rules beside the rendered component while the team is already reviewing it. This captured Badge story reports no detectable violations; that is a useful release baseline, not a claim of complete accessibility.</p>
-      </div>
-    </header>
-    <figure className="lab-evidence-feature">
-      <div className="lab-evidence-media"><Image src="/media/lab-accessibility-ci-gate.png" alt="Published Storybook Badge story with the Accessibility panel reporting zero violations and three automated checks passed." width={1280} height={720} sizes="(max-width: 800px) 100vw, 90vw" /></div>
-      <figcaption><span>Automated component check</span><p>Published Badge story · 0 violations · 3 passes · captured from the live Storybook</p></figcaption>
-    </figure>
-    <div className="lab-ci-gate" aria-label="Accessibility continuous integration gate">
-      <div className="lab-ci-gate-copy">
-        <span>[ Evidence 02 / CI gate ]</span>
-        <h3>The same check now protects every change.</h3>
-        <p>The Storybook test runner opens the real stories in a browser, executes the accessibility rules and fails the pull request when it finds a detectable violation. Manual judgement still covers the parts automation cannot understand.</p>
-        <EvidenceLink href={`${dsRepo}/blob/main/.github/workflows/ui-accessibility.yml`}>Inspect the workflow</EvidenceLink>
-      </div>
-      <ol className="lab-ci-flow">
-        <li><span>01</span><strong>Story changes</strong><small>Component behaviour becomes reviewable.</small></li>
-        <li><span>02</span><strong>Browser renders</strong><small>Vitest runs the real Storybook project.</small></li>
-        <li><span>03</span><strong>axe checks</strong><small>Detectable violations fail the run.</small></li>
-        <li><span>04</span><strong>PR is gated</strong><small>The failure stays beside the change.</small></li>
-      </ol>
-    </div>
-  </section>
-}
-
-function ReusableResources({ slug }: { slug: string }) {
-  const resources = reusableResources[slug]
-  if (!resources?.length) return null
-
-  return <section className="lab-reuse" aria-labelledby={`reuse-${slug}`}>
-    <header>
-      <span>[ Open materials ]</span>
-      <div>
-        <h2 id={`reuse-${slug}`}>What you can reuse.</h2>
-        <p>Not just a conclusion: these are the working artefacts behind the argument. Open them, question them and adapt what is useful.</p>
-        <div className="lab-reuse-header-link"><ArrowLink variant="secondary" tone="purple" href="https://github.com/deboramoratalla-lab/debora-labs" target="_blank" rel="noreferrer">Browse the full Debora Labs kit</ArrowLink></div>
-      </div>
-    </header>
-    <div className="lab-reuse-grid">
-      {resources.map((resource, index) => <article key={resource.title}>
-        <span>{String(index + 1).padStart(2, "0")}</span>
-        <h3>{resource.title}</h3>
-        <p>{resource.description}</p>
-        {resource.href.startsWith("/")
-          ? <ArrowRouteLink variant="secondary" tone={index % 2 ? "green" : "purple"} href={resource.href}>{resource.label}</ArrowRouteLink>
-          : <ArrowLink variant="secondary" tone={index % 2 ? "green" : "purple"} href={resource.href} target="_blank" rel="noreferrer">{resource.label}</ArrowLink>}
-      </article>)}
-    </div>
-  </section>
-}
-
 export default async function LabArticle({ params }: { params: Promise<{ slug: string }> }) {
   const entry = getLabEntry((await params).slug)
   if (!entry) notFound()
@@ -341,11 +132,6 @@ export default async function LabArticle({ params }: { params: Promise<{ slug: s
           </section>}
         </div>
       </section>)}
-      {entry.slug === "design-systems-need-evidence" && <DesignSystemEvidence />}
-      {entry.slug === "storybook-source-of-truth" && <StorybookEvidence />}
-      {entry.slug === "figma-plugin-component-apis" && <FigmaPluginEvidence />}
-      {entry.slug === "smallest-useful-accessibility-pipeline" && <AccessibilityEvidence />}
-      <ReusableResources slug={entry.slug} />
       <footer className="lab-article-close">
         <span>[ What I’m taking forward ]</span>
         <p>{content.close}</p>
