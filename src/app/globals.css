@@ -1461,7 +1461,24 @@ body:has(.lab-page) .lab-page .editorial-hero-grid{margin-top:64px!important}
 .lab-grid-kicker{position:relative;z-index:2;display:flex;align-items:center;gap:14px;color:#aaa9a3;font:500 12px/1 var(--font-mono,monospace);text-transform:uppercase}.lab-grid-kicker i{font-style:normal;color:#b8b1ff}.lab-grid-kicker b{height:1px;flex:1;margin-left:8px;background:#41413e}
 .lab-grid-copy{position:relative;z-index:2;display:flex;align-items:end;justify-content:space-between;gap:40px;margin-top:185px}.lab-grid-copy h1{margin:0;font-size:clamp(40px,5vw,76px);font-weight:430;line-height:.95;letter-spacing:-.06em}.lab-grid-copy p{max-width:260px;margin:0;color:#aaa9a3;font-size:16px;line-height:1.4}
 .lab-pixel-field{position:absolute;right:18%;top:80px;width:170px;height:120px;transform:rotate(-12deg);opacity:.95}.lab-pixel-field i{position:absolute;width:14px;height:14px;background:#6255d5;box-shadow:0 0 0 1px rgba(184,177,255,.32);animation:lab-pixel-float 4.2s ease-in-out infinite}.lab-pixel-field i:nth-child(1){left:12px;top:28px}.lab-pixel-field i:nth-child(2){left:30px;top:42px;background:#8176ec;animation-delay:.15s}.lab-pixel-field i:nth-child(3){left:48px;top:56px;background:#9b93e8;animation-delay:.3s}.lab-pixel-field i:nth-child(4){left:66px;top:70px;background:#719000;animation-delay:.45s}.lab-pixel-field i:nth-child(5){left:84px;top:84px;background:#8fa72d;animation-delay:.6s}.lab-pixel-field i:nth-child(6){left:48px;top:28px;background:#b8b1ff;animation-delay:.75s}.lab-pixel-field i:nth-child(7){left:66px;top:42px;background:#6255d5;animation-delay:.9s}.lab-pixel-field i:nth-child(8){left:84px;top:56px;background:#719000;animation-delay:1.05s}.lab-pixel-field i:nth-child(9){left:102px;top:70px;background:#c9dc79;animation-delay:1.2s}@keyframes lab-pixel-float{0%,100%{opacity:.35;transform:translate(0,0)}50%{opacity:1;transform:translate(7px,-5px)}}
-@media (max-width:800px){.lab-grid-hero{height:230px;min-height:230px;padding:0}.lab-pixel-field{right:8%;top:74px;transform:scale(.8) rotate(-12deg)}}
+.lab-open-resources{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(320px,.92fr);border-bottom:1px solid #c9c8c1;background:#efeee8}
+.lab-open-resources-copy,.lab-open-resources-side{min-width:0;padding:clamp(48px,5vw,76px) clamp(34px,4vw,64px)}
+.lab-open-resources-copy{border-right:1px solid #c9c8c1}
+.lab-open-resources .editorial-meta,.lab-open-resources-kicker{display:block;color:#777770;font:500 12px/1.2 var(--font-mono,monospace);letter-spacing:.02em;text-transform:uppercase}
+.lab-open-resources h2{max-width:760px;margin:24px 0 22px;font-size:clamp(42px,4.8vw,72px);font-weight:430;line-height:.96;letter-spacing:-.06em}
+.lab-open-resources-copy>p{max-width:720px;margin:0;color:#55554f;font-size:18px;line-height:1.45}
+.lab-open-resources-side{display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end}
+.lab-open-resources-side>p{max-width:570px;margin:24px 0 34px;color:#55554f;font-size:18px;line-height:1.45}
+.lab-open-resources-side>.ui-action{margin-top:auto}
+@media (max-width:800px){
+  .lab-grid-hero{height:230px;min-height:230px;padding:0}
+  .lab-pixel-field{right:8%;top:74px;transform:scale(.8) rotate(-12deg)}
+  .lab-open-resources{grid-template-columns:1fr}
+  .lab-open-resources-copy,.lab-open-resources-side{padding:42px 20px}
+  .lab-open-resources-copy{border-right:0;border-bottom:1px solid #c9c8c1}
+  .lab-open-resources h2{font-size:clamp(38px,11vw,54px)}
+  .lab-open-resources-copy>p,.lab-open-resources-side>p{font-size:16px}
+}
 body:has(.lab-page)>.site-footer{background:#111;color:#f2f1eb;border-top:0;background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);background-size:18px 18px}
 body:has(.lab-page)>.site-footer .footer-bottom{border-color:#41413e;color:#aaa9a3}body:has(.lab-page)>.site-footer .footer-cta>span,body:has(.lab-page)>.site-footer .footer-bottom nav,body:has(.lab-page)>.site-footer .footer-location p{color:#aaa9a3}body:has(.lab-page)>.site-footer .footer-cta>p{color:#f2f1eb}body:has(.lab-page)>.site-footer .footer-actions>a{border-color:#555550;color:#f2f1eb}
 
