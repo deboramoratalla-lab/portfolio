@@ -130,7 +130,7 @@ const grid = document.getElementById('hexgrid');
 
     function saveLayout(){
       try{ localStorage.setItem(LAYOUT_STORAGE_KEY, JSON.stringify(serializeLayout())); }
-      catch(e){ /* localStorage no disponible: se ignora silenciosamente */ }
+      catch{ /* localStorage no disponible: se ignora silenciosamente */ }
       if(window.civeoToast) window.civeoToast('Cambios guardados');
     }
 
@@ -157,7 +157,7 @@ const grid = document.getElementById('hexgrid');
     function restoreLayout(){
       let saved = null;
       try{ saved = JSON.parse(localStorage.getItem(LAYOUT_STORAGE_KEY) || 'null'); }
-      catch(e){ saved = null; }
+      catch{ saved = null; }
       if(!saved || !Array.isArray(saved.rows) || !saved.rows.length) return;
 
       const rowEls = document.querySelectorAll('.dash .dash-row');
@@ -513,7 +513,7 @@ const grid = document.getElementById('hexgrid');
     try{
       const saved = localStorage.getItem(PROVINCE_STORAGE_KEY);
       if(saved) selectedProvince = saved;
-    }catch(e){ /* localStorage no disponible: se usa el valor por defecto */ }
+    }catch{ /* localStorage no disponible: se usa el valor por defecto */ }
 
     function applyProvince(){
       document.querySelectorAll('.province-name').forEach(el=>{
@@ -526,7 +526,7 @@ const grid = document.getElementById('hexgrid');
       selectedProvince = name;
       applyProvince();
       try{ localStorage.setItem(PROVINCE_STORAGE_KEY, name); }
-      catch(e){ /* se ignora si no hay localStorage */ }
+      catch{ /* se ignora si no hay localStorage */ }
       // avisa a quien le interese (p. ej. el widget de clima con datos reales)
       // de que la diputación ha cambiado, sin acoplarlo a este script.
       document.dispatchEvent(new CustomEvent('civeo:province-changed', {detail: {province: name}}));
@@ -544,7 +544,7 @@ const grid = document.getElementById('hexgrid');
     try{
       const savedCtx = JSON.parse(localStorage.getItem(NAV_CONTEXT_STORAGE_KEY) || 'null');
       if(savedCtx && savedCtx.category) navContext = savedCtx;
-    }catch(e){ /* se usa el valor por defecto si localStorage falla */ }
+    }catch{ /* se usa el valor por defecto si localStorage falla */ }
 
     function getNavContext(target){
       const text = el => el ? el.textContent.trim() : '';
@@ -603,7 +603,7 @@ const grid = document.getElementById('hexgrid');
       navContext = ctx;
       renderDashboardHeader();
       try{ localStorage.setItem(NAV_CONTEXT_STORAGE_KEY, JSON.stringify(navContext)); }
-      catch(e){ /* se ignora si no hay localStorage */ }
+      catch{ /* se ignora si no hay localStorage */ }
     }
 
     function showView(name){
@@ -641,7 +641,7 @@ const grid = document.getElementById('hexgrid');
         if(name === 'dashboard') fySubEstadoGeneral.setAttribute('aria-current', 'page');
         else fySubEstadoGeneral.removeAttribute('aria-current');
       }
-      try{ window.scrollTo(0,0); }catch(e){}
+      try{ window.scrollTo(0,0); }catch{}
       syncHashFromView(name);
     }
     // el buscador global (script siguiente) necesita poder cambiar de vista
@@ -819,7 +819,12 @@ const grid = document.getElementById('hexgrid');
 
     document.addEventListener('keydown', e=>{
       const isCmdK = (e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k';
-      if(isCmdK){ e.preventDefault(); scrim.classList.contains('open') ? closeSearch() : openSearch(); return; }
+      if(isCmdK){
+        e.preventDefault();
+        if(scrim.classList.contains('open')) closeSearch();
+        else openSearch();
+        return;
+      }
       if(!scrim.classList.contains('open')) return;
       if(e.key === 'Escape'){ closeSearch(); return; }
       if(e.key === 'ArrowDown'){ e.preventDefault(); if(currentMatches.length){ activeIndex = (activeIndex + 1) % currentMatches.length; updateActive(); } return; }
@@ -922,11 +927,11 @@ const grid = document.getElementById('hexgrid');
 
     function readIds(){
       try{ return JSON.parse(localStorage.getItem(READ_KEY) || '[]'); }
-      catch(e){ return []; }
+      catch{ return []; }
     }
     function saveReadIds(ids){
       try{ localStorage.setItem(READ_KEY, JSON.stringify(ids)); }
-      catch(e){ /* se ignora si no hay localStorage */ }
+      catch{ /* se ignora si no hay localStorage */ }
     }
 
     function render(){
@@ -1225,11 +1230,11 @@ const grid = document.getElementById('hexgrid');
       const labelEl = toggle.querySelector('.rail-label');
       if(labelEl) labelEl.textContent = expanded ? 'Contraer' : 'Expandir';
       try{ localStorage.setItem(STORAGE_KEY, expanded ? '1' : '0'); }
-      catch(e){ /* localStorage no disponible: se ignora */ }
+      catch{ /* localStorage no disponible: se ignora */ }
     }
 
     let saved = null;
-    try{ saved = localStorage.getItem(STORAGE_KEY); }catch(e){ saved = null; }
+    try{ saved = localStorage.getItem(STORAGE_KEY); }catch{ saved = null; }
     setExpanded(saved === '1');
 
     toggle.addEventListener('click', ()=> setExpanded(!rail.classList.contains('expanded')));
@@ -1568,7 +1573,7 @@ const grid = document.getElementById('hexgrid');
 
     function getProvince(){
       try{ return localStorage.getItem('civeo:selected-province') || 'Salamanca'; }
-      catch(e){ return 'Salamanca'; }
+      catch{ return 'Salamanca'; }
     }
 
     async function fetchWeather(){
@@ -1598,7 +1603,7 @@ const grid = document.getElementById('hexgrid');
         precipEl.textContent = precip.toFixed(1) + ' l/m²';
 
         setBadgeState(false);
-      }catch(e){
+      }catch{
         clearTimeout(timeout);
         setBadgeState(true);
       }
@@ -1647,7 +1652,7 @@ const grid = document.getElementById('hexgrid');
         const events = JSON.parse(localStorage.getItem(TELEMETRY_STORAGE) || '[]');
         events.push({ event, at: new Date().toISOString(), view: readContext().currentView, ...data });
         localStorage.setItem(TELEMETRY_STORAGE, JSON.stringify(events.slice(-100)));
-      }catch(e){}
+      }catch{}
     }
 
     const PROVINCES = ['Ávila','Burgos','León','Palencia','Salamanca','Segovia','Soria','Valladolid','Zamora'];
@@ -1661,7 +1666,7 @@ const grid = document.getElementById('hexgrid');
       trackCopilot('opened');
       launcher.setAttribute('aria-expanded', 'true');
       if(dot){ dot.hidden = true; }
-      try{ localStorage.setItem(SEEN_STORAGE, '1'); }catch(e){}
+      try{ localStorage.setItem(SEEN_STORAGE, '1'); }catch{}
       renderSuggestions();
       requestAnimationFrame(()=> closeBtn?.focus());
       if(!greeted){
@@ -1678,7 +1683,8 @@ const grid = document.getElementById('hexgrid');
       if(returnFocus && typeof returnFocus.focus === 'function') returnFocus.focus();
     }
     launcher.addEventListener('click', ()=>{
-      panel.classList.contains('open') ? closePanel() : openPanel();
+      if(panel.classList.contains('open')) closePanel();
+      else openPanel();
     });
     closeBtn.addEventListener('click', closePanel);
     document.addEventListener('keydown', e=>{
@@ -1690,7 +1696,7 @@ const grid = document.getElementById('hexgrid');
       if(!localStorage.getItem(SEEN_STORAGE)){
         setTimeout(()=>{ if(dot && !panel.classList.contains('open')) dot.hidden = false; }, 4000);
       }
-    }catch(e){}
+    }catch{}
 
     // ---------- render de mensajes ----------
     function addMessage(role, text, opts){
@@ -1746,7 +1752,7 @@ const grid = document.getElementById('hexgrid');
     function readContext(){
       const ctx = {};
       try{ ctx.province = localStorage.getItem('civeo:selected-province') || 'Salamanca'; }
-      catch(e){ ctx.province = 'Salamanca'; }
+      catch{ ctx.province = 'Salamanca'; }
       const tempEl = document.getElementById('kpi-temp-value');
       const humEl = document.getElementById('kpi-humidity-value');
       const precipEl = document.getElementById('kpi-precip-value');
@@ -1919,7 +1925,7 @@ const grid = document.getElementById('hexgrid');
       let result;
       try{
         result = localEngine(question);
-      }catch(e){
+      }catch{
         // red de seguridad: si algo revienta de forma inesperada, no dejamos
         // el chat colgado esperando una respuesta que nunca llega
         result = {text: 'Error al procesar la consulta. Repite la pregunta.'};
@@ -2080,7 +2086,7 @@ const grid = document.getElementById('hexgrid');
       running = false;
       scrim.classList.remove('open');
       try{ localStorage.setItem(TOUR_KEY, '1'); }
-      catch(e){ /* se ignora si no hay localStorage */ }
+      catch{ /* se ignora si no hay localStorage */ }
     }
 
     function start(){
@@ -2091,7 +2097,7 @@ const grid = document.getElementById('hexgrid');
 
     function seen(){
       try{ return !!localStorage.getItem(TOUR_KEY); }
-      catch(e){ return false; }
+      catch{ return false; }
     }
 
     nextBtn.addEventListener('click', advance);

@@ -1,6 +1,6 @@
 import Image from "next/image"
 import Link from "next/link"
-import { BoardRevealText } from "@/components/board-reveal-text"
+import { CasePremiseReveal } from "@/components/case-premise-reveal"
 import { CaseMoreWorks } from "@/components/case-more-works"
 import { CaseStudyIndex } from "@/components/case-study-index"
 import { CaseSectionLabel } from "@/components/case-section-label"
@@ -33,7 +33,7 @@ export function BoardCase() {
     <section className="board-hero case-hero-unified" id="top">
       <div className="board-hero-kicker case-hero-kicker-unified"><span>[CASE STUDY / 01]</span><span>&gt; ENTERPRISE PRODUCT DESIGN</span><i /></div>
       <h1 className="case-hero-title-unified">Enterprise Planning /</h1>
-      <div className="board-hero-premise"><BoardRevealText>I turned a fragmented budgeting interface into a shared operating model — making ownership, dependencies and downstream impact visible across a €1.2B planning cycle.</BoardRevealText></div>
+      <CasePremiseReveal className="board-hero-premise">I turned a fragmented budgeting interface into a shared operating model — making ownership, dependencies and downstream impact visible across a €1.2B planning cycle.</CasePremiseReveal>
       <dl className="board-hero-meta case-hero-meta-unified">
         <div><dt>Role</dt><dd>Solo Senior Product Designer</dd></div>
         <div><dt>Team</dt><dd>SUEZ Finance · Product · Engineering</dd></div>
@@ -65,7 +65,7 @@ export function BoardCase() {
         <h2>It behaved like a collection of destinations,<br />not one connected operating cycle.</h2>
         <h3>The information existed. The story between it did not.</h3>
       </div>
-      <figure><div><Image src="/media/board-original-product-hq.jpg" alt="Original Board homepage shown inside its editorial frame" fill sizes="100vw" quality={92} /></div><figcaption>OLD APP VERSION / Existing homepage before the workflow redesign.</figcaption></figure>
+      <figure><div><Image src="/media/board-original-product-hq.jpg" alt="Original Board homepage shown inside its editorial frame" fill sizes="(max-width: 800px) 100vw, 44vw" quality={92} /></div><figcaption>OLD APP VERSION / Existing homepage before the workflow redesign.</figcaption></figure>
     </section>
 
     <section className="board-act board-light board-diagram-section">
@@ -76,7 +76,7 @@ export function BoardCase() {
         </div>
         <figure className="board-authentic-diagram">
           <div className="board-authentic-diagram__frame">
-            <Image src="/media/board-workflow-roles-updated.png" alt="Workshop artefact mapping the FY2026 budget phases, responsibilities and task lifecycle across three finance roles" width={2922} height={2332} quality={95} unoptimized />
+            <Image src="/media/board-workflow-roles-updated.png" alt="Workshop artefact mapping the FY2026 budget phases, responsibilities and task lifecycle across three finance roles" width={2922} height={2332} quality={92} unoptimized />
           </div>
           <figcaption>Original mapping artefact, refined after the workshops to connect roles, phases and the task lifecycle.</figcaption>
         </figure>

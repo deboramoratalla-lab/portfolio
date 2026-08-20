@@ -29,7 +29,7 @@ export function TapDsCase({ project }: { project: Project }) {
           {section.metrics && <div className="tap-ds-metrics">{section.metrics.map(([value,label], metricIndex) => <div key={label} className={metricIndex % 2 ? "green" : "purple"}><strong>{value}</strong><span>{label}</span></div>)}</div>}
           {section.layout === "bridge" && <div className="tap-ds-system-route" aria-label="Code to Figma workflow"><small>[ SYSTEM ROUTE ]</small><div><span><i>01</i>TS props</span><b>→</b><span><i>02</i>Catalogue</span><b>→</b><span><i>03</i>Plugin</span><b>→</b><span><i>04</i>Figma</span></div></div>}
           {section.layout === "governance" && <div className="tap-ds-release-gates" aria-label="Release gates"><small>[ RELEASE GATES ]</small><div><span><i>01</i>Token parity<b>Automated</b></span><span><i>02</i>Public API<b>Peer review</b></span><span><i>03</i>Accessibility<b>Human sign-off</b></span></div></div>}
-          {section.media && <figure><Image src={section.media} alt="" fill sizes="90vw" /></figure>}
+          {section.media && <figure><Image src={section.media} alt={`${section.title} design-system evidence`} fill sizes="90vw" /></figure>}
           {section.video && <div className="tap-ds-video-frame"><span className="tap-ds-plate-label">WORKING PROTOTYPE / {String(index + 1).padStart(2,"0")}</span><video src={section.video} autoPlay muted loop playsInline /></div>}
           {section.caption && <small className="tap-ds-caption">{section.caption}</small>}
           {section.link && <ArrowRouteLink variant="secondary" tone="purple" href={section.link[1]} target="_blank" rel="noreferrer">{section.link[0]}</ArrowRouteLink>}

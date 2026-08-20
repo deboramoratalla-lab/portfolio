@@ -10,7 +10,7 @@ import { ArrowUpRight } from "@/components/arrow-up-right"
 export function ProjectCard({ project, index }: { project: Project; index: number }) {
   const card = useRef<HTMLAnchorElement>(null)
   const reduced = useReducedMotion()
-  const editorialAccent = index % 2 === 0 ? "#5145c7" : "#6f8800"
+  const editorialAccent = index % 2 === 0 ? "#5145c7" : "#526600"
   return <Link ref={card} href={`/projects/${project.slug}`} className="project-card" style={{ "--accent": editorialAccent, "--stack": index } as React.CSSProperties}>
     <motion.div className="project-copy" initial={reduced ? false : { opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: .55 }} transition={{ duration: .75, delay: .08, ease: [0.16,1,0.3,1] }}>
       <div className="project-editorial-meta"><span>{project.tags[0]}</span><i>{`// 00${index + 1}`}</i></div>

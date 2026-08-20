@@ -13,6 +13,14 @@ const LAB_COVERS = [
   "/media/accessibility-color-contrast-tokens.png",
 ]
 
+const LAB_COVER_ALTS = [
+  "Design-system component evidence arranged as an inspectable interface",
+  "Storybook foundations and design-token documentation",
+  "Figma plugin importing component APIs from code",
+  "Coded agent workflow running in a production preview",
+  "Accessibility colour-contrast checks expressed as reusable tokens",
+]
+
 export function WorkbenchPreview({ entries }: { entries: LabEntry[] }) {
   const visibleEntries = entries.slice(0, HOME_LAB_LIMIT)
 
@@ -26,7 +34,7 @@ export function WorkbenchPreview({ entries }: { entries: LabEntry[] }) {
           <span className="home-lab-card-action">Read more <ArrowUpRight /></span>
         </div>
         <figure className="home-lab-card-media">
-          <Image src={LAB_COVERS[index]} alt="" fill sizes={index === 0 ? "50vw" : "25vw"} />
+          <Image src={LAB_COVERS[index]} alt={LAB_COVER_ALTS[index]} fill sizes={index === 0 ? "50vw" : "25vw"} />
         </figure>
       </Link>)}
     </div>

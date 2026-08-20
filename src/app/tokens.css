@@ -21,8 +21,11 @@
   --type-evidence: clamp(1.5rem, 2.2vw, 2rem);
   --type-lead: clamp(1.1875rem, 1.55vw, 1.375rem);
   --type-body: 1.0625rem;
+  --type-body-compact: 1rem;
   --type-body-small: 0.875rem;
   --type-label: 0.75rem;
+  --type-label-small: 0.6875rem;
+  --type-micro: 0.625rem;
 
   --leading-display: 0.94;
   --leading-chapter: 1.02;
@@ -36,29 +39,61 @@
   --tracking-heading: -0.04em;
   --tracking-label: 0.02em;
 
+  /* Four shared heading roles. Components consume these aliases rather than
+     inventing a fifth local scale. */
+  --heading-display-size: var(--type-display);
+  --heading-chapter-size: var(--type-chapter);
+  --heading-section-size: var(--type-section);
+  --heading-evidence-size: var(--type-evidence);
+  --heading-display-leading: var(--leading-display);
+  --heading-chapter-leading: var(--leading-chapter);
+  --heading-section-leading: var(--leading-section);
+  --heading-evidence-leading: var(--leading-evidence);
+
   /* Colour primitives */
   --black-950: #050505;
+  --black-925: #0a0a0a;
   --black-900: #111111;
   --black-850: #151515;
+  --black-800: #1d1d1d;
   --black-700: #292929;
+  --black-600: #12151c;
+  --black-1000: #000000;
 
+  --white: #ffffff;
   --paper-100: #f5f4ee;
+  --paper-125: #f4f3ed;
+  --paper-150: #f2f1eb;
   --paper-200: #efeee8;
   --paper-300: #e7e5df;
 
   --grey-300: #c8c7c0;
+  --grey-325: #c9c8c1;
+  --grey-340: #b9b8b1;
+  --grey-350: #b8b7b0;
+  --grey-390: #aaa9a2;
   --grey-400: #aaa9a3;
+  --grey-410: #aaaaaa;
+  --grey-450: #8f8f89;
   --grey-500: #85857f;
+  --grey-525: #777777;
+  --grey-550: #777770;
+  --grey-575: #707069;
   --grey-600: #55554f;
+  --grey-675: #4a4a47;
   --grey-700: #41413e;
+  --grey-750: #3d3d39;
 
   --purple-400: #c9c1ff;
+  --purple-450: #b8b1ff;
+  --purple-500: #9ca9ff;
   --purple-600: #6255d5;
   --purple-700: #5145c7;
 
   --green-300: #dce8c4;
   --green-400: #c9dc79;
   --green-700: #526600;
+  --cyan-400: #bcffff;
 
   /* Semantic colour roles: light surfaces */
   --surface-page: var(--paper-200);
@@ -88,6 +123,7 @@
   --space-2xs: 0.5rem;
   --space-xs: 0.75rem;
   --space-sm: 1rem;
+  --space-base: 1.25rem;
   --space-md: 1.5rem;
   --space-lg: 2rem;
   --space-xl: 3rem;

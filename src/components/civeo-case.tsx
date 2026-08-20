@@ -1,5 +1,6 @@
 import Image from "next/image"
 import Link from "next/link"
+import { CasePremiseReveal } from "@/components/case-premise-reveal"
 import { CaseMoreWorks } from "@/components/case-more-works"
 import { CaseStudyIndex } from "@/components/case-study-index"
 import { CaseSectionLabel } from "@/components/case-section-label"
@@ -23,7 +24,7 @@ export function CiveoCase() {
     <section className="civeo-hero case-hero-unified" id="top">
       <div className="civeo-hero-kicker case-hero-kicker-unified"><span>[CASE STUDY / 05]</span><span>&gt; MUNICIPAL OPERATIONS</span><i /><Link href="/civeo/index.html" target="_blank">Open prototype ↗</Link></div>
       <h1 className="case-hero-title-unified">Civeo /</h1>
-      <p className="civeo-hero-premise">I turned an Excel-led service process into one readable operating surface for internal teams working with municipal diputaciones.</p>
+      <CasePremiseReveal className="civeo-hero-premise">I turned an Excel-led service process into one readable operating surface for internal teams working with municipal diputaciones.</CasePremiseReveal>
       <dl className="civeo-hero-meta case-hero-meta-unified">
         <div><dt>Role</dt><dd>POC Product Designer</dd></div>
         <div><dt>Users</dt><dd>15 internal workers as users and testers</dd></div>
@@ -78,6 +79,7 @@ export function CiveoCase() {
       <div className="civeo-section-head"><CaseSectionLabel number="02.02" dark className="civeo-label">Working prototype</CaseSectionLabel><h2>The interaction is evidence.</h2><p>The sequence shows the model at a glance. The embedded version underneath lets you change province, edit the dashboard and open the assistant yourself.</p></div>
       <figure className="civeo-gif"><Image src="/media/civeo-flow.gif" alt="Civeo dashboard workflow" width={1280} height={720} unoptimized /><figcaption>Dashboard context, widget editing and the contextual assistant in one short flow.</figcaption></figure>
       <div className="civeo-prototype-head"><span>INTERACTIVE PROTOTYPE</span><Link href="/civeo/index.html" target="_blank">Open in a new tab ↗</Link></div>
+      <p className="civeo-prototype-mobile-note">The complete operating surface is available in a dedicated tab on smaller screens.</p>
       <iframe className="civeo-prototype" src="/civeo/index.html?embed=1" title="Interactive Civeo municipal operations prototype" loading="lazy" />
     </section>
 

@@ -56,7 +56,7 @@ export function ProjectPage({ project }: { project: Project }) {
         {section.signals && <div className="signal-grid">{section.signals.map(([label, value]) => <div key={`${label}-${value}`}><span>{label}</span><p>{value}</p></div>)}</div>}
         {section.roleMap && <RoleArchitectureMap />}
         {section.metrics && <div className="metrics">{section.metrics.map(([value, label]) => <div key={label}><strong>{value}</strong><span>{label}</span></div>)}</div>}
-        {section.media && <div className="case-media"><Image src={section.media} alt="" fill sizes="(max-width: 800px) 100vw, 80vw" /></div>}
+        {section.media && <div className="case-media"><Image src={section.media} alt={`${section.title} visual evidence`} fill sizes="(max-width: 800px) 100vw, 80vw" /></div>}
         {section.video && <video className="case-video" src={section.video} autoPlay muted loop playsInline />}
         {section.embed && <iframe className="case-embed" src={section.embed} title={section.title} />}
         {section.caption && <p className="case-caption">{section.caption}</p>}

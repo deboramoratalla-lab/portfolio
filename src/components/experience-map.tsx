@@ -62,7 +62,7 @@ export function ExperienceMap({ roles }: { roles: Role[] }) {
     <section className="career-log">
       <aside className="career-log__intro">
         <span className="career-log__eyebrow">CAREER CHANGELOG</span>
-        <h3>The work behind<br />the practice.</h3>
+        <h2>The work behind<br />the practice.</h2>
         <ArrowLink
           className="career-log__link"
           variant="primary"
@@ -88,7 +88,7 @@ export function ExperienceMap({ roles }: { roles: Role[] }) {
               {index === 0 ? "</>" : index % 3 === 1 ? "✦" : "⌁"}
             </span>
             <div className="career-log__content">
-              <h4>{item.role}</h4>
+              <h3>{item.role}</h3>
               <p className="career-log__company">{item.company}</p>
               {item.scope && <p className="career-log__scope"><span>Scope</span>{item.scope}</p>}
               <ul>

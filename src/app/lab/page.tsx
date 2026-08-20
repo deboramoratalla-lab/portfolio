@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 export default function LabPage() {
   return <main className="editorial-page lab-page">
     <section className="lab-grid-hero" aria-labelledby="lab-title">
-      <span className="lab-grid-label">LABS &amp; NOTES</span>
+      <h1 className="lab-grid-label" id="lab-title">LABS &amp; NOTES</h1>
       <LabPixelGrid />
     </section>
     <section className="lab-open-resources" aria-labelledby="open-resources-title">
