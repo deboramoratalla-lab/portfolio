@@ -1,5 +1,5 @@
 export const professionalProfile = {
-  summary: "Product Designer with 8+ years in digital products and 12+ years across design, systems and creative direction.",
+  summary: "Product Designer with 10+ years shaping digital products, systems and creative direction.",
   roles: [
     { id: "board", role: "Senior Product Designer", company: "Board International", period: "October 2024 - present", scope: "Enterprise planning flows, AI-assisted workflows and production product decisions.", details: ["Owns end-to-end product design across enterprise planning and financial products.", "Introduces AI-native workflows for research, documentation and design-to-engineering collaboration.", "Partners with Product and Engineering to translate strategic decisions into scalable product experiences."] },
     { id: "freelance", role: "Lead Product Designer", company: "Freelance", period: "2021 - 2024", scope: "Product architecture, design-system foundations and direction from brief to prototype.", details: ["Led the 12-month TAP Mindset redesign and its role-based product architecture.", "Built the underlying design system after auditing more than 28,000 component instances.", "Conceived AccessIA and designed a real-time smart-city operations dashboard for internal teams."] },
