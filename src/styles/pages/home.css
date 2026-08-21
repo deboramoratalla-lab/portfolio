@@ -11,3 +11,19 @@
   .aeye-home-preview .work.section { padding-top: 72px; }
   .aeye-home-preview .work .section-title { margin-bottom: 38px; }
 }
+
+.aeye-home-preview .project-signals {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-sm);
+  margin-top: 28px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(17, 17, 17, .18);
+}
+
+.aeye-home-preview .project-signal { margin: 0; color: var(--grey-600); font-size: var(--type-label); line-height: 1.45; }
+.aeye-home-preview .project-signal span { display: block; margin-bottom: var(--space-2xs); color: var(--grey-550); font: 500 var(--type-label)/1.15 var(--font-mono, monospace); letter-spacing: .04em; text-transform: uppercase; }
+
+@media (max-width: 800px) {
+  .aeye-home-preview .project-signals { grid-template-columns: 1fr; gap: var(--space-xs); }
+}
