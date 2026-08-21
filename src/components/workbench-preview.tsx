@@ -23,21 +23,33 @@ const LAB_COVER_ALTS = [
 
 export function WorkbenchPreview({ entries }: { entries: LabEntry[] }) {
   const visibleEntries = entries.slice(0, HOME_LAB_LIMIT)
+  const [featuredEntry, ...noteEntries] = visibleEntries
 
   return <div className="home-lab-preview">
-    <div className="home-lab-mosaic">
-      {visibleEntries.map((entry, index) => <Link href={`/lab/${entry.slug}`} className="home-lab-card" key={entry.slug}>
-        <div className="home-lab-card-copy">
-          <div className="home-lab-card-meta"><span>{entry.type}</span><span>{entry.date}</span></div>
-          <h3>{entry.title}</h3>
-          {index === 0 && <p>{entry.summary}</p>}
+    {featuredEntry && <div className="home-lab-index">
+      <Link href={`/lab/${featuredEntry.slug}`} className="home-lab-feature">
+        <div className="home-lab-feature-copy">
+          <div className="home-lab-card-meta"><span>01 · {featuredEntry.type}</span><span>{featuredEntry.date}</span></div>
+          <h3>{featuredEntry.title}</h3>
+          <p>{featuredEntry.summary}</p>
           <span className="home-lab-card-action">Read more <ArrowUpRight /></span>
         </div>
-        <figure className="home-lab-card-media">
-          <Image src={LAB_COVERS[index]} alt={LAB_COVER_ALTS[index]} fill sizes={index === 0 ? "50vw" : "25vw"} />
+        <figure className="home-lab-feature-media">
+          <Image src={LAB_COVERS[0]} alt={LAB_COVER_ALTS[0]} fill sizes="(max-width: 800px) 100vw, 45vw" />
         </figure>
-      </Link>)}
-    </div>
+      </Link>
+
+      <div className="home-lab-notes" aria-label="More lab notes">
+        {noteEntries.map((entry, index) => <Link href={`/lab/${entry.slug}`} className="home-lab-note" key={entry.slug}>
+          <span className="home-lab-note-number">{String(index + 2).padStart(2, "0")}</span>
+          <div className="home-lab-note-copy">
+            <div className="home-lab-note-meta"><span>{entry.type}</span><span>{entry.date}</span></div>
+            <h3>{entry.title}</h3>
+          </div>
+          <ArrowUpRight />
+        </Link>)}
+      </div>
+    </div>}
     {entries.length > HOME_LAB_LIMIT && <div className="home-lab-more">
       <ArrowRouteLink href="/lab" variant="primary" tone="purple">See more</ArrowRouteLink>
     </div>}
