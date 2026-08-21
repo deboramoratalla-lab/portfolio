@@ -58,7 +58,7 @@ export function SiteHeader() {
   const reducedMotion = useReducedMotion()
   const animateHomeEntrance = pathname === "/" && !reducedMotion
   const caseContext = useMemo(() => caseNavigation[pathname as keyof typeof caseNavigation], [pathname])
-  const [activeChapter, setActiveChapter] = useState(caseContext?.chapters[0]?.[0])
+  const [activeChapter, setActiveChapter] = useState<string | undefined>(caseContext?.chapters[0]?.[0])
 
   useEffect(() => {
     if (!caseContext) return
