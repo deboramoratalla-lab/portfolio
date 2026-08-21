@@ -11,7 +11,6 @@ export default defineConfig({
     baseURL,
     colorScheme: "light",
     locale: "en-GB",
-    reducedMotion: "reduce",
   },
   projects: [
     { name: "desktop", use: { browserName: "chromium", viewport: { width: 1440, height: 1000 } } },
