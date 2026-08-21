@@ -9500,7 +9500,7 @@ body:has(.lab-page) .lab-card-grid .editorial-action{padding-top:15px!important;
 .aeye-home-preview .home-lab-grid .lab-editorial-row:last-child:nth-child(odd){grid-column:1/-1;min-height:420px}
 @media(max-width:800px){.aeye-home-preview .home-lab-grid{grid-template-columns:1fr}.aeye-home-preview .home-lab-grid .lab-editorial-row:last-child:nth-child(odd){grid-column:auto;min-height:390px}}
 .aeye-home-preview .home-lab-index{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.18fr);width:100%;min-height:680px;border:1px solid var(--grey-390);background:var(--grey-390);gap:1px;overflow:hidden}
-.aeye-home-preview .home-lab-feature{display:grid;grid-template-rows:minmax(0,1fr) minmax(265px,.8fr);min-width:0;background:var(--paper-200);color:var(--black-900);overflow:hidden}
+.aeye-home-preview .home-lab-feature{display:grid;grid-template-rows:minmax(0,1fr) minmax(265px,.8fr);min-width:0;background:var(--paper-200);color:var(--black-900);overflow:hidden;transition:background .22s ease,box-shadow .22s ease}
 .aeye-home-preview .home-lab-feature-copy{box-sizing:border-box;display:flex;min-width:0;flex-direction:column;padding:30px 28px}
 .aeye-home-preview .home-lab-card-meta{display:flex;align-items:center;justify-content:space-between;gap:var(--space-xs);color:var(--grey-600);font:500 var(--type-micro)/1.2 var(--font-mono,monospace);text-transform:uppercase}
 .aeye-home-preview .home-lab-card-meta span:first-child{padding:5px 7px;background:#e4e3dd}
@@ -9512,10 +9512,11 @@ body:has(.lab-page) .lab-card-grid .editorial-action{padding-top:15px!important;
 .aeye-home-preview .home-lab-feature-media{position:relative;min-height:0;margin:0;background:#181818;overflow:hidden}
 .aeye-home-preview .home-lab-feature-media img{object-fit:contain;padding:var(--space-sm);filter:grayscale(1) contrast(1.06);transition:filter .35s ease,transform .5s cubic-bezier(.16,1,.3,1)}
 .aeye-home-preview .home-lab-feature:hover .home-lab-feature-media img,.aeye-home-preview .home-lab-feature:focus-visible .home-lab-feature-media img{filter:grayscale(0);transform:scale(1.025)}
+.aeye-home-preview .home-lab-feature:hover,.aeye-home-preview .home-lab-feature:focus-visible{background:#f8f7f3;box-shadow:inset 0 0 0 2px #8176ec}
 .aeye-home-preview .home-lab-feature:hover .home-lab-card-action,.aeye-home-preview .home-lab-feature:focus-visible .home-lab-card-action{color:var(--purple-600)}
 .aeye-home-preview .home-lab-feature:hover .home-lab-card-action .arrow-up-right,.aeye-home-preview .home-lab-feature:focus-visible .home-lab-card-action .arrow-up-right{transform:translate(2px,-2px)}
 .aeye-home-preview .home-lab-notes{display:grid;grid-template-rows:repeat(4,minmax(0,1fr));min-width:0;background:var(--paper-200)}
-.aeye-home-preview .home-lab-note{display:grid;grid-template-columns:42px minmax(0,1fr) 16px;align-items:center;gap:var(--space-sm);min-width:0;padding:22px 24px;background:var(--paper-200);color:var(--black-900);transition:background .22s ease,color .22s ease}
+.aeye-home-preview .home-lab-note{display:grid;grid-template-columns:42px minmax(0,1fr) 16px;align-items:center;gap:var(--space-sm);min-width:0;padding:22px 24px;background:var(--paper-200);color:var(--black-900);transition:background .22s ease,box-shadow .22s ease,color .22s ease}
 .aeye-home-preview .home-lab-note:not(:last-child){border-bottom:1px solid var(--grey-390)}
 .aeye-home-preview .home-lab-note-number{align-self:start;color:var(--purple-700);font:500 var(--type-micro)/1 var(--font-mono,monospace)}
 .aeye-home-preview .home-lab-note-copy{min-width:0}
@@ -9523,8 +9524,10 @@ body:has(.lab-page) .lab-card-grid .editorial-action{padding-top:15px!important;
 .aeye-home-preview .home-lab-note-meta span:last-child::before{content:"// ";color:#999991}
 .aeye-home-preview .home-lab-note h3{margin:13px 0 0;color:inherit;font-size:clamp(22px,2vw,34px);font-weight:430;line-height:1.01;letter-spacing:-.05em;text-wrap:balance}
 .aeye-home-preview .home-lab-note>.arrow-up-right{width:16px;height:16px;transition:transform .22s ease}
-.aeye-home-preview .home-lab-note:hover,.aeye-home-preview .home-lab-note:focus-visible{background:var(--black-900);color:var(--paper-200)}
-.aeye-home-preview .home-lab-note:hover .home-lab-note-number,.aeye-home-preview .home-lab-note:focus-visible .home-lab-note-number{color:#978aff}
+.aeye-home-preview .home-lab-note:hover,.aeye-home-preview .home-lab-note:focus-visible{background:#f8f7f3;box-shadow:inset 0 0 0 2px #8fa72d}
+.aeye-home-preview .home-lab-note:nth-child(even):hover,.aeye-home-preview .home-lab-note:nth-child(even):focus-visible{box-shadow:inset 0 0 0 2px #8176ec}
+.aeye-home-preview .home-lab-note:hover .home-lab-note-number,.aeye-home-preview .home-lab-note:focus-visible .home-lab-note-number{color:#718b00}
+.aeye-home-preview .home-lab-note:nth-child(even):hover .home-lab-note-number,.aeye-home-preview .home-lab-note:nth-child(even):focus-visible .home-lab-note-number{color:var(--purple-700)}
 .aeye-home-preview .home-lab-note:hover .arrow-up-right,.aeye-home-preview .home-lab-note:focus-visible .arrow-up-right{transform:translate(2px,-2px)}
 @media(max-width:1100px){.aeye-home-preview .home-lab-index{grid-template-columns:1fr;min-height:0}.aeye-home-preview .home-lab-feature{min-height:600px;grid-template-columns:1fr 1fr;grid-template-rows:1fr}.aeye-home-preview .home-lab-notes{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr))}.aeye-home-preview .home-lab-note{min-height:220px}.aeye-home-preview .home-lab-note:nth-child(odd){border-right:1px solid var(--grey-390)}.aeye-home-preview .home-lab-note:nth-child(-n+2){border-bottom:1px solid var(--grey-390)}}
 @media(max-width:700px){.aeye-home-preview #lab .section-title>h2{font-size:34px;line-height:1.06}.aeye-home-preview .home-lab-feature{grid-template-columns:1fr;grid-template-rows:minmax(400px,1fr) 300px;min-height:0}.aeye-home-preview .home-lab-feature-copy{padding:var(--space-md) var(--space-base)}.aeye-home-preview .home-lab-notes{grid-template-columns:1fr;grid-template-rows:repeat(4,minmax(0,1fr))}.aeye-home-preview .home-lab-note{min-height:0;padding:22px var(--space-base)}.aeye-home-preview .home-lab-note:nth-child(odd){border-right:0}.aeye-home-preview .home-lab-note h3{font-size:25px}}
