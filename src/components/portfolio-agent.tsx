@@ -72,6 +72,16 @@ export function PortfolioAgent() {
   const [answer, setAnswer] = useState<AgentAnswer | null>(null)
   const [loading, setLoading] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
+  const dialogRef = useRef<HTMLDivElement>(null)
+  const returnFocusRef = useRef<HTMLElement | null>(null)
+  const openDialog = useCallback(() => {
+    returnFocusRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : null
+    setOpen(true)
+  }, [])
+  const closeDialog = useCallback(() => {
+    setOpen(false)
+    window.requestAnimationFrame(() => returnFocusRef.current?.focus())
+  }, [])
   const ask = useCallback(async (value: string) => {
     const fallback = answerQuestion(value)
     setQuestion(value)
@@ -95,28 +105,55 @@ export function PortfolioAgent() {
   }, [])
   useEffect(() => {
     const show = (event: Event) => {
-      setOpen(true)
+      openDialog()
       const prompt = (event as CustomEvent<string>).detail
       if (prompt) ask(prompt)
     }
     window.addEventListener("open-portfolio-agent", show)
     return () => window.removeEventListener("open-portfolio-agent", show)
-  }, [ask])
-  useEffect(() => { if (open) window.setTimeout(() => inputRef.current?.focus(), 180) }, [open])
+  }, [ask, openDialog])
+  useEffect(() => {
+    if (!open) return
+    const focusDialog = window.setTimeout(() => inputRef.current?.focus(), 180)
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.preventDefault()
+        closeDialog()
+        return
+      }
+      if (event.key !== "Tab" || !dialogRef.current) return
+      const focusable = Array.from(dialogRef.current.querySelectorAll<HTMLElement>("a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex='-1'])"))
+      const first = focusable[0]
+      const last = focusable.at(-1)
+      if (!first || !last) return
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault()
+        last.focus()
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault()
+        first.focus()
+      }
+    }
+    document.addEventListener("keydown", onKeyDown)
+    return () => {
+      window.clearTimeout(focusDialog)
+      document.removeEventListener("keydown", onKeyDown)
+    }
+  }, [closeDialog, open])
   const submit = (event: FormEvent) => { event.preventDefault(); if (question.trim()) ask(question.trim()) }
 
   return <>
     {!open && <div className="agent-entry is-visible">
-      <button className="agent-trigger" onClick={() => setOpen(true)} aria-label="Open Ask Debora">
+      <button className="agent-trigger" onClick={openDialog} aria-label="Open Ask Debora">
         <span className="agent-spark" aria-hidden="true">✦</span>
         Ask Debora
       </button>
     </div>}
-    {open && <div className="agent-shell" role="dialog" aria-modal="true" aria-label="Ask Debora about her work">
-      <button className="agent-backdrop" aria-label="Close Ask Debora" onClick={() => setOpen(false)} />
+    {open && <div ref={dialogRef} className="agent-shell" role="dialog" aria-modal="true" aria-labelledby="portfolio-agent-title">
+      <button className="agent-backdrop" aria-label="Close Ask Debora" onClick={closeDialog} tabIndex={-1} />
       <aside className="agent-panel">
-        <header><div><span>A guided way in</span><strong>Find the right work</strong></div><button className="agent-close-action ui-action ui-action-secondary" onClick={() => setOpen(false)} aria-label="Close"><span className="agent-close-icon" aria-hidden="true">×</span> Close</button></header>
-        <div className="agent-body">{loading ? <div className="agent-thinking" aria-live="polite"><span>Reading the published evidence</span><i /><i /><i /></div> : !answer ? <div className="agent-intro"><p>Tell me what you need to assess. I’ll route you like a recruiter or Head of Product would: seniority, impact, judgment, collaboration, systems or AI boundaries.</p><div>{prompts.map(prompt => <button key={prompt} onClick={() => ask(prompt)}>{prompt}</button>)}</div></div> : <div className="agent-answer" aria-live="polite"><span>{answer.source === "ai" ? "AI answer · grounded in published work" : "Curated answer · published work"}</span><h2>{answer.title}</h2><p>{answer.body}</p>{answer.limitation && <p className="agent-limitation"><strong>Evidence gap</strong>{answer.limitation}</p>}{answer.probe && <p className="agent-probe"><strong>Ask in the interview</strong>{answer.probe}</p>}{answer.evidence.length > 0 && <nav>{answer.evidence.map(item => <ArrowRouteLink variant="secondary" tone="purple" key={item.label} href={item.href} onClick={() => setOpen(false)}>{item.label}</ArrowRouteLink>)}</nav>}<button className="agent-reset ui-action ui-action-primary ui-action-green ui-action-on-light" onClick={() => { setAnswer(null); setQuestion("") }}>Try another lens</button></div>}</div>
+        <header><div><span>A guided way in</span><strong id="portfolio-agent-title">Find the right work</strong></div><button className="agent-close-action ui-action ui-action-secondary" onClick={closeDialog} aria-label="Close"><span className="agent-close-icon" aria-hidden="true">×</span> Close</button></header>
+        <div className="agent-body">{loading ? <div className="agent-thinking" aria-live="polite"><span>Reading the published evidence</span><i /><i /><i /></div> : !answer ? <div className="agent-intro"><p>Tell me what you need to assess. I’ll route you like a recruiter or Head of Product would: seniority, impact, judgment, collaboration, systems or AI boundaries.</p><div>{prompts.map(prompt => <button key={prompt} onClick={() => ask(prompt)}>{prompt}</button>)}</div></div> : <div className="agent-answer" aria-live="polite"><span>{answer.source === "ai" ? "AI answer · grounded in published work" : "Curated answer · published work"}</span><h2>{answer.title}</h2><p>{answer.body}</p>{answer.limitation && <p className="agent-limitation"><strong>Evidence gap</strong>{answer.limitation}</p>}{answer.probe && <p className="agent-probe"><strong>Ask in the interview</strong>{answer.probe}</p>}{answer.evidence.length > 0 && <nav>{answer.evidence.map(item => <ArrowRouteLink variant="secondary" tone="purple" key={item.label} href={item.href} onClick={closeDialog}>{item.label}</ArrowRouteLink>)}</nav>}<button className="agent-reset ui-action ui-action-primary ui-action-green ui-action-on-light" onClick={() => { setAnswer(null); setQuestion("") }}>Try another lens</button></div>}</div>
         <form onSubmit={submit}><input ref={inputRef} value={question} onChange={event => setQuestion(event.target.value)} placeholder="What do you want to understand?" aria-label="Question about Debora's portfolio" /><button type="submit" aria-label="Ask"><ArrowUpRight /></button></form>
         <footer>Answers are grounded in Debora’s published portfolio and verified CV facts.</footer>
       </aside>
