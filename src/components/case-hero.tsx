@@ -6,7 +6,7 @@ type CaseHeroProps = {
   kickerClassName: string
   kicker: ReactNode
   title: ReactNode
-  premise: ReactNode
+  premise: string
   premiseClassName?: string
   meta: ReactNode
 }
