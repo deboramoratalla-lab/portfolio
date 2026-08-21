@@ -19,6 +19,18 @@ html body .site-header.site-header.site-header .nav-agent{color:var(--accent-pur
 html body .site-header.site-header.site-header .nav-agent:hover{color:var(--accent-purple-hover)!important}
 html body .site-header.site-header.site-header .menu-toggle{display:none!important;color:var(--text-primary)!important;cursor:pointer!important}
 
+/* Case navigation uses the existing header rather than creating a second
+   navigation surface. It starts immediately after the monogram and keeps the
+   chapter structure visible throughout a long read. */
+html body .site-header.site-header.site-header .case-menu-inline{display:flex!important;align-items:center!important;gap:18px!important;height:100%!important;margin-right:auto!important;margin-left:var(--space-base)!important}
+html body .site-header.site-header.site-header .case-menu-inline a{--case-index-accent:var(--accent-purple);position:relative!important;display:flex!important;align-items:center!important;gap:6px!important;padding:7px 6px!important;border-radius:6px!important;color:var(--text-secondary)!important;font:500 var(--type-label-small)/1 var(--font-mono,monospace)!important;text-decoration:none!important;white-space:nowrap!important}
+html body .site-header.site-header.site-header .case-menu-inline a:nth-of-type(even){--case-index-accent:var(--accent-green)}
+html body .site-header.site-header.site-header .case-menu-inline a small{color:var(--case-index-accent)!important;font:inherit!important}
+html body .site-header.site-header.site-header .case-menu-inline a:not(:last-child)::after{content:"";position:absolute!important;top:50%!important;right:-10px!important;width:1px!important;height:14px!important;background:var(--border-default)!important;transform:translateY(-50%)!important}
+html body .site-header.site-header.site-header .case-menu-inline a[aria-current="step"]{background:color-mix(in srgb,var(--case-index-accent) 12%,transparent)!important;color:var(--case-index-accent)!important}
+html body .site-header.site-header.site-header .case-menu-inline a:hover{background:color-mix(in srgb,var(--case-index-accent) 9%,transparent)!important;color:var(--text-primary)!important}
+html body .site-header.site-header.site-header .case-menu-mobile{display:none!important}
+
 @media (max-width:800px){
   html body .site-header.site-header.site-header{top:10px!important;right:10px!important;left:10px!important;height:64px!important;min-height:64px!important;padding:0 var(--space-base)!important;border-radius:16px!important}
   html body .site-header.site-header.site-header .menu-toggle{display:inline-flex!important;align-items:center!important;height:100%!important}
@@ -29,4 +41,16 @@ html body .site-header.site-header.site-header .menu-toggle{display:none!importa
   }
   html body .site-header.site-header.site-header .nav.open{display:flex!important}
   html body .site-header.site-header.site-header .nav a,html body .site-header.site-header.site-header .nav-agent{display:block!important;width:100%!important;box-sizing:border-box!important;padding:14px var(--space-xs)!important}
+  html body .site-header.site-header.site-header .case-menu-inline{display:none!important}
+  html body .site-header.site-header.site-header .case-menu-mobile{display:block!important;margin:0 var(--space-xs)!important;padding:0 0 var(--space-2xs)!important;border-bottom:1px solid var(--border-default)!important}
+  html body .site-header.site-header.site-header .case-menu-mobile summary{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:var(--space-sm)!important;padding:14px var(--space-xs)!important;color:var(--text-primary)!important;cursor:pointer!important;font:500 var(--type-label)/1.2 var(--font-mono,monospace)!important;list-style:none!important}
+  html body .site-header.site-header.site-header .case-menu-mobile summary::-webkit-details-marker{display:none!important}
+  html body .site-header.site-header.site-header .case-menu-mobile summary span{color:var(--accent-purple)!important}
+  html body .site-header.site-header.site-header .case-menu-mobile summary small{overflow:hidden!important;color:var(--text-secondary)!important;font:inherit!important;text-align:right!important;text-overflow:ellipsis!important;white-space:nowrap!important}
+  html body .site-header.site-header.site-header .case-menu-mobile > div{display:grid!important;gap:2px!important;padding:0 var(--space-xs) var(--space-xs)!important}
+  html body .site-header.site-header.site-header .case-menu-mobile > div a{display:grid!important;grid-template-columns:32px 1fr!important;gap:8px!important;padding:11px var(--space-xs)!important;color:var(--text-secondary)!important;font:500 var(--type-label)/1.25 var(--font-mono,monospace)!important;text-decoration:none!important}
+  html body .site-header.site-header.site-header .case-menu-mobile > div a{--case-index-accent:var(--accent-purple)!important}
+  html body .site-header.site-header.site-header .case-menu-mobile > div a:nth-child(even){--case-index-accent:var(--accent-green)!important}
+  html body .site-header.site-header.site-header .case-menu-mobile > div a small{color:var(--case-index-accent)!important;font:inherit!important}
+  html body .site-header.site-header.site-header .case-menu-mobile > div a[aria-current="step"]{background:color-mix(in srgb,var(--case-index-accent) 12%,transparent)!important;color:var(--text-primary)!important}
 }

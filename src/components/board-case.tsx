@@ -55,9 +55,9 @@ export function BoardCase() {
       <div className="board-act-bottom"><h3>The information was there. People still needed email and meetings to understand what should move next.</h3><div><p>Finance leads, regional controllers and agency teams entered the same annual plan from different points in the cycle. They could find numbers, forms and approvals, but not the story between them: what had changed, who owned the next move or which dependency was holding the cycle back.</p><p>At that point I stopped treating the work as a navigation clean-up. I changed the question to: <em>what would let someone understand their position in the cycle without asking another person to reconstruct it?</em></p></div></div>
     </section>
 
-    <section className="board-act board-dark board-evidence">
+    <section className="board-act board-light board-evidence">
       <div className="board-evidence-copy">
-        <CaseSectionLabel number="01.01" dark className="board-section-label">Existing experience</CaseSectionLabel>
+        <CaseSectionLabel number="01.01" className="board-section-label">Existing experience</CaseSectionLabel>
         <h2>It behaved like a collection of destinations,<br />not one connected operating cycle.</h2>
         <h3>The information existed. The story between it did not.</h3>
       </div>
@@ -84,14 +84,14 @@ export function BoardCase() {
       <div><p><b>What people asked for</b>Cleaner navigation and fewer visual inconsistencies.</p><p><b>What the audit showed</b>State, ownership and dependencies were split across places.</p><p><b>What I designed for</b>A cycle that could be read, acted on and handed forward.</p></div>
     </section>
 
-    <section className="board-act board-dark board-questions">
-      <CaseSectionLabel number="01.04" dark className="board-section-label">Questions to resolve</CaseSectionLabel>
+    <section className="board-act board-light board-questions">
+      <CaseSectionLabel number="01.04" className="board-section-label">Questions to resolve</CaseSectionLabel>
       <h2>The product asked people<br />to carry four answers in memory.</h2>
       <p>These were the moments where a screen became an operating cost. I used them as the test for every new pattern.</p>
       <div>{[["Progress","Where am I, and what is complete?"],["Ownership","Who approves this? Who owns next?"],["Dependencies","What is blocking me?"],["Next steps","What should I do now?"]].map(([a,b],i)=><article key={a} className={a==="Dependencies"?"active":""}><small>{String(i+1).padStart(2,"0")}</small><h3>{a}</h3><p>{b}</p></article>)}</div>
     </section>
 
-    <section className="board-act board-lime board-rules" id="board-02">
+    <section className="board-act board-light board-rules" id="board-02">
       <div className="board-act-top"><CaseSectionLabel number="02.00" level="chapter" className="board-section-label">Choose the structure</CaseSectionLabel><div><h2>I wrote the rules before I polished the screens.</h2></div></div>
       <p className="board-rules-intro">The useful unit was not a page or component. It was a decision the product needed to make consistently across roles, regions and stages of the cycle.</p>
       <div className="board-rule-model">{productRules.map(([question,rule,effect],i)=><article key={rule}><small>{String(i+1).padStart(2,"0")} / USER QUESTION</small><h3>{question}</h3><div><span>PRODUCT RULE</span><strong>{rule}</strong></div><p>{effect}</p></article>)}</div>
@@ -119,9 +119,9 @@ export function BoardCase() {
       </div>
     </section>
 
-    <section className="board-story-evidence board-story-evidence--dark">
+    <section className="board-story-evidence board-light">
       <div className="board-story-copy">
-        <CaseSectionLabel number="02.03" dark className="board-section-label">The flow in motion</CaseSectionLabel>
+        <CaseSectionLabel number="02.03" className="board-section-label">The flow in motion</CaseSectionLabel>
         <h2>One task moves from role selection to an approved handoff.</h2>
         <p>This is the actual coded prototype, not a presentation animation. The journey starts at role selection, restores the National Finance Lead&apos;s context, opens CAPEX Planning, submits it for review and shows Finance PMO approving the work it unlocks.</p>
       </div>
@@ -132,7 +132,7 @@ export function BoardCase() {
       </figure>
     </section>
 
-    <section className="board-story-evidence board-story-evidence--detail board-cyan">
+    <section className="board-story-evidence board-story-evidence--detail board-light">
       <div className="board-story-copy">
         <CaseSectionLabel number="02.04" className="board-section-label">The decision at task level</CaseSectionLabel>
         <h2>Every task shows what it blocks, not just its own status.</h2>
@@ -149,14 +149,14 @@ export function BoardCase() {
       <div className="board-rejected-grid">{[["Put status inside the existing screens","Faster and cheaper, but it would keep the cycle fragmented. I chose a shared coordination layer instead."],["Use a breadcrumb for orientation","It showed where someone was, but not what their work was holding up. Dependencies mattered more."],["Build a configurable dashboard","It sounded flexible, but made the critical path optional. I protected a reliable default before adding choice."]].map(([t,d],i)=><article key={t}><b>{String(i+1).padStart(2,"0")}</b><h3>{t}</h3><p>{d}</p></article>)}</div>
     </section>
 
-    <section className="board-act board-cyan board-validation">
+    <section className="board-act board-light board-validation">
       <div><CaseSectionLabel number="02.06" className="board-section-label">Validation</CaseSectionLabel><h2>We tested whether people could recover the state of the work — not whether they liked the screens.</h2><p>Eight participants across national, regional and agency roles completed moderated scenarios covering orientation, blocker diagnosis and approval handoffs. The results were directional rather than production analytics, but strong enough to expose where the model still depended on explanation.</p></div><strong>8 people<br />3 roles</strong>
       <div className="board-metrics board-validation-signals">{validationSignals.map(([value,label])=><article key={label}><strong>{value}</strong><span>{label}</span></article>)}</div>
       <div className="board-validation-bottom"><small>Leadership &amp; alignment</small><h3>I used the disagreements to define the system.</h3><p>Finance, Product and Engineering did not always ask for the same thing. I kept a visible decision log: whether each open question was policy, preference or a product rule. That gave us a way to challenge local exceptions without dismissing the people who raised them — and to standardise the critical path when it mattered.</p></div>
     </section>
 
-    <section className="board-act board-dark board-system" id="board-03">
-      <div className="board-act-top"><CaseSectionLabel number="03.00" level="chapter" dark className="board-section-label">One operating model</CaseSectionLabel><div><h2>The result was not a new set of screens.<br />It was one operating model.</h2></div></div>
+    <section className="board-act board-light board-system" id="board-03">
+      <div className="board-act-top"><CaseSectionLabel number="03.00" level="chapter" className="board-section-label">One operating model</CaseSectionLabel><div><h2>The result was not a new set of screens.<br />It was one operating model.</h2></div></div>
       <div className="board-system-outcomes">
         <article><small>Shared lifecycle</small><h3>One state model</h3><p>Every role could read where the work stood and what came next.</p></article>
         <article><small>Explicit coordination</small><h3>Visible handoffs</h3><p>Ownership and dependencies travelled with the task instead of living in email.</p></article>
@@ -166,7 +166,7 @@ export function BoardCase() {
       <div className="board-system-proof">
         <div className="board-system-proof-copy">
           <div className="board-ai-system">
-            <CaseSectionLabel number="03.01" dark className="board-section-label">What stayed</CaseSectionLabel>
+            <CaseSectionLabel number="03.01" className="board-section-label">What stayed</CaseSectionLabel>
             <h3>The rules outlived the individual screens.</h3>
             <p>Once decisions were expressed as roles, states, dependencies and exceptions, they could guide future design and implementation without relying on somebody remembering the context. I later carried that approach into the TAP Mindset system: stable rules make exploration easier to review and safer to ship.</p>
             <p>I used Claude as a design participant to challenge edge cases, generate alternative task states and accelerate the coded prototype. I retained ownership of the operating model, interaction decisions and validation: AI increased the number of hypotheses we could inspect, not the authority behind the final choice.</p>
@@ -188,7 +188,7 @@ export function BoardCase() {
       <div><article><strong>Use the real cycle as the test</strong><p>Role-based walkthroughs used the responsibilities and scenarios people already knew. Hesitation in those moments changed labels, hierarchy and the rules behind them.</p></article><article><strong>Design inside the platform we had</strong><p>Known front-end constraints shaped the release plan. Writing them down stopped the team from rediscovering the same limitations and made the trade-offs explicit.</p></article></div>
     </section>
 
-    <section className="board-act board-lime board-close">
+    <section className="board-act board-light board-close">
       <CaseSectionLabel number="03.04" className="board-section-label">What this was actually about</CaseSectionLabel><b>A planning cycle people could read together.</b><hr />
       <h2>Enterprise software becomes useful when it makes the work between people visible.</h2>
     </section>

@@ -367,15 +367,20 @@ body > .site-footer .footer-location p { margin: 4px 0 0 !important; font-size: 
   .hero-system-wrap { margin-top: 28px !important; }
   .hero-system { font-size: clamp(30px, 8vw, 52px) !important; white-space: normal !important; }
   .project-stack, .earlier-grid { display: grid !important; grid-template-columns: 1fr !important; gap: var(--space-sm) !important; margin: 0 !important; }
-  .project-card { display: grid !important; grid-template-rows: auto auto auto !important; width: 100% !important; min-height: 0 !important; height: auto !important; }
-  .project-card .project-copy { display: contents !important; }
-  .project-editorial-meta { grid-row: 1; display: flex !important; justify-content: space-between; gap: var(--space-xs); padding: var(--space-base) var(--space-sm) 0 !important; }
-  .project-editorial-body { grid-row: 2; padding: var(--space-md) var(--space-sm) !important; min-width: 0; }
+  .project-card { display: flex !important; flex-direction: column !important; width: 100% !important; min-height: 0 !important; height: auto !important; }
+  .aeye-home-preview .project-card .project-copy { display: flex !important; flex-direction: column !important; min-width: 0 !important; }
+  .aeye-home-preview .project-editorial-meta { order: 0; display: flex !important; justify-content: space-between; gap: var(--space-xs); padding: 0 !important; }
+  .aeye-home-preview .project-editorial-body { order: 1; margin: 36px 0 28px !important; padding: 0 !important; min-width: 0; }
   .project-editorial-body h3 { font-size: clamp(30px, 8vw, 52px) !important; line-height: 1 !important; overflow-wrap: anywhere; }
   .project-editorial-body p { max-width: none !important; font-size: var(--type-body-compact) !important; line-height: 1.35 !important; }
-  .project-image { grid-row: 3; position: relative !important; width: 100% !important; height: auto !important; aspect-ratio: 4 / 3 !important; min-height: 0 !important; overflow: hidden; }
+  .project-image { position: relative !important; width: 100% !important; height: auto !important; aspect-ratio: 4 / 3 !important; min-height: 0 !important; overflow: hidden; }
   .project-image img { position: absolute !important; inset: 0 !important; width: 100% !important; height: 100% !important; object-fit: cover !important; }
-  .project-editorial-footer { grid-row: 4; padding: var(--space-sm) !important; }
+  .aeye-home-preview .project-editorial-footer { order: 2; padding: 0 !important; }
+  .aeye-home-preview .project-signals { gap: var(--space-sm) !important; margin-top: var(--space-md) !important; padding-top: var(--space-sm) !important; }
+  .aeye-home-preview .project-signal { grid-template-columns: 14px minmax(0, 1fr) !important; gap: 5px var(--space-2xs) !important; align-items: start !important; }
+  .aeye-home-preview .project-signal__dot { grid-column: 1 !important; grid-row: 1 / span 2 !important; align-self: start !important; }
+  .aeye-home-preview .project-signal__label { grid-column: 2 !important; grid-row: 1 !important; }
+  .aeye-home-preview .project-signal > span:last-child { grid-column: 2 !important; grid-row: 2 !important; min-width: 0 !important; }
   .lab-intro { display: block !important; padding: 56px 0 36px !important; }
   .lab-intro h1 { font-size: clamp(40px, 11vw, 64px) !important; line-height: 1 !important; }
   .lab-list { display: grid !important; grid-template-columns: 1fr !important; gap: 14px !important; }
@@ -1129,5 +1134,36 @@ body:has(.aeye-home-preview, .lab-page, .experience-page, .lab-article, .tap-ds,
   .experience-page .career-log__eyebrow,
   .experience-page .career-log__link {
     font-size: var(--type-label) !important;
+  }
+}
+
+/* The portfolio's card stack is part of the browsing model, including on a
+   phone. Preserve the sticky hand-off while retaining the single-column card
+   layout above, so only the surfaces overlap — never their content. */
+@media (max-width: 800px) {
+  /* `main { overflow: clip }` is useful for most pages, but it creates a
+     clipping ancestor for the work cards and prevents their sticky hand-off.
+     The root had the same clipping rule, so keep the entire home scroll path
+     open rather than only the immediate section. */
+  html:has(.aeye-home-preview),
+  body:has(.aeye-home-preview),
+  main.aeye-home-preview,
+  .aeye-home-preview .work.section {
+    overflow: visible !important;
+  }
+
+  .aeye-home-preview .project-stack {
+    position: relative !important;
+    display: block !important;
+    isolation: isolate;
+  }
+
+  .aeye-home-preview .project-card,
+  .aeye-home-preview .project-card:nth-child(even) {
+    position: sticky !important;
+    top: 76px !important;
+    z-index: calc(10 + var(--stack)) !important;
+    margin-bottom: 0 !important;
+    box-shadow: 0 -12px 28px rgba(30, 30, 25, .12) !important;
   }
 }

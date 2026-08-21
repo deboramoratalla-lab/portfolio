@@ -26,7 +26,7 @@ export default function LabPage() {
       <div className="lab-open-resources-side">
         <span className="lab-open-resources-kicker">DEBORA LABS / PUBLIC REPO</span>
         <p>Reusable workflows for design systems, Storybook, accessibility and agent-ready product work.</p>
-        <ArrowLink variant="secondary" tone="purple" href="https://github.com/deboramoratalla-lab/debora-labs" target="_blank" rel="noreferrer">Open the repository</ArrowLink>
+        <ArrowLink variant="primary" tone="purple" href="https://github.com/deboramoratalla-lab/debora-labs" target="_blank" rel="noreferrer">Open the repository</ArrowLink>
       </div>
     </section>
     <section className="editorial-section lab-index-section" aria-labelledby="lab-index-title">

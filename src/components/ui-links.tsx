@@ -10,10 +10,12 @@ type LinkContentProps = {
   className?: string
 }
 
-type LinkBrand = "email" | "github" | "linkedin" | "storybook"
+type LinkBrand = "app-store" | "email" | "github" | "google-play" | "linkedin" | "storybook"
 
 function linkBrand(href: unknown): LinkBrand | undefined {
   const value = typeof href === "string" ? href.toLowerCase() : ""
+  if (value.includes("apps.apple.com")) return "app-store"
+  if (value.includes("play.google.com")) return "google-play"
   if (value.startsWith("mailto:")) return "email"
   if (value.includes("linkedin.com")) return "linkedin"
   if (value.includes("github.com")) return "github"

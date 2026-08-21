@@ -9,13 +9,19 @@ export const metadata: Metadata = { title: "Experience - Debora Moratalla", desc
 
 export default function ExperiencePage() {
   return <main className="editorial-page experience-page">
-    <section className="lab-grid-hero experience-grid-hero" aria-labelledby="experience-title">
+    <section className="lab-grid-hero" aria-labelledby="experience-title">
+      <h1 className="lab-grid-label" id="experience-title">EXPERIENCE</h1>
       <LabPixelGrid />
-      <div className="experience-grid-hero__content">
-        <span>[ EXPERIENCE / PROFILE ]</span>
-        <h1 id="experience-title">Experience</h1>
-        <p>{professionalProfile.summary}</p>
+    </section>
+    <section className="experience-profile-strip" aria-label="Professional profile">
+      <div className="experience-profile-strip__copy">
+        <span>[ PROFILE ]</span>
+        <h2>{professionalProfile.summary}</h2>
       </div>
+      <aside className="experience-profile-strip__card">
+        <span>CURRENT PRACTICE</span>
+        <p>Enterprise product design, design systems and AI workflows — from system model to shipped interface.</p>
+      </aside>
     </section>
     <section className="editorial-section experience-index" aria-labelledby="experience-index-title">
       <ExperienceMap roles={professionalProfile.roles} />

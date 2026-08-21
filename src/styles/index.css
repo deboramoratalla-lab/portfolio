@@ -2,3 +2,4 @@
    Foundations → reusable components → route-specific legacy migration. */
 @import "./foundations/base.css";
 @import "./components/case-study.css";
+@import "./pages/board.css";

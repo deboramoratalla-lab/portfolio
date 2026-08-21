@@ -9,7 +9,7 @@ import { CaseSectionLabel } from "@/components/case-section-label"
 
 export function TapDsCase({ project }: { project: Project }) {
   return <main className="tap-ds" style={{ "--accent": project.accent } as React.CSSProperties}>
-    <CaseHero className="tap-ds-hero" kickerClassName="tap-ds-context" kicker={<><span>[CASE STUDY / 02]</span><span>&gt; DESIGN SYSTEM</span><i /><span className="tap-ds-context-links">{(project.heroLinks ?? (project.heroLink ? [project.heroLink] : [])).map(([label, href], index) => <ArrowRouteLink variant="secondary" tone={index % 2 ? "green" : "purple"} href={href} target="_blank" rel="noreferrer" key={href}>{label}</ArrowRouteLink>)}</span></>} title={project.title} premise={project.premise} meta={<div className="tap-ds-meta case-hero-meta-unified">
+    <CaseHero className="tap-ds-hero" kickerClassName="tap-ds-context" kicker={<><span>[CASE STUDY / 02]</span><span>&gt; DESIGN SYSTEM</span><i /><span className="tap-ds-context-links">{(project.heroLinks ?? (project.heroLink ? [project.heroLink] : [])).map(([label, href], index) => <ArrowRouteLink variant="primary" tone={index % 2 ? "green" : "purple"} href={href} target="_blank" rel="noreferrer" key={href}>{label}</ArrowRouteLink>)}</span></>} title={project.title} premise={project.premise} meta={<div className="tap-ds-meta case-hero-meta-unified">
         {project.meta?.slice(0,3).map(([label,value]) => <div key={label}><span>{label.replace(":","")}</span><p>{value}</p></div>)}
         <div className="tap-ds-ownership"><span>MY OWNERSHIP</span><p>{project.ownership}</p></div>
       </div>} />

@@ -5,6 +5,7 @@ import { CaseEvidence } from "@/components/case-evidence"
 import { CaseMoreWorks } from "@/components/case-more-works"
 import { CaseStudyIndex } from "@/components/case-study-index"
 import { CaseSectionLabel } from "@/components/case-section-label"
+import { ArrowRouteLink } from "@/components/ui-links"
 
 const hierarchy = [
   ["01", "Province", "Start with the geography the team is responsible for."],
@@ -22,7 +23,7 @@ const widgetActions = [
 
 export function CiveoCase() {
   return <main className="civeo-page">
-    <CaseHero className="civeo-hero" kickerClassName="civeo-hero-kicker" kicker={<><span>[CASE STUDY / 05]</span><span>&gt; MUNICIPAL OPERATIONS</span><i /><Link href="/civeo/index.html" target="_blank">Open prototype ↗</Link></>} title="Civeo /" premiseClassName="civeo-hero-premise" premise="I turned an Excel-led service process into one readable operating surface for internal teams working with municipal diputaciones." meta={<dl className="civeo-hero-meta case-hero-meta-unified">
+    <CaseHero className="civeo-hero" kickerClassName="civeo-hero-kicker" kicker={<><span>[CASE STUDY / 05]</span><span>&gt; MUNICIPAL OPERATIONS</span><i /><ArrowRouteLink variant="primary" tone="purple" href="/civeo/index.html" target="_blank" rel="noreferrer">Open prototype</ArrowRouteLink></>} title="Civeo /" premiseClassName="civeo-hero-premise" premise="I turned an Excel-led service process into one readable operating surface for internal teams working with municipal diputaciones." meta={<dl className="civeo-hero-meta case-hero-meta-unified">
         <div><dt>Role</dt><dd>POC Product Designer</dd></div>
         <div><dt>Users</dt><dd>15 internal workers as users and testers</dd></div>
         <div><dt>Stack</dt><dd>HTML · CSS · JavaScript · Leaflet · Open-Meteo</dd></div>

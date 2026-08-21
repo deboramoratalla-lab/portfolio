@@ -34,6 +34,24 @@ export const portfolioEvidence: PortfolioEvidence[] = [
     ],
   },
   {
+    id: "board-coded-prototype",
+    label: "Board · coded workflow prototype",
+    href: "/projects/saas#board-02",
+    claims: [
+      "The Board case includes a coded, interactive prototype of the role-based workflow: role selection, home, task detail, submission, review and approval.",
+      "Claude was used as a design participant to challenge edge cases and accelerate the prototype; Debora retained ownership of the operating model, interaction decisions and validation.",
+    ],
+  },
+  {
+    id: "civeo-poc",
+    label: "Civeo · coded municipal operations POC",
+    href: "/projects/civeo",
+    claims: [
+      "Civeo turned an Excel-led municipal operations process into a working POC with four-level navigation, editable widgets, live and offline states, and a contextual assistant.",
+      "Debora built the prototype directly in HTML, CSS and JavaScript, with Leaflet and Open-Meteo, and used it with 15 internal workers. It was built as a working surface rather than a static Figma handoff.",
+    ],
+  },
+  {
     id: "tap-ds",
     label: "TAP Design System",
     href: "/projects/tap-mindset-ds",
