@@ -2,6 +2,7 @@
 
 import { useRef } from "react"
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react"
+import { MotionSafeVideo } from "@/components/motion-safe-video"
 
 export function HeroIntro() {
   const heroRef = useRef<HTMLElement>(null)
@@ -21,7 +22,7 @@ export function HeroIntro() {
       </div>
       <motion.p initial={reducedMotion ? false : { opacity: 0, filter: "blur(10px)" }} animate={{ opacity: 1, filter: "blur(0px)" }} transition={{ ...enter, duration: reducedMotion ? 0 : 1.05, delay: reducedMotion ? 0 : 2.88 }}>I work where products get complicated: tangled workflows, growing systems and AI that needs clear boundaries. I turn that complexity into decisions teams can build on.</motion.p>
     </div>
-    <motion.div className="hero-reel" style={{ y: reelY }} initial={reducedMotion ? false : { opacity: 0, x: 150 }} animate={{ opacity: 1, x: 0 }} transition={{ ...enter, duration: reducedMotion ? 0 : 1.08, delay: reducedMotion ? 0 : 2.78 }}><video src="/media/ZOeDI7fC0g8dMMaYluHtSKEnHe0.mp4" autoPlay muted loop playsInline /></motion.div>
+    <motion.div className="hero-reel" style={{ y: reelY }} initial={reducedMotion ? false : { opacity: 0, x: 150 }} animate={{ opacity: 1, x: 0 }} transition={{ ...enter, duration: reducedMotion ? 0 : 1.08, delay: reducedMotion ? 0 : 2.78 }}><MotionSafeVideo src="/media/ZOeDI7fC0g8dMMaYluHtSKEnHe0.mp4" /></motion.div>
     <motion.div className="hero-ticker" initial={reducedMotion ? false : { scaleX: 0, opacity: 0 }} animate={{ scaleX: 1, opacity: 1 }} transition={{ ...enter, duration: reducedMotion ? 0 : .82, delay: reducedMotion ? 0 : 3.02 }}>
       <motion.span initial={reducedMotion ? false : { opacity: 0, x: 90 }} animate={{ opacity: 1, x: 0 }} transition={{ ...enter, duration: reducedMotion ? 0 : .8, delay: reducedMotion ? 0 : 3.12 }}>AI Workflows</motion.span>
       <motion.span initial={reducedMotion ? false : { opacity: 0, x: 150 }} animate={{ opacity: 1, x: 0 }} transition={{ ...enter, duration: reducedMotion ? 0 : .9, delay: reducedMotion ? 0 : 3.22 }}>Design Systems</motion.span>

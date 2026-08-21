@@ -8,6 +8,7 @@ import { TapProductCase } from "@/components/tap-product-case"
 import { FluxyCase } from "@/components/fluxy-case"
 import { BoardCase } from "@/components/board-case"
 import { CiveoCase } from "@/components/civeo-case"
+import { MotionSafeVideo } from "@/components/motion-safe-video"
 
 function RoleArchitectureMap() {
   const roles = [
@@ -57,7 +58,7 @@ export function ProjectPage({ project }: { project: Project }) {
         {section.roleMap && <RoleArchitectureMap />}
         {section.metrics && <div className="metrics">{section.metrics.map(([value, label]) => <div key={label}><strong>{value}</strong><span>{label}</span></div>)}</div>}
         {section.media && <div className="case-media"><Image src={section.media} alt={`${section.title} visual evidence`} fill sizes="(max-width: 800px) 100vw, 80vw" /></div>}
-        {section.video && <video className="case-video" src={section.video} autoPlay muted loop playsInline />}
+        {section.video && <MotionSafeVideo className="case-video" src={section.video} />}
         {section.embed && <iframe className="case-embed" src={section.embed} title={section.title} />}
         {section.caption && <p className="case-caption">{section.caption}</p>}
         {section.statement && <p className="section-statement">{section.statement}</p>}
