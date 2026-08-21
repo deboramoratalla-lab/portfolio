@@ -20,7 +20,7 @@ export function HomePreview() {
     <section className="explorations section" id="lab"><MotionSectionTitle title="Lab" number="03" statement="Field notes, coded experiments and useful tools I’m building in public."/><WorkbenchPreview entries={labEntries}/></section>
     <section className="earlier section"><MotionSectionTitle title="Earlier work" number="04" statement="Earlier work, before the pattern became obvious."/><EarlierGrid items={[
       ["AccessIA","Accessibility · AI concept","https://medium.com/design-bootcamp/accessia-the-future-of-ux-accessibility-045d83fd1d56","/media/accessia-plugin-cover.png"],
-      ["Moofi","Product design · Fintech","/projects/moofi","/media/t9F0HSYsx4KaPvb297n67QHfMFM.png"],
+      ["Moofi","Product design · Fintech","https://medium.com/@debora.moratalla/navigating-the-future-of-e-commerce-in-2030-a-design-sprint-journey-3a360d9287d8","/media/t9F0HSYsx4KaPvb297n67QHfMFM.png"],
       ["Mi Yo Digital","Service design · Digital identity","https://medium.com/@debora.moratalla/miyodigital-promoting-a-safer-digital-identity-fea48d136f52","/media/Z1eHxuo4nM04jAwcN71PPFZs5Q.png"],
       ["Nomaia","Product strategy · Wellbeing","https://medium.com/@debora.moratalla/redefining-digital-workers-wellbeing-through-slow-living-with-lean-ux-01f97640bde6","/media/6mDeNp7oYgeyBEgSpGaidPGOtSc.png"],
     ].map(([name,label,href,image]) => ({name,label,href,image}))}/></section>
