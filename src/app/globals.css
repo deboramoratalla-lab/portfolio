@@ -1,12 +1,5 @@
 @import "tailwindcss";
-
-/* Final home hierarchy pass: editorial statements stay readable without pushing work below the fold. */
-@media (min-width:801px){
-  .aeye-home-preview .section-title{margin-bottom:46px}
-  .aeye-home-preview .section-title>h2{max-width:760px;min-height:0;margin-top:22px;font-size:clamp(40px,4.35vw,64px);line-height:1.04}
-  .aeye-home-preview .work.section{padding-top:72px}
-  .aeye-home-preview .work .section-title{margin-bottom:38px}
-}
+@import "../styles/pages/home.css";
 
 /* One header system across every case study: the index is part of the hero,
    not a project-specific composition. The doubled class deliberately wins
@@ -944,20 +937,6 @@ main { overflow:clip; }.section{padding:120px var(--space-md);max-width:1480px;m
   .built-card { min-height:190px; padding:var(--space-base); }
   .ai-criteria__heading { grid-template-columns:1fr; gap:14px; }
   .ai-criteria__heading h2 { max-width:22ch; }
-}
-
-/* Final home hierarchy override. */
-@media (min-width: 801px) {
-  .aeye-home-preview .section-title { margin-bottom: 42px !important; }
-  .aeye-home-preview .section-title > h2 { max-width: 760px !important; min-height: 0 !important; margin-top: 18px !important; font-size: clamp(40px, 4.2vw, 64px) !important; line-height: 1.04 !important; }
-  .aeye-home-preview .work.section { padding-top: var(--space-2xl) !important; }
-  .aeye-home-preview .work .section-title { margin-bottom: 34px !important; }
-}
-@media (max-width: 800px) {
-  .aeye-home-preview .section-title { margin-bottom: 30px !important; }
-  .aeye-home-preview .section-title > h2 { max-width: 100% !important; min-height: 0 !important; margin-top: var(--space-sm) !important; font-size: clamp(34px, 9vw, 50px) !important; line-height: 1.06 !important; }
-  .aeye-home-preview .work.section { padding-top: var(--space-xl) !important; }
-  .aeye-home-preview .work .section-title { margin-bottom: 28px !important; }
 }
 
 /* Home hierarchy: keep the editorial statement concise so selected work arrives sooner. */

@@ -1,0 +1,13 @@
+/* Home-specific hierarchy. Loaded from globals.css to retain cascade order. */
+@media (min-width: 801px) {
+  .aeye-home-preview .section-title { margin-bottom: 46px; }
+  .aeye-home-preview .section-title > h2 {
+    max-width: 760px;
+    min-height: 0;
+    margin-top: 22px;
+    font-size: clamp(40px, 4.35vw, 64px);
+    line-height: 1.04;
+  }
+  .aeye-home-preview .work.section { padding-top: 72px; }
+  .aeye-home-preview .work .section-title { margin-bottom: 38px; }
+}
