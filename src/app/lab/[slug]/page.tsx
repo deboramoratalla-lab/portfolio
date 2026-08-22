@@ -160,51 +160,6 @@ function ArticleActions({ slug }: { slug: string }) {
   </>
 }
 
-const jobRadarSteps = [
-  {
-    number: "01",
-    label: "Ask once",
-    title: "The page asks one small route in the portfolio for fresh roles.",
-    body: "When you open the demo, your browser calls /api/job-radar. Think of it as a small reception desk: the page does not talk directly to a job board.",
-  },
-  {
-    number: "02",
-    label: "Read the public feed",
-    title: "That route reads a public, Europe-remote design feed from Jobicy.",
-    body: "It asks for up to 100 public listings already tagged as remote, European and design-related. No account, scraping login or private data is involved.",
-  },
-  {
-    number: "03",
-    label: "Keep the useful shape",
-    title: "A short set of rules keeps product-design roles and adds a sector hint.",
-    body: "The code checks the role title first: product designer, UX designer, design engineer and similar. It then looks for plain words such as AI, health, media or developer in the public listing. This is pattern matching, not an AI verdict.",
-  },
-  {
-    number: "04",
-    label: "Let people decide",
-    title: "The buttons simply filter the roles already on the page.",
-    body: "Choosing Health or AI & Devtools does not make another opaque recommendation. It shows or hides the sector hints already calculated, then sends you to the original listing when you want to investigate.",
-  },
-] as const
-
-function JobSignalsExplainer() {
-  return <section className="job-radar-explainer" aria-labelledby="job-radar-explainer-title">
-    <header>
-      <span>[ How it works / no jargon ]</span>
-      <div><h2 id="job-radar-explainer-title">From an open feed to a small list worth reading.</h2><p>This is the whole mechanism. Four predictable steps, each visible in the source code and easy to change.</p></div>
-    </header>
-    <div className="job-radar-flow" aria-label="How the opportunity radar works">
-      {jobRadarSteps.map((step, index) => <article key={step.number}>
-        <span>{step.number} / {step.label}</span>
-        <h3>{step.title}</h3>
-        <p>{step.body}</p>
-        {index < jobRadarSteps.length - 1 && <b aria-hidden="true">↓</b>}
-      </article>)}
-    </div>
-    <aside><strong>One practical detail:</strong> the public feed is cached for one hour. That keeps the demo responsive and respectful of the source, but means “live” here means recently refreshed — not a permanent stream of instant changes.</aside>
-  </section>
-}
-
 const designSystemEvidence = [
   {
     number: "01",
@@ -424,7 +379,6 @@ export default async function LabArticle({ params }: { params: Promise<{ slug: s
       {entry.slug === "figma-plugin-component-apis" && <FigmaPluginEvidence />}
       {entry.slug === "smallest-useful-accessibility-pipeline" && <AccessibilityEvidence />}
       {entry.slug === "metrics-are-not-decisions" && <InfrastructureDashboardDemo />}
-      {entry.slug === "signals-not-search" && <JobSignalsExplainer />}
       {entry.slug === "signals-not-search" && <JobSignalsRadar />}
       <ReusableResources slug={entry.slug} />
       <footer className="lab-article-close">
