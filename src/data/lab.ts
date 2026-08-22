@@ -10,6 +10,15 @@ export type LabEntry = {
 
 export const labEntries: LabEntry[] = [
   {
+    slug: "signals-not-search",
+    type: "Experiment",
+    title: "Signals, not search: an open radar for remote product-design roles in Europe.",
+    summary: "A live experiment in finding relevant job opportunities without starting from a company watchlist. Public listings, filtered by role shape, location and sector signal.",
+    date: "August 2026",
+    readingTime: "4 min read",
+    topics: ["Opportunity discovery", "Data signals", "Product design"],
+  },
+  {
     slug: "metrics-are-not-decisions",
     type: "Experiment",
     title: "Metrics are not decisions: designing an AI infrastructure dashboard.",
