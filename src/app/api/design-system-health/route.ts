@@ -10,12 +10,12 @@ async function github(path: string) {
 
 async function buttonConsumers() {
   const tree = await github("/git/trees/main?recursive=1")
-  const files = tree.tree.filter((item: { type: string; path: string }) => item.type === "blob" && /^src\/(?!components\/Button\/).+\.(ts|tsx)$/.test(item.path) && !/\.(stories|test|spec)\.(ts|tsx)$/.test(item.path))
+  const files = tree.tree.filter((item: { type: string; path: string }) => item.type === "blob" && /^src\/(?!components\/Button\/).+\.(ts|tsx)$/.test(item.path) && !/\.(stories|test|spec)\.(ts|tsx)$/.test(item.path) && item.path !== "src/components/index.ts")
   const sources = await Promise.all(files.map(async (item: { path: string }) => {
     const response = await fetch(`https://raw.githubusercontent.com/${repo}/main/${item.path}`, { next: { revalidate: 3600 } })
     return response.ok ? response.text() : ""
   }))
-  return sources.filter(source => /from\s+["'](?:@\/components\/Button|\.\.?\/.*\/Button)["']/.test(source)).length
+  return sources.filter(source => /from\s+["'](?:\.\.?\/)*Button["']/.test(source)).length
 }
 
 export async function GET() {
