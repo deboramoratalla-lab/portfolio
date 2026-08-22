@@ -6,7 +6,6 @@ import { CaseSectionLabel } from "@/components/case-section-label"
 import { ArrowLink, ArrowRouteLink } from "@/components/ui-links"
 import { OpenPortfolioAgentLink } from "@/components/open-portfolio-agent-link"
 import { InfrastructureDashboardDemo } from "@/components/infrastructure-dashboard-demo"
-import { JobSignalsRadar } from "@/components/job-signals-radar"
 import { getLabEntry, labEntries } from "@/data/lab"
 
 type ArticleSection = { title: string; paragraphs: string[]; points?: string[] }
@@ -45,17 +44,6 @@ const reusableResources: Record<string, ReusableResource[]> = {
 }
 
 const articles: Record<string, ArticleContent> = {
-  "signals-not-search": {
-    lead: "Most job search interfaces begin with a company, a keyword and a long list. I wanted to test a more useful starting point: what makes a role worth inspecting before I know the company?",
-    quote: "A job board can return results. A useful radar should make the reason to pay attention visible.",
-    sections: [
-      { title: "Treat the brief as a filter, not a watchlist", paragraphs: ["The constraints are deliberately small: product-design roles, remote, and available in Europe. The radar then looks for sector language across AI and developer tools, digital culture and health.", "That makes the output open rather than dependent on a hand-curated set of employers. A role can surface because it matches the work someone wants to do, not because its company was already familiar."] },
-      { title: "Keep the source close to the signal", paragraphs: ["Every result keeps its original listing, location, employment type and publication date. The interface is a reading layer over a public feed, not a claim that the role is still open or that the classification is perfect.", "The small sector label is also intentionally inspectable. It is a clue derived from the public listing, not a hidden recommendation score."] },
-      { title: "Design for a short decision", paragraphs: ["The first decision is not whether to apply. It is whether a role deserves ten more minutes. Company, role, location, freshness and a sector signal are enough to make that decision without opening twelve tabs.", "This is why the interaction remains simple: choose a lens, scan current roles and continue to the original source when one looks promising."] },
-      { title: "What comes next", paragraphs: ["A live feed can show what is available now. It cannot honestly say what changed since a previous visit unless it stores a snapshot. The next iteration would add a small scheduled history, so new, removed and changed roles become visible without pretending that the browser remembers them.", "That is the more interesting observability question here: not how many listings exist, but which changes are worth someone’s attention."] },
-    ],
-    close: "The point is not to automate a career decision. It is to turn an overwhelming open feed into a smaller, inspectable set of reasons to look closer.",
-  },
   "metrics-are-not-decisions": {
     lead: "This is an independent experiment using synthetic data. I wanted to test one question: how does an infrastructure dashboard turn a changing metric into a decision someone can make?",
     quote: "A dashboard earns its space when it connects a changing signal to the next action.",
@@ -134,10 +122,6 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 }
 
 function ArticleActions({ slug }: { slug: string }) {
-  if (slug === "signals-not-search") return <>
-    <ArrowRouteLink variant="secondary" tone="purple" href="#job-signals-radar">Open the live radar</ArrowRouteLink>
-    <ArrowLink variant="secondary" tone="green" href={`${portfolioRepo}/blob/main/src/app/api/job-radar/route.ts`} target="_blank" rel="noreferrer">Inspect the source</ArrowLink>
-  </>
   if (slug === "metrics-are-not-decisions") return <>
     <ArrowRouteLink variant="secondary" tone="purple" href="#infrastructure-demo">Open the demo</ArrowRouteLink>
     <ArrowLink variant="secondary" tone="green" href={`${portfolioRepo}/blob/main/src/components/infrastructure-dashboard-demo.tsx`} target="_blank" rel="noreferrer">Inspect the source</ArrowLink>
@@ -379,7 +363,6 @@ export default async function LabArticle({ params }: { params: Promise<{ slug: s
       {entry.slug === "figma-plugin-component-apis" && <FigmaPluginEvidence />}
       {entry.slug === "smallest-useful-accessibility-pipeline" && <AccessibilityEvidence />}
       {entry.slug === "metrics-are-not-decisions" && <InfrastructureDashboardDemo />}
-      {entry.slug === "signals-not-search" && <JobSignalsRadar />}
       <ReusableResources slug={entry.slug} />
       <footer className="lab-article-close">
         <span>[ What I’m taking forward ]</span>

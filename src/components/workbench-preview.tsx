@@ -3,7 +3,6 @@ import Image from "next/image"
 import { ArrowUpRight } from "@/components/arrow-up-right"
 import { ArrowRouteLink } from "@/components/ui-links"
 import { InfrastructureDashboardCover } from "@/components/infrastructure-dashboard-demo"
-import { JobSignalsCover } from "@/components/job-signals-radar"
 import type { LabEntry } from "@/data/lab"
 
 const HOME_LAB_LIMIT = 5
@@ -31,8 +30,6 @@ export function WorkbenchPreview({ entries }: { entries: LabEntry[] }) {
         <figure className="home-lab-feature-media">
           {featuredEntry.slug === "metrics-are-not-decisions"
             ? <InfrastructureDashboardCover />
-            : featuredEntry.slug === "signals-not-search"
-              ? <JobSignalsCover />
             : <Image src={LAB_COVERS[featuredEntry.slug].src} alt={LAB_COVERS[featuredEntry.slug].alt} fill sizes="(max-width: 800px) 100vw, 45vw" />}
         </figure>
       </Link>
