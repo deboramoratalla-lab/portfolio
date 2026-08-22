@@ -8,6 +8,12 @@ async function github(path: string) {
   return response.json()
 }
 
+async function storybookIndex() {
+  const response = await fetch("https://deboramoratalla-lab.github.io/design-system-showcase/index.json", { next: { revalidate: 3600 } })
+  if (!response.ok) throw new Error(`Storybook returned ${response.status}`)
+  return response.json() as Promise<{ entries?: Record<string, { type: string; title: string }> }>
+}
+
 function escapePattern(value: string) { return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") }
 
 async function componentConsumers(component: string) {
@@ -24,7 +30,7 @@ async function componentConsumers(component: string) {
 export async function GET(request: Request) {
   try {
     const component = new URL(request.url).searchParams.get("component") || "Button"
-    const [repository, workflowData, issues, components, componentFiles] = await Promise.all([github(""), github("/actions/runs?per_page=1"), github("/issues?state=open&per_page=100"), github("/contents/src/components"), componentConsumers(component)])
+    const [repository, workflowData, issues, components, componentFiles, storybook] = await Promise.all([github(""), github("/actions/runs?per_page=1"), github("/issues?state=open&per_page=100"), github("/contents/src/components"), componentConsumers(component), storybookIndex()])
     const latest = workflowData.workflow_runs?.[0]
     return NextResponse.json({
       updatedAt: new Date().toISOString(),
@@ -35,6 +41,11 @@ export async function GET(request: Request) {
       componentNames: components.filter((item: { type: string }) => item.type === "dir").map((item: { name: string }) => item.name),
       component,
       componentFiles,
+      storybook: {
+        stories: Object.values(storybook.entries ?? {}).filter(entry => entry.type === "story").length,
+        docs: Object.values(storybook.entries ?? {}).filter(entry => entry.type === "docs").length,
+        componentStories: Object.values(storybook.entries ?? {}).filter(entry => entry.type === "story" && entry.title.split("/").includes(component)).length,
+      },
     })
   } catch {
     return NextResponse.json({ unavailable: true }, { status: 200 })
