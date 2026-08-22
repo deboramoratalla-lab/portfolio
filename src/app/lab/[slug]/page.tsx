@@ -171,13 +171,13 @@ const jobRadarSteps = [
     number: "02",
     label: "Read the public feed",
     title: "That route reads a public, Europe-remote design feed from Jobicy.",
-    body: "It asks for up to 100 public listings already tagged as remote, European and design-related. No account, scraping login or private data is involved.",
+    body: "It reads Jobicy for broad discovery, then checks public boards from Greenhouse, Lever and Ashby. No account, scraping login or private data is involved.",
   },
   {
     number: "03",
     label: "Keep the useful shape",
     title: "A short set of rules keeps product-design roles and adds a sector hint.",
-    body: "The code checks the role title first: product designer, UX designer, design engineer and similar. It then looks for plain words such as AI, health, media or developer in the public listing. This is pattern matching, not an AI verdict.",
+    body: "The code checks the role title first: product designer, UX designer, design engineer and similar. It also insists that the source marks it as European and remote, then looks for plain words such as AI, health, media or developer. This is pattern matching, not an AI verdict.",
   },
   {
     number: "04",

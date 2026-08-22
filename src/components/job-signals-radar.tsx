@@ -12,6 +12,7 @@ type Job = {
   industries: string[]
   publishedAt: string
   href: string
+  source: "Jobicy" | "Greenhouse" | "Lever" | "Ashby"
   sectors: Exclude<Sector, "All">[]
 }
 
@@ -65,10 +66,10 @@ export function JobSignalsRadar() {
         {!unavailable && updatedAt && visibleJobs.length === 0 && <p className="job-radar-empty">No current product-design signals match this sector. Try the broader view.</p>}
         {visibleJobs.slice(0, 12).map(job => <article className="job-radar-result" key={job.id}>
           <div><span>{job.sectors.length ? job.sectors.join(" · ") : "Product design"}</span><h3>{job.title}</h3><p>{job.company} <b>·</b> {job.location} <b>·</b> {job.employment || "Remote"}</p></div>
-          <div className="job-radar-result-side"><small>{relativeDate(job.publishedAt)}</small><a href={job.href} target="_blank" rel="noreferrer">Open role ↗</a></div>
+          <div className="job-radar-result-side"><small>{relativeDate(job.publishedAt)} · {job.source}</small><a href={job.href} target="_blank" rel="noreferrer">Open role ↗</a></div>
         </article>)}
       </div>
-      <footer>Public listings supplied by <a href="https://jobicy.com/" target="_blank" rel="noreferrer">Jobicy</a>. The feed is refreshed hourly; availability is confirmed on the original listing.</footer>
+      <footer>Public listings from <a href="https://jobicy.com/" target="_blank" rel="noreferrer">Jobicy</a>, Greenhouse, Lever and Ashby. <a href="https://www.linkedin.com/jobs/search/?f_WT=2&geoId=100506914&keywords=product%20designer" target="_blank" rel="noreferrer">Continue this search on LinkedIn ↗</a> The radar refreshes hourly; availability is confirmed on the original listing.</footer>
     </div>
   </section>
 }
