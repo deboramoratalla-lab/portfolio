@@ -1,0 +1,10 @@
+groups:
+  - name: gpu-job-triage
+    rules:
+      - alert: WorkerProgressDiverging
+        expr: max(training_worker_progress) - min(training_worker_progress) > 0.15
+        for: 15s
+        labels:
+          severity: review
+        annotations:
+          summary: One worker is falling materially behind the job.

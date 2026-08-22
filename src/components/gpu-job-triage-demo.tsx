@@ -1,0 +1,108 @@
+"use client"
+
+import { useState } from "react"
+
+type ReplayState = "baseline" | "drift" | "blocked"
+
+const states: Record<ReplayState, {
+  label: string
+  verdict: string
+  description: string
+  action: string
+  actionNote: string
+  eta: string
+  cost: string
+  risk: string
+  workers: { name: string; progress: number; eta: string; state: string }[]
+}> = {
+  baseline: {
+    label: "On track",
+    verdict: "Keep observing.",
+    description: "All workers are progressing within the expected range. There is no intervention to make yet.",
+    action: "No action needed",
+    actionNote: "Next review in 10 minutes",
+    eta: "43 min",
+    cost: "€0",
+    risk: "No delay",
+    workers: [
+      { name: "worker-01", progress: 72, eta: "43 min", state: "in range" },
+      { name: "worker-02", progress: 71, eta: "44 min", state: "in range" },
+      { name: "worker-03", progress: 73, eta: "42 min", state: "in range" },
+      { name: "worker-04", progress: 70, eta: "45 min", state: "in range" },
+    ],
+  },
+  drift: {
+    label: "Progress diverging",
+    verdict: "Inspect worker-04.",
+    description: "One worker is falling behind the group. The job can still complete, but the gap is widening.",
+    action: "Review worker logs",
+    actionNote: "Check input wait and memory pressure",
+    eta: "58 min",
+    cost: "€14 at risk",
+    risk: "+15 min",
+    workers: [
+      { name: "worker-01", progress: 76, eta: "42 min", state: "in range" },
+      { name: "worker-02", progress: 74, eta: "44 min", state: "in range" },
+      { name: "worker-03", progress: 75, eta: "43 min", state: "in range" },
+      { name: "worker-04", progress: 54, eta: "58 min", state: "lagging" },
+    ],
+  },
+  blocked: {
+    label: "Worker blocked",
+    verdict: "Restart worker-04.",
+    description: "The lag has become material. Restarting the blocked worker is the reversible action with the lowest expected cost.",
+    action: "Prepare a worker restart",
+    actionNote: "Confirm checkpoint availability first",
+    eta: "1h 18m",
+    cost: "€39 at risk",
+    risk: "+35 min",
+    workers: [
+      { name: "worker-01", progress: 80, eta: "40 min", state: "in range" },
+      { name: "worker-02", progress: 78, eta: "42 min", state: "in range" },
+      { name: "worker-03", progress: 79, eta: "41 min", state: "in range" },
+      { name: "worker-04", progress: 29, eta: "1h 18m", state: "blocked" },
+    ],
+  },
+}
+
+export function GpuJobTriageDemo() {
+  const [replay, setReplay] = useState<ReplayState>("drift")
+  const state = states[replay]
+
+  return <section className="gpu-triage" id="gpu-job-triage" aria-labelledby="gpu-job-triage-title">
+    <header className="gpu-triage-intro">
+      <div>
+        <span>Local product prototype</span>
+        <h2 id="gpu-job-triage-title">A slow job should lead somewhere.</h2>
+      </div>
+      <p>Replay a single incident. The interface turns worker-level signals into one next step. The accompanying Docker stack uses real Grafana and Prometheus.</p>
+    </header>
+    <div className="gpu-triage-console">
+      <header className="gpu-triage-bar"><span>Training run / vision-batch-07</span><small>Replay mode: local simulation</small></header>
+      <div className="gpu-triage-controls" role="group" aria-label="Incident replay state">
+        {(Object.keys(states) as ReplayState[]).map(key => <button type="button" key={key} onClick={() => setReplay(key)} className={replay === key ? "is-active" : ""}>{key === "baseline" ? "On track" : key === "drift" ? "Drift" : "Blocked"}</button>)}
+      </div>
+      <div className="gpu-triage-verdict">
+        <div><span className={`gpu-triage-status is-${replay}`}>{state.label}</span><h3>{state.verdict}</h3><p>{state.description}</p></div>
+        <aside><span>Recommended action</span><strong>{state.action}</strong><small>{state.actionNote}</small></aside>
+      </div>
+      <div className="gpu-triage-main">
+        <section className="gpu-triage-workers" aria-label="Worker progress">
+          <header><span>Worker progress</span><small>Current job state</small></header>
+          <div className="gpu-worker-list">{state.workers.map(worker => <div className={`gpu-worker is-${worker.state.replace(" ", "-")}`} key={worker.name}>
+            <div className="gpu-worker-name"><strong>{worker.name}</strong><span>{worker.state}</span></div>
+            <div className="gpu-worker-track" aria-label={`${worker.name}: ${worker.progress}% complete`}><i style={{ width: `${worker.progress}%` }} /></div>
+            <b>{worker.progress}%</b><small>{worker.eta}</small>
+          </div>)}</div>
+        </section>
+        <section className="gpu-triage-reading" aria-label="Decision readings">
+          <div><span>Expected completion</span><strong>{state.eta}</strong></div>
+          <div><span>Delay</span><strong>{state.risk}</strong></div>
+          <div><span>Cost at risk</span><strong>{state.cost}</strong></div>
+          <p>Readings are generated by the local workload simulator when the Docker stack runs. This embedded replay keeps the scenario explorable in the portfolio.</p>
+        </section>
+      </div>
+      <footer><span>Signals: worker progress, ETA variance, container pressure</span><span>Technical layer: Prometheus + Grafana</span></footer>
+    </div>
+  </section>
+}

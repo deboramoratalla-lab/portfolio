@@ -1,0 +1,47 @@
+{
+  "annotations": { "list": [] },
+  "editable": true,
+  "panels": [
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": { "defaults": { "unit": "percentunit" }, "overrides": [] },
+      "gridPos": { "h": 9, "w": 16, "x": 0, "y": 0 },
+      "id": 1,
+      "targets": [{ "expr": "training_worker_progress", "legendFormat": "{{worker}}", "refId": "A" }],
+      "title": "Worker progress",
+      "type": "timeseries"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": { "defaults": { "unit": "s" }, "overrides": [] },
+      "gridPos": { "h": 9, "w": 8, "x": 16, "y": 0 },
+      "id": 2,
+      "targets": [{ "expr": "max(training_worker_eta_seconds) - min(training_worker_eta_seconds)", "refId": "A" }],
+      "title": "ETA variance",
+      "type": "stat"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": { "defaults": { "unit": "percentunit" }, "overrides": [] },
+      "gridPos": { "h": 9, "w": 12, "x": 0, "y": 9 },
+      "id": 3,
+      "targets": [{ "expr": "training_worker_pressure", "legendFormat": "{{worker}}", "refId": "A" }],
+      "title": "Container pressure",
+      "type": "timeseries"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": { "defaults": { "unit": "currencyEUR" }, "overrides": [] },
+      "gridPos": { "h": 9, "w": 12, "x": 12, "y": 9 },
+      "id": 4,
+      "targets": [{ "expr": "training_delay_cost_eur", "refId": "A" }],
+      "title": "Estimated delay cost",
+      "type": "stat"
+    }
+  ],
+  "schemaVersion": 41,
+  "tags": ["observability", "prototype"],
+  "title": "GPU job triage",
+  "uid": "gpu-job-triage",
+  "version": 1
+}

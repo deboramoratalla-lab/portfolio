@@ -6,6 +6,7 @@ import { CaseSectionLabel } from "@/components/case-section-label"
 import { ArrowLink, ArrowRouteLink } from "@/components/ui-links"
 import { OpenPortfolioAgentLink } from "@/components/open-portfolio-agent-link"
 import { DesignSystemHealthDemo } from "@/components/design-system-health-demo"
+import { GpuJobTriageDemo } from "@/components/gpu-job-triage-demo"
 import { getLabEntry, labEntries } from "@/data/lab"
 
 type ArticleSection = { title: string; paragraphs: string[]; points?: string[] }
@@ -44,6 +45,17 @@ const reusableResources: Record<string, ReusableResource[]> = {
 }
 
 const articles: Record<string, ArticleContent> = {
+  "gpu-job-triage": {
+    lead: "This is a local product prototype for a familiar infrastructure moment: a distributed AI job is running, one worker falls behind and the person on call needs to decide whether to wait or intervene.",
+    quote: "Observability is useful when it shortens the distance between a changing signal and a responsible action.",
+    sections: [
+      { title: "Start with the person who has to decide", paragraphs: ["Infrastructure dashboards can expose every available reading while leaving the important question unanswered. In this experiment, the job is not treated as a wall of charts. It is a situation with a delay, a likely cause and a decision that has consequences.", "The interface begins with the job's state and the recommended next step. Supporting readings explain why that recommendation exists, rather than asking someone to assemble the story across several panels."] },
+      { title: "Replay one incident, not an entire cloud", paragraphs: ["The prototype keeps the scenario deliberately small: four workers process the same workload and one becomes a straggler. Progress diverges, the expected completion time changes and the time at risk becomes visible.", "The controls replay baseline, drift and blocked states. They are a local incident simulation designed to test the explanation and interaction, not a claim about a live customer workload."] },
+      { title: "Use real tooling behind the concept", paragraphs: ["The companion stack is Docker-ready. Prometheus scrapes a small metrics service and Grafana provisions a dashboard and alert rule from the repository. The service produces the same worker-level signals that the product prototype translates into a decision.", "Grafana is intentionally not the hero. It is the inspectable technical layer behind the experiment: useful for verifying a query, following a signal or debugging an alert."] },
+      { title: "Make the boundary visible", paragraphs: ["The stack can measure real container activity when it runs locally. The AI workload itself is simulated because this Mac is not a GPU cluster. That boundary stays visible in the copy and source code.", "If the same structure ran beside a real workload, the simulated worker readings could be replaced by the platform's job and hardware telemetry without changing the decision model."] },
+    ],
+    close: "The experiment asks a product question, not a tooling question: can an operator understand what changed and choose a next step before a slow job turns into avoidable cost?",
+  },
   "metrics-are-not-decisions": {
     lead: "This is an independent experiment that joins live GitHub and Storybook signals around a design-system component. I wanted to test one question: how does an observatory turn changing evidence into a decision someone can make?",
     quote: "A dashboard earns its space when it connects a changing signal to the next action.",
@@ -122,6 +134,10 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 }
 
 function ArticleActions({ slug }: { slug: string }) {
+  if (slug === "gpu-job-triage") return <>
+    <ArrowRouteLink variant="secondary" tone="purple" href="#gpu-job-triage">Open the prototype</ArrowRouteLink>
+    <ArrowLink variant="secondary" tone="green" href={`${portfolioRepo}/tree/main/labs/gpu-job-triage`} target="_blank" rel="noreferrer">Inspect the Grafana stack</ArrowLink>
+  </>
   if (slug === "metrics-are-not-decisions") return <>
     <ArrowRouteLink variant="secondary" tone="purple" href="#design-system-health">Open the live demo</ArrowRouteLink>
     <ArrowLink variant="secondary" tone="green" href={`${portfolioRepo}/blob/main/src/app/api/design-system-health/route.ts`} target="_blank" rel="noreferrer">Inspect the source</ArrowLink>
@@ -363,6 +379,7 @@ export default async function LabArticle({ params }: { params: Promise<{ slug: s
       {entry.slug === "figma-plugin-component-apis" && <FigmaPluginEvidence />}
       {entry.slug === "smallest-useful-accessibility-pipeline" && <AccessibilityEvidence />}
       {entry.slug === "metrics-are-not-decisions" && <DesignSystemHealthDemo />}
+      {entry.slug === "gpu-job-triage" && <GpuJobTriageDemo />}
       <ReusableResources slug={entry.slug} />
       <footer className="lab-article-close">
         <span>[ What I’m taking forward ]</span>

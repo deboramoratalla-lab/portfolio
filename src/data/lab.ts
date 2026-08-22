@@ -10,6 +10,15 @@ export type LabEntry = {
 
 export const labEntries: LabEntry[] = [
   {
+    slug: "gpu-job-triage",
+    type: "Experiment",
+    title: "From a slow AI job to a clear next step.",
+    summary: "A local observability prototype that turns a distributed workload delay into an operator decision. Built to run with Grafana, Prometheus and Docker.",
+    date: "August 2026",
+    readingTime: "4 min read",
+    topics: ["AI infrastructure", "Observability", "Product design"],
+  },
+  {
     slug: "metrics-are-not-decisions",
     type: "Experiment",
     title: "Metrics are not decisions: reading design-system health from real signals.",
