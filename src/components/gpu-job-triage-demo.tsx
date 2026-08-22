@@ -3,106 +3,33 @@
 import { useState } from "react"
 
 type ReplayState = "baseline" | "drift" | "blocked"
+type State = { label: string; verdict: string; description: string; action: string; actionNote: string; eta: string; cost: string; risk: string; workers: { name: string; progress: number; state: string }[]; progress: number[][]; pressure: number[][]; queue: number[] }
 
-const states: Record<ReplayState, {
-  label: string
-  verdict: string
-  description: string
-  action: string
-  actionNote: string
-  eta: string
-  cost: string
-  risk: string
-  workers: { name: string; progress: number; eta: string; state: string }[]
-}> = {
-  baseline: {
-    label: "On track",
-    verdict: "Keep observing.",
-    description: "All workers are progressing within the expected range. There is no intervention to make yet.",
-    action: "No action needed",
-    actionNote: "Next review in 10 minutes",
-    eta: "43 min",
-    cost: "€0",
-    risk: "No delay",
-    workers: [
-      { name: "worker-01", progress: 72, eta: "43 min", state: "in range" },
-      { name: "worker-02", progress: 71, eta: "44 min", state: "in range" },
-      { name: "worker-03", progress: 73, eta: "42 min", state: "in range" },
-      { name: "worker-04", progress: 70, eta: "45 min", state: "in range" },
-    ],
-  },
-  drift: {
-    label: "Progress diverging",
-    verdict: "Inspect worker-04.",
-    description: "One worker is falling behind the group. The job can still complete, but the gap is widening.",
-    action: "Review worker logs",
-    actionNote: "Check input wait and memory pressure",
-    eta: "58 min",
-    cost: "€14 at risk",
-    risk: "+15 min",
-    workers: [
-      { name: "worker-01", progress: 76, eta: "42 min", state: "in range" },
-      { name: "worker-02", progress: 74, eta: "44 min", state: "in range" },
-      { name: "worker-03", progress: 75, eta: "43 min", state: "in range" },
-      { name: "worker-04", progress: 54, eta: "58 min", state: "lagging" },
-    ],
-  },
-  blocked: {
-    label: "Worker blocked",
-    verdict: "Restart worker-04.",
-    description: "The lag has become material. Restarting the blocked worker is the reversible action with the lowest expected cost.",
-    action: "Prepare a worker restart",
-    actionNote: "Confirm checkpoint availability first",
-    eta: "1h 18m",
-    cost: "€39 at risk",
-    risk: "+35 min",
-    workers: [
-      { name: "worker-01", progress: 80, eta: "40 min", state: "in range" },
-      { name: "worker-02", progress: 78, eta: "42 min", state: "in range" },
-      { name: "worker-03", progress: 79, eta: "41 min", state: "in range" },
-      { name: "worker-04", progress: 29, eta: "1h 18m", state: "blocked" },
-    ],
-  },
+const states: Record<ReplayState, State> = {
+  baseline: { label: "On track", verdict: "Keep observing.", description: "All workers are progressing within the expected range.", action: "No action needed", actionNote: "Next review in 10 minutes", eta: "43 min", cost: "€0", risk: "No delay", workers: [{ name: "worker-01", progress: 72, state: "in range" }, { name: "worker-02", progress: 71, state: "in range" }, { name: "worker-03", progress: 73, state: "in range" }, { name: "worker-04", progress: 70, state: "in range" }], progress: [[28,32,35,39,43,47,51,55,59,63,68,72],[27,31,34,38,42,45,50,54,58,62,66,71],[29,34,38,42,45,49,53,57,61,65,69,73],[26,30,33,37,41,45,48,52,56,61,66,70]], pressure: [[28,31,29,35,34,39,37,41,38,40,42,39],[31,29,33,32,36,35,38,34,40,37,42,40]], queue: [34,38,31,43,39,44,37,40,35,42,39,36] },
+  drift: { label: "Progress diverging", verdict: "Inspect worker-04.", description: "One worker is falling behind the group. The gap is widening.", action: "Review worker logs", actionNote: "Check input wait and memory pressure", eta: "58 min", cost: "€14 at risk", risk: "+15 min", workers: [{ name: "worker-01", progress: 76, state: "in range" }, { name: "worker-02", progress: 74, state: "in range" }, { name: "worker-03", progress: 75, state: "in range" }, { name: "worker-04", progress: 54, state: "lagging" }], progress: [[28,33,37,42,47,51,55,60,64,68,72,76],[27,31,36,40,44,49,53,57,61,66,70,74],[29,34,38,43,47,51,55,59,63,67,71,75],[28,32,36,41,45,49,52,55,57,57,56,54]], pressure: [[27,31,30,34,35,38,37,40,42,40,43,41],[30,29,34,31,36,35,39,42,47,58,64,72]], queue: [34,39,32,46,42,48,45,51,58,63,72,78] },
+  blocked: { label: "Worker blocked", verdict: "Restart worker-04.", description: "The lag is now material. A restart is the lowest-cost reversible action.", action: "Prepare a worker restart", actionNote: "Confirm checkpoint availability first", eta: "1h 18m", cost: "€39 at risk", risk: "+35 min", workers: [{ name: "worker-01", progress: 80, state: "in range" }, { name: "worker-02", progress: 78, state: "in range" }, { name: "worker-03", progress: 79, state: "in range" }, { name: "worker-04", progress: 29, state: "blocked" }], progress: [[29,34,39,44,49,54,59,64,69,73,77,80],[28,33,37,42,47,51,56,61,65,70,74,78],[30,35,40,45,49,54,58,63,67,71,75,79],[28,32,37,41,44,46,45,42,38,34,31,29]], pressure: [[29,32,31,36,35,39,38,42,41,44,42,45],[30,31,35,34,38,45,53,64,72,81,88,91]], queue: [34,40,36,48,45,55,62,74,86,101,114,126] },
+}
+
+const colors = ["#5794f2", "#73bf69", "#f2cc0c", "#f2495c"]
+const chartPoints = (series: number[]) => series.map((point, index) => `${(index / (series.length - 1)) * 100},${100 - point}`).join(" ")
+
+function SeriesChart({ series, area = false }: { series: number[][]; area?: boolean }) {
+  return <svg className="grafana-chart" viewBox="0 0 100 100" preserveAspectRatio="none" role="img" aria-label="Time-series chart"><path className="grafana-grid" d="M0 20H100M0 50H100M0 80H100M20 0V100M50 0V100M80 0V100" />{series.map((line, index) => area ? <polygon key={`area-${index}`} points={`0,100 ${chartPoints(line)} 100,100`} fill={colors[index]} opacity={index === 0 ? ".18" : ".08"} /> : null)}{series.map((line, index) => <polyline key={index} points={chartPoints(line)} fill="none" stroke={colors[index]} strokeWidth="1.3" vectorEffect="non-scaling-stroke" />)}</svg>
 }
 
 export function GpuJobTriageDemo() {
   const [replay, setReplay] = useState<ReplayState>("drift")
   const state = states[replay]
-
+  const averageProgress = Math.round(state.workers.reduce((sum, worker) => sum + worker.progress, 0) / state.workers.length)
   return <section className="gpu-triage" id="gpu-job-triage" aria-labelledby="gpu-job-triage-title">
-    <header className="gpu-triage-intro">
-      <div>
-        <span>Local product prototype</span>
-        <h2 id="gpu-job-triage-title">A slow job should lead somewhere.</h2>
-      </div>
-      <p>Replay a single incident. The interface turns worker-level signals into one next step. The accompanying Docker stack uses real Grafana and Prometheus.</p>
-    </header>
-    <div className="gpu-triage-console">
-      <header className="gpu-triage-bar"><span>Training run / vision-batch-07</span><small>Replay mode: local simulation</small></header>
-      <div className="gpu-triage-controls" role="group" aria-label="Incident replay state">
-        {(Object.keys(states) as ReplayState[]).map(key => <button type="button" key={key} onClick={() => setReplay(key)} className={replay === key ? "is-active" : ""}>{key === "baseline" ? "On track" : key === "drift" ? "Drift" : "Blocked"}</button>)}
-      </div>
-      <div className="gpu-triage-verdict">
-        <div><span className={`gpu-triage-status is-${replay}`}>{state.label}</span><h3>{state.verdict}</h3><p>{state.description}</p></div>
-        <aside><span>Recommended action</span><strong>{state.action}</strong><small>{state.actionNote}</small></aside>
-      </div>
-      <div className="gpu-triage-main">
-        <section className="gpu-triage-workers" aria-label="Worker progress">
-          <header><span>Worker progress</span><small>Current job state</small></header>
-          <div className="gpu-worker-list">{state.workers.map(worker => <div className={`gpu-worker is-${worker.state.replace(" ", "-")}`} key={worker.name}>
-            <div className="gpu-worker-name"><strong>{worker.name}</strong><span>{worker.state}</span></div>
-            <div className="gpu-worker-track" aria-label={`${worker.name}: ${worker.progress}% complete`}><i style={{ width: `${worker.progress}%` }} /></div>
-            <b>{worker.progress}%</b><small>{worker.eta}</small>
-          </div>)}</div>
-        </section>
-        <section className="gpu-triage-reading" aria-label="Decision readings">
-          <div><span>Expected completion</span><strong>{state.eta}</strong></div>
-          <div><span>Delay</span><strong>{state.risk}</strong></div>
-          <div><span>Cost at risk</span><strong>{state.cost}</strong></div>
-          <p>Readings are generated by the local workload simulator when the Docker stack runs. This embedded replay keeps the scenario explorable in the portfolio.</p>
-        </section>
-      </div>
-      <footer><span>Signals: worker progress, ETA variance, container pressure</span><span>Technical layer: Prometheus + Grafana</span></footer>
+    <header className="gpu-triage-intro"><div><span>Local product prototype</span><h2 id="gpu-job-triage-title">A decision layer, with observability underneath.</h2></div><p>A Grafana-inspired working view for one distributed AI job. Replay the incident, inspect the signals and see what should happen next.</p></header>
+    <div className="grafana-prototype">
+      <header className="grafana-topbar"><div className="grafana-mark" aria-hidden="true">G</div><button type="button" className="grafana-dashboard-title">GPU job triage <span>⌄</span></button><div className="grafana-topbar-actions"><button type="button" aria-label="Favourite">☆</button><button type="button" aria-label="Share">↗</button><button type="button" aria-label="Save">⌘</button><button type="button" aria-label="Settings">⚙</button></div><span className="grafana-time">Last 45 minutes</span><button type="button" className="grafana-refresh" aria-label="Refresh">↻</button></header>
+      <div className="grafana-toolbar"><div role="group" aria-label="Incident replay state">{(Object.keys(states) as ReplayState[]).map(key => <button type="button" key={key} onClick={() => setReplay(key)} className={replay === key ? "is-active" : ""}>{key === "baseline" ? "On track" : key === "drift" ? "Drift" : "Blocked"}</button>)}</div><span>Replay mode · local workload simulation</span></div>
+      <div className="grafana-stats"><article><h3>Job progress</h3><strong>{averageProgress}<small>%</small></strong><SeriesChart series={[state.progress[0]]} /></article><article><h3>Workers in range</h3><strong>{state.workers.filter(worker => worker.state === "in range").length}<small> / 4</small></strong><SeriesChart series={[state.progress[1]]} /></article><article><h3>Cost at risk</h3><strong>{state.cost}</strong><SeriesChart series={[state.queue.map(value => Math.min(94, value / 1.4))]} /></article></div>
+      <div className="grafana-grid-layout"><article className="grafana-panel grafana-panel-wide"><header><h3>Worker progress</h3><span>completion</span></header><SeriesChart series={state.progress} /><footer>{state.workers.map((worker, index) => <span key={worker.name} style={{ color: colors[index] }}>{worker.name}</span>)}</footer></article><article className="grafana-panel"><header><h3>ETA variance</h3><span>seconds</span></header><div className="grafana-big-reading"><strong>{state.risk}</strong><small>job completion delay</small></div><SeriesChart series={[state.queue.map(value => Math.min(92, value / 1.4))]} /></article><article className="grafana-panel grafana-panel-wide"><header><h3>Container pressure</h3><span>usage</span></header><SeriesChart series={state.pressure} area /><footer><span style={{ color: colors[0] }}>cluster baseline</span><span style={{ color: colors[3] }}>worker-04</span></footer></article><article className="grafana-panel grafana-decision"><header><h3>Operator decision</h3><span className={`grafana-status is-${replay}`}>{state.label}</span></header><strong>{state.verdict}</strong><p>{state.description}</p><button type="button">{state.action} <b>↗</b></button><small>{state.actionNote}</small></article></div>
+      <footer className="grafana-footer"><span>Data source: Prometheus local workload simulator</span><span>Technical layer: Grafana + Prometheus + Docker</span></footer>
     </div>
   </section>
 }
