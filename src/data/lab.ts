@@ -10,6 +10,15 @@ export type LabEntry = {
 
 export const labEntries: LabEntry[] = [
   {
+    slug: "metrics-are-not-decisions",
+    type: "Experiment",
+    title: "Metrics are not decisions: designing an AI infrastructure dashboard.",
+    summary: "An independent experiment in making capacity, queue pressure and anomalies legible enough to act on. The demo uses synthetic data.",
+    date: "August 2026",
+    readingTime: "5 min read",
+    topics: ["Data visualisation", "Observability", "AI infrastructure"],
+  },
+  {
     slug: "design-systems-need-evidence",
     type: "Field note",
     title: "Your design system doesn’t need more components. It needs better evidence.",
