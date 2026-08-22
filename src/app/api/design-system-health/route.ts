@@ -28,6 +28,7 @@ export async function GET() {
       workflow: latest ? { name: latest.name, conclusion: latest.conclusion, updatedAt: latest.updated_at, href: latest.html_url } : null,
       openIssues: issues.filter((issue: { pull_request?: unknown }) => !issue.pull_request).length,
       components: components.filter((item: { type: string }) => item.type === "dir").length,
+      componentNames: components.filter((item: { type: string }) => item.type === "dir").map((item: { name: string }) => item.name),
       buttonFiles,
     })
   } catch {
