@@ -2,24 +2,17 @@ import Link from "next/link"
 import Image from "next/image"
 import { ArrowUpRight } from "@/components/arrow-up-right"
 import { ArrowRouteLink } from "@/components/ui-links"
+import { InfrastructureDashboardCover } from "@/components/infrastructure-dashboard-demo"
 import type { LabEntry } from "@/data/lab"
 
 const HOME_LAB_LIMIT = 5
-const LAB_COVERS = [
-  "/media/design-system-component-evidence.png",
-  "/media/storybook-design-tokens-library.png",
-  "/media/figma-code-component-importer.png",
-  "/media/fluxy-production-deployment.png",
-  "/media/accessibility-color-contrast-tokens.png",
-]
-
-const LAB_COVER_ALTS = [
-  "Design-system component evidence arranged as an inspectable interface",
-  "Storybook foundations and design-token documentation",
-  "Figma plugin importing component APIs from code",
-  "Coded agent workflow running in a production preview",
-  "Accessibility colour-contrast checks expressed as reusable tokens",
-]
+const LAB_COVERS: Record<string, { src: string; alt: string }> = {
+  "design-systems-need-evidence": { src: "/media/design-system-component-evidence.png", alt: "Design-system component evidence arranged as an inspectable interface" },
+  "storybook-source-of-truth": { src: "/media/storybook-design-tokens-library.png", alt: "Storybook foundations and design-token documentation" },
+  "figma-plugin-component-apis": { src: "/media/figma-code-component-importer.png", alt: "Figma plugin importing component APIs from code" },
+  "building-an-agent": { src: "/media/fluxy-production-deployment.png", alt: "Coded agent workflow running in a production preview" },
+  "smallest-useful-accessibility-pipeline": { src: "/media/accessibility-color-contrast-tokens.png", alt: "Accessibility colour-contrast checks expressed as reusable tokens" },
+}
 
 export function WorkbenchPreview({ entries }: { entries: LabEntry[] }) {
   const visibleEntries = entries.slice(0, HOME_LAB_LIMIT)
@@ -35,7 +28,9 @@ export function WorkbenchPreview({ entries }: { entries: LabEntry[] }) {
           <span className="home-lab-card-action">Read more <ArrowUpRight /></span>
         </div>
         <figure className="home-lab-feature-media">
-          <Image src={LAB_COVERS[0]} alt={LAB_COVER_ALTS[0]} fill sizes="(max-width: 800px) 100vw, 45vw" />
+          {featuredEntry.slug === "metrics-are-not-decisions"
+            ? <InfrastructureDashboardCover />
+            : <Image src={LAB_COVERS[featuredEntry.slug].src} alt={LAB_COVERS[featuredEntry.slug].alt} fill sizes="(max-width: 800px) 100vw, 45vw" />}
         </figure>
       </Link>
 

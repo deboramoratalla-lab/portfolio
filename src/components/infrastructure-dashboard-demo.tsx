@@ -18,6 +18,14 @@ function chartPath(values: readonly number[]) {
   }).join(" ")
 }
 
+export function InfrastructureDashboardCover() {
+  return <div className="infrastructure-cover" aria-hidden="true">
+    <header><span>Atlas / Compute</span><i>Live</i></header>
+    <div className="infrastructure-cover-chart"><span>GPU utilisation</span><strong>78%</strong><svg viewBox="0 0 100 100" preserveAspectRatio="none"><path className="infrastructure-chart-grid" d="M0 20H100M0 50H100M0 80H100" /><path className="infrastructure-chart-threshold" d="M0 35H100" /><path className="infrastructure-chart-line" d={chartPath(clusters[0].trend)} /></svg></div>
+    <footer><span>1,248 / 1,600 GPUs</span><b>42 queued jobs</b></footer>
+  </div>
+}
+
 export function InfrastructureDashboardDemo() {
   const [clusterId, setClusterId] = useState<(typeof clusters)[number]["id"]>("north")
   const [range, setRange] = useState<(typeof ranges)[number]>("24h")
