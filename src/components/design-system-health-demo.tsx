@@ -2,16 +2,30 @@
 
 import { useEffect, useState } from "react"
 
-type Health = { updatedAt: string; repository: { updatedAt: string; stars: number }; workflow: { name: string; conclusion: string | null; updatedAt: string; href: string } | null; openIssues: number; components: number; buttonFiles: number; unavailable?: boolean }
-
-function date(value?: string) { return value ? new Intl.DateTimeFormat("en", { day: "numeric", month: "short", year: "numeric" }).format(new Date(value)) : "Reading source" }
+type Health = { updatedAt: string; workflow: { name: string; conclusion: string | null; updatedAt: string; href: string } | null; openIssues: number; components: number; buttonFiles: number; unavailable?: boolean }
+const figure = (value: number, max: number) => Math.max(8, Math.min(100, Math.round(value / max * 100)))
 
 export function DesignSystemHealthDemo() {
   const [data, setData] = useState<Health>()
   useEffect(() => { fetch("/api/design-system-health").then(response => response.json()).then(setData).catch(() => setData({ unavailable: true } as Health)) }, [])
-  const failed = data?.workflow?.conclusion === "failure"
-  return <section className="infrastructure-demo" id="design-system-health" aria-labelledby="design-system-health-title">
-    <header className="infrastructure-demo-intro"><div><span>[ Live repository signal ]</span><h2 id="design-system-health-title">A small console for design-system health.</h2></div><p>Real public GitHub data from the design-system repository. The point is to see where a maintainer might look next, not to turn a status into a verdict.</p></header>
-    <div className="infrastructure-console"><header className="infrastructure-console-bar"><strong>Design system / health check</strong><span><i /> {data?.updatedAt ? `Checked ${date(data.updatedAt)}` : "Reading GitHub"}</span></header><div className="infrastructure-console-grid"><section className="infrastructure-chart"><header><span>Latest automated check</span><strong>{data?.workflow ? failed ? "Needs review" : "Passing" : "Loading"}</strong><small>{data?.workflow?.name ?? "GitHub Actions"}</small></header><div className="infrastructure-signal"><span>Why this matters</span><h3>{data?.workflow ? failed ? "The accessibility workflow reported a failure." : "The latest workflow completed successfully." : "Checking the public workflow."}</h3><p>{data?.workflow ? `Last updated ${date(data.workflow.updatedAt)}. Open the original run to inspect the result before acting.` : "The console will show the latest public workflow result."}</p>{data?.workflow && <a href={data.workflow.href} target="_blank" rel="noreferrer">Inspect workflow <b>↗</b></a>}</div></section><section className="infrastructure-signal"><span>Figma library preview</span><h3>Button / 86 inserts</h3><p>7 files · 2 teams · 1 detach in the last 30 days. This is the view that becomes available when library analytics is connected.</p></section><section className="infrastructure-stats" aria-label="Repository status"><div><span>Components</span><strong>{data?.components ?? "—"}</strong><small>Public component folders</small></div><div><span>Button consumers</span><strong>{data?.buttonFiles ?? "—"}</strong><small>Files importing Button</small></div><div><span>Open issues</span><strong>{data?.openIssues ?? "—"}</strong><small>Maintenance context</small></div></section></div><footer>GitHub data is cached for one hour. Figma preview data illustrates the connected-library view. <a href="https://github.com/deboramoratalla-lab/design-system-showcase" target="_blank" rel="noreferrer">Open the source repository ↗</a></footer></div>
+  const needsReview = data?.workflow?.conclusion === "failure"
+  const status = data?.workflow ? needsReview ? "Needs review" : "Healthy" : "Reading"
+  const adoption = data?.buttonFiles ?? 0
+  return <section className="ds-observatory" id="design-system-health" aria-labelledby="design-system-health-title">
+    <header className="ds-observatory-intro"><div><span>[ Live system observatory ]</span><h2 id="design-system-health-title">See the system, then decide where to look.</h2></div><p>GitHub supplies the live signals. The Figma view is a preview of Library Analytics, ready to connect when that data becomes available.</p></header>
+    <div className="ds-observatory-console">
+      <header className="ds-observatory-bar"><strong>Design system / signal map</strong><span><i /> {data?.updatedAt ? "Live GitHub snapshot" : "Reading public source"}</span></header>
+      <div className="ds-observatory-pulse">
+        <div className={`ds-health-ring ${needsReview ? "is-review" : "is-healthy"}`}><span>{needsReview ? "!" : "✓"}</span></div>
+        <div><span className="ds-kicker">Latest automated check</span><h3>{status}</h3><p>{data?.workflow?.name ?? "GitHub Actions"} is the main signal. It tells a maintainer where to begin, not what conclusion to draw.</p></div>
+        {data?.workflow && <a href={data.workflow.href} target="_blank" rel="noreferrer">Inspect workflow ↗</a>}
+      </div>
+      <div className="ds-observatory-grid">
+        <section className="ds-observatory-panel ds-adoption-panel"><header><span>01 / Code adoption</span><small>Live GitHub</small></header><div className="ds-bar-row"><div><strong>Button</strong><span>{adoption} consumer files</span></div><i><b style={{ width: `${figure(adoption, 8)}%` }} /></i></div><div className="ds-bar-row is-muted"><div><strong>System surface</strong><span>{data?.components ?? "—"} components</span></div><i><b style={{ width: `${figure(data?.components ?? 0, 55)}%` }} /></i></div><p>Imported source files show technical adoption. They are not people or traffic.</p></section>
+        <section className="ds-observatory-panel ds-figma-panel"><header><span>02 / Figma adoption</span><small>Preview</small></header><div className="ds-figma-chart" aria-label="Preview of Figma library analytics"><div style={{ height: "42%" }} /><div style={{ height: "68%" }} /><div style={{ height: "31%" }} /><div style={{ height: "84%" }} /><div style={{ height: "56%" }} /><div style={{ height: "76%" }} /></div><div className="ds-figma-meta"><strong>86</strong><span>Button inserts<br />last 30 days</span><small>7 files · 2 teams · 1 detach</small></div><p>Preview data until Figma Library Analytics is connected.</p></section>
+        <section className="ds-observatory-panel ds-attention-panel"><header><span>03 / Attention map</span><small>Live + preview</small></header><div className="ds-signal-map"><i className="ds-axis ds-axis-x">adoption →</i><i className="ds-axis ds-axis-y">risk →</i><b className="ds-dot is-review" style={{ left: "72%", bottom: "72%" }}>A11y</b><b className="ds-dot is-code" style={{ left: `${Math.max(20, figure(adoption, 8))}%`, bottom: "28%" }}>Button</b><b className="ds-dot is-preview" style={{ left: "78%", bottom: "40%" }}>Figma</b></div><p>Signals in the upper-right deserve attention first. The Figma point is illustrative.</p></section>
+      </div>
+      <footer><div><span>Now</span><strong>{needsReview ? "Inspect the accessibility workflow." : "Keep the latest workflow under observation."}</strong></div><div><span>Context</span><strong>{data?.openIssues ?? "—"} open issues in the public repository.</strong></div><a href="https://github.com/deboramoratalla-lab/design-system-showcase" target="_blank" rel="noreferrer">Open source repository ↗</a></footer>
+    </div>
   </section>
 }
