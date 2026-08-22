@@ -5,7 +5,7 @@ import { notFound } from "next/navigation"
 import { CaseSectionLabel } from "@/components/case-section-label"
 import { ArrowLink, ArrowRouteLink } from "@/components/ui-links"
 import { OpenPortfolioAgentLink } from "@/components/open-portfolio-agent-link"
-import { InfrastructureDashboardDemo } from "@/components/infrastructure-dashboard-demo"
+import { DesignSystemHealthDemo } from "@/components/design-system-health-demo"
 import { getLabEntry, labEntries } from "@/data/lab"
 
 type ArticleSection = { title: string; paragraphs: string[]; points?: string[] }
@@ -45,15 +45,15 @@ const reusableResources: Record<string, ReusableResource[]> = {
 
 const articles: Record<string, ArticleContent> = {
   "metrics-are-not-decisions": {
-    lead: "This is an independent experiment using synthetic data. I wanted to test one question: how does an infrastructure dashboard turn a changing metric into a decision someone can make?",
+    lead: "This is an independent experiment using public GitHub data from my design-system repository. I wanted to test one question: how does a dashboard turn a changing signal into a decision someone can make?",
     quote: "A dashboard earns its space when it connects a changing signal to the next action.",
     sections: [
-      { title: "Start with the decision", paragraphs: ["A metric is a reading, not an instruction. GPU utilisation, queue length and job duration become useful only when a person can tell what changed, what it affects and where to look next.", "I built the experiment around a small operating decision: should someone inspect the work already in the queue, compare active jobs or consider capacity? The interface therefore keeps the signal, its baseline and its next route together."] },
-      { title: "Show trend and context together", paragraphs: ["A current value cannot explain whether the system is stable, recovering or becoming constrained. The chart makes the movement visible, while the operating threshold gives the number a reference point.", "The region selector changes both the trend and the surrounding capacity. The point is not interaction for its own sake. It is a check that the context follows the metric when a person changes scope."] },
-      { title: "Make an alert explain itself", paragraphs: ["An alert that says only ‘high’ moves the interpretation work somewhere else. In the demo, the alert names the affected system, explains why it matters and suggests the next view to inspect.", "That does not automate the decision. It makes the reason for attention inspectable before someone acts."] },
-      { title: "Keep detail connected to the overview", paragraphs: ["The same compact model can extend from a region to a cluster, a queue and an individual job. Each level should preserve the context that led someone there.", "This is where consistency matters in observability surfaces. A repeated visual grammar reduces the effort of re-learning what a status, threshold or comparison means at every level."] },
+      { title: "Start with the decision", paragraphs: ["A metric is a reading, not an instruction. An open issue, a failed workflow or a repository update becomes useful only when a maintainer can tell what changed and where to look next.", "I built the experiment around a small operating decision: should someone inspect the automated check, the maintenance queue or the component surface? The interface therefore keeps the signal, its context and its next route together."] },
+      { title: "Show context beside status", paragraphs: ["A passing or failing workflow cannot explain itself alone. The console keeps the workflow name, its update date and the original GitHub run together so the signal has a route back to evidence.", "The component count and open-issue count sit beside it as maintenance context. Neither number is a quality score. They make the scope of the next question visible."] },
+      { title: "Make an alert explain itself", paragraphs: ["An alert that says only ‘failure’ moves the interpretation work somewhere else. In the demo, the status names the automated check and gives a direct route to inspect its original run.", "That does not automate the decision. It makes the reason for attention inspectable before someone acts."] },
+      { title: "Keep the source connected", paragraphs: ["The console reads from the public GitHub API and keeps a link to the workflow and repository. A one-hour cache limits requests while making the freshness of the signal explicit.", "This is where consistency matters in observability surfaces. A repeated visual grammar reduces the effort of re-learning what a status, source or comparison means at every level."] },
     ],
-    close: "The experiment is deliberately small. Its value is in testing whether a data visualisation can make the next question clearer, not in pretending to reproduce a production cloud console.",
+    close: "The experiment is deliberately small. Its value is in testing whether a data visualisation can make the next question clearer, using a source anyone can inspect.",
   },
   "design-systems-need-evidence": {
     lead: "I used to think the first job of a design system was to define the right components. The product taught me to start somewhere less comfortable: with the decisions teams were already repeating.",
@@ -123,8 +123,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 function ArticleActions({ slug }: { slug: string }) {
   if (slug === "metrics-are-not-decisions") return <>
-    <ArrowRouteLink variant="secondary" tone="purple" href="#infrastructure-demo">Open the demo</ArrowRouteLink>
-    <ArrowLink variant="secondary" tone="green" href={`${portfolioRepo}/blob/main/src/components/infrastructure-dashboard-demo.tsx`} target="_blank" rel="noreferrer">Inspect the source</ArrowLink>
+    <ArrowRouteLink variant="secondary" tone="purple" href="#design-system-health">Open the live demo</ArrowRouteLink>
+    <ArrowLink variant="secondary" tone="green" href={`${portfolioRepo}/blob/main/src/app/api/design-system-health/route.ts`} target="_blank" rel="noreferrer">Inspect the source</ArrowLink>
   </>
   if (slug === "building-an-agent") return <>
     <OpenPortfolioAgentLink />
@@ -362,7 +362,7 @@ export default async function LabArticle({ params }: { params: Promise<{ slug: s
       {entry.slug === "storybook-source-of-truth" && <StorybookEvidence />}
       {entry.slug === "figma-plugin-component-apis" && <FigmaPluginEvidence />}
       {entry.slug === "smallest-useful-accessibility-pipeline" && <AccessibilityEvidence />}
-      {entry.slug === "metrics-are-not-decisions" && <InfrastructureDashboardDemo />}
+      {entry.slug === "metrics-are-not-decisions" && <DesignSystemHealthDemo />}
       <ReusableResources slug={entry.slug} />
       <footer className="lab-article-close">
         <span>[ What I’m taking forward ]</span>

@@ -12,11 +12,11 @@ export const labEntries: LabEntry[] = [
   {
     slug: "metrics-are-not-decisions",
     type: "Experiment",
-    title: "Metrics are not decisions: designing an AI infrastructure dashboard.",
-    summary: "An independent experiment in making capacity, queue pressure and anomalies legible enough to act on. The demo uses synthetic data.",
+    title: "Metrics are not decisions: reading design-system health from real signals.",
+    summary: "An independent experiment in making repository activity, checks and maintenance signals legible enough to act on. The demo reads public GitHub data.",
     date: "August 2026",
     readingTime: "5 min read",
-    topics: ["Data visualisation", "Observability", "AI infrastructure"],
+    topics: ["Data visualisation", "Observability", "Design systems"],
   },
   {
     slug: "design-systems-need-evidence",
