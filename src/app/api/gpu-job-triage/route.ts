@@ -25,7 +25,11 @@ export async function GET() {
   const instanceId = process.env["GRAFANA_METRICS_INSTANCE_ID"];
   const token = process.env["GRAFANA_METRICS_READ_TOKEN"];
   if (!queryUrl || !instanceId || !token) {
-    return NextResponse.json({ status: "not-configured", updatedAt: new Date().toISOString() });
+    return NextResponse.json({
+      status: "not-configured",
+      configured: { queryUrl: Boolean(queryUrl), instanceId: Boolean(instanceId), token: Boolean(token) },
+      updatedAt: new Date().toISOString(),
+    });
   }
   const config = { queryUrl, instanceId, token };
 
