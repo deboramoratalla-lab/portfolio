@@ -10,7 +10,7 @@ type GrafanaConfig = { queryUrl: string; instanceId: string; token: string };
 
 async function query(expression: string, config: GrafanaConfig) {
   const authorization = `Basic ${Buffer.from(`${config.instanceId}:${config.token}`).toString("base64")}`;
-  const response = await fetch(`${config.queryUrl.replace(/\/$/, "")}/api/v1/query?query=${encodeURIComponent(expression)}`, {
+  const response = await fetch(`${config.queryUrl.replace(/\/$/, "")}/api/prom/api/v1/query?query=${encodeURIComponent(expression)}`, {
     cache: "no-store",
     headers: { Authorization: authorization },
   });
@@ -27,7 +27,6 @@ export async function GET() {
   if (!queryUrl || !instanceId || !token) {
     return NextResponse.json({
       status: "not-configured",
-      configured: { queryUrl: Boolean(queryUrl), instanceId: Boolean(instanceId), token: Boolean(token) },
       updatedAt: new Date().toISOString(),
     });
   }
