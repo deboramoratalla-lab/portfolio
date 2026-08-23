@@ -32,15 +32,15 @@ type CloudSnapshot = {
 
 const scenarios = {
   baseline: {
-    label: "Running",
+    label: "Stable capacity",
     progress: 70,
-    inputWait: "86 ms",
+    inputWait: "€6/hr",
     eta: "18 min",
-    throughput: "42.8/s",
-    queue: "14",
-    retries: "0.7%",
-    action: "Keep the current allocation",
-    detail: "Workers are converging together. There is enough headroom to finish this batch without adding capacity.",
+    throughput: "72%",
+    queue: "18 min",
+    retries: "High",
+    action: "Keep current capacity",
+    detail: "Utilisation is stable and the next cost threshold is still distant. Extra capacity would add cost without improving completion time.",
     points: [34, 49, 27, 58, 46, 31, 41, 72, 34, 22, 22, 58, 44, 18, 32, 56, 69, 48, 38, 57, 43],
     marker: 10,
     workers: [
@@ -51,15 +51,15 @@ const scenarios = {
     ] as Worker[],
   },
   drift: {
-    label: "Drift detected",
-    progress: 61,
-    inputWait: "164 ms",
+    label: "Underutilised capacity",
+    progress: 42,
+    inputWait: "€42/hr",
     eta: "31 min",
-    throughput: "31.4/s",
-    queue: "38",
-    retries: "2.1%",
-    action: "Inspect worker-04 before scaling",
-    detail: "Throughput is falling while input wait climbs. One worker is behind the rest, so extra capacity would hide the cause.",
+    throughput: "42%",
+    queue: "31 min",
+    retries: "Medium",
+    action: "Inspect before scaling",
+    detail: "Utilisation is falling while cost exposure climbs. Scaling would hide the cause and increase the cost of a slow batch.",
     points: [31, 45, 34, 53, 47, 38, 42, 64, 41, 28, 38, 68, 55, 30, 48, 73, 78, 61, 52, 75, 66],
     marker: 16,
     workers: [
@@ -70,15 +70,15 @@ const scenarios = {
     ] as Worker[],
   },
   blocked: {
-    label: "Input blocked",
-    progress: 38,
-    inputWait: "1.4 s",
+    label: "Pipeline blocked",
+    progress: 12,
+    inputWait: "€91/hr",
     eta: "Paused",
-    throughput: "4.9/s",
-    queue: "126",
-    retries: "8.4%",
-    action: "Resolve the input dependency",
-    detail: "Adding GPUs would not help. The queue is waiting on input, so unblock the upstream dependency first.",
+    throughput: "12%",
+    queue: "Paused",
+    retries: "Low",
+    action: "Pause and inspect input",
+    detail: "Adding capacity would not help. The batch is blocked upstream, so the responsible move is to stop cost exposure and inspect input.",
     points: [30, 45, 35, 52, 45, 38, 49, 66, 43, 29, 35, 69, 55, 31, 58, 80, 91, 80, 69, 88, 83],
     marker: 18,
     workers: [
@@ -168,7 +168,6 @@ export function GpuJobTriageDemo() {
   const [scenario, setScenario] = useState<Scenario>("baseline");
   const [decisionApplied, setDecisionApplied] = useState(false);
   const [cloud, setCloud] = useState<CloudSnapshot | null>(null);
-  const [refreshKey, setRefreshKey] = useState(0);
   const data = scenarios[scenario];
   const tone = scenario === "blocked" ? "orange" : scenario === "drift" ? "lime" : "cyan";
   const confirmation = scenario === "baseline" ? "Allocation kept. The next check is scheduled in 10 minutes." : scenario === "drift" ? "Triage opened for worker-04. Scaling remains on hold." : "Input dependency marked for escalation. GPU scaling remains paused.";
@@ -191,19 +190,19 @@ export function GpuJobTriageDemo() {
     void update();
     const interval = window.setInterval(update, 15000);
     return () => { active = false; window.clearInterval(interval); };
-  }, [refreshKey]);
+  }, []);
 
   return (
     <section className="gpu-triage-demo" aria-labelledby="triage-demo-title">
       <div className="triage-demo-intro">
         <span>Interactive prototype</span>
-        <h2 id="triage-demo-title">{isLive ? "Can I trust this telemetry path?" : "The decision surface, not the telemetry wall."}</h2>
-        <p>{isLive ? "CPU and memory are the evidence. The product question is whether the sample is fresh, the path is healthy and the public view has enough context to be trusted." : "This view is waiting for its first real telemetry sample."}</p>
+        <h2 id="triage-demo-title">The decision surface, not the telemetry wall.</h2>
+        <p>A model for deciding when an expensive training batch should keep capacity, be investigated or be paused. Live telemetry below validates the signal path, not this scenario.</p>
       </div>
 
       <div className="triage-surface">
         <header className="triage-surface-header">
-          <div className="triage-job-identity"><span className="triage-mark"><IconActivityHeartbeat size={16} /></span><b>{isLive ? "portfolio / telemetry" : "telemetry / awaiting signal"}</b><span>{isLive ? "mac-host-01" : "no replay"}</span></div>
+          <div className="triage-job-identity"><span className="triage-mark"><IconActivityHeartbeat size={16} /></span><b>compute / decision model</b><span>scenario, not live workload</span></div>
           <div className="triage-header-actions">
             <span className="triage-live"><i /> {isLive ? "Grafana Cloud" : "replay signals"}</span>
             <button type="button" aria-label="Refresh workload data"><IconRefresh size={15} /></button>
@@ -211,34 +210,34 @@ export function GpuJobTriageDemo() {
           </div>
         </header>
 
-        {!isLive && <div className="triage-scenario-bar">
-          <span><IconPlayerPlay size={14} /> Replay state</span>
+        <div className="triage-scenario-bar">
+          <span><IconPlayerPlay size={14} /> Decision scenario</span>
           <div role="group" aria-label="Choose a workload state">
             {(Object.keys(scenarios) as Scenario[]).map((name) => <button key={name} type="button" onClick={() => { setScenario(name); setDecisionApplied(false); }} className={scenario === name ? "is-selected" : ""}>{scenarios[name].label}</button>)}
           </div>
-        </div>}
+        </div>
 
         <div className="triage-layout-v3">
           <article className="triage-hero-card-v3">
-            <div className="triage-run-label"><i /> {isLive ? "Reporting" : "Awaiting telemetry"}</div>
+            <div className="triage-run-label"><i /> Modelled scenario</div>
             <ParticleField workers={data.workers} />
             <div className="triage-primary-reading">
-              <div className="triage-reading-title"><span>{isLive ? "Telemetry pipeline health" : "Distributed AI job"}</span><small><IconCpu size={15} /> {isLive ? `${workers} source` : `${workers} workers`}</small></div>
+              <div className="triage-reading-title"><span>Batch allocation decision</span><small><IconCpu size={15} /> {data.workers.length} decision signals</small></div>
               <div className="triage-big-metrics">
-                <div className="triage-metric-v4"><Bars value={liveMetrics ? Math.max(0, 100 - liveMetrics.freshnessSeconds * 4) : progress} tone={tone} /><div><strong>{isLive ? `${liveMetrics.freshnessSeconds}s` : `${progress}%`}</strong><span>{isLive ? "sample age" : "progress"} <em>{isLive ? "fresh" : "+2.5"}</em></span></div></div>
-                <div className="triage-metric-v4"><Bars value={liveMetrics ? liveMetrics.inputWaitMs : scenario === "blocked" ? 86 : scenario === "drift" ? 62 : 38} tone={tone} /><div><strong>{inputWait}</strong><span>{isLive ? "memory used" : "input wait"} <em>{isLive ? "live" : scenario === "baseline" ? "stable" : "rising"}</em></span></div></div>
+                <div className="triage-metric-v4"><Bars value={progress} tone={tone} /><div><strong>{progress}%</strong><span>GPU utilisation <em>{scenario === "baseline" ? "stable" : "falling"}</em></span></div></div>
+                <div className="triage-metric-v4"><Bars value={scenario === "blocked" ? 91 : scenario === "drift" ? 62 : 38} tone={tone} /><div><strong>{inputWait}</strong><span>cost at risk <em>{scenario === "baseline" ? "contained" : "rising"}</em></span></div></div>
               </div>
-              <p>{isLive ? "The last sample arrived through Grafana Cloud. Host condition is secondary context, not the dashboard's purpose." : data.detail}</p>
+              <p>{data.detail}</p>
               <div className="triage-wave"><IconWaveSine size={38} /><b>live</b></div>
             </div>
-            <footer><button type="button" onClick={() => isLive ? setRefreshKey(Date.now()) : setDecisionApplied(true)} aria-pressed={isLive ? undefined : decisionApplied}><IconActivityHeartbeat size={17} /> {isLive ? "Recheck signal path" : decisionApplied ? "Decision recorded" : data.action}<IconChevronRight size={16} /></button></footer>
+            <footer><button type="button" onClick={() => setDecisionApplied(true)} aria-pressed={decisionApplied}><IconActivityHeartbeat size={17} /> {decisionApplied ? "Decision recorded" : data.action}<IconChevronRight size={16} /></button></footer>
           </article>
 
           <aside className="triage-side-v3">
-            <div className="triage-panel-head"><h3><IconGauge size={18} /> {isLive ? "Signal history" : "Input wait"}</h3><button type="button" aria-label="Input wait options"><IconDots size={18} /></button></div>
+            <div className="triage-panel-head"><h3><IconGauge size={18} /> Cost exposure</h3><button type="button" aria-label="Cost exposure options"><IconDots size={18} /></button></div>
             <StepChart points={data.points} marker={data.marker} />
             <div className="triage-chart-labels"><span>00</span><span>15</span><span>30</span><span>45m</span></div>
-            <div className="triage-summary-stats"><div><IconBolt size={16} /><span>{isLive ? "CPU load" : "Throughput"}</span><b>{isLive ? `${progress}%` : throughput}</b></div><div><IconChartHistogram size={16} /><span>{isLive ? "Network interfaces" : "Queue"}</span><b>{isLive ? throughput : data.queue}</b></div><div><IconActivityHeartbeat size={16} /><span>{isLive ? "Host uptime" : "Retries"}</span><b>{isLive ? cost : data.retries}</b></div></div>
+            <div className="triage-summary-stats"><div><IconBolt size={16} /><span>Available capacity</span><b>{throughput}</b></div><div><IconChartHistogram size={16} /><span>Time at risk</span><b>{data.queue}</b></div><div><IconActivityHeartbeat size={16} /><span>Decision confidence</span><b>{data.retries}</b></div></div>
             <div className="triage-recommendation"><span>Recommended action</span><strong>{data.action}</strong><div><small>ETA <b>{data.eta}</b></small><small>Cost <b>{cost}</b></small></div></div>
           </aside>
         </div>
