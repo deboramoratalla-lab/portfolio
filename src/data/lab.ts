@@ -12,8 +12,8 @@ export const labEntries: LabEntry[] = [
   {
     slug: "gpu-job-triage",
     type: "Experiment",
-    title: "From a slow AI job to a clear next step.",
-    summary: "A local observability prototype that turns a distributed workload delay into an operator decision. Built to run with Grafana, Prometheus and Docker.",
+    title: "When should a costly AI batch keep running?",
+    summary: "A capacity decision model, with a separate real telemetry path that makes signal source and freshness inspectable.",
     date: "August 2026",
     readingTime: "4 min read",
     topics: ["AI infrastructure", "Observability", "Product design"],
