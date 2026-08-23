@@ -24,7 +24,7 @@ const widgetActions = [
 export function CiveoCase() {
   return <main className="civeo-page">
     <CaseHero className="civeo-hero" kickerClassName="civeo-hero-kicker" kicker={<><span>[CASE STUDY / 05]</span><span>&gt; MUNICIPAL OPERATIONS</span><i /><ArrowRouteLink variant="primary" tone="purple" href="/civeo/index.html" target="_blank" rel="noreferrer">Open prototype</ArrowRouteLink></>} title="Civeo /" premiseClassName="civeo-hero-premise" premise="I turned an Excel-led service process into one readable operating surface for internal teams working with municipal diputaciones." meta={<dl className="civeo-hero-meta case-hero-meta-unified">
-        <div><dt>Role</dt><dd>POC Product Designer</dd></div>
+        <div><dt>Role</dt><dd>Product Designer</dd></div>
         <div><dt>Users</dt><dd>15 internal workers as users and testers</dd></div>
         <div><dt>Stack</dt><dd>HTML · CSS · JavaScript · Leaflet · Open-Meteo</dd></div>
         <div><dt>My ownership</dt><dd>Product framing · Information architecture · Prototype</dd></div>
@@ -33,11 +33,11 @@ export function CiveoCase() {
     <CaseStudyIndex introduction="From fragmented service views to a shared operational model." chapters={[["01", "Find the lost context"], ["02", "Turn the hierarchy into a product"], ["03", "Make live data trustworthy"], ["04", "Keep the agent grounded"]]} hrefForChapter={number => `#civeo-${number}`} />
 
     <section className="civeo-scale" aria-label="Project scale">
-      <div className="civeo-scale-intro"><small>[ PROJECT SCOPE ]</small><p>A focused POC, tested with the people who would need to read the operation.</p></div>
+      <div className="civeo-scale-intro"><small>[ PROJECT SCOPE ]</small><p>A production implementation, shaped and tested with the people who needed to read the operation.</p></div>
       <div className="civeo-scale-grid">
         <article><small>Users and testers</small><strong>15</strong><p>Internal workers involved in operational workflows.</p></article>
         <article><small>Information model</small><strong>4 levels</strong><p>Province, category, section and operational panel.</p></article>
-        <article><small>Evidence</small><strong>Working POC</strong><p>A coded product with live states, editable widgets and an embedded assistant.</p></article>
+        <article><small>Evidence</small><strong>Deployed product</strong><p>A coded product with live states, editable widgets and an embedded assistant.</p></article>
       </div>
     </section>
 

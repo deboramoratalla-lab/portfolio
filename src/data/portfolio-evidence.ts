@@ -44,11 +44,11 @@ export const portfolioEvidence: PortfolioEvidence[] = [
   },
   {
     id: "civeo-poc",
-    label: "Civeo · coded municipal operations POC",
+    label: "Civeo · deployed municipal operations product",
     href: "/projects/civeo",
     claims: [
-      "Civeo turned an Excel-led municipal operations process into a working POC with four-level navigation, editable widgets, live and offline states, and a contextual assistant.",
-      "Debora built the prototype directly in HTML, CSS and JavaScript, with Leaflet and Open-Meteo, and used it with 15 internal workers. It was built as a working surface rather than a static Figma handoff.",
+      "Civeo turned an Excel-led municipal operations process into a deployed product with four-level navigation, editable widgets, live and offline states, and a contextual assistant.",
+      "Debora built the product directly in HTML, CSS and JavaScript, with Leaflet and Open-Meteo, and used it with 15 internal workers. It was implemented as a working operational surface rather than a static Figma handoff.",
     ],
   },
   {
