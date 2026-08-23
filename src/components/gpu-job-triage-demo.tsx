@@ -174,9 +174,9 @@ export function GpuJobTriageDemo() {
   const liveMetrics = cloud?.status === "live" ? cloud.metrics : undefined;
   const isLive = Boolean(liveMetrics);
   const progress = liveMetrics ? liveMetrics.progress : data.progress;
-  const inputWait = liveMetrics ? `${liveMetrics.inputWaitMs} ms` : data.inputWait;
-  const throughput = liveMetrics ? `${liveMetrics.throughput}/s` : data.throughput;
-  const cost = liveMetrics ? `$${liveMetrics.cost.toFixed(2)}` : "$7.11";
+  const inputWait = liveMetrics ? `${liveMetrics.inputWaitMs}%` : data.inputWait;
+  const throughput = liveMetrics ? `${liveMetrics.throughput} active` : data.throughput;
+  const cost = liveMetrics ? `${liveMetrics.cost.toFixed(1)}h` : "$7.11";
   const workers = liveMetrics ? liveMetrics.workers : 4;
 
   useEffect(() => {
@@ -222,35 +222,35 @@ export function GpuJobTriageDemo() {
             <div className="triage-run-label"><i /> {data.label}</div>
             <ParticleField workers={data.workers} />
             <div className="triage-primary-reading">
-              <div className="triage-reading-title"><span>Distributed AI job</span><small><IconCpu size={15} /> {workers} workers</small></div>
+              <div className="triage-reading-title"><span>{isLive ? "Mac telemetry" : "Distributed AI job"}</span><small><IconCpu size={15} /> {isLive ? `${workers} source` : `${workers} workers`}</small></div>
               <div className="triage-big-metrics">
-                <div className="triage-metric-v4"><Bars value={progress} tone={tone} /><div><strong>{progress}%</strong><span>progress <em>{isLive ? "live" : "+2.5"}</em></span></div></div>
-                <div className="triage-metric-v4"><Bars value={liveMetrics ? Math.min(100, liveMetrics.inputWaitMs / 4) : scenario === "blocked" ? 86 : scenario === "drift" ? 62 : 38} tone={tone} /><div><strong>{inputWait}</strong><span>input wait <em>{isLive ? "live" : scenario === "baseline" ? "stable" : "rising"}</em></span></div></div>
+                <div className="triage-metric-v4"><Bars value={progress} tone={tone} /><div><strong>{progress}%</strong><span>{isLive ? "CPU load" : "progress"} <em>{isLive ? "live" : "+2.5"}</em></span></div></div>
+                <div className="triage-metric-v4"><Bars value={liveMetrics ? liveMetrics.inputWaitMs : scenario === "blocked" ? 86 : scenario === "drift" ? 62 : 38} tone={tone} /><div><strong>{inputWait}</strong><span>{isLive ? "memory used" : "input wait"} <em>{isLive ? "live" : scenario === "baseline" ? "stable" : "rising"}</em></span></div></div>
               </div>
-              <p>{data.detail}</p>
+              <p>{isLive ? "Aggregated signals from this Mac, sampled every 15 seconds and queried through Grafana Cloud." : data.detail}</p>
               <div className="triage-wave"><IconWaveSine size={38} /><b>live</b></div>
             </div>
             <footer><button type="button" onClick={() => setDecisionApplied(true)} aria-pressed={decisionApplied}><IconActivityHeartbeat size={17} /> {decisionApplied ? "Decision recorded" : data.action}<IconChevronRight size={16} /></button></footer>
           </article>
 
           <aside className="triage-side-v3">
-            <div className="triage-panel-head"><h3><IconGauge size={18} /> Input wait</h3><button type="button" aria-label="Input wait options"><IconDots size={18} /></button></div>
+            <div className="triage-panel-head"><h3><IconGauge size={18} /> {isLive ? "Signal history" : "Input wait"}</h3><button type="button" aria-label="Input wait options"><IconDots size={18} /></button></div>
             <StepChart points={data.points} marker={data.marker} />
             <div className="triage-chart-labels"><span>00</span><span>15</span><span>30</span><span>45m</span></div>
-            <div className="triage-summary-stats"><div><IconBolt size={16} /><span>Throughput</span><b>{throughput}</b></div><div><IconChartHistogram size={16} /><span>Queue</span><b>{data.queue}</b></div><div><IconActivityHeartbeat size={16} /><span>Retries</span><b>{data.retries}</b></div></div>
+            <div className="triage-summary-stats"><div><IconBolt size={16} /><span>{isLive ? "Network interfaces" : "Throughput"}</span><b>{throughput}</b></div><div><IconChartHistogram size={16} /><span>{isLive ? "Sample cadence" : "Queue"}</span><b>{isLive ? "15s" : data.queue}</b></div><div><IconActivityHeartbeat size={16} /><span>{isLive ? "Host uptime" : "Retries"}</span><b>{isLive ? cost : data.retries}</b></div></div>
             <div className="triage-recommendation"><span>Recommended action</span><strong>{data.action}</strong><div><small>ETA <b>{data.eta}</b></small><small>Cost <b>{cost}</b></small></div></div>
           </aside>
         </div>
         <div className={`triage-decision-feedback ${decisionApplied ? "is-visible" : ""}`} aria-live="polite"><IconActivityHeartbeat size={15} /> {decisionApplied ? confirmation : "No decision recorded yet."}</div>
 
-        <section className="triage-worker-health" aria-label="Worker health status">
+        {!isLive && <section className="triage-worker-health" aria-label="Worker health status">
           <div className="triage-health-heading"><h3>Worker health</h3><span><i /> {scenario === "baseline" ? "all workers reporting" : "attention required"}</span></div>
           <div className="triage-worker-table" role="table">
             <div className="triage-worker-head" role="row"><span>Worker</span><span>Progress</span><span>Throughput</span><span>Input wait</span><span>Cost</span></div>
             {data.workers.map((worker) => <div className="triage-worker-row" role="row" key={worker.name}><span><IconCpu size={16} /> {worker.name}</span><Ring value={worker.progress} tone={worker.tone} /><span>{worker.throughput}</span><span className={`triage-wait-${worker.tone}`}>{worker.wait}</span><span>{worker.cost}</span></div>)}
           </div>
-        </section>
-        <footer className="triage-provenance"><span><i /> {isLive ? "Live signals from Grafana Cloud" : "Scenario-driven workload signals"}</span><span>Prometheus collector · Grafana dashboard · Docker compose</span></footer>
+        </section>}
+        <footer className="triage-provenance"><span><i /> {isLive ? "Live signals from this Mac via Grafana Cloud" : "Scenario-driven workload signals"}</span><span>{isLive ? "Local metrics emitter · Prometheus remote write · Grafana Cloud" : "Prometheus collector · Grafana dashboard · Docker compose"}</span></footer>
       </div>
     </section>
   );
