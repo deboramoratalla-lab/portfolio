@@ -177,7 +177,6 @@ export function GpuJobTriageDemo() {
   const inputWait = liveMetrics ? `${liveMetrics.inputWaitMs}%` : data.inputWait;
   const throughput = liveMetrics ? `${liveMetrics.throughput} active` : data.throughput;
   const cost = liveMetrics ? `${liveMetrics.cost.toFixed(1)}h` : "$7.11";
-  const workers = liveMetrics ? liveMetrics.workers : 4;
 
   useEffect(() => {
     let active = true;
