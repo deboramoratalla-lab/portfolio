@@ -161,8 +161,10 @@ function Ring({ value, tone }: { value: number; tone: Worker["tone"] }) {
 
 export function GpuJobTriageDemo() {
   const [scenario, setScenario] = useState<Scenario>("baseline");
+  const [decisionApplied, setDecisionApplied] = useState(false);
   const data = scenarios[scenario];
   const tone = scenario === "blocked" ? "orange" : scenario === "drift" ? "lime" : "cyan";
+  const confirmation = scenario === "baseline" ? "Allocation kept. The next check is scheduled in 10 minutes." : scenario === "drift" ? "Triage opened for worker-04. Scaling remains on hold." : "Input dependency marked for escalation. GPU scaling remains paused.";
 
   return (
     <section className="gpu-triage-demo" aria-labelledby="triage-demo-title">
@@ -185,7 +187,7 @@ export function GpuJobTriageDemo() {
         <div className="triage-scenario-bar">
           <span><IconPlayerPlay size={14} /> Replay state</span>
           <div role="group" aria-label="Choose a workload state">
-            {(Object.keys(scenarios) as Scenario[]).map((name) => <button key={name} type="button" onClick={() => setScenario(name)} className={scenario === name ? "is-selected" : ""}>{scenarios[name].label}</button>)}
+            {(Object.keys(scenarios) as Scenario[]).map((name) => <button key={name} type="button" onClick={() => { setScenario(name); setDecisionApplied(false); }} className={scenario === name ? "is-selected" : ""}>{scenarios[name].label}</button>)}
           </div>
         </div>
 
@@ -196,13 +198,13 @@ export function GpuJobTriageDemo() {
             <div className="triage-primary-reading">
               <div className="triage-reading-title"><span>Distributed AI job</span><small><IconCpu size={15} /> 4 workers</small></div>
               <div className="triage-big-metrics">
-                <div><Bars value={data.progress} tone={tone} /><strong>{data.progress}%</strong><span>progress <em>+2.5</em></span></div>
-                <div><Bars value={scenario === "blocked" ? 86 : scenario === "drift" ? 62 : 38} tone={tone} /><strong>{data.inputWait}</strong><span>input wait <em>{scenario === "baseline" ? "stable" : "rising"}</em></span></div>
+                <div className="triage-metric-v4"><Bars value={data.progress} tone={tone} /><div><strong>{data.progress}%</strong><span>progress <em>+2.5</em></span></div></div>
+                <div className="triage-metric-v4"><Bars value={scenario === "blocked" ? 86 : scenario === "drift" ? 62 : 38} tone={tone} /><div><strong>{data.inputWait}</strong><span>input wait <em>{scenario === "baseline" ? "stable" : "rising"}</em></span></div></div>
               </div>
               <p>{data.detail}</p>
               <div className="triage-wave"><IconWaveSine size={38} /><b>live</b></div>
             </div>
-            <footer><button type="button"><IconActivityHeartbeat size={17} /> {data.action}<IconChevronRight size={16} /></button></footer>
+            <footer><button type="button" onClick={() => setDecisionApplied(true)} aria-pressed={decisionApplied}><IconActivityHeartbeat size={17} /> {decisionApplied ? "Decision recorded" : data.action}<IconChevronRight size={16} /></button></footer>
           </article>
 
           <aside className="triage-side-v3">
@@ -213,6 +215,7 @@ export function GpuJobTriageDemo() {
             <div className="triage-recommendation"><span>Recommended action</span><strong>{data.action}</strong><div><small>ETA <b>{data.eta}</b></small><small>Cost <b>$7.11</b></small></div></div>
           </aside>
         </div>
+        <div className={`triage-decision-feedback ${decisionApplied ? "is-visible" : ""}`} aria-live="polite"><IconActivityHeartbeat size={15} /> {decisionApplied ? confirmation : "No decision recorded yet."}</div>
 
         <section className="triage-worker-health" aria-label="Worker health status">
           <div className="triage-health-heading"><h3>Worker health</h3><span><i /> {scenario === "baseline" ? "all workers reporting" : "attention required"}</span></div>
