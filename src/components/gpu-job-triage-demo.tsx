@@ -164,32 +164,14 @@ function Ring({ value, tone }: { value: number; tone: Worker["tone"] }) {
   return <span className={`triage-ring triage-ring-${tone}`}><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r={radius} /><circle cx="24" cy="24" r={radius} strokeDasharray={`${(value / 100) * circumference} ${circumference}`} /></svg><b>{value}%</b></span>;
 }
 
-export function GpuJobTriageDemo() {
+export function GpuJobTriageDecisionDemo() {
   const [scenario, setScenario] = useState<Scenario>("baseline");
   const [decisionApplied, setDecisionApplied] = useState(false);
-  const [cloud, setCloud] = useState<CloudSnapshot | null>(null);
   const data = scenarios[scenario];
   const tone = scenario === "blocked" ? "orange" : scenario === "drift" ? "lime" : "cyan";
   const confirmation = scenario === "baseline" ? "Allocation kept. The next check is scheduled in 10 minutes." : scenario === "drift" ? "Triage opened for worker-04. Scaling remains on hold." : "Input dependency marked for escalation. GPU scaling remains paused.";
-  const liveMetrics = cloud?.status === "live" ? cloud.metrics : undefined;
-  const isLive = Boolean(liveMetrics);
-  const progress = liveMetrics ? liveMetrics.progress : data.progress;
-  const inputWait = liveMetrics ? `${liveMetrics.inputWaitMs}%` : data.inputWait;
-  const throughput = liveMetrics ? `${liveMetrics.throughput} active` : data.throughput;
-  const cost = liveMetrics ? `${liveMetrics.cost.toFixed(1)}h` : "$7.11";
-
-  useEffect(() => {
-    let active = true;
-    const update = async () => {
-      try {
-        const response = await fetch("/api/gpu-job-triage", { cache: "no-store" });
-        if (response.ok && active) setCloud(await response.json() as CloudSnapshot);
-      } catch { /* The offline state remains explicit when the source cannot be reached. */ }
-    };
-    void update();
-    const interval = window.setInterval(update, 15000);
-    return () => { active = false; window.clearInterval(interval); };
-  }, []);
+  const { progress, inputWait, throughput } = data;
+  const cost = "$7.11";
 
   return (
     <section className="gpu-triage-demo" aria-labelledby="triage-demo-title">
@@ -203,7 +185,7 @@ export function GpuJobTriageDemo() {
         <header className="triage-surface-header">
           <div className="triage-job-identity"><span className="triage-mark"><IconActivityHeartbeat size={16} /></span><b>compute / decision model</b><span>scenario, not live workload</span></div>
           <div className="triage-header-actions">
-            <span className="triage-live"><i /> {isLive ? "Grafana Cloud" : "replay signals"}</span>
+            <span className="triage-live"><i /> decision scenario</span>
             <button type="button" aria-label="Refresh workload data"><IconRefresh size={15} /></button>
             <button type="button" aria-label="More options"><IconDots size={17} /></button>
           </div>
@@ -242,26 +224,85 @@ export function GpuJobTriageDemo() {
         </div>
         <div className={`triage-decision-feedback ${decisionApplied ? "is-visible" : ""}`} aria-live="polite"><IconActivityHeartbeat size={15} /> {decisionApplied ? confirmation : "No decision recorded yet."}</div>
 
-        <section className="triage-worker-health" aria-label={isLive ? "Signal health" : "Worker health status"}>
-          {isLive ? <>
-            <div className="triage-health-heading"><h3>Signal health</h3><span><i /> end-to-end reporting</span></div>
-            <div className="triage-worker-table" role="table">
-              <div className="triage-worker-head" role="row"><span>Source</span><span>State</span><span>Cadence</span><span>Boundary</span><span>Evidence</span></div>
-              <div className="triage-worker-row" role="row"><span><IconCpu size={16} /> Mac metrics emitter</span><span className="triage-wait-cyan">Reporting</span><span>15 s</span><span>Local</span><span>CPU · memory</span></div>
-              <div className="triage-worker-row" role="row"><span><IconWaveSine size={16} /> Prometheus remote write</span><span className="triage-wait-cyan">Delivered</span><span>15 s</span><span>Encrypted</span><span>Time series</span></div>
-              <div className="triage-worker-row" role="row"><span><IconGauge size={16} /> Grafana Cloud</span><span className="triage-wait-cyan">Queried</span><span>15 s</span><span>Private API</span><span>Latest sample</span></div>
-              <div className="triage-worker-row" role="row"><span><IconActivityHeartbeat size={16} /> Portfolio dashboard</span><span className="triage-wait-cyan">Polling</span><span>15 s</span><span>Public view</span><span>Aggregate only</span></div>
-            </div>
-          </> : <>
-            <div className="triage-health-heading"><h3>Worker health</h3><span><i /> {scenario === "baseline" ? "all workers reporting" : "attention required"}</span></div>
-            <div className="triage-worker-table" role="table">
-              <div className="triage-worker-head" role="row"><span>Worker</span><span>Progress</span><span>Throughput</span><span>Input wait</span><span>Cost</span></div>
-              {data.workers.map((worker) => <div className="triage-worker-row" role="row" key={worker.name}><span><IconCpu size={16} /> {worker.name}</span><Ring value={worker.progress} tone={worker.tone} /><span>{worker.throughput}</span><span className={`triage-wait-${worker.tone}`}>{worker.wait}</span><span>{worker.cost}</span></div>)}
-            </div>
-          </>}
+        <section className="triage-worker-health" aria-label="Modelled worker health">
+          <div className="triage-health-heading"><h3>Worker health</h3><span><i /> {scenario === "baseline" ? "all workers reporting" : "attention required"}</span></div>
+          <div className="triage-worker-table" role="table">
+            <div className="triage-worker-head" role="row"><span>Worker</span><span>Progress</span><span>Throughput</span><span>Input wait</span><span>Cost</span></div>
+            {data.workers.map((worker) => <div className="triage-worker-row" role="row" key={worker.name}><span><IconCpu size={16} /> {worker.name}</span><Ring value={worker.progress} tone={worker.tone} /><span>{worker.throughput}</span><span className={`triage-wait-${worker.tone}`}>{worker.wait}</span><span>{worker.cost}</span></div>)}
+          </div>
         </section>
-        <footer className="triage-provenance"><span><i /> {isLive ? "Live signals from this Mac via Grafana Cloud" : "Scenario-driven workload signals"}</span><span>{isLive ? "Local metrics emitter · Prometheus remote write · Grafana Cloud" : "Prometheus collector · Grafana dashboard · Docker compose"}</span></footer>
+        <footer className="triage-provenance"><span><i /> Scenario-driven workload signals</span><span>Conceptual model · no production workload data</span></footer>
       </div>
     </section>
   );
+}
+
+export function TelemetryEvidenceDemo() {
+  const [cloud, setCloud] = useState<CloudSnapshot | null>(null);
+  const [refreshing, setRefreshing] = useState(false);
+  const live = cloud?.status === "live" ? cloud.metrics : undefined;
+
+  const refresh = async () => {
+    setRefreshing(true);
+    try {
+      const response = await fetch("/api/gpu-job-triage", { cache: "no-store" });
+      if (response.ok) setCloud(await response.json() as CloudSnapshot);
+    } finally {
+      window.setTimeout(() => setRefreshing(false), 350);
+    }
+  };
+
+  useEffect(() => {
+    const initial = window.setTimeout(() => void refresh(), 0);
+    const interval = window.setInterval(() => void refresh(), 15_000);
+    return () => { window.clearTimeout(initial); window.clearInterval(interval); };
+  }, []);
+
+  const state = live ? "Reporting" : cloud?.status === "no-data" ? "Awaiting signal" : "Checking";
+  const age = live ? `${live.freshnessSeconds}s ago` : "—";
+
+  return <section className="gpu-triage-demo telemetry-evidence" aria-labelledby="telemetry-evidence-title">
+    <div className="triage-demo-intro">
+      <span>Technical evolution</span>
+      <h2 id="telemetry-evidence-title">A real signal path, kept separate from the scenario.</h2>
+      <p>This second prototype verifies source, freshness and privacy boundaries. It publishes selected aggregate metrics from this Mac, not GPU or customer data.</p>
+    </div>
+    <div className="triage-surface">
+      <header className="triage-surface-header">
+        <div className="triage-job-identity"><span className="triage-mark"><IconWaveSine size={16} /></span><b>portfolio / telemetry</b><span>aggregate host signals only</span></div>
+        <div className="triage-header-actions"><span className="triage-live"><i /> {live ? "Grafana Cloud" : state}</span><button type="button" onClick={() => void refresh()} aria-label="Refresh telemetry"><IconRefresh className={refreshing ? "is-spinning" : ""} size={15} /></button></div>
+      </header>
+      <div className="triage-layout-v3 telemetry-evidence-layout">
+        <article className="triage-hero-card-v3">
+          <div className="triage-run-label"><i /> {state}</div>
+          <ParticleField workers={scenarios.baseline.workers} />
+          <div className="triage-primary-reading">
+            <div className="triage-reading-title"><span>Signal freshness</span><small><IconActivityHeartbeat size={15} /> 15s cadence</small></div>
+            <div className="triage-big-metrics">
+              <div className="triage-metric-v4"><Bars value={live ? Math.max(4, 100 - live.freshnessSeconds * 4) : 0} tone="cyan" /><div><strong>{age}</strong><span>latest sample <em>{live ? "verified" : "pending"}</em></span></div></div>
+              <div className="triage-metric-v4"><Bars value={live?.progress ?? 0} tone="cyan" /><div><strong>{live ? `${live.progress}%` : "—"}</strong><span>CPU load <em>aggregate</em></span></div></div>
+            </div>
+            <p>Only selected aggregates are exposed. Host name, IP address, processes, Grafana workspace and credentials remain private.</p>
+            <div className="triage-wave"><IconWaveSine size={38} /><b>{live ? "live" : "waiting"}</b></div>
+          </div>
+        </article>
+        <aside className="triage-side-v3">
+          <div className="triage-panel-head"><h3><IconGauge size={18} /> Evidence boundary</h3><button type="button" aria-label="Evidence options"><IconDots size={18} /></button></div>
+          <div className="triage-summary-stats telemetry-summary"><div><IconCpu size={16} /><span>Memory used</span><b>{live ? `${live.inputWaitMs}%` : "—"}</b></div><div><IconChartHistogram size={16} /><span>Network interfaces</span><b>{live ? live.throughput : "—"}</b></div><div><IconBolt size={16} /><span>Host uptime</span><b>{live ? `${live.cost.toFixed(1)}h` : "—"}</b></div></div>
+          <div className="triage-recommendation"><span>Product reading</span><strong>{live ? "The evidence path is fresh enough to trust." : "No recent signal is available yet."}</strong><div><small>Source <b>Mac</b></small><small>Query <b>Private API</b></small></div></div>
+        </aside>
+      </div>
+      <section className="triage-worker-health" aria-label="Signal health">
+        <div className="triage-health-heading"><h3>Signal health</h3><span><i /> {live ? "end-to-end reporting" : "awaiting evidence"}</span></div>
+        <div className="triage-worker-table" role="table">
+          <div className="triage-worker-head" role="row"><span>Source</span><span>State</span><span>Cadence</span><span>Boundary</span><span>Evidence</span></div>
+          <div className="triage-worker-row" role="row"><span><IconCpu size={16} /> Mac metrics emitter</span><span className="triage-wait-cyan">{state}</span><span>15 s</span><span>Local</span><span>CPU · memory</span></div>
+          <div className="triage-worker-row" role="row"><span><IconWaveSine size={16} /> Prometheus remote write</span><span className="triage-wait-cyan">{live ? "Delivered" : "Checking"}</span><span>15 s</span><span>Encrypted</span><span>Time series</span></div>
+          <div className="triage-worker-row" role="row"><span><IconGauge size={16} /> Grafana Cloud</span><span className="triage-wait-cyan">{live ? "Queried" : "Checking"}</span><span>15 s</span><span>Private API</span><span>Latest sample</span></div>
+          <div className="triage-worker-row" role="row"><span><IconActivityHeartbeat size={16} /> Portfolio dashboard</span><span className="triage-wait-cyan">{live ? "Polling" : "Waiting"}</span><span>15 s</span><span>Public view</span><span>Aggregate only</span></div>
+        </div>
+      </section>
+      <footer className="triage-provenance"><span><i /> Live signals from this Mac via Grafana Cloud</span><span>Local emitter · Prometheus remote write · Grafana Cloud</span></footer>
+    </div>
+  </section>;
 }

@@ -26,6 +26,14 @@ export function InfrastructureDashboardCover() {
   </div>
 }
 
+export function CapacityDecisionCover() {
+  return <div className="infrastructure-cover capacity-decision-cover" aria-hidden="true">
+    <header><span>Compute / decision model</span><i>Scenario</i></header>
+    <div className="infrastructure-cover-chart"><span>GPU utilisation</span><strong>42%</strong><svg viewBox="0 0 100 100" preserveAspectRatio="none"><path className="infrastructure-chart-grid" d="M0 20H100M0 50H100M0 80H100" /><path className="infrastructure-chart-threshold" d="M0 35H100" /><path className="infrastructure-chart-line" d="M5 32 L16 35 L28 34 L39 43 L50 47 L62 52 L73 56 L84 61 L95 66" /></svg></div>
+    <footer><span>Cost at risk · €42/hr</span><b>Inspect before scaling</b></footer>
+  </div>
+}
+
 export function InfrastructureDashboardDemo() {
   const [clusterId, setClusterId] = useState<(typeof clusters)[number]["id"]>("north")
   const [range, setRange] = useState<(typeof ranges)[number]>("24h")

@@ -6,7 +6,7 @@ import { CaseSectionLabel } from "@/components/case-section-label"
 import { ArrowLink, ArrowRouteLink } from "@/components/ui-links"
 import { OpenPortfolioAgentLink } from "@/components/open-portfolio-agent-link"
 import { DesignSystemHealthDemo } from "@/components/design-system-health-demo"
-import { GpuJobTriageDemo } from "@/components/gpu-job-triage-demo"
+import { GpuJobTriageDecisionDemo, TelemetryEvidenceDemo } from "@/components/gpu-job-triage-demo"
 import { getLabEntry, labEntries } from "@/data/lab"
 
 type ArticleSection = { title: string; paragraphs: string[]; points?: string[] }
@@ -379,7 +379,7 @@ export default async function LabArticle({ params }: { params: Promise<{ slug: s
       {entry.slug === "figma-plugin-component-apis" && <FigmaPluginEvidence />}
       {entry.slug === "smallest-useful-accessibility-pipeline" && <AccessibilityEvidence />}
       {entry.slug === "metrics-are-not-decisions" && <DesignSystemHealthDemo />}
-      {entry.slug === "gpu-job-triage" && <GpuJobTriageDemo />}
+      {entry.slug === "gpu-job-triage" && <><GpuJobTriageDecisionDemo /><TelemetryEvidenceDemo /></>}
       <ReusableResources slug={entry.slug} />
       <footer className="lab-article-close">
         <span>[ What I’m taking forward ]</span>

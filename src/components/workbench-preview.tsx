@@ -2,7 +2,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { ArrowUpRight } from "@/components/arrow-up-right"
 import { ArrowRouteLink } from "@/components/ui-links"
-import { InfrastructureDashboardCover } from "@/components/infrastructure-dashboard-demo"
+import { CapacityDecisionCover, InfrastructureDashboardCover } from "@/components/infrastructure-dashboard-demo"
 import type { LabEntry } from "@/data/lab"
 
 const HOME_LAB_LIMIT = 5
@@ -28,7 +28,9 @@ export function WorkbenchPreview({ entries }: { entries: LabEntry[] }) {
           <span className="home-lab-card-action">Read more <ArrowUpRight /></span>
         </div>
         <figure className="home-lab-feature-media">
-          {featuredEntry.slug === "metrics-are-not-decisions" || featuredEntry.slug === "gpu-job-triage"
+          {featuredEntry.slug === "gpu-job-triage"
+            ? <CapacityDecisionCover />
+            : featuredEntry.slug === "metrics-are-not-decisions"
             ? <InfrastructureDashboardCover />
             : <Image src={LAB_COVERS[featuredEntry.slug].src} alt={LAB_COVERS[featuredEntry.slug].alt} fill sizes="(max-width: 800px) 100vw, 45vw" />}
         </figure>
