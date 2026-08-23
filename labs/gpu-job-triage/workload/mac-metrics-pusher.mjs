@@ -59,7 +59,7 @@ function snappyLiteral(input) {
 function networkBytes() {
   const interfaces = os.networkInterfaces();
   // Node does not expose byte counters on macOS, so only aggregate active interface count.
-  return Object.values(interfaces).flat().filter((entry) => entry && !entry.internal).length;
+  return Object.entries(interfaces).filter(([name, entries]) => name !== "lo0" && entries?.some((entry) => !entry.internal)).length;
 }
 
 function collect() {
