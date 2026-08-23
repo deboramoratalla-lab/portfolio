@@ -16,8 +16,9 @@ async function query(expression: string, config: GrafanaConfig) {
   });
   if (!response.ok) throw new Error(`Grafana Cloud returned ${response.status}`);
   const payload = await response.json() as PrometheusResponse;
-  const raw = payload.data?.result?.[0]?.value?.[1];
-  return raw === undefined ? null : Number(raw);
+  const sample = payload.data?.result?.[0]?.value;
+  if (!sample) return null;
+  return { value: Number(sample[1]), timestamp: Number(sample[0]) };
 }
 
 export async function GET() {
@@ -47,11 +48,12 @@ export async function GET() {
       status: "live",
       updatedAt: new Date().toISOString(),
       metrics: {
-        progress: Math.round(progress),
-        inputWaitMs: Math.round(inputWaitSeconds),
-        throughput: Number(throughput.toFixed(2)),
-        cost: Number((cost ?? 0).toFixed(2)),
-        workers: Math.round(workerCount ?? 0),
+        progress: Math.round(progress.value),
+        inputWaitMs: Math.round(inputWaitSeconds.value),
+        throughput: Number(throughput.value.toFixed(2)),
+        cost: Number((cost?.value ?? 0).toFixed(2)),
+        workers: Math.round(workerCount?.value ?? 0),
+        freshnessSeconds: Math.max(0, Math.round(Date.now() / 1000 - progress.timestamp)),
       },
     });
   } catch {
