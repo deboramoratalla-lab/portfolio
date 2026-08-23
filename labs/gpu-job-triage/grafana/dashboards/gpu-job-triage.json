@@ -37,6 +37,24 @@
       "targets": [{ "expr": "training_delay_cost_eur", "refId": "A" }],
       "title": "Estimated delay cost",
       "type": "stat"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": { "defaults": { "unit": "s" }, "overrides": [] },
+      "gridPos": { "h": 9, "w": 12, "x": 0, "y": 18 },
+      "id": 5,
+      "targets": [{ "expr": "training_worker_input_wait_seconds", "legendFormat": "{{worker}}", "refId": "A" }],
+      "title": "Input wait",
+      "type": "timeseries"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": { "defaults": { "unit": "ops" }, "overrides": [] },
+      "gridPos": { "h": 9, "w": 12, "x": 12, "y": 18 },
+      "id": 6,
+      "targets": [{ "expr": "training_worker_throughput", "legendFormat": "{{worker}}", "refId": "A" }],
+      "title": "Worker throughput",
+      "type": "timeseries"
     }
   ],
   "schemaVersion": 41,
