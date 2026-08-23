@@ -256,6 +256,8 @@ body .case-story-nav::before{
 .gpu-triage-demo .triage-big-metrics strong{display:block;font-size:clamp(32px,3vw,45px);line-height:.82;white-space:nowrap}
 .gpu-triage-demo .triage-metric-v4:last-child strong{font-size:clamp(28px,2.65vw,39px)}
 .gpu-triage-demo .triage-metric-v4 span{display:block;font-size:11px;line-height:1;white-space:nowrap}
+.gpu-triage-demo .triage-primary-reading>p{max-width:100%;margin:34px 0 0!important;padding-top:18px;border-top:1px solid rgba(207,212,223,.16);font-size:12px!important;line-height:1.48!important}
+.gpu-triage-demo .triage-wave{margin-top:22px}
 .gpu-triage-demo .triage-decision-feedback{display:none;align-items:center;gap:8px;padding:10px 18px;border-bottom:1px solid #2b2d33;background:#162324;color:#78e9e7;font:11px/1.35 var(--font-mono)}
 .gpu-triage-demo .triage-decision-feedback.is-visible{display:flex}
 .gpu-triage-demo .triage-hero-card-v3>footer button[aria-pressed="true"]{color:#eff45a}
