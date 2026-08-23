@@ -12,11 +12,11 @@ export const labEntries: LabEntry[] = [
   {
     slug: "gpu-job-triage",
     type: "Experiment",
-    title: "When should a costly AI batch keep running?",
-    summary: "A decision model for GPU capacity and cost, paired with a real telemetry path that makes the source and freshness of its evidence inspectable.",
+    title: "From a slow AI job to a clear next step.",
+    summary: "A local observability prototype that turns a distributed workload delay into an operator decision. Built to run with Grafana, Prometheus and Docker.",
     date: "August 2026",
     readingTime: "4 min read",
-    topics: ["AI infrastructure", "Observability", "Decision design"],
+    topics: ["AI infrastructure", "Observability", "Product design"],
   },
   {
     slug: "metrics-are-not-decisions",
