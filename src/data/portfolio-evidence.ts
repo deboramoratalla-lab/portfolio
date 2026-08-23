@@ -43,7 +43,7 @@ export const portfolioEvidence: PortfolioEvidence[] = [
     ],
   },
   {
-    id: "civeo-poc",
+    id: "civeo-deployed-product",
     label: "Civeo · deployed municipal operations product",
     href: "/projects/civeo",
     claims: [

@@ -23,11 +23,11 @@ const widgetActions = [
 
 export function CiveoCase() {
   return <main className="civeo-page">
-    <CaseHero className="civeo-hero" kickerClassName="civeo-hero-kicker" kicker={<><span>[CASE STUDY / 05]</span><span>&gt; MUNICIPAL OPERATIONS</span><i /><ArrowRouteLink variant="primary" tone="purple" href="/civeo/index.html" target="_blank" rel="noreferrer">Open prototype</ArrowRouteLink></>} title="Civeo /" premiseClassName="civeo-hero-premise" premise="I turned an Excel-led service process into one readable operating surface for internal teams working with municipal diputaciones." meta={<dl className="civeo-hero-meta case-hero-meta-unified">
+    <CaseHero className="civeo-hero" kickerClassName="civeo-hero-kicker" kicker={<><span>[CASE STUDY / 05]</span><span>&gt; MUNICIPAL OPERATIONS</span><i /><ArrowRouteLink variant="primary" tone="purple" href="/civeo/index.html" target="_blank" rel="noreferrer">Open product</ArrowRouteLink></>} title="Civeo /" premiseClassName="civeo-hero-premise" premise="I turned an Excel-led service process into one readable operating surface for internal teams working with municipal diputaciones." meta={<dl className="civeo-hero-meta case-hero-meta-unified">
         <div><dt>Role</dt><dd>Product Designer</dd></div>
         <div><dt>Users</dt><dd>15 internal workers as users and testers</dd></div>
         <div><dt>Stack</dt><dd>HTML · CSS · JavaScript · Leaflet · Open-Meteo</dd></div>
-        <div><dt>My ownership</dt><dd>Product framing · Information architecture · Prototype</dd></div>
+        <div><dt>My ownership</dt><dd>Product framing · Information architecture · Implementation</dd></div>
       </dl>} />
 
     <CaseStudyIndex introduction="From fragmented service views to a shared operational model." chapters={[["01", "Find the lost context"], ["02", "Turn the hierarchy into a product"], ["03", "Make live data trustworthy"], ["04", "Keep the agent grounded"]]} hrefForChapter={number => `#civeo-${number}`} />
@@ -50,7 +50,7 @@ export function CiveoCase() {
       <div className="civeo-opening-copy">
         <h2>The data existed. The operating context had to be rebuilt every time.</h2>
         <p>Teams relied on Excel and separate service views. A worker could find an individual number, but understanding its province, service and next action required memory and repeated explanation.</p>
-        <p>I treated the brief as an information architecture problem. The POC had to preserve the question a person was answering while they moved from a provincial overview into operational detail.</p>
+        <p>I treated the brief as an information architecture problem. The product had to preserve the question a person was answering while they moved from a provincial overview into operational detail.</p>
         <div className="civeo-context-table"><div><span>Starting point</span><b>Excel and disconnected views</b></div><div><span>Design question</span><b>How can context survive the route?</b></div><div><span>Constraint</span><b>Stay useful when live data fails</b></div></div>
       </div>
     </section>
@@ -73,11 +73,11 @@ export function CiveoCase() {
     </section>
 
     <section className="civeo-section civeo-demo">
-      <div className="civeo-section-head"><CaseSectionLabel number="02.02" dark className="civeo-label">Working prototype</CaseSectionLabel><h2>The interaction is evidence.</h2><p>The sequence shows the model at a glance. The embedded version underneath lets you change province, edit the dashboard and open the assistant yourself.</p></div>
+      <div className="civeo-section-head"><CaseSectionLabel number="02.02" dark className="civeo-label">Product implementation</CaseSectionLabel><h2>The interaction is evidence.</h2><p>The sequence shows the product at a glance. The embedded version underneath lets you change province, edit the dashboard and open the assistant yourself.</p></div>
       <figure className="civeo-gif"><Image src="/media/civeo-flow.gif" alt="Civeo dashboard workflow" width={1280} height={720} unoptimized /><figcaption>Dashboard context, widget editing and the contextual assistant in one short flow.</figcaption></figure>
-      <div className="civeo-prototype-head"><span>INTERACTIVE PROTOTYPE</span><Link href="/civeo/index.html" target="_blank">Open in a new tab ↗</Link></div>
+      <div className="civeo-prototype-head"><span>INTERACTIVE PRODUCT</span><Link href="/civeo/index.html" target="_blank">Open in a new tab ↗</Link></div>
       <p className="civeo-prototype-mobile-note">The complete operating surface is available in a dedicated tab on smaller screens.</p>
-      <iframe className="civeo-prototype" src="/civeo/index.html?embed=1" title="Interactive Civeo municipal operations prototype" loading="lazy" />
+      <iframe className="civeo-prototype" src="/civeo/index.html?embed=1" title="Interactive Civeo municipal operations product" loading="lazy" />
     </section>
 
     <section className="civeo-section civeo-live" id="civeo-03">
@@ -91,8 +91,8 @@ export function CiveoCase() {
     </section>
 
     <section className="civeo-section civeo-making">
-      <div><CaseSectionLabel number="04.01" className="civeo-label">How I worked</CaseSectionLabel><h2>AI accelerated the prototype. Product judgment set its boundaries.</h2></div>
-      <div><p>I worked as the POC designer and used Claude and Codex during exploration and implementation. I defined the hierarchy, interaction rules, data states and the limit of the assistant.</p><p>The 15 workers were the users and testers. I reviewed the result in the browser and against the code, including persistence, province changes, Open-Meteo states and assistant actions.</p></div>
+      <div><CaseSectionLabel number="04.01" className="civeo-label">How I worked</CaseSectionLabel><h2>AI accelerated implementation. Product judgment set its boundaries.</h2></div>
+      <div><p>I worked as the Product Designer and used Claude and Codex during exploration and implementation. I defined the hierarchy, interaction rules, data states and the limit of the assistant.</p><p>The 15 workers were the users and testers. I reviewed the result in the browser and against the code, including persistence, province changes, Open-Meteo states and assistant actions.</p></div>
     </section>
 
     <section className="civeo-section civeo-close"><CaseSectionLabel number="04.02" dark className="civeo-label">What this proved</CaseSectionLabel><b>A shared operational model people could inspect and challenge.</b><hr /><h2>The interface became useful when it stopped asking people to reconstruct the system in their heads.</h2></section>

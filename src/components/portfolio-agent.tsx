@@ -50,7 +50,7 @@ function answerQuestion(question: string): AgentAnswer {
   if (/seniority|ownership|decision-making|decision making|how senior/.test(q)) return answers.seniority
   if (/risk|gap|probe|interview|question/.test(q)) return answers.interview
   if (/90|tour|recorrido|quick|rápid/.test(q)) return answers.tour
-  if (/civeo|municipal|municipio|operations poc|operations surface|excel-led/.test(q)) return answers.civeo
+  if (/civeo|municipal|municipio|operations product|operations surface|excel-led/.test(q)) return answers.civeo
   if (/coded prototype|code prototype|prototype.*code|prototyp.*code|without figma|sin figma|before figma|prototyping|prototipo|working poc|working prototype/.test(q)) return answers.prototypes
   if (/enterprise|suez|board|workflow|complex|complej/.test(q)) return answers.enterprise
   if (/lead|senior|stakeholder|collabor|hire|hiring|contrat/.test(q)) return answers.leadership
