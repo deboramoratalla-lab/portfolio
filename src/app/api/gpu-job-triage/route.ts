@@ -34,11 +34,11 @@ export async function GET() {
 
   try {
     const [progress, inputWaitSeconds, throughput, cost, workerCount] = await Promise.all([
-      query("avg(training_worker_progress) * 100", config),
-      query("avg(training_worker_input_wait_seconds) * 1000", config),
-      query("sum(training_worker_throughput)", config),
-      query("training_delay_cost_eur", config),
-      query("count(training_worker_progress)", config),
+      query("avg(portfolio_mac_cpu_load_percent)", config),
+      query("avg(portfolio_mac_memory_used_percent)", config),
+      query("max(portfolio_mac_active_network_interfaces)", config),
+      query("max(portfolio_mac_uptime_seconds) / 3600", config),
+      query("count(portfolio_mac_cpu_load_percent)", config),
     ]);
     if (progress === null || inputWaitSeconds === null || throughput === null) {
       return NextResponse.json({ status: "no-data", updatedAt: new Date().toISOString() });
