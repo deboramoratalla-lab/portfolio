@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   IconActivityHeartbeat,
   IconBolt,
@@ -23,6 +23,11 @@ type Worker = {
   wait: string;
   cost: string;
   tone: "cyan" | "lime" | "orange" | "muted";
+};
+
+type CloudSnapshot = {
+  status: "live" | "no-data" | "not-configured" | "unavailable";
+  metrics?: { progress: number; inputWaitMs: number; throughput: number; cost: number; workers: number };
 };
 
 const scenarios = {
@@ -162,9 +167,30 @@ function Ring({ value, tone }: { value: number; tone: Worker["tone"] }) {
 export function GpuJobTriageDemo() {
   const [scenario, setScenario] = useState<Scenario>("baseline");
   const [decisionApplied, setDecisionApplied] = useState(false);
+  const [cloud, setCloud] = useState<CloudSnapshot | null>(null);
   const data = scenarios[scenario];
   const tone = scenario === "blocked" ? "orange" : scenario === "drift" ? "lime" : "cyan";
   const confirmation = scenario === "baseline" ? "Allocation kept. The next check is scheduled in 10 minutes." : scenario === "drift" ? "Triage opened for worker-04. Scaling remains on hold." : "Input dependency marked for escalation. GPU scaling remains paused.";
+  const liveMetrics = cloud?.status === "live" ? cloud.metrics : undefined;
+  const isLive = Boolean(liveMetrics);
+  const progress = liveMetrics ? liveMetrics.progress : data.progress;
+  const inputWait = liveMetrics ? `${liveMetrics.inputWaitMs} ms` : data.inputWait;
+  const throughput = liveMetrics ? `${liveMetrics.throughput}/s` : data.throughput;
+  const cost = liveMetrics ? `$${liveMetrics.cost.toFixed(2)}` : "$7.11";
+  const workers = liveMetrics ? liveMetrics.workers : 4;
+
+  useEffect(() => {
+    let active = true;
+    const update = async () => {
+      try {
+        const response = await fetch("/api/gpu-job-triage", { cache: "no-store" });
+        if (response.ok && active) setCloud(await response.json() as CloudSnapshot);
+      } catch { /* The replay remains available when the live source is offline. */ }
+    };
+    void update();
+    const interval = window.setInterval(update, 15000);
+    return () => { active = false; window.clearInterval(interval); };
+  }, []);
 
   return (
     <section className="gpu-triage-demo" aria-labelledby="triage-demo-title">
@@ -178,7 +204,7 @@ export function GpuJobTriageDemo() {
         <header className="triage-surface-header">
           <div className="triage-job-identity"><span className="triage-mark"><IconActivityHeartbeat size={16} /></span><b>nebula / training</b><span>vision-batch-07</span></div>
           <div className="triage-header-actions">
-            <span className="triage-live"><i /> live signals</span>
+            <span className="triage-live"><i /> {isLive ? "Grafana Cloud" : "replay signals"}</span>
             <button type="button" aria-label="Refresh workload data"><IconRefresh size={15} /></button>
             <button type="button" aria-label="More options"><IconDots size={17} /></button>
           </div>
@@ -196,10 +222,10 @@ export function GpuJobTriageDemo() {
             <div className="triage-run-label"><i /> {data.label}</div>
             <ParticleField workers={data.workers} />
             <div className="triage-primary-reading">
-              <div className="triage-reading-title"><span>Distributed AI job</span><small><IconCpu size={15} /> 4 workers</small></div>
+              <div className="triage-reading-title"><span>Distributed AI job</span><small><IconCpu size={15} /> {workers} workers</small></div>
               <div className="triage-big-metrics">
-                <div className="triage-metric-v4"><Bars value={data.progress} tone={tone} /><div><strong>{data.progress}%</strong><span>progress <em>+2.5</em></span></div></div>
-                <div className="triage-metric-v4"><Bars value={scenario === "blocked" ? 86 : scenario === "drift" ? 62 : 38} tone={tone} /><div><strong>{data.inputWait}</strong><span>input wait <em>{scenario === "baseline" ? "stable" : "rising"}</em></span></div></div>
+                <div className="triage-metric-v4"><Bars value={progress} tone={tone} /><div><strong>{progress}%</strong><span>progress <em>{isLive ? "live" : "+2.5"}</em></span></div></div>
+                <div className="triage-metric-v4"><Bars value={liveMetrics ? Math.min(100, liveMetrics.inputWaitMs / 4) : scenario === "blocked" ? 86 : scenario === "drift" ? 62 : 38} tone={tone} /><div><strong>{inputWait}</strong><span>input wait <em>{isLive ? "live" : scenario === "baseline" ? "stable" : "rising"}</em></span></div></div>
               </div>
               <p>{data.detail}</p>
               <div className="triage-wave"><IconWaveSine size={38} /><b>live</b></div>
@@ -211,8 +237,8 @@ export function GpuJobTriageDemo() {
             <div className="triage-panel-head"><h3><IconGauge size={18} /> Input wait</h3><button type="button" aria-label="Input wait options"><IconDots size={18} /></button></div>
             <StepChart points={data.points} marker={data.marker} />
             <div className="triage-chart-labels"><span>00</span><span>15</span><span>30</span><span>45m</span></div>
-            <div className="triage-summary-stats"><div><IconBolt size={16} /><span>Throughput</span><b>{data.throughput}</b></div><div><IconChartHistogram size={16} /><span>Queue</span><b>{data.queue}</b></div><div><IconActivityHeartbeat size={16} /><span>Retries</span><b>{data.retries}</b></div></div>
-            <div className="triage-recommendation"><span>Recommended action</span><strong>{data.action}</strong><div><small>ETA <b>{data.eta}</b></small><small>Cost <b>$7.11</b></small></div></div>
+            <div className="triage-summary-stats"><div><IconBolt size={16} /><span>Throughput</span><b>{throughput}</b></div><div><IconChartHistogram size={16} /><span>Queue</span><b>{data.queue}</b></div><div><IconActivityHeartbeat size={16} /><span>Retries</span><b>{data.retries}</b></div></div>
+            <div className="triage-recommendation"><span>Recommended action</span><strong>{data.action}</strong><div><small>ETA <b>{data.eta}</b></small><small>Cost <b>{cost}</b></small></div></div>
           </aside>
         </div>
         <div className={`triage-decision-feedback ${decisionApplied ? "is-visible" : ""}`} aria-live="polite"><IconActivityHeartbeat size={15} /> {decisionApplied ? confirmation : "No decision recorded yet."}</div>
@@ -224,7 +250,7 @@ export function GpuJobTriageDemo() {
             {data.workers.map((worker) => <div className="triage-worker-row" role="row" key={worker.name}><span><IconCpu size={16} /> {worker.name}</span><Ring value={worker.progress} tone={worker.tone} /><span>{worker.throughput}</span><span className={`triage-wait-${worker.tone}`}>{worker.wait}</span><span>{worker.cost}</span></div>)}
           </div>
         </section>
-        <footer className="triage-provenance"><span><i /> Scenario-driven workload signals</span><span>Prometheus collector · Grafana dashboard · Docker compose</span></footer>
+        <footer className="triage-provenance"><span><i /> {isLive ? "Live signals from Grafana Cloud" : "Scenario-driven workload signals"}</span><span>Prometheus collector · Grafana dashboard · Docker compose</span></footer>
       </div>
     </section>
   );
