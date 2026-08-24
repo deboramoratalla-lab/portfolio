@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 
 export const revalidate = 43200
+export const dynamic = "force-dynamic"
 
 type SourceJob = {
   id?: string | number
