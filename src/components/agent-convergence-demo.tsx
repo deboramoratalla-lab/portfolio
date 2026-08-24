@@ -1,7 +1,7 @@
 "use client"
 
 import { useMemo, useState } from "react"
-import { IconArrowNarrowRight, IconCheck, IconGitBranch, IconLock, IconMessageCircle, IconPlayerPause, IconPlayerPlay, IconShieldCheck } from "@tabler/icons-react"
+import { IconArrowNarrowRight, IconBrandGithub, IconCheck, IconExternalLink, IconGitBranch, IconLock, IconMessageCircle, IconPlayerPause, IconPlayerPlay, IconShieldCheck } from "@tabler/icons-react"
 import gitSnapshot from "@/data/agent-convergence-snapshot.json"
 
 type Mode = "parallel" | "queue" | "review"
@@ -37,6 +37,8 @@ const modes: Record<Mode, { label: string; action: string; title: string; copy: 
 }
 
 const tasks = gitSnapshot.tasks.map((task, index) => ({ ...task, agent: "Git change set", files: task.files[0], state: index === 0 ? "READY" : index === 1 ? "RUNNING" : "WAITING", lane: index === 0 ? "safe" : index === 1 ? "risk" : "wait" }))
+const repositoryUrl = `https://github.com/${gitSnapshot.source.repository}`
+const snapshotScriptUrl = `${repositoryUrl}/blob/main/tools/build-convergence-snapshot.mjs`
 
 export function AgentConvergenceCover() {
   return <div className="agent-convergence-cover" aria-hidden="true">
@@ -54,12 +56,12 @@ export function AgentConvergenceDemo() {
 
   return <section className="agent-convergence" aria-labelledby="agent-convergence-title">
     <header className="agent-convergence-intro">
-      <div><span>Independent product exploration</span><h2 id="agent-convergence-title">Parallel, not blind.</h2></div>
-      <p>A decision surface for the moment agents stop being isolated tasks and start becoming one change a developer must be able to trust.</p>
+      <div><span>Evidence-backed product prototype</span><h2 id="agent-convergence-title">Parallel, not blind.</h2></div>
+      <p>A decision surface for the moment parallel changes stop being isolated tasks and start becoming one change a developer must be able to trust.</p>
     </header>
 
     <div className="convergence-console">
-      <header className="convergence-bar"><div><span>Repository / {gitSnapshot.source.repository}</span><small>3 commit ranges · {gitSnapshot.sharedFiles.length} shared files</small></div><div className="convergence-live"><i /> Captured evidence</div></header>
+      <header className="convergence-bar"><div><a className="convergence-repo-link" href={repositoryUrl} target="_blank" rel="noreferrer"><IconBrandGithub size={14} /> {gitSnapshot.source.repository}<IconExternalLink size={12} /></a><small>{gitSnapshot.tasks.length} commit ranges · {gitSnapshot.sharedFiles.length} shared files</small></div><div className="convergence-live"><i /> Git evidence captured</div></header>
       <div className="convergence-tabs" role="group" aria-label="Choose a task coordination strategy">
         <button className={mode === "parallel" ? "is-active" : ""} onClick={() => setMode("parallel")}><IconPlayerPlay size={14} /> Keep parallel</button>
         <button className={mode === "queue" ? "is-active" : ""} onClick={() => setMode("queue")}><IconGitBranch size={14} /> Protect boundary</button>
@@ -72,7 +74,7 @@ export function AgentConvergenceDemo() {
           <div className="convergence-lanes">
             {visibleTasks.map((task, index) => <article className={`convergence-task ${task.lane} ${task.id === "C-22" && mode === "queue" ? "is-queued" : ""}`} key={task.id}>
               <div className="convergence-task-index"><span>{String(index + 1).padStart(2, "0")}</span><i /></div>
-              <div><span>{task.id} · {task.agent} · {task.hash}</span><h3>{task.subject}</h3><p>{task.files}</p></div>
+              <div><span>{task.id} · {task.agent} · <a href={`${repositoryUrl}/commit/${task.hash}`} target="_blank" rel="noreferrer">{task.hash}<IconExternalLink size={10} /></a></span><h3>{task.subject}</h3><p>{task.files}</p></div>
               <b>{task.state}</b>
             </article>)}
           </div>
@@ -81,7 +83,7 @@ export function AgentConvergenceDemo() {
             <div><span>Shared boundary</span><strong>{gitSnapshot.sharedFiles[0]?.path.split("/").pop()}</strong><small>{current.evidence}</small></div>
             <div className="convergence-boundary-arrows"><IconArrowNarrowRight size={22} /><IconArrowNarrowRight size={22} /></div>
           </div>
-          <footer><span>Base commit {gitSnapshot.tasks[0]?.parent}</span><span>Source: {gitSnapshot.source.method}</span></footer>
+          <footer><span>Base commit {gitSnapshot.tasks[0]?.parent}</span><a href={snapshotScriptUrl} target="_blank" rel="noreferrer">Snapshot generator <IconExternalLink size={11} /></a></footer>
         </section>
 
         <aside className={`convergence-decision ${current.tone}`} aria-live="polite">
@@ -94,7 +96,7 @@ export function AgentConvergenceDemo() {
         </aside>
       </div>
 
-      <footer className="convergence-proof"><span><b>Why this matters</b> · Commit history is real evidence; the coordination replay is the product hypothesis.</span><span><IconCheck size={14} /> Developer remains accountable</span></footer>
+      <footer className="convergence-proof"><span><b>Evidence boundary</b> · Commit history and file overlap come from Git; the coordination replay is the product hypothesis.</span><span><IconCheck size={14} /> Developer remains accountable</span></footer>
     </div>
   </section>
 }
