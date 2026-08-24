@@ -41,7 +41,8 @@ export function OpportunityRadarDemo() {
     setError("")
     try {
       const response = await fetch("/api/opportunity-radar", { cache: "no-store" })
-      const payload = await response.json() as RadarData
+      const body = await response.text()
+      const payload = (body ? JSON.parse(body) : { message: "The source refresh ended without a response. Try again in a moment." }) as RadarData
       if (!response.ok) throw new Error(payload.message || "The sources could not be read.")
       setData(payload)
     } catch (cause) { setError(cause instanceof Error ? cause.message : "The sources could not be read.") }

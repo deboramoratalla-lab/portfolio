@@ -191,25 +191,14 @@ function normaliseArbeitnow(job: ArbeitnowJob): Opportunity | null {
 }
 
 async function himalayasFeed() {
-  const jobs: HimalayasJob[] = []
-  let cursor: string | undefined
-  for (let page = 0; page < 3; page += 1) {
-    const endpoint = new URL("https://himalayas.app/jobs/api")
-    endpoint.searchParams.set("limit", "20")
-    if (cursor) endpoint.searchParams.set("cursor", cursor)
-    const response = await fetch(endpoint, { next: { revalidate } })
-    if (!response.ok) throw new Error(`Himalayas returned ${response.status}`)
-    const payload = await response.json() as { jobs?: HimalayasJob[]; data?: HimalayasJob[]; nextCursor?: string | null }
-    const batch = payload.jobs || payload.data || []
-    jobs.push(...batch)
-    cursor = payload.nextCursor || undefined
-    if (!cursor || !batch.length) break
-  }
-  return jobs.map(normaliseHimalayas).filter((job): job is Opportunity => Boolean(job))
+  const response = await fetch("https://himalayas.app/jobs/api?limit=20", { next: { revalidate }, signal: AbortSignal.timeout(8000) })
+  if (!response.ok) throw new Error(`Himalayas returned ${response.status}`)
+  const payload = await response.json() as { jobs?: HimalayasJob[]; data?: HimalayasJob[] }
+  return (payload.jobs || payload.data || []).map(normaliseHimalayas).filter((job): job is Opportunity => Boolean(job))
 }
 
 async function arbeitnowFeed() {
-  const response = await fetch("https://www.arbeitnow.com/api/job-board-api", { next: { revalidate } })
+  const response = await fetch("https://www.arbeitnow.com/api/job-board-api", { next: { revalidate }, signal: AbortSignal.timeout(8000) })
   if (!response.ok) throw new Error(`Arbeitnow returned ${response.status}`)
   const payload = await response.json() as { data?: ArbeitnowJob[] }
   return (payload.data || []).map(normaliseArbeitnow).filter((job): job is Opportunity => Boolean(job))
