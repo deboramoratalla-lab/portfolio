@@ -7,6 +7,7 @@ import { ArrowLink, ArrowRouteLink } from "@/components/ui-links"
 import { OpenPortfolioAgentLink } from "@/components/open-portfolio-agent-link"
 import { DesignSystemHealthDemo } from "@/components/design-system-health-demo"
 import { GpuJobTriageDecisionDemo, TelemetryEvidenceDemo } from "@/components/gpu-job-triage-demo"
+import { OpportunityRadarDemo } from "@/components/opportunity-radar-demo"
 import { getLabEntry, labEntries } from "@/data/lab"
 
 type ArticleSection = { title: string; paragraphs: string[]; points?: string[] }
@@ -45,6 +46,16 @@ const reusableResources: Record<string, ReusableResource[]> = {
 }
 
 const articles: Record<string, ArticleContent> = {
+  "european-tech-opportunity-radar": {
+    lead: "A small community utility for browsing technical opportunities without treating job boards as a black box. It is designed for people exploring the market, not for ranking candidates.",
+    quote: "A useful job board should make its sources and limits as visible as its listings.",
+    sections: [
+      { title: "Start with coverage, not a candidate", paragraphs: ["Most job-search tools presume a single person and an implicit profile. This experiment starts somewhere else: what would make the market easier to inspect for a wider technology community?", "The role families deliberately extend beyond product design. Product, engineering, data and AI, platform, security, developer experience and technical operations are all part of the same ecosystem."] },
+      { title: "Keep the source visible", paragraphs: ["Each listing keeps a direct route back to its original source. The tool does not claim to be complete, and it does not infer salary, seniority or eligibility when the feed does not provide it.", "The first version reads public remote-job feeds from Jobicy, Remotive and Remote OK. Listings are limited to roles marked Europe or Anywhere, then categorised from the title and supplied category."] },
+      { title: "Make the limits part of the interface", paragraphs: ["Remote does not always mean legally hireable everywhere, and a listing can disappear before a feed refreshes. The interface treats those gaps as information, not as a hidden implementation detail.", "The next layer is employer-direct feeds from ATS platforms such as Greenhouse, Lever and Ashby. Glassdoor context can be added as an optional commercial enrichment through OpenWeb Ninja, with its provider, retrieval date and original link shown alongside it."] },
+    ],
+    close: "The useful outcome is not a perfect directory. It is a more legible starting point for people navigating technical work across Europe.",
+  },
   "gpu-job-triage": {
     lead: "This is a local product prototype for a familiar infrastructure moment: an AI batch becomes less efficient and the person on call needs to decide whether to keep capacity, investigate or pause it.",
     quote: "Observability is useful when it shortens the distance between a changing signal and a responsible action.",
@@ -134,6 +145,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 }
 
 function ArticleActions({ slug }: { slug: string }) {
+  if (slug === "european-tech-opportunity-radar") return <ArrowRouteLink variant="secondary" tone="purple" href="#opportunity-radar">Open the radar</ArrowRouteLink>
   if (slug === "gpu-job-triage") return <>
     <ArrowRouteLink variant="secondary" tone="purple" href="#gpu-job-triage">Open the prototype</ArrowRouteLink>
     <ArrowLink variant="secondary" tone="green" href={`${portfolioRepo}/tree/main/labs/gpu-job-triage`} target="_blank" rel="noreferrer">Inspect the Grafana stack</ArrowLink>
@@ -379,6 +391,7 @@ export default async function LabArticle({ params }: { params: Promise<{ slug: s
       {entry.slug === "figma-plugin-component-apis" && <FigmaPluginEvidence />}
       {entry.slug === "smallest-useful-accessibility-pipeline" && <AccessibilityEvidence />}
       {entry.slug === "metrics-are-not-decisions" && <DesignSystemHealthDemo />}
+      {entry.slug === "european-tech-opportunity-radar" && <OpportunityRadarDemo />}
       {entry.slug === "gpu-job-triage" && <><GpuJobTriageDecisionDemo /><TelemetryEvidenceDemo /></>}
       <ReusableResources slug={entry.slug} />
       <footer className="lab-article-close">

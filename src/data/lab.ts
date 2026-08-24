@@ -10,6 +10,15 @@ export type LabEntry = {
 
 export const labEntries: LabEntry[] = [
   {
+    slug: "european-tech-opportunity-radar",
+    type: "Build",
+    title: "A clearer way to browse remote technology roles.",
+    summary: "A public, source-aware view of Europe-eligible remote opportunities across product, engineering, data, platform and developer experience.",
+    date: "August 2026",
+    readingTime: "3 min read",
+    topics: ["Public utility", "Developer tools", "Data products"],
+  },
+  {
     slug: "gpu-job-triage",
     type: "Experiment",
     title: "When should a costly AI batch keep running?",
