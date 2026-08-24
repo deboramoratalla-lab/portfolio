@@ -36,6 +36,12 @@ type Opportunity = {
 
 const EUROPE = /anywhere|worldwide|europe|eu\b|emea|uk\b|united kingdom|germany|france|spain|italy|netherlands|belgium|portugal|ireland|poland|sweden|norway|denmark|finland|austria|switzerland|czech|slovak|romania|bulgaria|greece|croatia|serbia|slovenia|hungary|estonia|latvia|lithuania/i
 
+function normaliseDate(value: unknown) {
+  if (typeof value === "string") return value
+  if (typeof value === "number" && Number.isFinite(value)) return new Date(value < 1e12 ? value * 1000 : value).toISOString()
+  return null
+}
+
 function categoryFor(title: string, sourceCategory = "") {
   const text = `${title} ${sourceCategory}`.toLowerCase()
   if (/product manager|project manager|program manager|technical program|operations/.test(text)) return "Product & Operations"
@@ -59,7 +65,7 @@ function normaliseJob(job: SourceJob, source: Opportunity["source"]): Opportunit
   if (!title || !company || !url || !EUROPE.test(location)) return null
   const type = Array.isArray(job.jobType) ? job.jobType.join(", ") : job.jobType || job.job_type || "Not specified"
   const industry = Array.isArray(job.jobIndustry) ? job.jobIndustry.join(" ") : job.jobIndustry || job.category || ""
-  return { id: `${source}-${job.id || `${company}-${title}`}`, title, company, location, type, category: categoryFor(title, industry), source, origin: "Public feed", url, publishedAt: job.pubDate || job.publication_date || null }
+  return { id: `${source}-${job.id || `${company}-${title}`}`, title, company, location, type, category: categoryFor(title, industry), source, origin: "Public feed", url, publishedAt: normaliseDate(job.pubDate || job.publication_date) }
 }
 
 type RemoteOkJob = {
@@ -90,7 +96,7 @@ function normaliseRemoteOk(job: RemoteOkJob): Opportunity | null {
     source: "Remote OK",
     origin: "Public feed",
     url,
-    publishedAt: job.date || null,
+    publishedAt: normaliseDate(job.date),
   }
 }
 
@@ -131,7 +137,7 @@ function normaliseAshby(job: AshbyJob): Opportunity | null {
     source: "Ashby",
     origin: "Direct company feed",
     url: job.jobUrl,
-    publishedAt: job.publishedAt || null,
+    publishedAt: normaliseDate(job.publishedAt),
   }
 }
 
@@ -180,7 +186,7 @@ function normaliseHimalayas(job: HimalayasJob): Opportunity | null {
   const location = job.locationRestrictions?.join(", ") || "Worldwide"
   if (!job.guid || !job.title || !job.companyName || !job.applicationLink || !EUROPE.test(location)) return null
   const category = [...(job.category || []), ...(job.parentCategories || [])].join(" ")
-  return { id: `himalayas-${job.guid}`, title: job.title, company: job.companyName, location, type: job.employmentType || "Remote", category: categoryFor(job.title, category), source: "Himalayas", origin: "Public feed", url: job.applicationLink, publishedAt: job.pubDate || null }
+  return { id: `himalayas-${job.guid}`, title: job.title, company: job.companyName, location, type: job.employmentType || "Remote", category: categoryFor(job.title, category), source: "Himalayas", origin: "Public feed", url: job.applicationLink, publishedAt: normaliseDate(job.pubDate) }
 }
 
 function normaliseArbeitnow(job: ArbeitnowJob): Opportunity | null {
@@ -274,7 +280,7 @@ export async function GET() {
     if (seen.has(key)) return false
     seen.add(key)
     return true
-  }).sort((a, b) => Number(b.origin === "Direct company feed") - Number(a.origin === "Direct company feed") || (b.publishedAt || "").localeCompare(a.publishedAt || "")).slice(0, 300)
+  }).sort((a, b) => Number(b.origin === "Direct company feed") - Number(a.origin === "Direct company feed") || String(b.publishedAt || "").localeCompare(String(a.publishedAt || ""))).slice(0, 300)
 
   if (!deduplicated.length) return NextResponse.json({ jobs: [], updatedAt: new Date().toISOString(), sources: [], message: "The public feeds are temporarily unavailable. Try again later." }, { status: 503 })
   return NextResponse.json({ jobs: deduplicated, updatedAt: new Date().toISOString(), sources: ["Jobicy", "Remotive", "Remote OK", "Himalayas", "Arbeitnow", "Ashby direct company feed", "Glassdoor via OpenWeb Ninja"], contextAvailable: Boolean(process.env.OPENWEBNINJA_API_KEY) })
