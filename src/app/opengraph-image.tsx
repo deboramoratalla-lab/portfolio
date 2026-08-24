@@ -26,7 +26,7 @@ export default function OpenGraphImage() {
           <div style={{ display: "flex", justifyContent: "space-between", color: "#b8b8b0", fontSize: 14, letterSpacing: 1.2, textTransform: "uppercase" }}><span>Lab / experiment</span><span style={{ color: "#9dae36" }}>Live evidence</span></div>
           <div style={{ display: "flex", flexDirection: "column", gap: 15 }}>
             <span style={{ fontSize: 31, lineHeight: 1.04, letterSpacing: -1.5 }}>From a slow AI job to a clear next step.</span>
-            <div style={{ display: "flex", alignItems: "end", gap: 17 }}>
+            <div style={{ display: "flex", alignItems: "flex-end", gap: 17 }}>
               <span style={{ color: "#55e5e6", fontSize: 69, lineHeight: 0.8, letterSpacing: -4 }}>42%</span>
               <span style={{ marginBottom: 4, color: "#b8b8b0", fontSize: 16 }}>GPU utilisation</span>
             </div>
