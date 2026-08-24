@@ -41,7 +41,7 @@ function categoryFor(title: string, sourceCategory = "") {
   if (/product manager|project manager|program manager|technical program|operations/.test(text)) return "Product & Operations"
   if (/design system|design engineer|design technologist|ui engineer/.test(text)) return "Design Systems & Engineering"
   if (/product design|product designer/.test(text)) return "Product & Design"
-  if (/ux|ui |user experience|user interface|interaction designer|ux researcher|user researcher|design researcher/.test(text)) return "UX/UI & Research"
+  if (/\bux\b|\bui\b|user experience|user interface|interaction designer|ux researcher|user researcher|design researcher/.test(text)) return "UX/UI & Research"
   if (/content designer|brand designer|visual designer|creative director/.test(text)) return "Content & Brand"
   if (/developer relations|devrel|technical writer|solutions architect|developer advocate/.test(text)) return "Developer Experience"
   if (/security|privacy|identity|trust/.test(text)) return "Security"
@@ -142,6 +142,14 @@ async function sourceFeed(url: string, source: Opportunity["source"]) {
   return (payload.jobs || []).map(job => normaliseJob(job, source)).filter((job): job is Opportunity => Boolean(job))
 }
 
+async function jobicyFeed() {
+  const feeds = await Promise.allSettled([
+    sourceFeed("https://jobicy.com/api/v2/remote-jobs?count=100&geo=europe", "Jobicy"),
+    sourceFeed("https://jobicy.com/api/v2/remote-jobs?count=100", "Jobicy"),
+  ])
+  return feeds.flatMap(feed => feed.status === "fulfilled" ? feed.value : [])
+}
+
 async function remoteOkFeed() {
   const response = await fetch("https://remoteok.com/api", { next: { revalidate } })
   if (!response.ok) throw new Error(`Remote OK returned ${response.status}`)
@@ -194,8 +202,8 @@ async function glassdoorFeed() {
 
 export async function GET() {
   const feeds = await Promise.allSettled([
-    sourceFeed("https://jobicy.com/api/v2/remote-jobs?count=100", "Jobicy"),
-    sourceFeed("https://remotive.com/api/remote-jobs?limit=100", "Remotive"),
+    jobicyFeed(),
+    sourceFeed("https://remotive.com/api/remote-jobs", "Remotive"),
     remoteOkFeed(),
     directCompanyFeed(),
     glassdoorFeed(),
@@ -207,7 +215,7 @@ export async function GET() {
     if (seen.has(key)) return false
     seen.add(key)
     return true
-  }).sort((a, b) => Number(b.origin === "Direct company feed") - Number(a.origin === "Direct company feed") || (b.publishedAt || "").localeCompare(a.publishedAt || "")).slice(0, 120)
+  }).sort((a, b) => Number(b.origin === "Direct company feed") - Number(a.origin === "Direct company feed") || (b.publishedAt || "").localeCompare(a.publishedAt || "")).slice(0, 300)
 
   if (!deduplicated.length) return NextResponse.json({ jobs: [], updatedAt: new Date().toISOString(), sources: [], message: "The public feeds are temporarily unavailable. Try again later." }, { status: 503 })
   return NextResponse.json({ jobs: deduplicated, updatedAt: new Date().toISOString(), sources: ["Jobicy", "Remotive", "Remote OK", "Ashby direct company feed", "Glassdoor via OpenWeb Ninja"], contextAvailable: Boolean(process.env.OPENWEBNINJA_API_KEY) })
