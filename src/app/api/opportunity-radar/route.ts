@@ -27,7 +27,8 @@ type Opportunity = {
   location: string
   type: string
   category: string
-  source: "Jobicy" | "Remotive" | "Remote OK"
+  source: "Jobicy" | "Remotive" | "Remote OK" | "Ashby"
+  origin: "Public feed" | "Direct company feed"
   url: string
   publishedAt: string | null
 }
@@ -54,7 +55,7 @@ function normaliseJob(job: SourceJob, source: Opportunity["source"]): Opportunit
   if (!title || !company || !url || !EUROPE.test(location)) return null
   const type = Array.isArray(job.jobType) ? job.jobType.join(", ") : job.jobType || job.job_type || "Not specified"
   const industry = Array.isArray(job.jobIndustry) ? job.jobIndustry.join(" ") : job.jobIndustry || job.category || ""
-  return { id: `${source}-${job.id || `${company}-${title}`}`, title, company, location, type, category: categoryFor(title, industry), source, url, publishedAt: job.pubDate || job.publication_date || null }
+  return { id: `${source}-${job.id || `${company}-${title}`}`, title, company, location, type, category: categoryFor(title, industry), source, origin: "Public feed", url, publishedAt: job.pubDate || job.publication_date || null }
 }
 
 type RemoteOkJob = {
@@ -83,8 +84,41 @@ function normaliseRemoteOk(job: RemoteOkJob): Opportunity | null {
     type: "Remote",
     category: categoryFor(title, tags),
     source: "Remote OK",
+    origin: "Public feed",
     url,
     publishedAt: job.date || null,
+  }
+}
+
+type AshbyJob = {
+  id: string
+  title: string
+  department?: string
+  team?: string
+  employmentType?: string
+  location?: string
+  secondaryLocations?: { location?: string }[]
+  publishedAt?: string
+  isRemote?: boolean
+  workplaceType?: string
+  jobUrl?: string
+}
+
+function normaliseAshby(job: AshbyJob): Opportunity | null {
+  const location = [job.location, ...(job.secondaryLocations || []).map(item => item.location)].filter(Boolean).join(", ") || "Remote"
+  if (!job.isRemote || !job.jobUrl || !EUROPE.test(location)) return null
+  const category = categoryFor(job.title, `${job.department || ""} ${job.team || ""}`)
+  return {
+    id: `ashby-linear-${job.id}`,
+    title: job.title,
+    company: "Linear",
+    location,
+    type: job.employmentType || job.workplaceType || "Remote",
+    category,
+    source: "Ashby",
+    origin: "Direct company feed",
+    url: job.jobUrl,
+    publishedAt: job.publishedAt || null,
   }
 }
 
@@ -102,11 +136,19 @@ async function remoteOkFeed() {
   return payload.map(normaliseRemoteOk).filter((job): job is Opportunity => Boolean(job))
 }
 
+async function directCompanyFeed() {
+  const response = await fetch("https://api.ashbyhq.com/posting-api/job-board/linear", { next: { revalidate } })
+  if (!response.ok) throw new Error(`Ashby returned ${response.status}`)
+  const payload = await response.json() as { jobs?: AshbyJob[] }
+  return (payload.jobs || []).map(normaliseAshby).filter((job): job is Opportunity => Boolean(job))
+}
+
 export async function GET() {
   const feeds = await Promise.allSettled([
     sourceFeed("https://jobicy.com/api/v2/remote-jobs?count=100", "Jobicy"),
     sourceFeed("https://remotive.com/api/remote-jobs?limit=100", "Remotive"),
     remoteOkFeed(),
+    directCompanyFeed(),
   ])
   const jobs = feeds.flatMap(feed => feed.status === "fulfilled" ? feed.value : [])
   const seen = new Set<string>()
@@ -115,8 +157,8 @@ export async function GET() {
     if (seen.has(key)) return false
     seen.add(key)
     return true
-  }).sort((a, b) => (b.publishedAt || "").localeCompare(a.publishedAt || "")).slice(0, 120)
+  }).sort((a, b) => Number(b.origin === "Direct company feed") - Number(a.origin === "Direct company feed") || (b.publishedAt || "").localeCompare(a.publishedAt || "")).slice(0, 120)
 
   if (!deduplicated.length) return NextResponse.json({ jobs: [], updatedAt: new Date().toISOString(), sources: [], message: "The public feeds are temporarily unavailable. Try again later." }, { status: 503 })
-  return NextResponse.json({ jobs: deduplicated, updatedAt: new Date().toISOString(), sources: ["Jobicy", "Remotive", "Remote OK"] })
+  return NextResponse.json({ jobs: deduplicated, updatedAt: new Date().toISOString(), sources: ["Jobicy", "Remotive", "Remote OK", "Ashby direct company feed"] })
 }

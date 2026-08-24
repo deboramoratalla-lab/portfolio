@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react"
 import { IconArrowUpRight, IconBriefcase2, IconRefresh, IconSearch } from "@tabler/icons-react"
 
-type Opportunity = { id: string; title: string; company: string; location: string; type: string; category: string; source: "Jobicy" | "Remotive" | "Remote OK"; url: string; publishedAt: string | null }
+type Opportunity = { id: string; title: string; company: string; location: string; type: string; category: string; source: "Jobicy" | "Remotive" | "Remote OK" | "Ashby"; origin: "Public feed" | "Direct company feed"; url: string; publishedAt: string | null }
 type RadarData = { jobs: Opportunity[]; updatedAt: string; sources: string[]; message?: string }
 
 const featuredCategories = ["All technology", "Product & Design", "Engineering", "Data & AI", "Platform & Cloud", "Developer Experience", "Security", "Product & Operations"]
@@ -26,6 +26,7 @@ function relativeDate(date: string | null) {
 export function OpportunityRadarDemo() {
   const [data, setData] = useState<RadarData | null>(null)
   const [category, setCategory] = useState("All technology")
+  const [origin, setOrigin] = useState<"All sources" | Opportunity["origin"]>("All sources")
   const [query, setQuery] = useState("")
   const [isLoading, setLoading] = useState(true)
   const [error, setError] = useState("")
@@ -46,8 +47,9 @@ export function OpportunityRadarDemo() {
     const request = window.setTimeout(() => { void load(false) }, 0)
     return () => window.clearTimeout(request)
   }, [])
-  const visible = useMemo(() => (data?.jobs || []).filter(job => (category === "All technology" || job.category === category) && `${job.title} ${job.company} ${job.location}`.toLowerCase().includes(query.toLowerCase())).slice(0, 12), [category, data, query])
+  const visible = useMemo(() => (data?.jobs || []).filter(job => (category === "All technology" || job.category === category) && (origin === "All sources" || job.origin === origin) && `${job.title} ${job.company} ${job.location}`.toLowerCase().includes(query.toLowerCase())).slice(0, 12), [category, data, origin, query])
   const categories = featuredCategories.filter(item => item === "All technology" || data?.jobs.some(job => job.category === item))
+  const directCount = data?.jobs.filter(job => job.origin === "Direct company feed").length || 0
 
   return <section className="opportunity-radar" id="opportunity-radar" aria-labelledby="radar-title">
     <header className="opportunity-radar-intro">
@@ -56,12 +58,13 @@ export function OpportunityRadarDemo() {
     </header>
     <div className="opportunity-radar-surface">
       <header className="radar-surface-head"><div><span>European tech opportunity radar</span><small>Remote only / Europe or Anywhere</small></div><button type="button" onClick={() => void load()} disabled={isLoading}><IconRefresh size={16} />{isLoading ? "Refreshing" : "Refresh sources"}</button></header>
-      <div className="radar-controls"><label><IconSearch size={17} /><span className="sr-only">Search opportunities</span><input value={query} onChange={event => setQuery(event.target.value)} placeholder="Search title, company or location" /></label><div className="radar-category-list" aria-label="Filter by role family">{categories.map(item => <button type="button" className={category === item ? "is-selected" : ""} onClick={() => setCategory(item)} key={item}>{item}</button>)}</div></div>
+      <div className="radar-controls"><label><IconSearch size={17} /><span className="sr-only">Search opportunities</span><input value={query} onChange={event => setQuery(event.target.value)} placeholder="Search title, company or location" /></label><div className="radar-filter-group"><span>Role family</span><div className="radar-category-list" aria-label="Filter by role family">{categories.map(item => <button type="button" className={category === item ? "is-selected" : ""} onClick={() => setCategory(item)} key={item}>{item}</button>)}</div></div><div className="radar-filter-group"><span>Source type</span><div className="radar-category-list" aria-label="Filter by source type">{(["All sources", "Direct company feed", "Public feed"] as const).map(item => <button type="button" className={origin === item ? "is-selected" : ""} onClick={() => setOrigin(item)} key={item}>{item}</button>)}</div></div></div>
       <div className="radar-summary"><span>{data ? `${data.jobs.length} current opportunities from public feeds` : "Reading public feeds"}</span><span>{data?.updatedAt ? `Checked ${new Intl.DateTimeFormat("en", { hour: "2-digit", minute: "2-digit" }).format(new Date(data.updatedAt))}` : ""}</span></div>
+      {!isLoading && data && <aside className="radar-evidence"><div><span>Direct company feeds</span><strong>{directCount} Europe-eligible roles</strong><p>Published by the employer through its own ATS. These are prioritised above aggregated listings.</p></div><div><span>Context policy</span><strong>Only disclose what is sourced</strong><p>Salary and company signals appear only when a provider is connected and their origin can be named.</p></div></aside>}
       {error ? <div className="radar-message" role="status"><strong>Sources are unavailable right now.</strong><span>{error}</span><button type="button" onClick={() => void load()}>Try again</button></div> : <div className="radar-results" aria-live="polite">
-        {isLoading ? Array.from({ length: 6 }, (_, index) => <div className="radar-skeleton" key={index} />) : visible.length ? visible.map(job => <article className="radar-job" key={job.id}><div className="radar-job-main"><span className="radar-job-source">{job.source}</span><h3>{job.title}</h3><p>{job.company} <i /> {job.location}</p></div><div className="radar-job-meta"><span>{job.category}</span><span>{job.type}</span><small>{relativeDate(job.publishedAt)}</small></div><a href={job.url} target="_blank" rel="noreferrer" aria-label={`Open ${job.title} at ${job.company}`}><IconArrowUpRight size={19} /></a></article>) : <div className="radar-empty"><IconBriefcase2 size={24} /><strong>No matching role in the current feed.</strong><p>Try another role family or a broader search.</p></div>}
+        {isLoading ? Array.from({ length: 6 }, (_, index) => <div className="radar-skeleton" key={index} />) : visible.length ? visible.map(job => <article className={`radar-job ${job.origin === "Direct company feed" ? "is-direct" : ""}`} key={job.id}><div className="radar-job-main"><span className="radar-job-source">{job.origin === "Direct company feed" ? "Direct company feed" : job.source}</span><h3>{job.title}</h3><p>{job.company} <i /> {job.location}</p></div><div className="radar-job-meta"><span>{job.category}</span><span>{job.type}</span><small>{relativeDate(job.publishedAt)}</small></div><a href={job.url} target="_blank" rel="noreferrer" aria-label={`Open ${job.title} at ${job.company}`}><IconArrowUpRight size={19} /></a></article>) : <div className="radar-empty"><IconBriefcase2 size={24} /><strong>No matching role in the current feed.</strong><p>Try another role family or a broader search.</p></div>}
       </div>}
-      <footer className="radar-provenance"><span>Sources: <a href="https://jobicy.com" target="_blank" rel="noreferrer">Jobicy</a>, <a href="https://remotive.com" target="_blank" rel="noreferrer">Remotive</a> and <a href="https://remoteok.com" target="_blank" rel="noreferrer">Remote OK</a></span><span>Listings link to the original source.</span></footer>
+      <footer className="radar-provenance"><span>Sources: <a href="https://jobicy.com" target="_blank" rel="noreferrer">Jobicy</a>, <a href="https://remotive.com" target="_blank" rel="noreferrer">Remotive</a>, <a href="https://remoteok.com" target="_blank" rel="noreferrer">Remote OK</a> and direct company ATS feeds</span><span>Listings link to the original source.</span></footer>
     </div>
   </section>
 }
