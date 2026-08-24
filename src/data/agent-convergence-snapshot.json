@@ -2,14 +2,13 @@
   "source": {
     "repository": "deboramoratalla-lab/portfolio",
     "method": "git diff-tree",
-    "generatedAt": "2026-08-24T13:56:13.127Z"
+    "generatedAt": "2026-08-24T14:26:45.628Z"
   },
   "tasks": [
     {
       "id": "T-01",
       "hash": "ba5309d",
       "parent": "cf3e1a6",
-      "subject": "Add European tech opportunity radar",
       "files": [
         "src/app/api/opportunity-radar/route.ts",
         "src/app/globals.css",
@@ -23,7 +22,6 @@
       "id": "T-02",
       "hash": "dd9c352",
       "parent": "ba5309d",
-      "subject": "Add direct company feeds to opportunity radar",
       "files": [
         "src/app/api/opportunity-radar/route.ts",
         "src/app/globals.css",
@@ -34,7 +32,6 @@
       "id": "T-03",
       "hash": "daa296c",
       "parent": "dd9c352",
-      "subject": "Add optional company context to opportunity radar",
       "files": [
         "src/app/api/opportunity-radar/company/route.ts",
         "src/app/api/opportunity-radar/route.ts",

@@ -6,9 +6,9 @@ const refs = process.argv.slice(2).length ? process.argv.slice(2) : ["ba5309d", 
 const runGit = (args) => execFileSync("git", args, { encoding: "utf8" }).trim()
 
 const tasks = refs.map((ref, index) => {
-  const [hash, parent, subject] = runGit(["show", "-s", "--format=%H%x1f%P%x1f%s", ref]).split("\u001f")
+  const [hash, parent] = runGit(["show", "-s", "--format=%H%x1f%P", ref]).split("\u001f")
   const files = runGit(["diff-tree", "--no-commit-id", "--name-only", "-r", hash]).split("\n").filter(Boolean)
-  return { id: `T-${String(index + 1).padStart(2, "0")}`, hash: hash.slice(0, 7), parent: parent.split(" ")[0].slice(0, 7), subject, files }
+  return { id: `T-${String(index + 1).padStart(2, "0")}`, hash: hash.slice(0, 7), parent: parent.split(" ")[0].slice(0, 7), files }
 })
 
 const byFile = new Map()

@@ -36,7 +36,8 @@ const modes: Record<Mode, { label: string; action: string; title: string; copy: 
   },
 }
 
-const tasks = gitSnapshot.tasks.map((task, index) => ({ ...task, agent: "Git change set", files: task.files[0], state: index === 0 ? "READY" : index === 1 ? "RUNNING" : "WAITING", lane: index === 0 ? "safe" : index === 1 ? "risk" : "wait" }))
+const workstreams = ["Discovery layer", "Source layer", "Context layer"]
+const tasks = gitSnapshot.tasks.map((task, index) => ({ ...task, agent: "Git change set", title: workstreams[index] || `Change set ${index + 1}`, files: task.files[0], state: index === 0 ? "READY" : index === 1 ? "RUNNING" : "WAITING", lane: index === 0 ? "safe" : index === 1 ? "risk" : "wait" }))
 const repositoryUrl = `https://github.com/${gitSnapshot.source.repository}`
 const snapshotScriptUrl = `${repositoryUrl}/blob/main/tools/build-convergence-snapshot.mjs`
 
@@ -74,7 +75,7 @@ export function AgentConvergenceDemo() {
           <div className="convergence-lanes">
             {visibleTasks.map((task, index) => <article className={`convergence-task ${task.lane} ${task.id === "C-22" && mode === "queue" ? "is-queued" : ""}`} key={task.id}>
               <div className="convergence-task-index"><span>{String(index + 1).padStart(2, "0")}</span><i /></div>
-              <div><span>{task.id} · {task.agent} · <a href={`${repositoryUrl}/commit/${task.hash}`} target="_blank" rel="noreferrer">{task.hash}<IconExternalLink size={10} /></a></span><h3>{task.subject}</h3><p>{task.files}</p></div>
+              <div><span>{task.id} · {task.agent} · captured revision</span><h3>{task.title}</h3><p>{task.files}</p></div>
               <b>{task.state}</b>
             </article>)}
           </div>
@@ -83,7 +84,7 @@ export function AgentConvergenceDemo() {
             <div><span>Shared boundary</span><strong>{gitSnapshot.sharedFiles[0]?.path.split("/").pop()}</strong><small>{current.evidence}</small></div>
             <div className="convergence-boundary-arrows"><IconArrowNarrowRight size={22} /><IconArrowNarrowRight size={22} /></div>
           </div>
-          <footer><span>Base commit {gitSnapshot.tasks[0]?.parent}</span><a href={snapshotScriptUrl} target="_blank" rel="noreferrer">Snapshot generator <IconExternalLink size={11} /></a></footer>
+          <footer><span>Shared file evidence</span><a href={snapshotScriptUrl} target="_blank" rel="noreferrer">Snapshot generator <IconExternalLink size={11} /></a></footer>
         </section>
 
         <aside className={`convergence-decision ${current.tone}`} aria-live="polite">
