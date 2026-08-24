@@ -28,13 +28,13 @@ type Opportunity = {
   location: string
   type: string
   category: string
-  source: "Jobicy" | "Remotive" | "Remote OK" | "Ashby" | "Glassdoor"
+  source: "Jobicy" | "Remotive" | "Remote OK" | "Ashby" | "Glassdoor" | "Himalayas" | "Arbeitnow"
   origin: "Public feed" | "Direct company feed" | "Commercial job API"
   url: string
   publishedAt: string | null
 }
 
-const EUROPE = /anywhere|europe|eu\b|emea|uk\b|united kingdom|germany|france|spain|italy|netherlands|belgium|portugal|ireland|poland|sweden|norway|denmark|finland|austria|switzerland|czech|slovak|romania|bulgaria|greece|croatia|serbia|slovenia|hungary|estonia|latvia|lithuania/i
+const EUROPE = /anywhere|worldwide|europe|eu\b|emea|uk\b|united kingdom|germany|france|spain|italy|netherlands|belgium|portugal|ireland|poland|sweden|norway|denmark|finland|austria|switzerland|czech|slovak|romania|bulgaria|greece|croatia|serbia|slovenia|hungary|estonia|latvia|lithuania/i
 
 function categoryFor(title: string, sourceCategory = "") {
   const text = `${title} ${sourceCategory}`.toLowerCase()
@@ -145,9 +145,74 @@ async function sourceFeed(url: string, source: Opportunity["source"]) {
 async function jobicyFeed() {
   const feeds = await Promise.allSettled([
     sourceFeed("https://jobicy.com/api/v2/remote-jobs?count=100&geo=europe", "Jobicy"),
+    sourceFeed("https://jobicy.com/api/v2/remote-jobs?count=100&geo=emea", "Jobicy"),
     sourceFeed("https://jobicy.com/api/v2/remote-jobs?count=100", "Jobicy"),
   ])
   return feeds.flatMap(feed => feed.status === "fulfilled" ? feed.value : [])
+}
+
+type HimalayasJob = {
+  guid?: string
+  title?: string
+  companyName?: string
+  locationRestrictions?: string[]
+  timezoneRestriction?: string[]
+  employmentType?: string
+  category?: string[]
+  parentCategories?: string[]
+  pubDate?: string
+  applicationLink?: string
+}
+
+type ArbeitnowJob = {
+  slug?: string
+  title?: string
+  company_name?: string
+  location?: string
+  remote?: boolean
+  url?: string
+  tags?: string[]
+  job_types?: string[]
+  created_at?: number
+}
+
+function normaliseHimalayas(job: HimalayasJob): Opportunity | null {
+  const location = job.locationRestrictions?.join(", ") || "Worldwide"
+  if (!job.guid || !job.title || !job.companyName || !job.applicationLink || !EUROPE.test(location)) return null
+  const category = [...(job.category || []), ...(job.parentCategories || [])].join(" ")
+  return { id: `himalayas-${job.guid}`, title: job.title, company: job.companyName, location, type: job.employmentType || "Remote", category: categoryFor(job.title, category), source: "Himalayas", origin: "Public feed", url: job.applicationLink, publishedAt: job.pubDate || null }
+}
+
+function normaliseArbeitnow(job: ArbeitnowJob): Opportunity | null {
+  const location = job.location || (job.remote ? "Remote / Europe" : "")
+  if (!job.slug || !job.title || !job.company_name || !job.url || !job.remote || !EUROPE.test(location)) return null
+  const tags = (job.tags || []).join(" ")
+  return { id: `arbeitnow-${job.slug}`, title: job.title, company: job.company_name, location, type: (job.job_types || []).join(", ") || "Remote", category: categoryFor(job.title, tags), source: "Arbeitnow", origin: "Public feed", url: job.url, publishedAt: job.created_at ? new Date(job.created_at * 1000).toISOString() : null }
+}
+
+async function himalayasFeed() {
+  const jobs: HimalayasJob[] = []
+  let cursor: string | undefined
+  for (let page = 0; page < 3; page += 1) {
+    const endpoint = new URL("https://himalayas.app/jobs/api")
+    endpoint.searchParams.set("limit", "20")
+    if (cursor) endpoint.searchParams.set("cursor", cursor)
+    const response = await fetch(endpoint, { next: { revalidate } })
+    if (!response.ok) throw new Error(`Himalayas returned ${response.status}`)
+    const payload = await response.json() as { jobs?: HimalayasJob[]; data?: HimalayasJob[]; nextCursor?: string | null }
+    const batch = payload.jobs || payload.data || []
+    jobs.push(...batch)
+    cursor = payload.nextCursor || undefined
+    if (!cursor || !batch.length) break
+  }
+  return jobs.map(normaliseHimalayas).filter((job): job is Opportunity => Boolean(job))
+}
+
+async function arbeitnowFeed() {
+  const response = await fetch("https://www.arbeitnow.com/api/job-board-api", { next: { revalidate } })
+  if (!response.ok) throw new Error(`Arbeitnow returned ${response.status}`)
+  const payload = await response.json() as { data?: ArbeitnowJob[] }
+  return (payload.data || []).map(normaliseArbeitnow).filter((job): job is Opportunity => Boolean(job))
 }
 
 async function remoteOkFeed() {
@@ -165,8 +230,11 @@ async function directCompanyFeed() {
 }
 
 function normaliseGlassdoor(job: GlassdoorJob): Opportunity | null {
+  // The commercial API has already filtered this request with location=Europe
+  // and remote_only=true. Its returned display location is often just "Remote"
+  // or a city, so applying a second text filter here silently drops valid results.
   const location = job.location_name || "Remote / Europe"
-  if (!job.job_id || !job.job_title || !job.company_name || !job.job_link || !EUROPE.test(location)) return null
+  if (!job.job_id || !job.job_title || !job.company_name || !job.job_link) return null
   const age = Number.isFinite(job.age_in_days) ? Math.max(0, job.age_in_days || 0) : null
   return {
     id: `glassdoor-${job.job_id}`,
@@ -205,6 +273,8 @@ export async function GET() {
     jobicyFeed(),
     sourceFeed("https://remotive.com/api/remote-jobs", "Remotive"),
     remoteOkFeed(),
+    himalayasFeed(),
+    arbeitnowFeed(),
     directCompanyFeed(),
     glassdoorFeed(),
   ])
@@ -218,5 +288,5 @@ export async function GET() {
   }).sort((a, b) => Number(b.origin === "Direct company feed") - Number(a.origin === "Direct company feed") || (b.publishedAt || "").localeCompare(a.publishedAt || "")).slice(0, 300)
 
   if (!deduplicated.length) return NextResponse.json({ jobs: [], updatedAt: new Date().toISOString(), sources: [], message: "The public feeds are temporarily unavailable. Try again later." }, { status: 503 })
-  return NextResponse.json({ jobs: deduplicated, updatedAt: new Date().toISOString(), sources: ["Jobicy", "Remotive", "Remote OK", "Ashby direct company feed", "Glassdoor via OpenWeb Ninja"], contextAvailable: Boolean(process.env.OPENWEBNINJA_API_KEY) })
+  return NextResponse.json({ jobs: deduplicated, updatedAt: new Date().toISOString(), sources: ["Jobicy", "Remotive", "Remote OK", "Himalayas", "Arbeitnow", "Ashby direct company feed", "Glassdoor via OpenWeb Ninja"], contextAvailable: Boolean(process.env.OPENWEBNINJA_API_KEY) })
 }
