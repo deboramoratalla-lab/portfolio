@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/" },
   authors: [{ name: "Debora Moratalla", url: "https://deboramoratalla.com" }],
   creator: "Debora Moratalla",
-  icons: { icon: "/media/dm-logo.png", shortcut: "/media/dm-logo.png", apple: "/media/dm-logo.png" },
+  icons: { icon: "/icon.svg", shortcut: "/icon.svg", apple: "/media/dm-logo.png" },
   keywords: ["Product Designer", "Technical Product Design", "Enterprise Product Design", "Design Systems", "AI Product Design", "Design Engineering", "Product Strategy"],
   openGraph: { title: "Debora Moratalla — Senior Product Designer", description: "Product design for technical systems, enterprise tools and AI workflows.", url: "https://deboramoratalla.com", siteName: "Debora Moratalla", locale: "en_GB", type: "website" },
   twitter: { card: "summary", title: "Debora Moratalla — Senior Product Designer", description: "Product design for technical systems, enterprise tools and AI workflows." },
