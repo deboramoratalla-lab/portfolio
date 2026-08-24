@@ -28,8 +28,8 @@ type Opportunity = {
   location: string
   type: string
   category: string
-  source: "Jobicy" | "Remotive" | "Remote OK" | "Ashby"
-  origin: "Public feed" | "Direct company feed"
+  source: "Jobicy" | "Remotive" | "Remote OK" | "Ashby" | "Glassdoor"
+  origin: "Public feed" | "Direct company feed" | "Commercial job API"
   url: string
   publishedAt: string | null
 }
@@ -39,7 +39,10 @@ const EUROPE = /anywhere|europe|eu\b|emea|uk\b|united kingdom|germany|france|spa
 function categoryFor(title: string, sourceCategory = "") {
   const text = `${title} ${sourceCategory}`.toLowerCase()
   if (/product manager|project manager|program manager|technical program|operations/.test(text)) return "Product & Operations"
-  if (/product design|ux|ui |designer|design system|researcher/.test(text)) return "Product & Design"
+  if (/design system|design engineer|design technologist|ui engineer/.test(text)) return "Design Systems & Engineering"
+  if (/product design|product designer/.test(text)) return "Product & Design"
+  if (/ux|ui |user experience|user interface|interaction designer|ux researcher|user researcher|design researcher/.test(text)) return "UX/UI & Research"
+  if (/content designer|brand designer|visual designer|creative director/.test(text)) return "Content & Brand"
   if (/developer relations|devrel|technical writer|solutions architect|developer advocate/.test(text)) return "Developer Experience"
   if (/security|privacy|identity|trust/.test(text)) return "Security"
   if (/devops|sre|platform|cloud|infrastructure|systems engineer/.test(text)) return "Platform & Cloud"
@@ -105,6 +108,15 @@ type AshbyJob = {
   jobUrl?: string
 }
 
+type GlassdoorJob = {
+  job_id: string | number
+  job_title: string
+  company_name: string
+  location_name?: string
+  job_link: string
+  age_in_days?: number
+}
+
 function normaliseAshby(job: AshbyJob): Opportunity | null {
   const location = [job.location, ...(job.secondaryLocations || []).map(item => item.location)].filter(Boolean).join(", ") || "Remote"
   if (!job.isRemote || !job.jobUrl || !EUROPE.test(location)) return null
@@ -144,12 +156,49 @@ async function directCompanyFeed() {
   return (payload.jobs || []).map(normaliseAshby).filter((job): job is Opportunity => Boolean(job))
 }
 
+function normaliseGlassdoor(job: GlassdoorJob): Opportunity | null {
+  const location = job.location_name || "Remote / Europe"
+  if (!job.job_id || !job.job_title || !job.company_name || !job.job_link || !EUROPE.test(location)) return null
+  const age = Number.isFinite(job.age_in_days) ? Math.max(0, job.age_in_days || 0) : null
+  return {
+    id: `glassdoor-${job.job_id}`,
+    title: job.job_title,
+    company: job.company_name,
+    location,
+    type: "Remote",
+    category: categoryFor(job.job_title),
+    source: "Glassdoor",
+    origin: "Commercial job API",
+    url: job.job_link,
+    publishedAt: age === null ? null : new Date(Date.now() - age * 86400000).toISOString(),
+  }
+}
+
+async function glassdoorFeed() {
+  const apiKey = process.env.OPENWEBNINJA_API_KEY
+  if (!apiKey) return [] as Opportunity[]
+  const queries = ["product designer", "ux designer", "ui designer", "ux researcher", "design engineer"]
+  const responses = await Promise.allSettled(queries.map(async query => {
+    const endpoint = new URL("https://api.openwebninja.com/realtime-glassdoor-data/job-search")
+    endpoint.searchParams.set("query", query)
+    endpoint.searchParams.set("location", "Europe")
+    endpoint.searchParams.set("remote_only", "true")
+    endpoint.searchParams.set("page", "1")
+    const response = await fetch(endpoint, { headers: { "x-api-key": apiKey }, next: { revalidate } })
+    if (!response.ok) throw new Error(`Glassdoor returned ${response.status}`)
+    const payload = await response.json() as { data?: { jobs?: GlassdoorJob[] } }
+    return (payload.data?.jobs || []).map(normaliseGlassdoor).filter((job): job is Opportunity => Boolean(job))
+  }))
+  return responses.flatMap(response => response.status === "fulfilled" ? response.value : [])
+}
+
 export async function GET() {
   const feeds = await Promise.allSettled([
     sourceFeed("https://jobicy.com/api/v2/remote-jobs?count=100", "Jobicy"),
     sourceFeed("https://remotive.com/api/remote-jobs?limit=100", "Remotive"),
     remoteOkFeed(),
     directCompanyFeed(),
+    glassdoorFeed(),
   ])
   const jobs = feeds.flatMap(feed => feed.status === "fulfilled" ? feed.value : [])
   const seen = new Set<string>()
@@ -161,5 +210,5 @@ export async function GET() {
   }).sort((a, b) => Number(b.origin === "Direct company feed") - Number(a.origin === "Direct company feed") || (b.publishedAt || "").localeCompare(a.publishedAt || "")).slice(0, 120)
 
   if (!deduplicated.length) return NextResponse.json({ jobs: [], updatedAt: new Date().toISOString(), sources: [], message: "The public feeds are temporarily unavailable. Try again later." }, { status: 503 })
-  return NextResponse.json({ jobs: deduplicated, updatedAt: new Date().toISOString(), sources: ["Jobicy", "Remotive", "Remote OK", "Ashby direct company feed"], contextAvailable: Boolean(process.env.OPENWEBNINJA_API_KEY) })
+  return NextResponse.json({ jobs: deduplicated, updatedAt: new Date().toISOString(), sources: ["Jobicy", "Remotive", "Remote OK", "Ashby direct company feed", "Glassdoor via OpenWeb Ninja"], contextAvailable: Boolean(process.env.OPENWEBNINJA_API_KEY) })
 }
