@@ -1,10 +1,11 @@
 "use client"
 
 import { useEffect, useMemo, useState } from "react"
-import { IconArrowUpRight, IconBriefcase2, IconRefresh, IconSearch } from "@tabler/icons-react"
+import { IconArrowUpRight, IconBriefcase2, IconRefresh, IconSearch, IconX } from "@tabler/icons-react"
 
 type Opportunity = { id: string; title: string; company: string; location: string; type: string; category: string; source: "Jobicy" | "Remotive" | "Remote OK" | "Ashby"; origin: "Public feed" | "Direct company feed"; url: string; publishedAt: string | null }
-type RadarData = { jobs: Opportunity[]; updatedAt: string; sources: string[]; message?: string }
+type RadarData = { jobs: Opportunity[]; updatedAt: string; sources: string[]; contextAvailable?: boolean; message?: string }
+type CompanyContext = { provider: string; retrievedAt: string; company: { name: string; industry: string | null; rating: number | null; reviewCount: number; salaryCount: number; careerOpportunities: number | null; culture: number | null; workLifeBalance: number | null; sourceUrl: string | null } }
 
 const featuredCategories = ["All technology", "Product & Design", "Engineering", "Data & AI", "Platform & Cloud", "Developer Experience", "Security", "Product & Operations"]
 
@@ -30,6 +31,9 @@ export function OpportunityRadarDemo() {
   const [query, setQuery] = useState("")
   const [isLoading, setLoading] = useState(true)
   const [error, setError] = useState("")
+  const [companyContext, setCompanyContext] = useState<CompanyContext | null>(null)
+  const [contextError, setContextError] = useState("")
+  const [contextLoading, setContextLoading] = useState("")
 
   const load = async (showLoading = true) => {
     if (showLoading) setLoading(true)
@@ -47,6 +51,16 @@ export function OpportunityRadarDemo() {
     const request = window.setTimeout(() => { void load(false) }, 0)
     return () => window.clearTimeout(request)
   }, [])
+  const loadCompanyContext = async (company: string) => {
+    setContextLoading(company); setContextError(""); setCompanyContext(null)
+    try {
+      const response = await fetch(`/api/opportunity-radar/company?company=${encodeURIComponent(company)}`)
+      const payload = await response.json() as CompanyContext & { message?: string }
+      if (!response.ok) throw new Error(payload.message || "Company context could not be read.")
+      setCompanyContext(payload)
+    } catch (cause) { setContextError(cause instanceof Error ? cause.message : "Company context could not be read.") }
+    finally { setContextLoading("") }
+  }
   const visible = useMemo(() => (data?.jobs || []).filter(job => (category === "All technology" || job.category === category) && (origin === "All sources" || job.origin === origin) && `${job.title} ${job.company} ${job.location}`.toLowerCase().includes(query.toLowerCase())).slice(0, 12), [category, data, origin, query])
   const categories = featuredCategories.filter(item => item === "All technology" || data?.jobs.some(job => job.category === item))
   const directCount = data?.jobs.filter(job => job.origin === "Direct company feed").length || 0
@@ -62,8 +76,9 @@ export function OpportunityRadarDemo() {
       <div className="radar-summary"><span>{data ? `${data.jobs.length} current opportunities from public feeds` : "Reading public feeds"}</span><span>{data?.updatedAt ? `Checked ${new Intl.DateTimeFormat("en", { hour: "2-digit", minute: "2-digit" }).format(new Date(data.updatedAt))}` : ""}</span></div>
       {!isLoading && data && <aside className="radar-evidence"><div><span>Direct company feeds</span><strong>{directCount} Europe-eligible roles</strong><p>Published by the employer through its own ATS. These are prioritised above aggregated listings.</p></div><div><span>Context policy</span><strong>Only disclose what is sourced</strong><p>Salary and company signals appear only when a provider is connected and their origin can be named.</p></div></aside>}
       {error ? <div className="radar-message" role="status"><strong>Sources are unavailable right now.</strong><span>{error}</span><button type="button" onClick={() => void load()}>Try again</button></div> : <div className="radar-results" aria-live="polite">
-        {isLoading ? Array.from({ length: 6 }, (_, index) => <div className="radar-skeleton" key={index} />) : visible.length ? visible.map(job => <article className={`radar-job ${job.origin === "Direct company feed" ? "is-direct" : ""}`} key={job.id}><div className="radar-job-main"><span className="radar-job-source">{job.origin === "Direct company feed" ? "Direct company feed" : job.source}</span><h3>{job.title}</h3><p>{job.company} <i /> {job.location}</p></div><div className="radar-job-meta"><span>{job.category}</span><span>{job.type}</span><small>{relativeDate(job.publishedAt)}</small></div><a href={job.url} target="_blank" rel="noreferrer" aria-label={`Open ${job.title} at ${job.company}`}><IconArrowUpRight size={19} /></a></article>) : <div className="radar-empty"><IconBriefcase2 size={24} /><strong>No matching role in the current feed.</strong><p>Try another role family or a broader search.</p></div>}
+        {isLoading ? Array.from({ length: 6 }, (_, index) => <div className="radar-skeleton" key={index} />) : visible.length ? visible.map(job => <article className={`radar-job ${job.origin === "Direct company feed" ? "is-direct" : ""}`} key={job.id}><div className="radar-job-main"><span className="radar-job-source">{job.origin === "Direct company feed" ? "Direct company feed" : job.source}</span><h3>{job.title}</h3><p>{job.company} <i /> {job.location}</p>{data?.contextAvailable && <button type="button" className="radar-context-trigger" onClick={() => void loadCompanyContext(job.company)}>{contextLoading === job.company ? "Reading company context" : "Inspect company context"}</button>}</div><div className="radar-job-meta"><span>{job.category}</span><span>{job.type}</span><small>{relativeDate(job.publishedAt)}</small></div><a href={job.url} target="_blank" rel="noreferrer" aria-label={`Open ${job.title} at ${job.company}`}><IconArrowUpRight size={19} /></a></article>) : <div className="radar-empty"><IconBriefcase2 size={24} /><strong>No matching role in the current feed.</strong><p>Try another role family or a broader search.</p></div>}
       </div>}
+      {(companyContext || contextError) && <section className="radar-company-context" aria-live="polite"><button type="button" onClick={() => { setCompanyContext(null); setContextError("") }} aria-label="Close company context"><IconX size={17} /></button>{contextError ? <><span>Company context</span><strong>Context unavailable</strong><p>{contextError}</p></> : companyContext && <><span>{companyContext.provider}</span><div><h3>{companyContext.company.name}</h3>{companyContext.company.industry && <p>{companyContext.company.industry}</p>}</div><dl><div><dt>Overall rating</dt><dd>{companyContext.company.rating ?? "Not supplied"}</dd></div><div><dt>Reviews</dt><dd>{companyContext.company.reviewCount || "Not supplied"}</dd></div><div><dt>Salary records</dt><dd>{companyContext.company.salaryCount || "Not supplied"}</dd></div><div><dt>Career opportunities</dt><dd>{companyContext.company.careerOpportunities ?? "Not supplied"}</dd></div></dl>{companyContext.company.sourceUrl && <a href={companyContext.company.sourceUrl} target="_blank" rel="noreferrer">Open source <IconArrowUpRight size={16} /></a>}</>}</section>}
       <footer className="radar-provenance"><span>Sources: <a href="https://jobicy.com" target="_blank" rel="noreferrer">Jobicy</a>, <a href="https://remotive.com" target="_blank" rel="noreferrer">Remotive</a>, <a href="https://remoteok.com" target="_blank" rel="noreferrer">Remote OK</a> and direct company ATS feeds</span><span>Listings link to the original source.</span></footer>
     </div>
   </section>

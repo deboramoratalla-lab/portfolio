@@ -160,5 +160,5 @@ export async function GET() {
   }).sort((a, b) => Number(b.origin === "Direct company feed") - Number(a.origin === "Direct company feed") || (b.publishedAt || "").localeCompare(a.publishedAt || "")).slice(0, 120)
 
   if (!deduplicated.length) return NextResponse.json({ jobs: [], updatedAt: new Date().toISOString(), sources: [], message: "The public feeds are temporarily unavailable. Try again later." }, { status: 503 })
-  return NextResponse.json({ jobs: deduplicated, updatedAt: new Date().toISOString(), sources: ["Jobicy", "Remotive", "Remote OK", "Ashby direct company feed"] })
+  return NextResponse.json({ jobs: deduplicated, updatedAt: new Date().toISOString(), sources: ["Jobicy", "Remotive", "Remote OK", "Ashby direct company feed"], contextAvailable: Boolean(process.env.OPENWEBNINJA_API_KEY) })
 }
