@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react"
 import { IconArrowNarrowRight, IconCheck, IconGitBranch, IconLock, IconMessageCircle, IconPlayerPause, IconPlayerPlay, IconShieldCheck } from "@tabler/icons-react"
+import gitSnapshot from "@/data/agent-convergence-snapshot.json"
 
 type Mode = "parallel" | "queue" | "review"
 
@@ -9,17 +10,17 @@ const modes: Record<Mode, { label: string; action: string; title: string; copy: 
   parallel: {
     label: "Unresolved overlap",
     action: "Keep all agents running",
-    title: "Three tasks are moving. One boundary is not safe yet.",
-    copy: "Auth migration and API tests both change the session contract. Parallel execution is fast, but the second diff could validate an interface that no longer exists.",
-    status: "1 conflict surface",
-    evidence: "Shared contract / session.ts",
+    title: "Three changes moved. Their shared files are not safe to merge blindly.",
+    copy: "The Git snapshot shows all three touched the same route, styles and demo. Parallel work may be useful, but a green task state does not prove that its diff still fits the other two.",
+    status: `${gitSnapshot.sharedFiles.length} shared files`,
+    evidence: "Git overlap detected",
     tone: "is-risk",
   },
   queue: {
     label: "Recommended sequence",
     action: "Queue API tests after migration",
-    title: "Keep the independent work moving. Hold the dependent task.",
-    copy: "The refactor can continue in its own worktree. The test agent starts from the migration commit, so its evidence corresponds to the contract it is checking.",
+    title: "Keep independent scope moving. Gate the files that overlap.",
+    copy: "A dependent task should start from the current contract, not from an earlier assumption. The sequence makes the review evidence correspond to the code that will actually merge.",
     status: "Boundary protected",
     evidence: "Dependency made explicit",
     tone: "is-safe",
@@ -27,19 +28,15 @@ const modes: Record<Mode, { label: string; action: string; title: string; copy: 
   review: {
     label: "Human review gate",
     action: "Open the contract review",
-    title: "This is a product decision, not a scheduling detail.",
-    copy: "The migration changes token expiry behaviour. Before agents converge, a developer confirms the intended fallback path and leaves a decision beside the relevant diff.",
+    title: "A diff can expose a boundary. It cannot decide the intended behaviour.",
+    copy: "Before changes converge, a developer checks whether the shared route still expresses the desired product behaviour and leaves the decision alongside the relevant change.",
     status: "Decision requested",
     evidence: "1 comment required",
     tone: "is-review",
   },
 }
 
-const tasks = [
-  { id: "A-14", title: "Refactor token refresh", agent: "Codex", files: "auth/refresh.ts", state: "RUNNING", lane: "safe" },
-  { id: "B-07", title: "Migrate session contract", agent: "Junie", files: "auth/session.ts", state: "READY", lane: "risk" },
-  { id: "C-22", title: "Update API regression tests", agent: "Claude", files: "api/session.spec.ts", state: "WAITING", lane: "wait" },
-]
+const tasks = gitSnapshot.tasks.map((task, index) => ({ ...task, agent: "Git change set", files: task.files[0], state: index === 0 ? "READY" : index === 1 ? "RUNNING" : "WAITING", lane: index === 0 ? "safe" : index === 1 ? "risk" : "wait" }))
 
 export function AgentConvergenceCover() {
   return <div className="agent-convergence-cover" aria-hidden="true">
@@ -53,7 +50,7 @@ export function AgentConvergenceCover() {
 export function AgentConvergenceDemo() {
   const [mode, setMode] = useState<Mode>("parallel")
   const current = modes[mode]
-  const visibleTasks = useMemo(() => tasks.map(task => ({ ...task, state: mode === "queue" && task.id === "C-22" ? "QUEUED" : mode === "review" && task.id === "B-07" ? "REVIEW" : task.state })), [mode])
+  const visibleTasks = useMemo(() => tasks.map((task, index) => ({ ...task, state: mode === "queue" && index === 2 ? "QUEUED" : mode === "review" && index === 1 ? "REVIEW" : task.state })), [mode])
 
   return <section className="agent-convergence" aria-labelledby="agent-convergence-title">
     <header className="agent-convergence-intro">
@@ -62,7 +59,7 @@ export function AgentConvergenceDemo() {
     </header>
 
     <div className="convergence-console">
-      <header className="convergence-bar"><div><span>Workspace / atlas-api</span><small>3 active worktrees · 1 shared boundary</small></div><div className="convergence-live"><i /> Live plan</div></header>
+      <header className="convergence-bar"><div><span>Repository / {gitSnapshot.source.repository}</span><small>3 commit ranges · {gitSnapshot.sharedFiles.length} shared files</small></div><div className="convergence-live"><i /> Captured evidence</div></header>
       <div className="convergence-tabs" role="group" aria-label="Choose a task coordination strategy">
         <button className={mode === "parallel" ? "is-active" : ""} onClick={() => setMode("parallel")}><IconPlayerPlay size={14} /> Keep parallel</button>
         <button className={mode === "queue" ? "is-active" : ""} onClick={() => setMode("queue")}><IconGitBranch size={14} /> Protect boundary</button>
@@ -75,16 +72,16 @@ export function AgentConvergenceDemo() {
           <div className="convergence-lanes">
             {visibleTasks.map((task, index) => <article className={`convergence-task ${task.lane} ${task.id === "C-22" && mode === "queue" ? "is-queued" : ""}`} key={task.id}>
               <div className="convergence-task-index"><span>{String(index + 1).padStart(2, "0")}</span><i /></div>
-              <div><span>{task.id} · {task.agent}</span><h3>{task.title}</h3><p>{task.files}</p></div>
+              <div><span>{task.id} · {task.agent} · {task.hash}</span><h3>{task.subject}</h3><p>{task.files}</p></div>
               <b>{task.state}</b>
             </article>)}
           </div>
           <div className={`convergence-boundary ${current.tone}`}>
             <div className="convergence-boundary-node"><IconLock size={17} /></div>
-            <div><span>Shared boundary</span><strong>session.ts</strong><small>{current.evidence}</small></div>
+            <div><span>Shared boundary</span><strong>{gitSnapshot.sharedFiles[0]?.path.split("/").pop()}</strong><small>{current.evidence}</small></div>
             <div className="convergence-boundary-arrows"><IconArrowNarrowRight size={22} /><IconArrowNarrowRight size={22} /></div>
           </div>
-          <footer><span>Base commit 4bd8e1a</span><span>Run environment: git worktree</span></footer>
+          <footer><span>Base commit {gitSnapshot.tasks[0]?.parent}</span><span>Source: {gitSnapshot.source.method}</span></footer>
         </section>
 
         <aside className={`convergence-decision ${current.tone}`} aria-live="polite">
@@ -97,7 +94,7 @@ export function AgentConvergenceDemo() {
         </aside>
       </div>
 
-      <footer className="convergence-proof"><span><b>Why this matters</b> · Agent progress is not evidence that their changes can safely converge.</span><span><IconCheck size={14} /> Developer remains accountable</span></footer>
+      <footer className="convergence-proof"><span><b>Why this matters</b> · Commit history is real evidence; the coordination replay is the product hypothesis.</span><span><IconCheck size={14} /> Developer remains accountable</span></footer>
     </div>
   </section>
 }
