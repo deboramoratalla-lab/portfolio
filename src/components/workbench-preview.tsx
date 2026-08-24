@@ -4,6 +4,7 @@ import { ArrowUpRight } from "@/components/arrow-up-right"
 import { ArrowRouteLink } from "@/components/ui-links"
 import { CapacityDecisionCover, InfrastructureDashboardCover } from "@/components/infrastructure-dashboard-demo"
 import { OpportunityRadarCover } from "@/components/opportunity-radar-demo"
+import { AgentConvergenceCover } from "@/components/agent-convergence-demo"
 import type { LabEntry } from "@/data/lab"
 
 const HOME_LAB_LIMIT = 5
@@ -31,6 +32,8 @@ export function WorkbenchPreview({ entries }: { entries: LabEntry[] }) {
         <figure className="home-lab-feature-media">
           {featuredEntry.slug === "european-tech-opportunity-radar"
             ? <OpportunityRadarCover />
+            : featuredEntry.slug === "parallel-not-blind"
+            ? <AgentConvergenceCover />
             : featuredEntry.slug === "gpu-job-triage"
             ? <CapacityDecisionCover />
             : featuredEntry.slug === "metrics-are-not-decisions"

@@ -10,6 +10,15 @@ export type LabEntry = {
 
 export const labEntries: LabEntry[] = [
   {
+    slug: "parallel-not-blind",
+    type: "Experiment",
+    title: "Parallel isn’t always safe.",
+    summary: "A decision surface for the moment parallel AI tasks stop being isolated work and need to converge into one change a developer can trust.",
+    date: "August 2026",
+    readingTime: "4 min read",
+    topics: ["Agentic UX", "Developer tools", "Interaction design"],
+  },
+  {
     slug: "european-tech-opportunity-radar",
     type: "Build",
     title: "A clearer way to browse remote technology roles.",

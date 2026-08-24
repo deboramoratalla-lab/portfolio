@@ -8,6 +8,7 @@ import { OpenPortfolioAgentLink } from "@/components/open-portfolio-agent-link"
 import { DesignSystemHealthDemo } from "@/components/design-system-health-demo"
 import { GpuJobTriageDecisionDemo, TelemetryEvidenceDemo } from "@/components/gpu-job-triage-demo"
 import { OpportunityRadarDemo } from "@/components/opportunity-radar-demo"
+import { AgentConvergenceDemo } from "@/components/agent-convergence-demo"
 import { getLabEntry, labEntries } from "@/data/lab"
 
 type ArticleSection = { title: string; paragraphs: string[]; points?: string[] }
@@ -46,6 +47,17 @@ const reusableResources: Record<string, ReusableResource[]> = {
 }
 
 const articles: Record<string, ArticleContent> = {
+  "parallel-not-blind": {
+    lead: "An independent interaction experiment for agentic development environments. It examines the moment when several useful task loops become one product decision: can their output converge safely, and who is accountable for the answer?",
+    quote: "Parallel execution makes work faster. It does not make dependency disappear.",
+    sections: [
+      { title: "The interesting moment is between tasks", paragraphs: ["Most agent interfaces make individual task progress visible: each agent has a plan, a worktree, a diff and a state. That is necessary, but it leaves a harder moment unresolved: two independent tasks can still alter the same contract.", "The prototype starts when that overlap becomes legible. It is not a generic fleet dashboard. It is a short decision surface for a developer who needs to keep useful work moving without treating a green status as proof of a safe merge."] },
+      { title: "Show the boundary, not just the activity", paragraphs: ["Three tasks run in isolated worktrees. The interface maps each to the file it is changing, then elevates the shared session contract where their work begins to depend on one another.", "This creates a useful distinction between independence and compatibility. A task can be healthy in its own environment while still needing to wait, sequence or invite a human decision before it joins another task."] },
+      { title: "Make a coordination choice consequential", paragraphs: ["The controls replay three plausible moves. Keep the tasks parallel and accept a conflict surface; queue the dependent test task after the migration; or open a review gate because the question is product behaviour, not execution order.", "Each choice changes the recommendation, task state, risk and cost of review. The goal is not to automate judgement. It is to give the developer an understandable set of trade-offs at the point where their judgement matters."] },
+      { title: "Keep the implementation boundary honest", paragraphs: ["This is a coded interaction prototype with a modelled repository scenario. It does not connect to Air, JetBrains or a real codebase, and it does not claim access to agent execution data.", "The product hypothesis is deliberately testable: if an agentic workspace already knows task scope, file context and execution isolation, it can help a developer recognise a risky convergence before the review becomes expensive."] },
+    ],
+    close: "The ambition is not autonomous orchestration. It is an agentic workspace where speed never obscures the point at which a person needs to make the call.",
+  },
   "european-tech-opportunity-radar": {
     lead: "A small community utility for browsing technical opportunities without treating job boards as a black box. It is designed for people exploring the market, not for ranking candidates.",
     quote: "A useful job board should make its sources and limits as visible as its listings.",
@@ -392,6 +404,7 @@ export default async function LabArticle({ params }: { params: Promise<{ slug: s
       {entry.slug === "smallest-useful-accessibility-pipeline" && <AccessibilityEvidence />}
       {entry.slug === "metrics-are-not-decisions" && <DesignSystemHealthDemo />}
       {entry.slug === "european-tech-opportunity-radar" && <OpportunityRadarDemo />}
+      {entry.slug === "parallel-not-blind" && <AgentConvergenceDemo />}
       {entry.slug === "gpu-job-triage" && <><GpuJobTriageDecisionDemo /><TelemetryEvidenceDemo /></>}
       <ReusableResources slug={entry.slug} />
       <footer className="lab-article-close">
