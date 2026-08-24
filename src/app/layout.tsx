@@ -21,8 +21,8 @@ export const metadata: Metadata = {
   creator: "Debora Moratalla",
   icons: { icon: "/icon.svg", shortcut: "/icon.svg", apple: "/media/dm-logo.png" },
   keywords: ["Product Designer", "Technical Product Design", "Enterprise Product Design", "Design Systems", "AI Product Design", "Design Engineering", "Product Strategy"],
-  openGraph: { title: "Debora Moratalla — Senior Product Designer", description: "Product design for technical systems, enterprise tools and AI workflows.", url: "https://deboramoratalla.com", siteName: "Debora Moratalla", locale: "en_GB", type: "website" },
-  twitter: { card: "summary", title: "Debora Moratalla — Senior Product Designer", description: "Product design for technical systems, enterprise tools and AI workflows." },
+  openGraph: { title: "Debora Moratalla — Senior Product Designer", description: "Product design for technical systems, enterprise tools and AI workflows.", url: "https://deboramoratalla.com", siteName: "Debora Moratalla", locale: "en_GB", type: "website", images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Debora Moratalla — Product designer and design engineer" }] },
+  twitter: { card: "summary_large_image", title: "Debora Moratalla — Senior Product Designer", description: "Product design for technical systems, enterprise tools and AI workflows.", images: ["/opengraph-image"] },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1, "max-video-preview": -1 } },
 }
 
