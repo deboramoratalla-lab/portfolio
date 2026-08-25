@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server"
+import { unstable_cache } from "next/cache"
 
 export const revalidate = 43200
 export const dynamic = "force-dynamic"
@@ -32,7 +33,7 @@ type Opportunity = {
   location: string
   type: string
   category: string
-  source: "Jobicy" | "Remotive" | "Remote OK" | "Ashby" | "Glassdoor" | "Himalayas" | "Arbeitnow"
+  source: "Jobicy" | "Remotive" | "Remote OK" | "Ashby" | "Glassdoor" | "Himalayas" | "Arbeitnow" | "TheirStack"
   origin: "Public feed" | "Direct company feed" | "Commercial job API"
   url: string
   publishedAt: string | null
@@ -137,6 +138,8 @@ type JSearchResponse = {
   next_page_token?: string | null
   cursor?: string | null
 }
+
+type TheirStackJob = { id?: string | number; job_title?: string; company?: string; location?: string; short_location?: string; country?: string; workplace_types?: string[]; employment_statuses?: string[]; date_posted?: string; url?: string; final_url?: string; source_url?: string }
 
 type LegacyGlassdoorJob = {
   job_id: string | number
@@ -243,6 +246,20 @@ async function directCompanyFeed() {
   return (payload.jobs || []).map(normaliseAshby).filter((job): job is Opportunity => Boolean(job))
 }
 
+const theirStackFeed = unstable_cache(async (): Promise<Opportunity[]> => {
+  const apiKey = process.env.THEIRSTACK_API_KEY
+  if (!apiKey) return []
+  const response = await fetch("https://api.theirstack.com/v1/jobs/search", {
+    method: "POST",
+    headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
+    body: JSON.stringify({ job_title_or: ["product designer", "ux designer", "ui designer", "ux researcher", "design engineer", "software engineer", "data engineer", "devops engineer", "product manager"], workplace_types_or: ["remote"], posted_at_max_age_days: 30, property_exists_or: ["final_url"], is_closed: false, limit: 50, page: 0, include_total_results: true }),
+    signal: AbortSignal.timeout(15000),
+  })
+  if (!response.ok) throw new Error(`TheirStack returned ${response.status}`)
+  const payload = await response.json() as { data?: TheirStackJob[] }
+  return (payload.data || []).map(normaliseTheirStack).filter((job): job is Opportunity => Boolean(job))
+}, ["theirstack-remote-opportunity-radar-v1"], { revalidate: 2592000 })
+
 function normaliseJSearch(job: JSearchJob): Opportunity | null {
   const location = job.job_location || job.job_country || "Remote / restrictions not supplied"
   const url = job.job_apply_link || job.job_google_link
@@ -259,6 +276,12 @@ function normaliseJSearch(job: JSearchJob): Opportunity | null {
     url,
     publishedAt: normaliseDate(job.job_posted_at_datetime_utc),
   }
+}
+
+function normaliseTheirStack(job: TheirStackJob): Opportunity | null {
+  const url = job.final_url || job.url || job.source_url
+  if (!job.id || !job.job_title || !job.company || !url) return null
+  return { id: `theirstack-${job.id}`, title: job.job_title, company: job.company, location: job.location || job.short_location || job.country || "Remote / restrictions not supplied", type: job.workplace_types?.join(", ") || job.employment_statuses?.join(", ") || "Remote", category: categoryFor(job.job_title), source: "TheirStack", origin: "Commercial job API", url, publishedAt: normaliseDate(job.date_posted) }
 }
 
 function normaliseLegacyGlassdoor(job: LegacyGlassdoorJob): Opportunity | null {
@@ -346,6 +369,7 @@ export async function GET() {
     himalayasFeed(),
     arbeitnowFeed(),
     directCompanyFeed(),
+    theirStackFeed(),
   ])
   const jobs = [...feeds.flatMap(feed => feed.status === "fulfilled" ? feed.value : []), ...glassdoor.jobs]
   const seen = new Set<string>()
