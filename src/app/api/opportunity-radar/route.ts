@@ -33,7 +33,7 @@ type Opportunity = {
   location: string
   type: string
   category: string
-  source: "Jobicy" | "Remotive" | "Remote OK" | "Ashby" | "Glassdoor" | "Himalayas" | "Arbeitnow" | "TheirStack"
+  source: "Jobicy" | "Remotive" | "Remote OK" | "Ashby" | "Glassdoor" | "Himalayas" | "Arbeitnow" | "TheirStack" | "We Work Remotely" | "Landing.Jobs" | "Startup Jobs"
   origin: "Public feed" | "Direct company feed" | "Commercial job API"
   url: string
   publishedAt: string | null
@@ -204,6 +204,24 @@ type ArbeitnowJob = {
   created_at?: number
 }
 
+type LandingJob = {
+  id?: string | number
+  title?: string
+  job_title?: string
+  position_name?: string
+  company?: string | { name?: string }
+  company_name?: string
+  city?: string
+  country_name?: string
+  remote?: boolean
+  url?: string
+  apply_url?: string
+  job_url?: string
+  published_at?: string
+  employment_type?: string
+  categories?: string[]
+}
+
 function normaliseHimalayas(job: HimalayasJob): Opportunity | null {
   const location = job.locationRestrictions?.join(", ") || "Remote / restrictions not supplied"
   if (!job.guid || !job.title || !job.companyName || !job.applicationLink) return null
@@ -244,6 +262,64 @@ async function directCompanyFeed() {
   if (!response.ok) throw new Error(`Ashby returned ${response.status}`)
   const payload = await response.json() as { jobs?: AshbyJob[] }
   return (payload.jobs || []).map(normaliseAshby).filter((job): job is Opportunity => Boolean(job))
+}
+
+function decodeXml(value: string) {
+  return value.replace(/^<!\[CDATA\[([\s\S]*)\]\]>$/i, "$1").replace(/<[^>]+>/g, " ").replace(/&amp;/gi, "&").replace(/&quot;/gi, '"').replace(/&#39;|&apos;/gi, "'").replace(/&lt;/gi, "<").replace(/&gt;/gi, ">").replace(/\s+/g, " ").trim()
+}
+
+function rssValue(item: string, tag: string) {
+  const match = item.match(new RegExp(`<${tag}[^>]*>([\\s\\S]*?)<\\/${tag}>`, "i"))
+  return match ? decodeXml(match[1]) : ""
+}
+
+function normaliseRss(xml: string, source: "We Work Remotely" | "Startup Jobs") {
+  const items = xml.match(/<item\b[\s\S]*?<\/item>/gi) || []
+  return items.map((item, index): Opportunity | null => {
+    const rawTitle = rssValue(item, "title")
+    const url = rssValue(item, "link")
+    const publishedAt = rssValue(item, "pubDate") || rssValue(item, "published")
+    const category = rssValue(item, "category")
+    if (!rawTitle || !url) return null
+    const separator = rawTitle.lastIndexOf(" at ")
+    const title = separator > 0 ? rawTitle.slice(0, separator).trim() : rawTitle
+    const company = separator > 0 ? rawTitle.slice(separator + 4).trim() : source
+    return { id: `${source.toLowerCase().replace(/\W+/g, "-")}-${index}-${url}`, title, company, location: "Remote / restrictions shown on source", type: "Remote", category: categoryFor(title, category), source, origin: "Public feed", url, publishedAt: normaliseDate(publishedAt) }
+  }).filter((job): job is Opportunity => Boolean(job))
+}
+
+async function rssFeed(url: string, source: "We Work Remotely" | "Startup Jobs") {
+  const response = await fetch(url, { next: { revalidate }, signal: AbortSignal.timeout(12000) })
+  if (!response.ok) throw new Error(`${source} returned ${response.status}`)
+  return normaliseRss(await response.text(), source)
+}
+
+async function weWorkRemotelyFeed() {
+  return rssFeed("https://weworkremotely.com/remote-jobs.rss", "We Work Remotely")
+}
+
+async function startupJobsFeed() {
+  return rssFeed("https://startup.jobs/feeds/jobs?workplace=remote", "Startup Jobs")
+}
+
+function normaliseLanding(job: LandingJob): Opportunity | null {
+  const title = job.title || job.job_title || job.position_name
+  const company = typeof job.company === "string" ? job.company : job.company?.name || job.company_name
+  const url = job.url || job.apply_url || job.job_url
+  if (!job.id || !title || !company || !url || !job.remote) return null
+  const location = [job.city, job.country_name].filter(Boolean).join(", ") || "Remote / restrictions shown on source"
+  return { id: `landing-jobs-${job.id}`, title, company, location, type: job.employment_type || "Remote", category: categoryFor(title, (job.categories || []).join(" ")), source: "Landing.Jobs", origin: "Public feed", url, publishedAt: normaliseDate(job.published_at) }
+}
+
+async function landingJobsFeed() {
+  const endpoint = new URL("https://landing.jobs/api/v1/jobs")
+  endpoint.searchParams.set("limit", "50")
+  endpoint.searchParams.set("offset", "0")
+  const response = await fetch(endpoint, { next: { revalidate }, signal: AbortSignal.timeout(12000) })
+  if (!response.ok) throw new Error(`Landing.Jobs returned ${response.status}`)
+  const payload = await response.json() as LandingJob[] | { jobs?: LandingJob[]; data?: LandingJob[] }
+  const jobs = Array.isArray(payload) ? payload : payload.jobs || payload.data || []
+  return jobs.map(normaliseLanding).filter((job): job is Opportunity => Boolean(job))
 }
 
 const theirStackFeed = unstable_cache(async (): Promise<Opportunity[]> => {
@@ -370,6 +446,9 @@ export async function GET() {
     arbeitnowFeed(),
     directCompanyFeed(),
     theirStackFeed(),
+    weWorkRemotelyFeed(),
+    landingJobsFeed(),
+    startupJobsFeed(),
   ])
   const jobs = [...feeds.flatMap(feed => feed.status === "fulfilled" ? feed.value : []), ...glassdoor.jobs]
   const seen = new Set<string>()
@@ -381,5 +460,5 @@ export async function GET() {
   }).sort((a, b) => Number(b.origin === "Direct company feed") - Number(a.origin === "Direct company feed") || String(b.publishedAt || "").localeCompare(String(a.publishedAt || ""))).slice(0, 600)
 
   if (!deduplicated.length) return NextResponse.json({ jobs: [], updatedAt: new Date().toISOString(), sources: [], message: "The public feeds are temporarily unavailable. Try again later." }, { status: 503 })
-  return NextResponse.json({ jobs: deduplicated, updatedAt: new Date().toISOString(), sources: ["Jobicy", "Remotive", "Remote OK", "Himalayas", "Arbeitnow", "Ashby direct company feed", `Glassdoor via ${glassdoor.provider}`], glassdoorProvider: glassdoor.provider, contextAvailable: Boolean(process.env.OPENWEBNINJA_API_KEY) })
+  return NextResponse.json({ jobs: deduplicated, updatedAt: new Date().toISOString(), sources: ["Jobicy", "Remotive", "Remote OK", "Himalayas", "Arbeitnow", "We Work Remotely", "Landing.Jobs", "Startup Jobs", "Ashby direct company feed", `Glassdoor via ${glassdoor.provider}`], glassdoorProvider: glassdoor.provider, contextAvailable: Boolean(process.env.OPENWEBNINJA_API_KEY) })
 }
