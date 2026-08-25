@@ -116,13 +116,26 @@ type AshbyJob = {
   jobUrl?: string
 }
 
-type GlassdoorJob = {
-  job_id: string | number
-  job_title: string
-  company_name: string
-  location_name?: string
-  job_link: string
-  age_in_days?: number
+type JSearchJob = {
+  job_id?: string
+  job_title?: string
+  employer_name?: string
+  job_location?: string
+  job_country?: string
+  job_apply_link?: string
+  job_google_link?: string
+  job_employment_type?: string
+  job_is_remote?: boolean | null
+  work_arrangement?: string | null
+  job_posted_at_datetime_utc?: string
+  job_publisher?: string
+}
+
+type JSearchResponse = {
+  data?: JSearchJob[]
+  next_cursor?: string | null
+  next_page_token?: string | null
+  cursor?: string | null
 }
 
 function normaliseAshby(job: AshbyJob): Opportunity | null {
@@ -221,55 +234,63 @@ async function directCompanyFeed() {
   return (payload.jobs || []).map(normaliseAshby).filter((job): job is Opportunity => Boolean(job))
 }
 
-function normaliseGlassdoor(job: GlassdoorJob): Opportunity | null {
-  // The commercial API filters this request with remote_only=true. Its display
-  // location can be a city, country or simply "Remote", so it remains source
-  // evidence rather than an inferred eligibility claim.
-  const location = job.location_name || "Remote / restrictions not supplied"
-  if (!job.job_id || !job.job_title || !job.company_name || !job.job_link) return null
-  const age = Number.isFinite(job.age_in_days) ? Math.max(0, job.age_in_days || 0) : null
+function normaliseJSearch(job: JSearchJob): Opportunity | null {
+  const location = job.job_location || job.job_country || "Remote / restrictions not supplied"
+  const url = job.job_apply_link || job.job_google_link
+  if (!job.job_id || !job.job_title || !job.employer_name || !url) return null
   return {
     id: `glassdoor-${job.job_id}`,
     title: job.job_title,
-    company: job.company_name,
+    company: job.employer_name,
     location,
-    type: "Remote",
+    type: job.work_arrangement || job.job_employment_type || "Remote",
     category: categoryFor(job.job_title),
     source: "Glassdoor",
     origin: "Commercial job API",
-    url: job.job_link,
-    publishedAt: age === null ? null : new Date(Date.now() - age * 86400000).toISOString(),
+    url,
+    publishedAt: normaliseDate(job.job_posted_at_datetime_utc),
   }
 }
 
 async function glassdoorFeed() {
   const apiKey = process.env.OPENWEBNINJA_API_KEY
   if (!apiKey) return [] as Opportunity[]
-  const readSearches = async (requests: { query: string; location: string; domain?: string; page: number }[]) => {
-    const responses = await Promise.allSettled(requests.map(async ({ query, location, domain, page }) => {
-      const endpoint = new URL("https://api.openwebninja.com/realtime-glassdoor-data/job-search")
-      endpoint.searchParams.set("query", query)
-      endpoint.searchParams.set("location", location)
-      endpoint.searchParams.set("remote_only", "true")
-      if (domain) endpoint.searchParams.set("domain", domain)
-      endpoint.searchParams.set("page", String(page))
-      const response = await fetch(endpoint, { headers: { "x-api-key": apiKey }, next: { revalidate: GLASSDOOR_REVALIDATE } })
-      if (!response.ok) throw new Error(`Glassdoor returned ${response.status}`)
-      const payload = await response.json() as { data?: { jobs?: GlassdoorJob[] } }
-      return (payload.data?.jobs || []).map(normaliseGlassdoor).filter((job): job is Opportunity => Boolean(job))
-    }))
-    return responses.flatMap(response => response.status === "fulfilled" ? response.value : [])
-  }
-  // A global remote query makes this a community utility rather than a regional
-  // eligibility checker. It remains cached weekly to keep the commercial API
-  // budget bounded.
-  const searches = ["product designer", "ux designer", "ui designer", "ux researcher", "design engineer"]
-  const globalJobs = await readSearches(searches.flatMap(query => [1, 2].map(page => ({ query, location: "Worldwide", page }))))
-  if (globalJobs.length) return globalJobs
+  // JSearch exposes cursor pagination. The previous Glassdoor endpoint only
+  // delivered a small page sample, which made its count incomparable with the
+  // Glassdoor website. Country + language are sent with every search because
+  // the provider requires both for reliable non-US results.
+  const markets = [
+    { location: "Spain", country: "es", language: "es" },
+    { location: "United Kingdom", country: "gb", language: "en" },
+    { location: "Germany", country: "de", language: "de" },
+  ]
+  const roles = ["product designer", "ux designer", "ui designer", "ux researcher"]
+  const maxPages = 3
+  const searches = markets.flatMap(market => roles.map(role => ({ ...market, role })))
 
-  // Some providers interpret Worldwide differently. "Remote" is a graceful
-  // fallback, never a claim that a role can be hired from every country.
-  return readSearches(searches.map(query => ({ query, location: "Remote", page: 1 })))
+  const results = await Promise.allSettled(searches.map(async ({ location, country, language, role }) => {
+    const jobs: Opportunity[] = []
+    const cursors = new Set<string>()
+    let cursor: string | null = null
+    for (let page = 0; page < maxPages; page += 1) {
+      const endpoint = new URL("https://api.openwebninja.com/jsearch/search-v2")
+      endpoint.searchParams.set("query", `${role} in ${location} via glassdoor`)
+      endpoint.searchParams.set("country", country)
+      endpoint.searchParams.set("language", language)
+      endpoint.searchParams.set("work_from_home", "true")
+      if (cursor) endpoint.searchParams.set("cursor", cursor)
+      const response = await fetch(endpoint, { headers: { "x-api-key": apiKey }, next: { revalidate: GLASSDOOR_REVALIDATE }, signal: AbortSignal.timeout(12000) })
+      if (!response.ok) throw new Error(`JSearch returned ${response.status}`)
+      const payload = await response.json() as JSearchResponse
+      jobs.push(...(payload.data || []).map(normaliseJSearch).filter((job): job is Opportunity => Boolean(job)))
+      const nextCursor = payload.next_cursor || payload.next_page_token || payload.cursor || null
+      if (!nextCursor || cursors.has(nextCursor)) break
+      cursors.add(nextCursor)
+      cursor = nextCursor
+    }
+    return jobs
+  }))
+  return results.flatMap(result => result.status === "fulfilled" ? result.value : [])
 }
 
 export async function GET() {
@@ -289,8 +310,8 @@ export async function GET() {
     if (seen.has(key)) return false
     seen.add(key)
     return true
-  }).sort((a, b) => Number(b.origin === "Direct company feed") - Number(a.origin === "Direct company feed") || String(b.publishedAt || "").localeCompare(String(a.publishedAt || ""))).slice(0, 300)
+  }).sort((a, b) => Number(b.origin === "Direct company feed") - Number(a.origin === "Direct company feed") || String(b.publishedAt || "").localeCompare(String(a.publishedAt || ""))).slice(0, 600)
 
   if (!deduplicated.length) return NextResponse.json({ jobs: [], updatedAt: new Date().toISOString(), sources: [], message: "The public feeds are temporarily unavailable. Try again later." }, { status: 503 })
-  return NextResponse.json({ jobs: deduplicated, updatedAt: new Date().toISOString(), sources: ["Jobicy", "Remotive", "Remote OK", "Himalayas", "Arbeitnow", "Ashby direct company feed", "Glassdoor via OpenWeb Ninja"], contextAvailable: Boolean(process.env.OPENWEBNINJA_API_KEY) })
+  return NextResponse.json({ jobs: deduplicated, updatedAt: new Date().toISOString(), sources: ["Jobicy", "Remotive", "Remote OK", "Himalayas", "Arbeitnow", "Ashby direct company feed", "Glassdoor via JSearch"], contextAvailable: Boolean(process.env.OPENWEBNINJA_API_KEY) })
 }
