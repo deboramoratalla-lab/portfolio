@@ -248,13 +248,18 @@ function normaliseGlassdoor(job: GlassdoorJob): Opportunity | null {
 async function glassdoorFeed() {
   const apiKey = process.env.OPENWEBNINJA_API_KEY
   if (!apiKey) return [] as Opportunity[]
-  const queries = ["product designer", "ux designer", "ui designer", "ux researcher", "design engineer"]
-  const responses = await Promise.allSettled(queries.map(async query => {
+  // The Glassdoor UI is paginated. Keep the public utility deliberately scoped
+  // to remote Europe/Anywhere roles, but request its first two result pages for
+  // each relevant role search rather than silently presenting page one as all
+  // available work. This is cached for 12 hours with the rest of the feed.
+  const searches = ["product designer", "ux designer", "ui designer", "ux researcher", "design engineer"]
+  const requests = searches.flatMap(query => [1, 2].map(page => ({ query, page })))
+  const responses = await Promise.allSettled(requests.map(async ({ query, page }) => {
     const endpoint = new URL("https://api.openwebninja.com/realtime-glassdoor-data/job-search")
     endpoint.searchParams.set("query", query)
     endpoint.searchParams.set("location", "Europe")
     endpoint.searchParams.set("remote_only", "true")
-    endpoint.searchParams.set("page", "1")
+    endpoint.searchParams.set("page", String(page))
     const response = await fetch(endpoint, { headers: { "x-api-key": apiKey }, next: { revalidate } })
     if (!response.ok) throw new Error(`Glassdoor returned ${response.status}`)
     const payload = await response.json() as { data?: { jobs?: GlassdoorJob[] } }
