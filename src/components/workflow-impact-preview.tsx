@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { IconAlertTriangle, IconArrowRight, IconBolt, IconCheck, IconChevronRight, IconFileDiff, IconHierarchy, IconLayoutSidebar, IconPlayerPlay, IconShieldCheck, IconSparkles } from "@tabler/icons-react"
+import { IconArrowRight, IconBolt, IconCheck, IconChevronRight, IconFileDiff, IconHierarchy, IconLayoutSidebar, IconPlayerPlay, IconShieldCheck, IconSparkles } from "@tabler/icons-react"
 import styles from "./workflow-impact-preview.module.css"
 
 type Version = "safe" | "changed" | "broken"
@@ -45,7 +45,6 @@ export function WorkflowImpactPreview() {
           <section className={styles.replay}><header><div><IconFileDiff size={16} /><span>Historical comparison</span></div><button className={comparingCurrent ? styles.comparing : ""} onClick={() => setComparingCurrent(value => !value)}><IconSparkles size={15} /> {comparingCurrent ? "Show proposed" : "Compare to current"}</button></header>{state.rows.map(row => <article key={row[0]}><strong>{row[0]}</strong><span>{row[1]}</span><IconArrowRight size={14} /><span>{comparingCurrent ? row[1] : row[2]}</span><b>{comparingCurrent ? "CURRENT" : row[3]}</b></article>)}</section>
           <details className={styles.workflowDetails}><summary><span>Workflow details</span><small>Inspect the route behind this outcome</small></summary><div className={styles.flow} aria-label="Support automation flow"><div className={styles.flowStage}><span>Understand</span><div><IconBolt size={18} /><b>New ticket</b><small>Receives the request</small></div><IconArrowRight size={17} /><div><IconSparkles size={18} /><b>Detect intent</b><small>Identifies the request</small></div></div><div className={styles.flowStage}><span>Check context</span><div><IconHierarchy size={18} /><b>Find account</b><small>Loads customer context</small></div><IconArrowRight size={17} /><div><IconShieldCheck size={18} /><b>Check policy</b><small>Applies support rules</small></div></div><div className={styles.flowStage}><span>Decide and act</span><div className={!comparingCurrent && version === "changed" ? styles.emphasis : ""}><IconHierarchy size={18} /><b>Set owner</b><small>{comparingCurrent ? "Uses current route" : "Uses proposed route"}</small></div><IconArrowRight size={17} /><div><IconCheck size={18} /><b>Approve reply</b><small>Human control point</small></div><IconArrowRight size={17} /><div className={!comparingCurrent && version === "broken" ? styles.danger : ""}><IconCheck size={18} /><b>Send and log</b><small>Updates the system</small></div></div></div></details>
         </main>
-        <aside className={styles.impact}><header><span>Replay context</span><IconAlertTriangle size={17} /></header><div className={styles.signal}><span>Replay coverage</span><b>3 representative paths</b><div><i /><i /><i /><i /><i /></div></div><div className={styles.liveResult}>{result ? <><span>Live response</span><strong>{result.decision}</strong><small>{result.source || "No response returned"}</small></> : <><span>Ready to replay</span><strong>Validate this scenario first.</strong><small>The request calls the synthetic n8n replay endpoint.</small></>}</div></aside>
       </div>
     </div>
     <small className={styles.note}>The action calls a published n8n webhook. The data is synthetic and no customer workflow is read or changed.</small>
