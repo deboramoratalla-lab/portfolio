@@ -138,6 +138,15 @@ type JSearchResponse = {
   cursor?: string | null
 }
 
+type LegacyGlassdoorJob = {
+  job_id: string | number
+  job_title: string
+  company_name: string
+  location_name?: string
+  job_link: string
+  age_in_days?: number
+}
+
 function normaliseAshby(job: AshbyJob): Opportunity | null {
   const location = [job.location, ...(job.secondaryLocations || []).map(item => item.location)].filter(Boolean).join(", ") || "Remote"
   if (!job.isRemote || !job.jobUrl) return null
@@ -252,9 +261,26 @@ function normaliseJSearch(job: JSearchJob): Opportunity | null {
   }
 }
 
-async function glassdoorFeed() {
+function normaliseLegacyGlassdoor(job: LegacyGlassdoorJob): Opportunity | null {
+  if (!job.job_id || !job.job_title || !job.company_name || !job.job_link) return null
+  const age = Number.isFinite(job.age_in_days) ? Math.max(0, job.age_in_days || 0) : null
+  return {
+    id: `glassdoor-${job.job_id}`,
+    title: job.job_title,
+    company: job.company_name,
+    location: job.location_name || "Remote / restrictions not supplied",
+    type: "Remote",
+    category: categoryFor(job.job_title),
+    source: "Glassdoor",
+    origin: "Commercial job API",
+    url: job.job_link,
+    publishedAt: age === null ? null : new Date(Date.now() - age * 86400000).toISOString(),
+  }
+}
+
+async function glassdoorFeed(): Promise<{ jobs: Opportunity[]; provider: "JSearch cursor" | "Glassdoor API sample" | "Unavailable" }> {
   const apiKey = process.env.OPENWEBNINJA_API_KEY
-  if (!apiKey) return [] as Opportunity[]
+  if (!apiKey) return { jobs: [], provider: "Unavailable" }
   // JSearch exposes cursor pagination. The previous Glassdoor endpoint only
   // delivered a small page sample, which made its count incomparable with the
   // Glassdoor website. Country + language are sent with every search because
@@ -290,10 +316,29 @@ async function glassdoorFeed() {
     }
     return jobs
   }))
-  return results.flatMap(result => result.status === "fulfilled" ? result.value : [])
+  const paginatedJobs = results.flatMap(result => result.status === "fulfilled" ? result.value : [])
+  if (paginatedJobs.length) return { jobs: paginatedJobs, provider: "JSearch cursor" }
+
+  // Keep the prior source visible if this key has not been subscribed to
+  // JSearch yet. This is explicitly marked as a sample in the UI.
+  const sampleRequests = ["product designer", "ux designer", "ui designer", "ux researcher", "design engineer"].flatMap(query => [1, 2].map(page => ({ query, page })))
+  const samples = await Promise.allSettled(sampleRequests.map(async ({ query, page }) => {
+    const endpoint = new URL("https://api.openwebninja.com/realtime-glassdoor-data/job-search")
+    endpoint.searchParams.set("query", query)
+    endpoint.searchParams.set("location", "Worldwide")
+    endpoint.searchParams.set("remote_only", "true")
+    endpoint.searchParams.set("page", String(page))
+    const response = await fetch(endpoint, { headers: { "x-api-key": apiKey }, next: { revalidate: GLASSDOOR_REVALIDATE }, signal: AbortSignal.timeout(12000) })
+    if (!response.ok) throw new Error(`Glassdoor returned ${response.status}`)
+    const payload = await response.json() as { data?: { jobs?: LegacyGlassdoorJob[] } }
+    return (payload.data?.jobs || []).map(normaliseLegacyGlassdoor).filter((job): job is Opportunity => Boolean(job))
+  }))
+  const sampleJobs = samples.flatMap(result => result.status === "fulfilled" ? result.value : [])
+  return { jobs: sampleJobs, provider: sampleJobs.length ? "Glassdoor API sample" : "Unavailable" }
 }
 
 export async function GET() {
+  const glassdoor = await glassdoorFeed()
   const feeds = await Promise.allSettled([
     jobicyFeed(),
     sourceFeed("https://remotive.com/api/remote-jobs", "Remotive"),
@@ -301,9 +346,8 @@ export async function GET() {
     himalayasFeed(),
     arbeitnowFeed(),
     directCompanyFeed(),
-    glassdoorFeed(),
   ])
-  const jobs = feeds.flatMap(feed => feed.status === "fulfilled" ? feed.value : [])
+  const jobs = [...feeds.flatMap(feed => feed.status === "fulfilled" ? feed.value : []), ...glassdoor.jobs]
   const seen = new Set<string>()
   const deduplicated = jobs.filter(job => {
     const key = `${job.company}-${job.title}`.toLowerCase()
@@ -313,5 +357,5 @@ export async function GET() {
   }).sort((a, b) => Number(b.origin === "Direct company feed") - Number(a.origin === "Direct company feed") || String(b.publishedAt || "").localeCompare(String(a.publishedAt || ""))).slice(0, 600)
 
   if (!deduplicated.length) return NextResponse.json({ jobs: [], updatedAt: new Date().toISOString(), sources: [], message: "The public feeds are temporarily unavailable. Try again later." }, { status: 503 })
-  return NextResponse.json({ jobs: deduplicated, updatedAt: new Date().toISOString(), sources: ["Jobicy", "Remotive", "Remote OK", "Himalayas", "Arbeitnow", "Ashby direct company feed", "Glassdoor via JSearch"], contextAvailable: Boolean(process.env.OPENWEBNINJA_API_KEY) })
+  return NextResponse.json({ jobs: deduplicated, updatedAt: new Date().toISOString(), sources: ["Jobicy", "Remotive", "Remote OK", "Himalayas", "Arbeitnow", "Ashby direct company feed", `Glassdoor via ${glassdoor.provider}`], glassdoorProvider: glassdoor.provider, contextAvailable: Boolean(process.env.OPENWEBNINJA_API_KEY) })
 }
