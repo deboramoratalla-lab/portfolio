@@ -38,8 +38,6 @@ type Opportunity = {
   publishedAt: string | null
 }
 
-const EUROPE = /anywhere|worldwide|europe|eu\b|emea|uk\b|united kingdom|germany|france|spain|italy|netherlands|belgium|portugal|ireland|poland|sweden|norway|denmark|finland|austria|switzerland|czech|slovak|romania|bulgaria|greece|croatia|serbia|slovenia|hungary|estonia|latvia|lithuania/i
-
 function normaliseDate(value: unknown) {
   if (typeof value === "string") return value
   if (typeof value === "number" && Number.isFinite(value)) return new Date(value < 1e12 ? value * 1000 : value).toISOString()
@@ -66,7 +64,7 @@ function normaliseJob(job: SourceJob, source: Opportunity["source"]): Opportunit
   const company = job.companyName || job.company_name
   const location = job.jobGeo || job.candidate_required_location || "Remote"
   const url = job.url || job.url_original
-  if (!title || !company || !url || !EUROPE.test(location)) return null
+  if (!title || !company || !url) return null
   const type = Array.isArray(job.jobType) ? job.jobType.join(", ") : job.jobType || job.job_type || "Not specified"
   const industry = Array.isArray(job.jobIndustry) ? job.jobIndustry.join(" ") : job.jobIndustry || job.category || ""
   return { id: `${source}-${job.id || `${company}-${title}`}`, title, company, location, type, category: categoryFor(title, industry), source, origin: "Public feed", url, publishedAt: normaliseDate(job.pubDate || job.publication_date) }
@@ -88,7 +86,7 @@ function normaliseRemoteOk(job: RemoteOkJob): Opportunity | null {
   const company = job.company
   const location = job.location || "Remote"
   const url = job.apply_url || job.url
-  if (!title || !company || !url || !EUROPE.test(location)) return null
+  if (!title || !company || !url) return null
   const tags = (job.tags || []).join(" ")
   return {
     id: `remote-ok-${job.id || `${company}-${title}`}`,
@@ -129,7 +127,7 @@ type GlassdoorJob = {
 
 function normaliseAshby(job: AshbyJob): Opportunity | null {
   const location = [job.location, ...(job.secondaryLocations || []).map(item => item.location)].filter(Boolean).join(", ") || "Remote"
-  if (!job.isRemote || !job.jobUrl || !EUROPE.test(location)) return null
+  if (!job.isRemote || !job.jobUrl) return null
   const category = categoryFor(job.title, `${job.department || ""} ${job.team || ""}`)
   return {
     id: `ashby-linear-${job.id}`,
@@ -153,12 +151,7 @@ async function sourceFeed(url: string, source: Opportunity["source"]) {
 }
 
 async function jobicyFeed() {
-  const feeds = await Promise.allSettled([
-    sourceFeed("https://jobicy.com/api/v2/remote-jobs?count=100&geo=europe", "Jobicy"),
-    sourceFeed("https://jobicy.com/api/v2/remote-jobs?count=100&geo=emea", "Jobicy"),
-    sourceFeed("https://jobicy.com/api/v2/remote-jobs?count=100", "Jobicy"),
-  ])
-  return feeds.flatMap(feed => feed.status === "fulfilled" ? feed.value : [])
+  return sourceFeed("https://jobicy.com/api/v2/remote-jobs?count=100", "Jobicy")
 }
 
 type HimalayasJob = {
@@ -187,15 +180,15 @@ type ArbeitnowJob = {
 }
 
 function normaliseHimalayas(job: HimalayasJob): Opportunity | null {
-  const location = job.locationRestrictions?.join(", ") || "Worldwide"
-  if (!job.guid || !job.title || !job.companyName || !job.applicationLink || !EUROPE.test(location)) return null
+  const location = job.locationRestrictions?.join(", ") || "Remote / restrictions not supplied"
+  if (!job.guid || !job.title || !job.companyName || !job.applicationLink) return null
   const category = [...(job.category || []), ...(job.parentCategories || [])].join(" ")
   return { id: `himalayas-${job.guid}`, title: job.title, company: job.companyName, location, type: job.employmentType || "Remote", category: categoryFor(job.title, category), source: "Himalayas", origin: "Public feed", url: job.applicationLink, publishedAt: normaliseDate(job.pubDate) }
 }
 
 function normaliseArbeitnow(job: ArbeitnowJob): Opportunity | null {
-  const location = job.location || (job.remote ? "Remote / Europe" : "")
-  if (!job.slug || !job.title || !job.company_name || !job.url || !job.remote || !EUROPE.test(location)) return null
+  const location = job.location || (job.remote ? "Remote / restrictions not supplied" : "")
+  if (!job.slug || !job.title || !job.company_name || !job.url || !job.remote) return null
   const tags = (job.tags || []).join(" ")
   return { id: `arbeitnow-${job.slug}`, title: job.title, company: job.company_name, location, type: (job.job_types || []).join(", ") || "Remote", category: categoryFor(job.title, tags), source: "Arbeitnow", origin: "Public feed", url: job.url, publishedAt: job.created_at ? new Date(job.created_at * 1000).toISOString() : null }
 }
@@ -229,10 +222,10 @@ async function directCompanyFeed() {
 }
 
 function normaliseGlassdoor(job: GlassdoorJob): Opportunity | null {
-  // The commercial API has already filtered this request with location=Europe
-  // and remote_only=true. Its returned display location is often just "Remote"
-  // or a city, so applying a second text filter here silently drops valid results.
-  const location = job.location_name || "Remote / Europe"
+  // The commercial API filters this request with remote_only=true. Its display
+  // location can be a city, country or simply "Remote", so it remains source
+  // evidence rather than an inferred eligibility claim.
+  const location = job.location_name || "Remote / restrictions not supplied"
   if (!job.job_id || !job.job_title || !job.company_name || !job.job_link) return null
   const age = Number.isFinite(job.age_in_days) ? Math.max(0, job.age_in_days || 0) : null
   return {
@@ -267,21 +260,16 @@ async function glassdoorFeed() {
     }))
     return responses.flatMap(response => response.status === "fulfilled" ? response.value : [])
   }
-  // Glassdoor indexes by country rather than a generic "Europe" market. A
-  // country query gives materially better coverage than the old Europe-wide
-  // sample, while the weekly cache keeps this within a small API budget.
-  const markets = [
-    { location: "Spain", domain: "glassdoor.es" },
-    { location: "Germany", domain: "glassdoor.de" },
-    { location: "France", domain: "glassdoor.fr" },
-  ]
+  // A global remote query makes this a community utility rather than a regional
+  // eligibility checker. It remains cached weekly to keep the commercial API
+  // budget bounded.
   const searches = ["product designer", "ux designer", "ui designer", "ux researcher", "design engineer"]
-  const marketJobs = await readSearches(markets.flatMap(market => searches.map(query => ({ query, ...market, page: 1 }))))
-  if (marketJobs.length) return marketJobs
+  const globalJobs = await readSearches(searches.flatMap(query => [1, 2].map(page => ({ query, location: "Worldwide", page }))))
+  if (globalJobs.length) return globalJobs
 
-  // The provider can temporarily reject regional domains. Fall back to the
-  // documented Europe query instead of showing an empty, misleading source.
-  return readSearches(searches.flatMap(query => [1, 2].map(page => ({ query, location: "Europe", page }))))
+  // Some providers interpret Worldwide differently. "Remote" is a graceful
+  // fallback, never a claim that a role can be hired from every country.
+  return readSearches(searches.map(query => ({ query, location: "Remote", page: 1 })))
 }
 
 export async function GET() {
