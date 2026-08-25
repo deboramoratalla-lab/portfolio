@@ -9,6 +9,7 @@ export type LabEntry = {
 }
 
 export const labEntries: LabEntry[] = [
+  { slug: "workflow-impact-preview", type: "Experiment", title: "Before you publish a workflow, see what it would change.", summary: "An independent interaction experiment for reviewing an automation change against prior workflow executions.", date: "August 2026", readingTime: "4 min read", topics: ["Automation", "AI workflows", "Developer tools"] },
   {
     slug: "parallel-not-blind",
     type: "Experiment",

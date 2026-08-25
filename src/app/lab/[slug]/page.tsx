@@ -9,6 +9,7 @@ import { DesignSystemHealthDemo } from "@/components/design-system-health-demo"
 import { GpuJobTriageDecisionDemo, TelemetryEvidenceDemo } from "@/components/gpu-job-triage-demo"
 import { OpportunityRadarDemo } from "@/components/opportunity-radar-demo"
 import { AgentConvergenceDemo } from "@/components/agent-convergence-demo"
+import { WorkflowImpactPreview } from "@/components/workflow-impact-preview"
 import { getLabEntry, labEntries } from "@/data/lab"
 
 type ArticleSection = { title: string; paragraphs: string[]; points?: string[] }
@@ -52,6 +53,7 @@ const reusableResources: Record<string, ReusableResource[]> = {
 }
 
 const articles: Record<string, ArticleContent> = {
+  "workflow-impact-preview": { lead: "An independent product exploration of a consequential moment in workflow automation: publishing a change without knowing which past cases would now behave differently.", quote: "Automation should make consequences faster to inspect, not easier to miss.", sections: [{ title: "The risky moment is before publish", paragraphs: ["A workflow can look valid on a canvas while a routing condition, tool permission or credential changes what happens to real work.", "This prototype asks a smaller question: which representative past executions would take another path?"] }, { title: "Compare outcomes, not node diagrams", paragraphs: ["The flow remains visible, but the emphasis shifts to behaviour. Each replay puts the current and proposed outcome side by side.", "A difference is named as a route change, a new external side effect or a failure, so review does not require parsing the whole graph first."] }, { title: "Keep publish separate from approval", paragraphs: ["A safe refinement can proceed. A new external action or insufficient permission asks for review instead.", "The demo is modelled and makes no claim to connect to n8n or replay customer data. The interaction, states and edge cases are the experiment."] }], close: "A workflow editor helps people assemble automation. An impact preview helps them understand what a change will do before it becomes somebody else’s problem." },
   "parallel-not-blind": {
     lead: "An independent interaction experiment for agentic development environments. It examines the moment when several useful task loops become one product decision: can their output converge safely, and who is accountable for the answer?",
     quote: "Parallel execution makes work faster. It does not make dependency disappear.",
@@ -163,6 +165,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 function ArticleActions({ slug }: { slug: string }) {
   if (slug === "european-tech-opportunity-radar") return <ArrowRouteLink variant="secondary" tone="purple" href="#opportunity-radar">Open the radar</ArrowRouteLink>
+  if (slug === "workflow-impact-preview") return <ArrowRouteLink variant="secondary" tone="purple" href="#workflow-impact">Open the prototype</ArrowRouteLink>
   if (slug === "gpu-job-triage") return <>
     <ArrowRouteLink variant="secondary" tone="purple" href="#gpu-job-triage">Open the prototype</ArrowRouteLink>
     <ArrowLink variant="secondary" tone="green" href={`${portfolioRepo}/tree/main/labs/gpu-job-triage`} target="_blank" rel="noreferrer">Inspect the Grafana stack</ArrowLink>
@@ -410,6 +413,7 @@ export default async function LabArticle({ params }: { params: Promise<{ slug: s
       {entry.slug === "metrics-are-not-decisions" && <DesignSystemHealthDemo />}
       {entry.slug === "european-tech-opportunity-radar" && <OpportunityRadarDemo />}
       {entry.slug === "parallel-not-blind" && <AgentConvergenceDemo />}
+      {entry.slug === "workflow-impact-preview" && <WorkflowImpactPreview />}
       {entry.slug === "gpu-job-triage" && <><GpuJobTriageDecisionDemo /><TelemetryEvidenceDemo /></>}
       <ReusableResources slug={entry.slug} />
       <footer className="lab-article-close">
