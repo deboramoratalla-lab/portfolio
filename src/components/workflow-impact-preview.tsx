@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { IconAlertTriangle, IconArrowRight, IconBolt, IconCheck, IconChevronRight, IconFileDiff, IconHierarchy, IconLayoutSidebarLeft, IconPlayerPlay, IconShieldCheck, IconSparkles } from "@tabler/icons-react"
+import { IconAlertTriangle, IconArrowRight, IconBolt, IconCheck, IconChevronRight, IconFileDiff, IconHierarchy, IconLayoutSidebar, IconPlayerPlay, IconShieldCheck, IconSparkles } from "@tabler/icons-react"
 import styles from "./workflow-impact-preview.module.css"
 
 type Version = "safe" | "changed" | "broken"
@@ -34,7 +34,7 @@ export function WorkflowImpactPreview() {
   return <section className={styles.root} id="workflow-impact">
     <header className={styles.intro}><span>Independent product exploration</span><h2>Change the workflow, not the outcome by accident.</h2><p>A replay surface for seeing what an automation will do before it is published.</p></header>
     <div className={styles.app}>
-      <header className={styles.toolbar}><div className={styles.identity}><span className={styles.mark}><IconHierarchy size={17} /></span><strong>Relay</strong><span>Support operations</span></div><div className={styles.toolbarCenter}><button aria-label="Workflow view"><IconLayoutSidebarLeft size={16} /></button><span>Workflow review</span><IconChevronRight size={15} /><b>Pre-publish replay</b></div><div className={styles.connection}><i /><span>n8n connected</span></div></header>
+      <header className={styles.toolbar}><div className={styles.identity}><span className={styles.mark}><IconHierarchy size={17} /></span><strong>Relay</strong><span>Support operations</span></div><div className={styles.toolbarCenter}><button aria-label="Workflow view"><IconLayoutSidebar size={16} /></button><span>Workflow review</span><IconChevronRight size={15} /><b>Pre-publish replay</b></div><div className={styles.connection}><i /><span>n8n connected</span></div></header>
       <div className={styles.workspace}>
         <aside className={styles.sidebar}><div className={styles.sidebarHead}><span>Change set</span><small>3 scenarios</small></div><div className={styles.scenarios}>{(Object.keys(states) as Version[]).map((key, index) => <button className={version === key ? styles.selected : ""} key={key} onClick={() => { setVersion(key); setResult(null) }}><span>{String(index + 1).padStart(2, "0")}</span><strong>{states[key].label}</strong><small>{states[key].note}</small></button>)}</div><footer><IconShieldCheck size={15} /><span>Replay mode</span></footer></aside>
         <main className={styles.canvas}>
