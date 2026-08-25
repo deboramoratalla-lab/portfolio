@@ -14,7 +14,7 @@ export function OpportunityRadarCover() {
     <header><span>Remote tech opportunity radar</span><b>Public utility</b></header>
     <div className="opportunity-radar-cover-copy"><span>Remote roles in</span><strong>Technology</strong><p>Worldwide</p></div>
     <div className="opportunity-radar-cover-tags"><span>Product</span><span>UX/UI</span><span>Engineering</span><span>Data & AI</span><span>Platform</span></div>
-    <footer><span>Sources</span><b>10 feeds / live links</b></footer>
+    <footer><span>Sources</span><b>Live feeds / direct links</b></footer>
   </div>
 }
 
@@ -85,7 +85,7 @@ export function OpportunityRadarDemo() {
       </div>}
       {!isLoading && !error && matches.length > visible.length && <div className="radar-load-more"><span>Showing {visible.length} of {matches.length}</span><button type="button" onClick={() => setShown(current => current + 18)}>Show 18 more</button></div>}
       {(companyContext || contextError) && <section className="radar-company-context" aria-live="polite"><button type="button" onClick={() => { setCompanyContext(null); setContextError("") }} aria-label="Close company context"><IconX size={17} /></button>{contextError ? <><span>Company context</span><strong>Context unavailable</strong><p>{contextError}</p></> : companyContext && <><span>{companyContext.provider}</span><div><h3>{companyContext.company.name}</h3>{companyContext.company.industry && <p>{companyContext.company.industry}</p>}</div><dl><div><dt>Overall rating</dt><dd>{companyContext.company.rating ?? "Not supplied"}</dd></div><div><dt>Reviews</dt><dd>{companyContext.company.reviewCount || "Not supplied"}</dd></div><div><dt>Salary records</dt><dd>{companyContext.company.salaryCount || "Not supplied"}</dd></div><div><dt>Career opportunities</dt><dd>{companyContext.company.careerOpportunities ?? "Not supplied"}</dd></div></dl>{companyContext.company.sourceUrl && <a href={companyContext.company.sourceUrl} target="_blank" rel="noreferrer">Open source <IconArrowUpRight size={16} /></a>}</>}</section>}
-      <footer className="radar-provenance"><span>Sources: <a href="https://jobicy.com" target="_blank" rel="noreferrer">Jobicy</a>, <a href="https://remotive.com" target="_blank" rel="noreferrer">Remotive</a>, <a href="https://remoteok.com" target="_blank" rel="noreferrer">Remote OK</a>, <a href="https://himalayas.app" target="_blank" rel="noreferrer">Himalayas</a>, <a href="https://www.arbeitnow.com" target="_blank" rel="noreferrer">Arbeitnow</a>, <a href="https://weworkremotely.com" target="_blank" rel="noreferrer">We Work Remotely</a>, <a href="https://landing.jobs" target="_blank" rel="noreferrer">Landing.Jobs</a>, <a href="https://startup.jobs" target="_blank" rel="noreferrer">Startup Jobs</a>, direct Ashby ATS and Glassdoor via API</span><span>Listings link to the original source.</span></footer>
+      <footer className="radar-provenance"><span>Sources currently returning listings: {data?.sources.join(", ") || "Reading feeds"}.</span><span>Listings link to the original source.</span></footer>
     </div>
   </section>
 }

@@ -460,5 +460,6 @@ export async function GET() {
   }).sort((a, b) => Number(b.origin === "Direct company feed") - Number(a.origin === "Direct company feed") || String(b.publishedAt || "").localeCompare(String(a.publishedAt || ""))).slice(0, 600)
 
   if (!deduplicated.length) return NextResponse.json({ jobs: [], updatedAt: new Date().toISOString(), sources: [], message: "The public feeds are temporarily unavailable. Try again later." }, { status: 503 })
-  return NextResponse.json({ jobs: deduplicated, updatedAt: new Date().toISOString(), sources: ["Jobicy", "Remotive", "Remote OK", "Himalayas", "Arbeitnow", "We Work Remotely", "Landing.Jobs", "Startup Jobs", "Ashby direct company feed", `Glassdoor via ${glassdoor.provider}`], glassdoorProvider: glassdoor.provider, contextAvailable: Boolean(process.env.OPENWEBNINJA_API_KEY) })
+  const activeSources = Array.from(new Set(deduplicated.map(job => job.source))).sort()
+  return NextResponse.json({ jobs: deduplicated, updatedAt: new Date().toISOString(), sources: activeSources, glassdoorProvider: glassdoor.provider, contextAvailable: Boolean(process.env.OPENWEBNINJA_API_KEY) })
 }
