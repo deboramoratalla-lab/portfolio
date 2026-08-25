@@ -2,6 +2,10 @@ import { NextResponse } from "next/server"
 
 export const revalidate = 43200
 export const dynamic = "force-dynamic"
+// Glassdoor is a commercial source. Its country snapshots are intentionally
+// cached longer than the public feeds so a refresh button cannot exhaust an
+// API allowance by repeatedly re-running the same searches.
+const GLASSDOOR_REVALIDATE = 604800
 
 type SourceJob = {
   id?: string | number
@@ -248,19 +252,25 @@ function normaliseGlassdoor(job: GlassdoorJob): Opportunity | null {
 async function glassdoorFeed() {
   const apiKey = process.env.OPENWEBNINJA_API_KEY
   if (!apiKey) return [] as Opportunity[]
-  // The Glassdoor UI is paginated. Keep the public utility deliberately scoped
-  // to remote Europe/Anywhere roles, but request its first two result pages for
-  // each relevant role search rather than silently presenting page one as all
-  // available work. This is cached for 12 hours with the rest of the feed.
+  // Glassdoor indexes by country rather than a generic "Europe" market. A
+  // country query gives materially better coverage than the old Europe-wide
+  // sample, while the weekly cache keeps this within a small API budget.
+  const markets = [
+    { location: "Spain", domain: "glassdoor.es" },
+    { location: "Germany", domain: "glassdoor.de" },
+    { location: "France", domain: "glassdoor.fr" },
+    { location: "Netherlands", domain: "glassdoor.nl" },
+  ]
   const searches = ["product designer", "ux designer", "ui designer", "ux researcher", "design engineer"]
-  const requests = searches.flatMap(query => [1, 2].map(page => ({ query, page })))
-  const responses = await Promise.allSettled(requests.map(async ({ query, page }) => {
+  const requests = markets.flatMap(market => searches.map(query => ({ query, ...market })))
+  const responses = await Promise.allSettled(requests.map(async ({ query, location, domain }) => {
     const endpoint = new URL("https://api.openwebninja.com/realtime-glassdoor-data/job-search")
     endpoint.searchParams.set("query", query)
-    endpoint.searchParams.set("location", "Europe")
+    endpoint.searchParams.set("location", location)
     endpoint.searchParams.set("remote_only", "true")
-    endpoint.searchParams.set("page", String(page))
-    const response = await fetch(endpoint, { headers: { "x-api-key": apiKey }, next: { revalidate } })
+    endpoint.searchParams.set("domain", domain)
+    endpoint.searchParams.set("page", "1")
+    const response = await fetch(endpoint, { headers: { "x-api-key": apiKey }, next: { revalidate: GLASSDOOR_REVALIDATE } })
     if (!response.ok) throw new Error(`Glassdoor returned ${response.status}`)
     const payload = await response.json() as { data?: { jobs?: GlassdoorJob[] } }
     return (payload.data?.jobs || []).map(normaliseGlassdoor).filter((job): job is Opportunity => Boolean(job))
