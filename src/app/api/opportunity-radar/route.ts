@@ -252,6 +252,21 @@ function normaliseGlassdoor(job: GlassdoorJob): Opportunity | null {
 async function glassdoorFeed() {
   const apiKey = process.env.OPENWEBNINJA_API_KEY
   if (!apiKey) return [] as Opportunity[]
+  const readSearches = async (requests: { query: string; location: string; domain?: string; page: number }[]) => {
+    const responses = await Promise.allSettled(requests.map(async ({ query, location, domain, page }) => {
+      const endpoint = new URL("https://api.openwebninja.com/realtime-glassdoor-data/job-search")
+      endpoint.searchParams.set("query", query)
+      endpoint.searchParams.set("location", location)
+      endpoint.searchParams.set("remote_only", "true")
+      if (domain) endpoint.searchParams.set("domain", domain)
+      endpoint.searchParams.set("page", String(page))
+      const response = await fetch(endpoint, { headers: { "x-api-key": apiKey }, next: { revalidate: GLASSDOOR_REVALIDATE } })
+      if (!response.ok) throw new Error(`Glassdoor returned ${response.status}`)
+      const payload = await response.json() as { data?: { jobs?: GlassdoorJob[] } }
+      return (payload.data?.jobs || []).map(normaliseGlassdoor).filter((job): job is Opportunity => Boolean(job))
+    }))
+    return responses.flatMap(response => response.status === "fulfilled" ? response.value : [])
+  }
   // Glassdoor indexes by country rather than a generic "Europe" market. A
   // country query gives materially better coverage than the old Europe-wide
   // sample, while the weekly cache keeps this within a small API budget.
@@ -259,23 +274,14 @@ async function glassdoorFeed() {
     { location: "Spain", domain: "glassdoor.es" },
     { location: "Germany", domain: "glassdoor.de" },
     { location: "France", domain: "glassdoor.fr" },
-    { location: "Netherlands", domain: "glassdoor.nl" },
   ]
   const searches = ["product designer", "ux designer", "ui designer", "ux researcher", "design engineer"]
-  const requests = markets.flatMap(market => searches.map(query => ({ query, ...market })))
-  const responses = await Promise.allSettled(requests.map(async ({ query, location, domain }) => {
-    const endpoint = new URL("https://api.openwebninja.com/realtime-glassdoor-data/job-search")
-    endpoint.searchParams.set("query", query)
-    endpoint.searchParams.set("location", location)
-    endpoint.searchParams.set("remote_only", "true")
-    endpoint.searchParams.set("domain", domain)
-    endpoint.searchParams.set("page", "1")
-    const response = await fetch(endpoint, { headers: { "x-api-key": apiKey }, next: { revalidate: GLASSDOOR_REVALIDATE } })
-    if (!response.ok) throw new Error(`Glassdoor returned ${response.status}`)
-    const payload = await response.json() as { data?: { jobs?: GlassdoorJob[] } }
-    return (payload.data?.jobs || []).map(normaliseGlassdoor).filter((job): job is Opportunity => Boolean(job))
-  }))
-  return responses.flatMap(response => response.status === "fulfilled" ? response.value : [])
+  const marketJobs = await readSearches(markets.flatMap(market => searches.map(query => ({ query, ...market, page: 1 }))))
+  if (marketJobs.length) return marketJobs
+
+  // The provider can temporarily reject regional domains. Fall back to the
+  // documented Europe query instead of showing an empty, misleading source.
+  return readSearches(searches.flatMap(query => [1, 2].map(page => ({ query, location: "Europe", page }))))
 }
 
 export async function GET() {
