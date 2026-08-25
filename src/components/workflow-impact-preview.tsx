@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { motion } from "motion/react"
 import { IconAlertTriangle, IconArrowRight, IconBolt, IconCheck, IconChevronRight, IconFileDiff, IconHierarchy, IconLayoutSidebar, IconPlayerPlay, IconShieldCheck, IconSparkles } from "@tabler/icons-react"
 import styles from "./workflow-impact-preview.module.css"
 
@@ -17,6 +18,7 @@ export function WorkflowImpactPreview() {
   const [version, setVersion] = useState<Version>("changed")
   const [result, setResult] = useState<ReplayResult | null>(null)
   const [running, setRunning] = useState(false)
+  const [comparingCurrent, setComparingCurrent] = useState(false)
   const state = states[version]
 
   async function runReplay() {
@@ -38,9 +40,9 @@ export function WorkflowImpactPreview() {
       <div className={styles.workspace}>
         <aside className={styles.sidebar}><div className={styles.sidebarHead}><span>Change set</span><small>3 scenarios</small></div><div className={styles.scenarios}>{(Object.keys(states) as Version[]).map((key, index) => <button className={version === key ? styles.selected : ""} key={key} onClick={() => { setVersion(key); setResult(null) }}><span>{String(index + 1).padStart(2, "0")}</span><strong>{states[key].label}</strong><small>{states[key].note}</small></button>)}</div><footer><IconShieldCheck size={15} /><span>Replay mode</span></footer></aside>
         <main className={styles.canvas}>
-          <div className={styles.canvasHead}><div><span>Proposed workflow</span><h3>{state.title}</h3></div><button><IconSparkles size={15} /> Compare to current</button></div>
-          <div className={styles.flow} aria-label="Workflow path"><div><IconBolt size={17} /><span>New ticket</span><small>Trigger</small></div><IconArrowRight size={16} /><div><IconSparkles size={17} /><span>Classify</span><small>AI step</small></div><IconArrowRight size={16} /><div className={version === "changed" ? styles.emphasis : ""}><IconHierarchy size={17} /><span>Route</span><small>Rule changed</small></div><IconArrowRight size={16} /><div className={version === "broken" ? styles.danger : ""}><IconCheck size={17} /><span>Act</span><small>External action</small></div></div>
-          <section className={styles.replay}><header><div><IconFileDiff size={16} /><span>Historical replay</span></div><small>Current → proposed</small></header>{state.rows.map(row => <article key={row[0]}><strong>{row[0]}</strong><span>{row[1]}</span><IconArrowRight size={14} /><span>{row[2]}</span><b>{row[3]}</b></article>)}</section>
+          <div className={styles.canvasHead}><div><span>{comparingCurrent ? "Current workflow" : "Proposed workflow"}</span><h3>{comparingCurrent ? "This is the route users follow today." : state.title}</h3></div><button className={comparingCurrent ? styles.comparing : ""} onClick={() => setComparingCurrent(value => !value)}><IconSparkles size={15} /> {comparingCurrent ? "Show proposed" : "Compare to current"}</button></div>
+          <motion.div className={styles.flow} aria-label="Draggable workflow path"><span className={styles.flowHint}>Drag a node to inspect the path</span><motion.div drag dragConstraints="parent" dragElastic={0.04} className={`${styles.node} ${styles.nodeTrigger}`}><IconBolt size={17} /><span>New ticket</span><small>Trigger</small></motion.div><IconArrowRight className={styles.linkOne} size={16} /><motion.div drag dragConstraints="parent" dragElastic={0.04} className={`${styles.node} ${styles.nodeClassify}`}><IconSparkles size={17} /><span>Classify</span><small>AI step</small></motion.div><IconArrowRight className={styles.linkTwo} size={16} /><motion.div drag dragConstraints="parent" dragElastic={0.04} className={`${styles.node} ${styles.nodeRoute} ${!comparingCurrent && version === "changed" ? styles.emphasis : ""}`}><IconHierarchy size={17} /><span>Route</span><small>{comparingCurrent ? "Current rule" : "Rule changed"}</small></motion.div><IconArrowRight className={styles.linkThree} size={16} /><motion.div drag dragConstraints="parent" dragElastic={0.04} className={`${styles.node} ${styles.nodeAct} ${!comparingCurrent && version === "broken" ? styles.danger : ""}`}><IconCheck size={17} /><span>Act</span><small>External action</small></motion.div></motion.div>
+          <section className={styles.replay}><header><div><IconFileDiff size={16} /><span>Historical replay</span></div><small>{comparingCurrent ? "Current route" : "Current → proposed"}</small></header>{state.rows.map(row => <article key={row[0]}><strong>{row[0]}</strong><span>{row[1]}</span><IconArrowRight size={14} /><span>{comparingCurrent ? row[1] : row[2]}</span><b>{comparingCurrent ? "CURRENT" : row[3]}</b></article>)}</section>
         </main>
         <aside className={styles.impact}><header><span>Impact estimate</span><IconAlertTriangle size={17} /></header><strong className={styles.impactNumber}>{state.impact}</strong><p>{state.copy}</p><div className={styles.signal}><span>Replay coverage</span><b>3 recent paths</b><div><i /><i /><i /><i /><i /></div></div><div className={styles.liveResult}>{result ? <><span>Live result</span><strong>{result.decision}</strong><small>{result.source || "No response returned"}</small></> : <><span>Ready to replay</span><strong>Check before publish.</strong><small>The test uses synthetic scenarios only.</small></>}</div><button className={styles.run} onClick={runReplay} disabled={running}>{running ? "Running replay" : result ? <><IconCheck size={16} /> Replay complete</> : <><IconPlayerPlay size={16} /> Run replay</>}</button></aside>
       </div>
