@@ -6,6 +6,7 @@ import { CapacityDecisionCover, InfrastructureDashboardCover } from "@/component
 import { OpportunityRadarCover } from "@/components/opportunity-radar-demo"
 import { AgentConvergenceCover } from "@/components/agent-convergence-demo"
 import { WorkflowImpactPreviewCover } from "@/components/workflow-impact-preview"
+import { DecisionHandoverCover } from "@/components/decision-handover-demo"
 import type { LabEntry } from "@/data/lab"
 
 const HOME_LAB_LIMIT = 5
@@ -33,6 +34,8 @@ export function WorkbenchPreview({ entries }: { entries: LabEntry[] }) {
         <figure className="home-lab-feature-media">
           {featuredEntry.slug === "european-tech-opportunity-radar"
             ? <OpportunityRadarCover />
+            : featuredEntry.slug === "decision-handover"
+            ? <DecisionHandoverCover />
             : featuredEntry.slug === "workflow-impact-preview"
             ? <WorkflowImpactPreviewCover />
             : featuredEntry.slug === "parallel-not-blind"

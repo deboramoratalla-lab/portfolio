@@ -10,6 +10,7 @@ import { GpuJobTriageDecisionDemo, TelemetryEvidenceDemo } from "@/components/gp
 import { OpportunityRadarDemo } from "@/components/opportunity-radar-demo"
 import { AgentConvergenceDemo } from "@/components/agent-convergence-demo"
 import { WorkflowImpactPreview } from "@/components/workflow-impact-preview"
+import { DecisionHandoverDemo } from "@/components/decision-handover-demo"
 import { getLabEntry, labEntries } from "@/data/lab"
 
 type ArticleSection = { title: string; paragraphs: string[]; points?: string[] }
@@ -53,6 +54,17 @@ const reusableResources: Record<string, ReusableResource[]> = {
 }
 
 const articles: Record<string, ArticleContent> = {
+  "decision-handover": {
+    lead: "An independent product exploration of a small operational problem: a handover can preserve what happened while losing the decision that made somebody wait, act or deliberately leave a system alone.",
+    quote: "A changed signal is a reason to review. It is not an instruction to act.",
+    sections: [
+      { title: "The useful context is usually the first thing to disappear", paragraphs: ["An alert, a deployment and an incident log can tell the next person what happened. They do not always explain why somebody chose to wait instead of rolling back, or what would make that decision no longer hold.", "The prototype keeps that missing context small: the decision, the reason it was appropriate at the time and one condition for reopening it."] },
+      { title: "A handover should contain decisions, not an archive", paragraphs: ["The queue carries three active decisions forward. Each has an owner, a short rationale and a review condition. Routine events stay out of the queue because they do not require later interpretation.", "The interaction is intentionally dense but quiet. A new operator should be able to scan what still matters without reading through every action from the previous shift."] },
+      { title: "The hard state is when the condition becomes true", paragraphs: ["The checkout example is where the idea gets tested. The system knows that a latency condition was crossed, but it does not convert that signal into an automatic rollback.", "Instead, it changes the decision state and makes the original reasoning available at the point where a person needs to reassess it. The action records a local outcome in the prototype, not a live operational command."] },
+      { title: "The boundary matters as much as the mechanism", paragraphs: ["A receipt is not useful for every routine action. Requiring one for all changes would make a handover into another inbox.", "The final state makes the rule explicit: write a receipt when a choice carries risk, cost or a service-level consequence and when someone can name what would make that choice worth revisiting."] },
+    ],
+    close: "The point is not to make every operational decision permanent. It is to keep the few that still matter legible until somebody has consciously replaced them.",
+  },
   "workflow-impact-preview": { lead: "An independent product exploration of a consequential moment in workflow automation: publishing a change without knowing which past cases would now behave differently.", quote: "Automation should make consequences faster to inspect, not easier to miss.", sections: [{ title: "The risky moment is before publish", paragraphs: ["A workflow can look valid on a canvas while a routing condition, tool permission or credential changes what happens to real work.", "This prototype asks a smaller question: which representative past executions would take another path?"] }, { title: "Compare outcomes, not node diagrams", paragraphs: ["The flow remains visible, but the emphasis shifts to behaviour. Each replay puts the current and proposed outcome side by side.", "A difference is named as a route change, a new external side effect or a failure, so review does not require parsing the whole graph first."] }, { title: "Keep publish separate from approval", paragraphs: ["A safe refinement can proceed. A new external action or insufficient permission asks for review instead.", "The prototype calls a published n8n webhook for synthetic scenarios only. It neither replays customer data nor reads or changes a customer workflow."] }], close: "A workflow editor helps people assemble automation. An impact preview helps them understand what a change will do before it becomes somebody else’s problem." },
   "parallel-not-blind": {
     lead: "An independent interaction experiment for agentic development environments. It examines the moment when several useful task loops become one product decision: can their output converge safely, and who is accountable for the answer?",
@@ -164,6 +176,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 }
 
 function ArticleActions({ slug }: { slug: string }) {
+  if (slug === "decision-handover") return <ArrowRouteLink variant="secondary" tone="purple" href="#decision-handover">Open the prototype</ArrowRouteLink>
   if (slug === "european-tech-opportunity-radar") return <ArrowRouteLink variant="secondary" tone="purple" href="#opportunity-radar">Open the radar</ArrowRouteLink>
   if (slug === "workflow-impact-preview") return <ArrowRouteLink variant="secondary" tone="purple" href="#workflow-impact">Open the prototype</ArrowRouteLink>
   if (slug === "gpu-job-triage") return <>
@@ -413,6 +426,7 @@ export default async function LabArticle({ params }: { params: Promise<{ slug: s
       {entry.slug === "metrics-are-not-decisions" && <DesignSystemHealthDemo />}
       {entry.slug === "european-tech-opportunity-radar" && <OpportunityRadarDemo />}
       {entry.slug === "parallel-not-blind" && <AgentConvergenceDemo />}
+      {entry.slug === "decision-handover" && <DecisionHandoverDemo />}
       {entry.slug === "workflow-impact-preview" && <WorkflowImpactPreview />}
       {entry.slug === "gpu-job-triage" && <><GpuJobTriageDecisionDemo /><TelemetryEvidenceDemo /></>}
       <ReusableResources slug={entry.slug} />
