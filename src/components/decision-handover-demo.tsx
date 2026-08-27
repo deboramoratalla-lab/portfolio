@@ -129,6 +129,22 @@ export function DecisionHandoverDemo() {
         </aside>
 
         <main className={styles.detail} aria-live="polite">
+          <section className={styles.schedule} aria-label="Decision schedule">
+            <header className={styles.scheduleHeader}>
+              <div><span>Tuesday · 09:00 handover</span><h3>Decision schedule</h3></div>
+              <button type="button" className={styles.todayButton}>Today <IconChevronRight size={15} /></button>
+            </header>
+            <div className={styles.scheduleGrid}>
+              <div className={styles.scheduleTime}><span>07:00</span><span>08:00</span><span>09:00</span></div>
+              <div className={styles.scheduleColumns}>
+                <div><header><span>Before handover</span><small>07:00–08:30</small></header><button type="button" className={`${styles.scheduleCard} ${styles.limeCard} ${selectedId === "search" ? styles.scheduleSelected : ""}`} onClick={() => chooseDecision("search")}><span>Search indexing</span><strong>Defer the reindex</strong><small>Nora · 07:32</small></button><button type="button" className={`${styles.scheduleCard} ${styles.aquaCard} ${selectedId === "provisioning" ? styles.scheduleSelected : ""}`} onClick={() => chooseDecision("provisioning")}><span>EU provisioning</span><strong>Hold extra capacity</strong><small>Jon · 07:54</small></button></div>
+                <div><header><span>Handover</span><small>08:30–09:00</small></header><button type="button" className={`${styles.scheduleCard} ${styles.yellowCard} ${selectedId === "checkout" ? styles.scheduleSelected : ""}`} onClick={() => chooseDecision("checkout")}><span>Checkout API</span><strong>Keep traffic at 25%</strong><small>Marta · 08:16</small></button><div className={styles.scheduleHint}>Choose a decision to read its context.</div></div>
+                <div><header><span>Next shift</span><small>09:00 onwards</small></header><div className={styles.openSlot}><span>Open context</span><small>New decisions appear here only when they need a later review.</small></div></div>
+              </div>
+            </div>
+          </section>
+
+          <section className={styles.detailSheet}>
           <header className={styles.detailHeader}><div><span>{selected.service}</span><h3>{selected.title}</h3></div><div className={`${styles.state} ${needsReview ? styles.needsReview : ""}`}>{needsReview ? <IconAlertTriangle size={15} /> : <IconCheck size={15} />}{needsReview ? "Review needed" : selected.status === "updated" ? "Reassessed" : "Still valid"}</div></header>
           <section className={styles.receipt}>
             <div className={styles.receiptLead}><span>Decision receipt</span><strong>{selected.choice}</strong><small>Decided by {selected.owner} at {selected.decided}</small></div>
@@ -146,6 +162,7 @@ export function DecisionHandoverDemo() {
             <p>Choose an action. This prototype records the handover state locally and does not operate a live service.</p>
             <div><button type="button" onClick={() => updateDecision("rollback")}><IconRefresh size={16} /> Roll back</button><button type="button" onClick={() => updateDecision("wait")}><IconUserCheck size={16} /> Keep waiting</button></div>
           </section>}
+          </section>
         </main>
       </div>}
       <footer className={styles.appFooter}><span><b>Signal</b> is a reason to review, not an instruction to act.</span><span>Scenario data only</span></footer>
