@@ -122,7 +122,7 @@ export function DecisionHandoverDemo() {
           </aside>
         </div>
         <div className={styles.rules}>
-          <header><span>Quick check</span><h4>Write a receipt only when all three are true.</h4></header>
+          <header><span>Decision check</span><h4>Write a receipt only when all three are true.</h4></header>
           <article><IconCheck size={18} /><strong>It changes a product outcome</strong><p>The choice affects customer risk, product scope or an agreed quality bar.</p></article>
           <article><IconCheck size={18} /><strong>The reasoning will matter later</strong><p>A teammate needs the original trade-off to understand the decision without reconstructing the whole discussion.</p></article>
           <article><IconCheck size={18} /><strong>There is a review trigger</strong><p>Someone can name the evidence or event that would make the choice worth reopening.</p></article>
