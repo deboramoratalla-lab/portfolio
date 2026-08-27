@@ -76,12 +76,14 @@ export function DecisionHandoverDemo() {
   const [selectedId, setSelectedId] = useState<DecisionId>("onboarding")
   const [view, setView] = useState<"handover" | "guardrails">("handover")
   const [reviewOpen, setReviewOpen] = useState(false)
+  const [routineReasonOpen, setRoutineReasonOpen] = useState(false)
   const selected = useMemo(() => decisions.find(decision => decision.id === selectedId) ?? decisions[0], [decisions, selectedId])
   const needsReview = selected.status === "review"
 
   function chooseDecision(id: DecisionId) {
     setSelectedId(id)
     setReviewOpen(false)
+    setRoutineReasonOpen(false)
   }
 
   function updateDecision(action: "revise" | "keep") {
@@ -140,12 +142,12 @@ export function DecisionHandoverDemo() {
               <div className={styles.scheduleColumns}>
                 <div><header><span>Before handover</span><small>07:00-08:30</small></header><button type="button" aria-pressed={selectedId === "emptyState"} className={`${styles.scheduleCard} ${styles.limeCard} ${selectedId === "emptyState" ? styles.scheduleSelected : ""}`} onClick={() => chooseDecision("emptyState")}><span>Design system</span><strong>Hold the new empty state</strong><small>Nora, 07:32</small></button><button type="button" aria-pressed={selectedId === "templates"} className={`${styles.scheduleCard} ${styles.aquaCard} ${selectedId === "templates" ? styles.scheduleSelected : ""}`} onClick={() => chooseDecision("templates")}><span>Project setup</span><strong>Keep templates out of v1</strong><small>Jon, 07:54</small></button></div>
                 <div><header><span>Handover</span><small>08:30-09:00</small></header><button type="button" aria-pressed={selectedId === "onboarding"} className={`${styles.scheduleCard} ${styles.yellowCard} ${selectedId === "onboarding" ? styles.scheduleSelected : ""}`} onClick={() => chooseDecision("onboarding")}><span>Onboarding flow</span><strong>Keep lookup optional</strong><small>Marta, 08:16</small></button><div className={styles.scheduleHint}>Select a decision to see why it was made and when to reopen it.</div></div>
-                <div><header><span>Next shift</span><small>09:00 onwards</small></header><div className={styles.openSlot}><span>Open context</span><small>New decisions appear here only when they need a later review.</small></div></div>
+                <div><header><span>Next shift</span><small>09:00 onwards</small></header><div className={styles.openSlot}><span>Open context</span><small>New decisions appear here only when they need a later review.</small><button type="button" className={styles.routineItem} aria-expanded={routineReasonOpen} onClick={() => setRoutineReasonOpen(open => !open)}><span>Routine update</span><strong>Clarified helper copy in project setup</strong><small>{routineReasonOpen ? "Hide why no receipt exists" : "Why no receipt?"}</small></button>{routineReasonOpen && <p className={styles.routineReason} role="status"><b>No receipt created.</b> The change did not alter scope, customer risk or a decision that needs later review.</p>}</div></div>
               </div>
             </div>
           </section>
 
-          <section className={styles.detailSheet}>
+          <section key={`${selected.id}-${selected.status}`} className={styles.detailSheet}>
           <header className={styles.detailHeader}><div><span>{selected.service}</span><h3>{selected.title}</h3></div><div className={`${styles.state} ${needsReview ? styles.needsReview : ""}`}>{needsReview ? <IconAlertTriangle size={15} /> : <IconCheck size={15} />}{needsReview ? "Review needed" : selected.status === "updated" ? "Reassessed" : "Still valid"}</div></header>
           <section className={styles.receipt}>
             <div className={styles.receiptLead}><span>Decision receipt</span><strong>{selected.choice}</strong><small>Decided by {selected.owner} at {selected.decided}</small></div>
