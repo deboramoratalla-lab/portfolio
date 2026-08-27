@@ -71,14 +71,28 @@ export function DecisionHandoverCover() {
   </div>
 }
 
+export function DecisionHandoverJourney() {
+  return <section className={styles.journey} aria-labelledby="decision-journey-title">
+    <header><span>Prototype map</span><h2 id="decision-journey-title">From a changed signal to a decision someone can defend.</h2><p>The prototype is deliberately small: it distinguishes ordinary delivery work from a decision whose reasoning must survive the handover.</p></header>
+    <ol className={styles.journeyFlow}>
+      <li><span>01</span><div><strong>A condition changes</strong><p>A task crosses the review trigger attached to it.</p></div></li>
+      <li><span>02</span><div><strong>The receipt restores context</strong><p>What was decided, why it made sense then and when to reopen it.</p></div></li>
+      <li><span>03</span><div><strong>A person reviews</strong><p>They keep the boundary or revise the next product action.</p></div></li>
+      <li><span>04</span><div><strong>Work returns to the board</strong><p>The resolved task keeps its reasoning and follow-up connected.</p></div></li>
+    </ol>
+    <aside className={styles.journeyQuiet}><span>Routine update</span><strong>Visible in activity. No receipt, no extra process.</strong><p>It did not change scope, customer risk or a decision that needs later interpretation.</p></aside>
+  </section>
+}
+
 export function DecisionHandoverDemo() {
   const [decisions, setDecisions] = useState(initialDecisions)
   const [selectedId, setSelectedId] = useState<DecisionId>("onboarding")
-  const [view, setView] = useState<"handover" | "context" | "guardrails">("handover")
+  const [view, setView] = useState<"handover" | "context" | "guardrails">("context")
   const [reviewOpen, setReviewOpen] = useState(false)
   const [routineReasonOpen, setRoutineReasonOpen] = useState(false)
-  const [contextSelection, setContextSelection] = useState<"routine" | "receipt">("routine")
+  const [contextSelection, setContextSelection] = useState<"routine" | "receipt">("receipt")
   const [boardFilter, setBoardFilter] = useState<"all" | "decision" | "review" | "routine">("all")
+  const [checkScenario, setCheckScenario] = useState<"decision" | "routine">("decision")
   const [commentDraft, setCommentDraft] = useState("")
   const [commentAdded, setCommentAdded] = useState(false)
   const selected = useMemo(() => decisions.find(decision => decision.id === selectedId) ?? decisions[0], [decisions, selectedId])
@@ -124,14 +138,14 @@ export function DecisionHandoverDemo() {
       </header>
 
       <nav className={styles.tabs} aria-label="Handover views">
-        <button className={view === "handover" ? styles.activeTab : ""} onClick={() => setView("handover")}>Active decisions <b>{decisions.length}</b></button>
-        <button className={view === "context" ? styles.activeTab : ""} onClick={() => setView("context")}>In context</button>
-        <button className={view === "guardrails" ? styles.activeTab : ""} onClick={() => setView("guardrails")}>When to write one</button>
+        <button className={view === "context" ? styles.activeTab : ""} onClick={() => setView("context")}>Active decisions <b>{decisions.length}</b></button>
+        <button className={view === "handover" ? styles.activeTab : ""} onClick={() => setView("handover")}>Handover</button>
+        <button className={view === "guardrails" ? styles.activeTab : ""} onClick={() => setView("guardrails")}>Decision check</button>
       </nav>
 
       {view === "context" ? <section className={styles.contextView} aria-live="polite">
         <header className={styles.contextHeader}>
-          <div><span>Project activity</span><h3>Checkout reliability</h3><p>Tuesday · 08:00–09:00 · One decision is ready for reassessment.</p></div>
+          <div><span>Active decision</span><h3>Checkout reliability</h3><p>One task has crossed a review condition. Select another task to compare the context it carries forward.</p></div>
           <div className={styles.contextPeople}><span>MR</span><span>JB</span><span>NL</span><b>3 contributors</b></div>
         </header>
         <div className={styles.contextBody}>
@@ -139,8 +153,8 @@ export function DecisionHandoverDemo() {
             <header className={styles.boardHeader}><div><span>Product work</span><small>Decisions appear in the work, not in a separate register.</small></div><div className={styles.taskFilters} role="toolbar" aria-label="Filter product work"><button type="button" className={boardFilter === "all" ? styles.filterActive : ""} onClick={() => setBoardFilter("all")}>All <b>4</b></button><button type="button" className={boardFilter === "decision" ? styles.filterActive : ""} onClick={() => setBoardFilter("decision")}>Decision</button><button type="button" className={boardFilter === "review" ? styles.filterActive : ""} onClick={() => setBoardFilter("review")}>Needs review</button><button type="button" className={boardFilter === "routine" ? styles.filterActive : ""} onClick={() => setBoardFilter("routine")}>Routine</button></div></header>
             <div className={styles.boardColumns}>
               <section className={styles.boardColumn} aria-labelledby="building-column"><header><span className={styles.columnDot} /><h4 id="building-column">Building</h4><b>1</b></header><button hidden={boardFilter !== "all" && boardFilter !== "decision"} type="button" className={`${styles.taskCard} ${styles.taskDecision} ${contextSelection === "receipt" ? styles.taskSelected : ""}`} onClick={openDecisionInContext} aria-pressed={contextSelection === "receipt"}><div className={styles.taskTags}><span>Decision</span><span>Onboarding</span></div><strong>Keep address lookup optional</strong><p>Preserve manual entry while coverage is still being tested.</p><div className={styles.taskProgress}><span>Research coverage</span><b>4 / 5</b><i><em /></i></div><footer><span className={styles.avatarStack} aria-label="Marta Ruiz and Jon Bell"><i>MR</i><i>JB</i></span><span>Marta · 08:16</span><b>Receipt</b></footer></button></section>
-              <section className={styles.boardColumn} aria-labelledby="review-column"><header><span className={`${styles.columnDot} ${styles.reviewDot}`} /><h4 id="review-column">Review</h4><b>1</b></header><button hidden={boardFilter !== "all" && boardFilter !== "review"} type="button" className={`${styles.taskCard} ${styles.taskTrigger} ${contextSelection === "receipt" ? styles.taskSelected : ""}`} onClick={openDecisionInContext} aria-pressed={contextSelection === "receipt"}><div className={styles.taskTags}><span>Condition met</span><span>Research</span></div><strong>Check unsupported address path</strong><p>The fifth moderated session crossed the agreed review condition.</p><div className={styles.taskProgress}><span>Review prep</span><b>2 / 3</b><i><em /></i></div><footer><span className={styles.avatarStack} aria-label="Marta Ruiz, Jon Bell and Nora Lind"><i>MR</i><i>JB</i><i>NL</i></span><span>Research · 09:02</span><b>Review needed</b></footer></button></section>
-              <section className={styles.boardColumn} aria-labelledby="complete-column"><header><span className={`${styles.columnDot} ${styles.completeDot}`} /><h4 id="complete-column">Completed</h4><b>2</b></header><button hidden={boardFilter !== "all" && boardFilter !== "routine"} type="button" className={`${styles.taskCard} ${styles.taskRoutine} ${contextSelection === "routine" ? styles.taskSelected : ""}`} onClick={() => { setContextSelection("routine"); setReviewOpen(false) }} aria-pressed={contextSelection === "routine"}><div className={styles.taskTags}><span>Routine</span><span>Project setup</span></div><strong>Clarify helper copy in project setup</strong><p>A small content refinement with no later decision to carry forward.</p><div className={styles.taskProgress}><span>Delivery</span><b>Done</b><i><em /></i></div><footer><span className={styles.avatarStack} aria-label="Jon Bell and Nora Lind"><i>JB</i><i>NL</i></span><span>Jon · 08:04</span><b>No receipt</b></footer></button><div hidden={boardFilter !== "all" && boardFilter !== "routine"} className={styles.completedStub}><span>Design QA</span><small>Resolved in the same session</small></div></section>
+              <section className={styles.boardColumn} aria-labelledby="review-column"><header><span className={`${styles.columnDot} ${styles.reviewDot}`} /><h4 id="review-column">Review</h4><b>{needsReview ? "1" : "0"}</b></header>{needsReview ? <button hidden={boardFilter !== "all" && boardFilter !== "review"} type="button" className={`${styles.taskCard} ${styles.taskTrigger} ${contextSelection === "receipt" ? styles.taskSelected : ""}`} onClick={openDecisionInContext} aria-pressed={contextSelection === "receipt"}><div className={styles.taskTags}><span>Condition met</span><span>Research</span></div><strong>Check unsupported address path</strong><p>The fifth moderated session crossed the agreed review condition.</p><div className={styles.taskProgress}><span>Review prep</span><b>2 / 3</b><i><em /></i></div><footer><span className={styles.avatarStack} aria-label="Marta Ruiz, Jon Bell and Nora Lind"><i>MR</i><i>JB</i><i>NL</i></span><span>Research · 09:02</span><b>Review needed</b></footer></button> : <div className={styles.emptyColumn}><IconCheck size={16} /><strong>Nothing waiting</strong><span>The decision was reassessed.</span></div>}</section>
+              <section className={styles.boardColumn} aria-labelledby="complete-column"><header><span className={`${styles.columnDot} ${styles.completeDot}`} /><h4 id="complete-column">Completed</h4><b>{needsReview ? "2" : "3"}</b></header>{!needsReview && <button type="button" className={`${styles.taskCard} ${styles.taskResolved} ${contextSelection === "receipt" ? styles.taskSelected : ""}`} onClick={openDecisionInContext} aria-pressed={contextSelection === "receipt"}><div className={styles.taskTags}><span>Reassessed</span><span>Onboarding</span></div><strong>{selected.choice}</strong><p>The original reasoning and the chosen follow-up remain connected.</p><div className={styles.taskProgress}><span>Decision review</span><b>Done</b><i><em /></i></div><footer><span className={styles.avatarStack} aria-label="Marta Ruiz and Jon Bell"><i>MR</i><i>JB</i></span><span>Just now</span><b>Resolved</b></footer></button>}<button hidden={boardFilter !== "all" && boardFilter !== "routine"} type="button" className={`${styles.taskCard} ${styles.taskRoutine} ${contextSelection === "routine" ? styles.taskSelected : ""}`} onClick={() => { setContextSelection("routine"); setReviewOpen(false) }} aria-pressed={contextSelection === "routine"}><div className={styles.taskTags}><span>Routine</span><span>Project setup</span></div><strong>Clarify helper copy in project setup</strong><p>A small content refinement with no later decision to carry forward.</p><div className={styles.taskProgress}><span>Delivery</span><b>Done</b><i><em /></i></div><footer><span className={styles.avatarStack} aria-label="Jon Bell and Nora Lind"><i>JB</i><i>NL</i></span><span>Jon · 08:04</span><b>No receipt</b></footer></button><div hidden={boardFilter !== "all" && boardFilter !== "routine"} className={styles.completedStub}><span>Design QA</span><small>Resolved in the same session</small></div></section>
             </div>
           </section>
 
@@ -174,21 +188,24 @@ export function DecisionHandoverDemo() {
         </section>}
       </section> : view === "guardrails" ? <section className={styles.guardrails} aria-live="polite">
         <div>
-          <span>Keep routine work quiet</span>
-          <h3>A receipt appears only when a product decision can outlive its context.</h3>
-          <p>Routine delivery updates, resolved comments and expected iterations do not create another item for the next person to parse.</p>
-          <aside className={styles.guardrailExample} aria-label="Example of a decision worth carrying forward">
-            <span>Example that travels</span>
-            <strong>Keep address lookup optional</strong>
-            <p>The team needs to remember the user need, the scope boundary and what evidence would reopen it.</p>
+          <span>Before it travels</span>
+          <h3>Does this task need a decision receipt?</h3>
+          <p>Choose a task type to see what the next person should inherit — and what should stay quiet.</p>
+          <div className={styles.scenarioPicker} role="group" aria-label="Choose a task type">
+            <button type="button" className={checkScenario === "decision" ? styles.scenarioActive : ""} onClick={() => setCheckScenario("decision")} aria-pressed={checkScenario === "decision"}><span>Product decision</span><strong>Keep lookup optional</strong></button>
+            <button type="button" className={checkScenario === "routine" ? styles.scenarioActive : ""} onClick={() => setCheckScenario("routine")} aria-pressed={checkScenario === "routine"}><span>Routine update</span><strong>Clarify helper copy</strong></button>
+          </div>
+          <aside className={styles.guardrailExample} aria-label="Decision check result">
+            <span>{checkScenario === "decision" ? "Receipt created" : "No receipt created"}</span>
+            <strong>{checkScenario === "decision" ? "The choice, its reasoning and the review condition travel together." : "The update remains visible in activity, without creating a second artefact to maintain."}</strong>
           </aside>
         </div>
         <div className={styles.rules}>
-          <header><span>Decision check</span><h4>Write a receipt only when all three are true.</h4></header>
-          <article><IconCheck size={18} /><strong>It changes a product outcome</strong><p>The choice affects customer risk, product scope or an agreed quality bar.</p></article>
-          <article><IconCheck size={18} /><strong>The reasoning will matter later</strong><p>A teammate needs the original trade-off to understand the decision without reconstructing the whole discussion.</p></article>
-          <article><IconCheck size={18} /><strong>There is a review trigger</strong><p>Someone can name the evidence or event that would make the choice worth reopening.</p></article>
-          <p className={styles.noReceipt}><b>Do not write one</b> for routine delivery work, resolved comments or a decision that has no later consequence.</p>
+          <header><span>Decision check</span><h4>{checkScenario === "decision" ? "All three conditions are present." : "This is work, but not a decision to carry."}</h4></header>
+          <article className={checkScenario === "routine" ? styles.ruleMiss : ""}>{checkScenario === "decision" ? <IconCheck size={18} /> : <IconAlertTriangle size={18} />}<strong>It changes a product outcome</strong><p>{checkScenario === "decision" ? "The scope boundary changes the customer path and what the team validates next." : "The helper-copy update does not alter scope, risk or an agreed quality bar."}</p></article>
+          <article className={checkScenario === "routine" ? styles.ruleMiss : ""}>{checkScenario === "decision" ? <IconCheck size={18} /> : <IconAlertTriangle size={18} />}<strong>The reasoning will matter later</strong><p>{checkScenario === "decision" ? "The next teammate needs the original trade-off without reconstructing the research discussion." : "The edit is self-explanatory in the task activity."}</p></article>
+          <article className={checkScenario === "routine" ? styles.ruleMiss : ""}>{checkScenario === "decision" ? <IconCheck size={18} /> : <IconAlertTriangle size={18} />}<strong>There is a review trigger</strong><p>{checkScenario === "decision" ? "A moderated session that cannot resolve the address is a named reason to reassess." : "There is no later event that should reopen this copy change."}</p></article>
+          <p className={styles.noReceipt}><b>{checkScenario === "decision" ? "Write a receipt" : "Leave it in activity"}</b> — the system distinguishes a useful trail from extra process.</p>
         </div>
       </section> : <div className={styles.workspace}>
         <main className={styles.detail} aria-live="polite">
@@ -230,6 +247,5 @@ export function DecisionHandoverDemo() {
       </div>}
       <footer className={styles.appFooter}><span><b>A signal is a reading, not an instruction.</b></span><span>Scenario data only</span></footer>
     </div>
-    <p className={styles.note}>The interface is a coded product hypothesis. Names, times and product scenarios are fictional, included to test the handover states rather than claim a live integration.</p>
   </section>
 }
