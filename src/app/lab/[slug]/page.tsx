@@ -10,7 +10,7 @@ import { GpuJobTriageDecisionDemo, TelemetryEvidenceDemo } from "@/components/gp
 import { OpportunityRadarDemo } from "@/components/opportunity-radar-demo"
 import { AgentConvergenceDemo } from "@/components/agent-convergence-demo"
 import { WorkflowImpactPreview } from "@/components/workflow-impact-preview"
-import { DecisionHandoverDemo } from "@/components/decision-handover-demo"
+import { DecisionHandoverDemo, DecisionHandoverJourney } from "@/components/decision-handover-demo"
 import { getLabEntry, labEntries } from "@/data/lab"
 
 type ArticleSection = { title: string; paragraphs: string[]; points?: string[] }
@@ -426,7 +426,7 @@ export default async function LabArticle({ params }: { params: Promise<{ slug: s
       {entry.slug === "metrics-are-not-decisions" && <DesignSystemHealthDemo />}
       {entry.slug === "european-tech-opportunity-radar" && <OpportunityRadarDemo />}
       {entry.slug === "parallel-not-blind" && <AgentConvergenceDemo />}
-      {entry.slug === "decision-handover" && <DecisionHandoverDemo />}
+      {entry.slug === "decision-handover" && <><DecisionHandoverJourney /><DecisionHandoverDemo /></>}
       {entry.slug === "workflow-impact-preview" && <WorkflowImpactPreview />}
       {entry.slug === "gpu-job-triage" && <><GpuJobTriageDecisionDemo /><TelemetryEvidenceDemo /></>}
       <ReusableResources slug={entry.slug} />
