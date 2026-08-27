@@ -168,7 +168,7 @@ export function DecisionHandoverDemo() {
           </section>
         </main>
       </div>}
-      <footer className={styles.appFooter}><span><b>Signal</b> is a reason to review, not an instruction to act.</span><span>Scenario data only</span></footer>
+      <footer className={styles.appFooter}><span><b>A signal is a reading, not an instruction.</b></span><span>Scenario data only</span></footer>
     </div>
     <p className={styles.note}>The interface is a coded product hypothesis. Names, times and product scenarios are fictional, included to test the handover states rather than claim a live integration.</p>
   </section>
