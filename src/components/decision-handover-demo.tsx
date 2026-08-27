@@ -1,7 +1,7 @@
 "use client"
 
 import { useMemo, useState } from "react"
-import { IconAlertTriangle, IconArrowRight, IconCheck, IconChevronRight, IconClock, IconFileText, IconFlag3, IconRefresh, IconShieldCheck, IconUserCheck } from "@tabler/icons-react"
+import { IconAlertTriangle, IconArrowRight, IconCheck, IconChevronRight, IconClock, IconFlag3, IconRefresh, IconShieldCheck, IconUserCheck } from "@tabler/icons-react"
 import styles from "./decision-handover-demo.module.css"
 
 type DecisionId = "checkout" | "provisioning" | "search"
@@ -118,27 +118,17 @@ export function DecisionHandoverDemo() {
           <article><IconCheck size={18} /><strong>Leave it out</strong><p>The action is routine and needs no later interpretation.</p></article>
         </div>
       </section> : <div className={styles.workspace}>
-        <aside className={styles.rail}>
-          <header><span>Handover queue</span><small>Only active decisions</small></header>
-          <div className={styles.decisionList}>{decisions.map(decision => <button type="button" className={`${styles.decisionRow} ${decision.id === selectedId ? styles.selected : ""}`} onClick={() => chooseDecision(decision.id)} key={decision.id}>
-            <span className={styles.rowTop}><small>{decision.service}</small>{decision.status === "review" && <b>Review</b>}{decision.status === "updated" && <b className={styles.updated}>Updated</b>}</span>
-            <strong>{decision.title}</strong>
-            <span className={styles.rowMeta}>{decision.owner} <i /> {decision.decided}</span>
-          </button>)}</div>
-          <footer><IconFileText size={15} /> 3 decisions carried forward</footer>
-        </aside>
-
         <main className={styles.detail} aria-live="polite">
           <section className={styles.schedule} aria-label="Decision schedule">
             <header className={styles.scheduleHeader}>
-              <div><span>Tuesday · 09:00 handover</span><h3>Decision schedule</h3></div>
-              <button type="button" className={styles.todayButton}>Today <IconChevronRight size={15} /></button>
+              <div><span>Tuesday, 09:00 handover</span><h3>Three decisions carried forward</h3></div>
+              <span className={styles.scheduleStatus}><IconClock size={15} /> Handover in progress</span>
             </header>
             <div className={styles.scheduleGrid}>
               <div className={styles.scheduleTime}><span>07:00</span><span>08:00</span><span>09:00</span></div>
               <div className={styles.scheduleColumns}>
-                <div><header><span>Before handover</span><small>07:00–08:30</small></header><button type="button" className={`${styles.scheduleCard} ${styles.limeCard} ${selectedId === "search" ? styles.scheduleSelected : ""}`} onClick={() => chooseDecision("search")}><span>Search indexing</span><strong>Defer the reindex</strong><small>Nora · 07:32</small></button><button type="button" className={`${styles.scheduleCard} ${styles.aquaCard} ${selectedId === "provisioning" ? styles.scheduleSelected : ""}`} onClick={() => chooseDecision("provisioning")}><span>EU provisioning</span><strong>Hold extra capacity</strong><small>Jon · 07:54</small></button></div>
-                <div><header><span>Handover</span><small>08:30–09:00</small></header><button type="button" className={`${styles.scheduleCard} ${styles.yellowCard} ${selectedId === "checkout" ? styles.scheduleSelected : ""}`} onClick={() => chooseDecision("checkout")}><span>Checkout API</span><strong>Keep traffic at 25%</strong><small>Marta · 08:16</small></button><div className={styles.scheduleHint}>Choose a decision to read its context.</div></div>
+                <div><header><span>Before handover</span><small>07:00-08:30</small></header><button type="button" aria-pressed={selectedId === "search"} className={`${styles.scheduleCard} ${styles.limeCard} ${selectedId === "search" ? styles.scheduleSelected : ""}`} onClick={() => chooseDecision("search")}><span>Search indexing</span><strong>Defer the reindex</strong><small>Nora, 07:32</small></button><button type="button" aria-pressed={selectedId === "provisioning"} className={`${styles.scheduleCard} ${styles.aquaCard} ${selectedId === "provisioning" ? styles.scheduleSelected : ""}`} onClick={() => chooseDecision("provisioning")}><span>EU provisioning</span><strong>Hold extra capacity</strong><small>Jon, 07:54</small></button></div>
+                <div><header><span>Handover</span><small>08:30-09:00</small></header><button type="button" aria-pressed={selectedId === "checkout"} className={`${styles.scheduleCard} ${styles.yellowCard} ${selectedId === "checkout" ? styles.scheduleSelected : ""}`} onClick={() => chooseDecision("checkout")}><span>Checkout API</span><strong>Keep traffic at 25%</strong><small>Marta, 08:16</small></button><div className={styles.scheduleHint}>Select a decision to see why it was made and when to reopen it.</div></div>
                 <div><header><span>Next shift</span><small>09:00 onwards</small></header><div className={styles.openSlot}><span>Open context</span><small>New decisions appear here only when they need a later review.</small></div></div>
               </div>
             </div>
