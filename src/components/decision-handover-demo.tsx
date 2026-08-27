@@ -74,9 +74,13 @@ export function DecisionHandoverCover() {
 export function DecisionHandoverDemo() {
   const [decisions, setDecisions] = useState(initialDecisions)
   const [selectedId, setSelectedId] = useState<DecisionId>("onboarding")
-  const [view, setView] = useState<"handover" | "guardrails">("handover")
+  const [view, setView] = useState<"handover" | "context" | "guardrails">("handover")
   const [reviewOpen, setReviewOpen] = useState(false)
   const [routineReasonOpen, setRoutineReasonOpen] = useState(false)
+  const [contextSelection, setContextSelection] = useState<"routine" | "receipt">("routine")
+  const [boardFilter, setBoardFilter] = useState<"all" | "decision" | "review" | "routine">("all")
+  const [commentDraft, setCommentDraft] = useState("")
+  const [commentAdded, setCommentAdded] = useState(false)
   const selected = useMemo(() => decisions.find(decision => decision.id === selectedId) ?? decisions[0], [decisions, selectedId])
   const needsReview = selected.status === "review"
 
@@ -84,6 +88,18 @@ export function DecisionHandoverDemo() {
     setSelectedId(id)
     setReviewOpen(false)
     setRoutineReasonOpen(false)
+  }
+
+  function openDecisionInContext() {
+    setSelectedId("onboarding")
+    setContextSelection("receipt")
+    setReviewOpen(false)
+  }
+
+  function addFollowUp() {
+    if (!commentDraft.trim()) return
+    setCommentAdded(true)
+    setCommentDraft("")
   }
 
   function updateDecision(action: "revise" | "keep") {
@@ -109,10 +125,54 @@ export function DecisionHandoverDemo() {
 
       <nav className={styles.tabs} aria-label="Handover views">
         <button className={view === "handover" ? styles.activeTab : ""} onClick={() => setView("handover")}>Active decisions <b>{decisions.length}</b></button>
+        <button className={view === "context" ? styles.activeTab : ""} onClick={() => setView("context")}>In context</button>
         <button className={view === "guardrails" ? styles.activeTab : ""} onClick={() => setView("guardrails")}>When to write one</button>
       </nav>
 
-      {view === "guardrails" ? <section className={styles.guardrails} aria-live="polite">
+      {view === "context" ? <section className={styles.contextView} aria-live="polite">
+        <header className={styles.contextHeader}>
+          <div><span>Project activity</span><h3>Checkout reliability</h3><p>Tuesday · 08:00–09:00 · One decision is ready for reassessment.</p></div>
+          <div className={styles.contextPeople}><span>MR</span><span>JB</span><span>NL</span><b>3 contributors</b></div>
+        </header>
+        <div className={styles.contextBody}>
+          <section className={styles.taskBoard} aria-label="Product work board">
+            <header className={styles.boardHeader}><div><span>Product work</span><small>Decisions appear in the work, not in a separate register.</small></div><div className={styles.taskFilters} role="toolbar" aria-label="Filter product work"><button type="button" className={boardFilter === "all" ? styles.filterActive : ""} onClick={() => setBoardFilter("all")}>All <b>4</b></button><button type="button" className={boardFilter === "decision" ? styles.filterActive : ""} onClick={() => setBoardFilter("decision")}>Decision</button><button type="button" className={boardFilter === "review" ? styles.filterActive : ""} onClick={() => setBoardFilter("review")}>Needs review</button><button type="button" className={boardFilter === "routine" ? styles.filterActive : ""} onClick={() => setBoardFilter("routine")}>Routine</button></div></header>
+            <div className={styles.boardColumns}>
+              <section className={styles.boardColumn} aria-labelledby="building-column"><header><span className={styles.columnDot} /><h4 id="building-column">Building</h4><b>1</b></header><button hidden={boardFilter !== "all" && boardFilter !== "decision"} type="button" className={`${styles.taskCard} ${styles.taskDecision} ${contextSelection === "receipt" ? styles.taskSelected : ""}`} onClick={openDecisionInContext} aria-pressed={contextSelection === "receipt"}><div className={styles.taskTags}><span>Decision</span><span>Onboarding</span></div><strong>Keep address lookup optional</strong><p>Preserve manual entry while coverage is still being tested.</p><div className={styles.taskProgress}><span>Research coverage</span><b>4 / 5</b><i><em /></i></div><footer><span className={styles.avatarStack} aria-label="Marta Ruiz and Jon Bell"><i>MR</i><i>JB</i></span><span>Marta · 08:16</span><b>Receipt</b></footer></button></section>
+              <section className={styles.boardColumn} aria-labelledby="review-column"><header><span className={`${styles.columnDot} ${styles.reviewDot}`} /><h4 id="review-column">Review</h4><b>1</b></header><button hidden={boardFilter !== "all" && boardFilter !== "review"} type="button" className={`${styles.taskCard} ${styles.taskTrigger} ${contextSelection === "receipt" ? styles.taskSelected : ""}`} onClick={openDecisionInContext} aria-pressed={contextSelection === "receipt"}><div className={styles.taskTags}><span>Condition met</span><span>Research</span></div><strong>Check unsupported address path</strong><p>The fifth moderated session crossed the agreed review condition.</p><div className={styles.taskProgress}><span>Review prep</span><b>2 / 3</b><i><em /></i></div><footer><span className={styles.avatarStack} aria-label="Marta Ruiz, Jon Bell and Nora Lind"><i>MR</i><i>JB</i><i>NL</i></span><span>Research · 09:02</span><b>Review needed</b></footer></button></section>
+              <section className={styles.boardColumn} aria-labelledby="complete-column"><header><span className={`${styles.columnDot} ${styles.completeDot}`} /><h4 id="complete-column">Completed</h4><b>2</b></header><button hidden={boardFilter !== "all" && boardFilter !== "routine"} type="button" className={`${styles.taskCard} ${styles.taskRoutine} ${contextSelection === "routine" ? styles.taskSelected : ""}`} onClick={() => { setContextSelection("routine"); setReviewOpen(false) }} aria-pressed={contextSelection === "routine"}><div className={styles.taskTags}><span>Routine</span><span>Project setup</span></div><strong>Clarify helper copy in project setup</strong><p>A small content refinement with no later decision to carry forward.</p><div className={styles.taskProgress}><span>Delivery</span><b>Done</b><i><em /></i></div><footer><span className={styles.avatarStack} aria-label="Jon Bell and Nora Lind"><i>JB</i><i>NL</i></span><span>Jon · 08:04</span><b>No receipt</b></footer></button><div hidden={boardFilter !== "all" && boardFilter !== "routine"} className={styles.completedStub}><span>Design QA</span><small>Resolved in the same session</small></div></section>
+            </div>
+          </section>
+
+          <aside className={styles.contextPanel} aria-label="Selected activity context">
+            {contextSelection === "routine" ? <div className={styles.quietState}>
+              <span className={styles.quietIcon}><IconCheck size={18} /></span><span>Routine update</span><h4>Nothing else needs to travel.</h4><p>This change is visible in activity, but it does not change product scope, customer risk or a decision that someone should reopen later.</p><button type="button" onClick={openDecisionInContext}>See a decision that does <IconArrowRight size={16} /></button>
+            </div> : <div key={`${selected.id}-${selected.status}`} className={styles.contextReceipt}>
+              <header><span>Decision receipt</span><div className={`${styles.state} ${needsReview ? styles.needsReview : ""}`}>{needsReview ? <IconAlertTriangle size={14} /> : <IconCheck size={14} />}{needsReview ? "Review needed" : "Reassessed"}</div></header>
+              <h4>{selected.choice}</h4><small>Decided by {selected.owner} at {selected.decided}</small>
+              <div className={styles.taskMeta}><span>Checkout reliability</span><span>Product + research</span></div>
+              <dl><div><dt>Why then</dt><dd>{selected.rationale}</dd></div><div><dt>Revisit when</dt><dd>{selected.condition}</dd></div></dl>
+              <section className={styles.taskChecklist} aria-label="Review checklist"><header><span>Before review</span><b>2 / 3 ready</b></header><p><IconCheck size={14} /> Original evidence is attached</p><p><IconCheck size={14} /> Owner is available for handover</p><p><span className={styles.checkEmpty} /> Agree the next experiment</p></section>
+              <section className={styles.decisionThread} aria-label="Decision discussion">
+                <header><span>Decision thread</span><b>3 notes</b></header>
+                <article><span className={styles.commentAvatar}>MR</span><p><strong>Marta · Research</strong> Two sessions needed manual entry for non-standard addresses. <small>08:10</small></p></article>
+                <article><span className={`${styles.commentAvatar} ${styles.productAvatar}`}>JB</span><p><strong>Jon · Product</strong> Keep lookup optional until we know whether it removes more effort than it adds. <small>08:16</small></p></article>
+                <article><span className={`${styles.commentAvatar} ${styles.alertAvatar}`}>MR</span><p><strong>Marta · Research</strong> The fifth session could not resolve the address. The review condition is met. <small>09:02</small></p></article>
+                {commentAdded && <article className={styles.newComment}><span className={styles.commentAvatar}>You</span><p><strong>Follow-up added</strong> The next experiment will be agreed in review. <small>Now</small></p></article>}
+                <div className={styles.commentComposer}><input value={commentDraft} onChange={event => setCommentDraft(event.target.value)} onKeyDown={event => { if (event.key === "Enter") addFollowUp() }} aria-label="Add a follow-up note" placeholder="Add a follow-up note…" /><button type="button" onClick={addFollowUp} disabled={!commentDraft.trim()}>Add</button></div>
+              </section>
+              <section className={styles.contextTrigger}><IconAlertTriangle size={17} /><div><span>Condition crossed</span><strong>{selected.event}</strong></div></section>
+              {needsReview ? <button type="button" onClick={() => setReviewOpen(true)}>Review decision <IconChevronRight size={17} /></button> : <p className={styles.reassessedNote}><IconCheck size={15} /> The original reasoning and its follow-up are now visible together.</p>}
+            </div>}
+          </aside>
+        </div>
+        <footer className={styles.contextFooter}><span>Try the flow: select the routine update, then the decision and its trigger.</span><span><b>Signal ≠ instruction</b> · a person decides what follows.</span></footer>
+        {reviewOpen && <section className={styles.contextReview} aria-label="Decision review">
+          <header><span>Review before acting</span><button type="button" aria-label="Close review" onClick={() => setReviewOpen(false)}>×</button></header>
+          <h4>The evidence changed. The decision still needs a person.</h4><p>Choose the next product action; this prototype saves the reassessment locally.</p>
+          <div><button type="button" onClick={() => updateDecision("revise")}><IconRefresh size={16} /> Revise the flow</button><button type="button" onClick={() => updateDecision("keep")}><IconUserCheck size={16} /> Keep the scope</button></div>
+        </section>}
+      </section> : view === "guardrails" ? <section className={styles.guardrails} aria-live="polite">
         <div>
           <span>Keep routine work quiet</span>
           <h3>A receipt appears only when a product decision can outlive its context.</h3>
