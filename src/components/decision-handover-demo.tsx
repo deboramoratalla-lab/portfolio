@@ -111,11 +111,22 @@ export function DecisionHandoverDemo() {
       </nav>
 
       {view === "guardrails" ? <section className={styles.guardrails} aria-live="polite">
-        <div><span>Keep routine work quiet</span><h3>A receipt appears only when a product decision can outlive its context.</h3><p>Routine delivery updates, resolved comments and expected iterations do not create another item for the next person to parse.</p></div>
+        <div>
+          <span>Keep routine work quiet</span>
+          <h3>A receipt appears only when a product decision can outlive its context.</h3>
+          <p>Routine delivery updates, resolved comments and expected iterations do not create another item for the next person to parse.</p>
+          <aside className={styles.guardrailExample} aria-label="Example of a decision worth carrying forward">
+            <span>Example that travels</span>
+            <strong>Keep address lookup optional</strong>
+            <p>The team needs to remember the user need, the scope boundary and what evidence would reopen it.</p>
+          </aside>
+        </div>
         <div className={styles.rules}>
-          <article><IconCheck size={18} /><strong>Record it</strong><p>It changes customer risk, product scope or an agreed quality bar.</p></article>
-          <article><IconCheck size={18} /><strong>Name the condition</strong><p>Someone can tell what would make the decision worth reopening.</p></article>
-          <article><IconCheck size={18} /><strong>Leave it out</strong><p>The action is routine and needs no later interpretation.</p></article>
+          <header><span>Quick check</span><h4>Write a receipt only when all three are true.</h4></header>
+          <article><IconCheck size={18} /><strong>It changes a product outcome</strong><p>The choice affects customer risk, product scope or an agreed quality bar.</p></article>
+          <article><IconCheck size={18} /><strong>The reasoning will matter later</strong><p>A teammate needs the original trade-off to understand the decision without reconstructing the whole discussion.</p></article>
+          <article><IconCheck size={18} /><strong>There is a review trigger</strong><p>Someone can name the evidence or event that would make the choice worth reopening.</p></article>
+          <p className={styles.noReceipt}><b>Do not write one</b> for routine delivery work, resolved comments or a decision that has no later consequence.</p>
         </div>
       </section> : <div className={styles.workspace}>
         <main className={styles.detail} aria-live="polite">
