@@ -8,9 +8,15 @@ export async function GET(request: NextRequest) {
   const scenario = scenarios.has(requestedScenario) ? requestedScenario : "changed"
 
   try {
+    const startedAt = performance.now()
     const response = await fetch(`${workflowUrl}?scenario=${scenario}`, { cache: "no-store" })
     if (!response.ok) return NextResponse.json({ error: "Replay failed" }, { status: 502 })
-    return NextResponse.json(await response.json(), { headers: { "Cache-Control": "no-store" } })
+    const workflowResult = await response.json()
+    return NextResponse.json({
+      ...workflowResult,
+      transport: "n8n webhook",
+      proxyLatencyMs: Math.round(performance.now() - startedAt),
+    }, { headers: { "Cache-Control": "no-store" } })
   } catch {
     return NextResponse.json({ error: "Replay unavailable" }, { status: 502 })
   }
