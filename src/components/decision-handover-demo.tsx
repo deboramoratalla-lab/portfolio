@@ -1,7 +1,7 @@
 "use client"
 
 import { useMemo, useState } from "react"
-import { IconAlertTriangle, IconArrowRight, IconCheck, IconChevronRight, IconClock, IconFlag3, IconRefresh, IconShieldCheck, IconUserCheck } from "@tabler/icons-react"
+import { IconAlertTriangle, IconArrowRight, IconCalendarWeek, IconCheck, IconChevronRight, IconClock, IconFlag3, IconRefresh, IconSearch, IconShieldCheck, IconUserCheck, IconUsers } from "@tabler/icons-react"
 import styles from "./decision-handover-demo.module.css"
 
 type DecisionId = "onboarding" | "templates" | "emptyState"
@@ -63,6 +63,32 @@ const initialDecisions: Decision[] = [
   },
 ]
 
+type WorkItem = {
+  id: string
+  title: string
+  detail: string
+  column: "To do" | "In progress" | "Review" | "Done"
+  day: string
+  time: string
+  tags: string[]
+  people: string[]
+  progress: number
+  kind: "decision" | "review" | "routine" | "delivery"
+}
+
+const workItems: WorkItem[] = [
+  { id: "address", title: "Keep address lookup optional", detail: "Validate manual entry coverage", column: "In progress", day: "Mon", time: "09:30", tags: ["Decision", "Onboarding"], people: ["MR", "JB"], progress: 80, kind: "decision" },
+  { id: "empty", title: "Map empty-state recovery paths", detail: "Compare two product areas", column: "In progress", day: "Mon", time: "11:00", tags: ["Design system", "Research"], people: ["NL", "MR"], progress: 60, kind: "delivery" },
+  { id: "research", title: "Review unsupported address path", detail: "Fifth moderated session is in", column: "Review", day: "Tue", time: "10:00", tags: ["Condition met", "Research"], people: ["MR", "JB", "NL"], progress: 66, kind: "review" },
+  { id: "template", title: "Clarify project setup helper copy", detail: "Pair with content design", column: "To do", day: "Tue", time: "14:00", tags: ["Routine", "Project setup"], people: ["JB", "NL"], progress: 25, kind: "routine" },
+  { id: "success", title: "Instrument activation success", detail: "Define the event model", column: "To do", day: "Wed", time: "09:00", tags: ["Analytics", "Onboarding"], people: ["JB", "MR"], progress: 15, kind: "delivery" },
+  { id: "prototype", title: "Prototype recovery guidance", detail: "Test the fallback in the flow", column: "In progress", day: "Wed", time: "13:30", tags: ["Prototype", "UX writing"], people: ["NL", "MR"], progress: 45, kind: "delivery" },
+  { id: "handover", title: "Prepare product handover", detail: "Share the evidence and next call", column: "To do", day: "Thu", time: "10:30", tags: ["Handover", "Product"], people: ["JB", "NL"], progress: 35, kind: "decision" },
+  { id: "qa", title: "QA mobile manual-entry state", detail: "Resolved in the same session", column: "Done", day: "Thu", time: "15:00", tags: ["QA", "Routine"], people: ["NL"], progress: 100, kind: "routine" },
+  { id: "insights", title: "Synthesize session patterns", detail: "Share a decision-ready readout", column: "Review", day: "Fri", time: "10:00", tags: ["Research", "Insights"], people: ["MR", "JB"], progress: 75, kind: "delivery" },
+  { id: "release", title: "Publish onboarding guidance", detail: "Ready for the next release", column: "Done", day: "Fri", time: "14:30", tags: ["Release", "Onboarding"], people: ["JB", "NL"], progress: 100, kind: "delivery" },
+]
+
 export function DecisionHandoverCover() {
   return <div className={styles.cover} aria-hidden="true">
     <header><span>Handover</span><b>3 active decisions</b></header>
@@ -92,11 +118,18 @@ export function DecisionHandoverDemo() {
   const [routineReasonOpen, setRoutineReasonOpen] = useState(false)
   const [contextSelection, setContextSelection] = useState<"none" | "routine" | "receipt">("none")
   const [boardFilter, setBoardFilter] = useState<"all" | "decision" | "review" | "routine">("all")
+  const [calendarView, setCalendarView] = useState<"day" | "week" | "month">("week")
+  const [taskQuery, setTaskQuery] = useState("")
   const [checkScenario, setCheckScenario] = useState<"decision" | "routine">("decision")
   const [commentDraft, setCommentDraft] = useState("")
   const [commentAdded, setCommentAdded] = useState(false)
   const selected = useMemo(() => decisions.find(decision => decision.id === selectedId) ?? decisions[0], [decisions, selectedId])
   const needsReview = selected.status === "review"
+  const visibleWork = useMemo(() => workItems.filter(item => {
+    const matchesFilter = boardFilter === "all" || item.kind === boardFilter || (boardFilter === "review" && item.kind === "review")
+    const matchesQuery = `${item.title} ${item.detail} ${item.tags.join(" ")}`.toLowerCase().includes(taskQuery.toLowerCase())
+    return matchesFilter && matchesQuery
+  }), [boardFilter, taskQuery])
 
   function chooseDecision(id: DecisionId) {
     setSelectedId(id)
@@ -108,6 +141,23 @@ export function DecisionHandoverDemo() {
     setSelectedId("onboarding")
     setContextSelection("receipt")
     setReviewOpen(false)
+  }
+
+  function openWorkItem(item: WorkItem) {
+    if (item.kind === "decision" || item.kind === "review") {
+      setSelectedId("onboarding")
+      setContextSelection("receipt")
+    } else {
+      setContextSelection("routine")
+    }
+    setReviewOpen(false)
+  }
+
+  function workItemTone(item: WorkItem) {
+    if (item.kind === "decision") return styles.taskDecision
+    if (item.kind === "review") return styles.taskReview
+    if (item.kind === "routine") return styles.taskRoutine
+    return ""
   }
 
   function addFollowUp() {
@@ -145,17 +195,26 @@ export function DecisionHandoverDemo() {
 
       {view === "context" ? <section className={styles.contextView} aria-live="polite">
         <header className={styles.contextHeader}>
-          <div><span>Active decision</span><h3>Checkout reliability</h3><p>One task has crossed a review condition. Select another task to compare the context it carries forward.</p></div>
+          <div><span>Product delivery</span><h3>Checkout reliability</h3><p>The team plan for this week. Decisions stay inside the work until their evidence changes.</p></div>
           <div className={styles.contextPeople}><span>MR</span><span>JB</span><span>NL</span><b>3 contributors</b></div>
         </header>
+        <section className={styles.kpiGrid} aria-label="Delivery overview">
+          <article><span>Active work</span><strong>12</strong><small><b>+3</b> planned this week</small></article>
+          <article><span>In progress</span><strong>4</strong><small><b>67%</b> of weekly capacity</small></article>
+          <article><span>Needs review</span><strong>{needsReview ? "1" : "0"}</strong><small>{needsReview ? "One decision condition met" : "No decision waiting"}</small></article>
+          <article><span>Completed</span><strong>8</strong><small><b>84%</b> delivered on plan</small></article>
+        </section>
         <div className={styles.contextBody}>
-          <section className={styles.taskBoard} aria-label="Product work board">
-            <header className={styles.boardHeader}><div><span>Product work</span><small>Decisions appear in the work, not in a separate register.</small></div><div className={styles.taskFilters} role="toolbar" aria-label="Filter product work"><button type="button" className={boardFilter === "all" ? styles.filterActive : ""} onClick={() => setBoardFilter("all")}>All <b>4</b></button><button type="button" className={boardFilter === "decision" ? styles.filterActive : ""} onClick={() => setBoardFilter("decision")}>Decision</button><button type="button" className={boardFilter === "review" ? styles.filterActive : ""} onClick={() => setBoardFilter("review")}>Needs review</button><button type="button" className={boardFilter === "routine" ? styles.filterActive : ""} onClick={() => setBoardFilter("routine")}>Routine</button></div></header>
-            <div className={styles.boardColumns}>
-              <section className={styles.boardColumn} aria-labelledby="building-column"><header><span className={styles.columnDot} /><h4 id="building-column">Building</h4><b>1</b></header><button hidden={boardFilter !== "all" && boardFilter !== "decision"} type="button" className={`${styles.taskCard} ${styles.taskDecision} ${contextSelection === "receipt" ? styles.taskSelected : ""}`} onClick={openDecisionInContext} aria-pressed={contextSelection === "receipt"}><div className={styles.taskTags}><span>Decision</span><span>Onboarding</span></div><strong>Keep address lookup optional</strong><p>Preserve manual entry while coverage is still being tested.</p><div className={styles.taskProgress}><span>Research coverage</span><b>4 / 5</b><i><em /></i></div><footer><span className={styles.avatarStack} aria-label="Marta Ruiz and Jon Bell"><i>MR</i><i>JB</i></span><span>Marta · 08:16</span><b>Receipt</b></footer></button></section>
-              <section className={styles.boardColumn} aria-labelledby="review-column"><header><span className={`${styles.columnDot} ${styles.reviewDot}`} /><h4 id="review-column">Review</h4><b>{needsReview ? "1" : "0"}</b></header>{needsReview ? <button hidden={boardFilter !== "all" && boardFilter !== "review"} type="button" className={`${styles.taskCard} ${styles.taskTrigger} ${contextSelection === "receipt" ? styles.taskSelected : ""}`} onClick={openDecisionInContext} aria-pressed={contextSelection === "receipt"}><div className={styles.taskTags}><span>Condition met</span><span>Research</span></div><strong>Check unsupported address path</strong><p>The fifth moderated session crossed the agreed review condition.</p><div className={styles.taskProgress}><span>Review prep</span><b>2 / 3</b><i><em /></i></div><footer><span className={styles.avatarStack} aria-label="Marta Ruiz, Jon Bell and Nora Lind"><i>MR</i><i>JB</i><i>NL</i></span><span>Research · 09:02</span><b>Review needed</b></footer></button> : <div className={styles.emptyColumn}><IconCheck size={16} /><strong>Nothing waiting</strong><span>The decision was reassessed.</span></div>}</section>
-              <section className={styles.boardColumn} aria-labelledby="complete-column"><header><span className={`${styles.columnDot} ${styles.completeDot}`} /><h4 id="complete-column">Completed</h4><b>{needsReview ? "2" : "3"}</b></header>{!needsReview && <button type="button" className={`${styles.taskCard} ${styles.taskResolved} ${contextSelection === "receipt" ? styles.taskSelected : ""}`} onClick={openDecisionInContext} aria-pressed={contextSelection === "receipt"}><div className={styles.taskTags}><span>Reassessed</span><span>Onboarding</span></div><strong>{selected.choice}</strong><p>The original reasoning and the chosen follow-up remain connected.</p><div className={styles.taskProgress}><span>Decision review</span><b>Done</b><i><em /></i></div><footer><span className={styles.avatarStack} aria-label="Marta Ruiz and Jon Bell"><i>MR</i><i>JB</i></span><span>Just now</span><b>Resolved</b></footer></button>}<button hidden={boardFilter !== "all" && boardFilter !== "routine"} type="button" className={`${styles.taskCard} ${styles.taskRoutine} ${contextSelection === "routine" ? styles.taskSelected : ""}`} onClick={() => { setContextSelection("routine"); setReviewOpen(false) }} aria-pressed={contextSelection === "routine"}><div className={styles.taskTags}><span>Routine</span><span>Project setup</span></div><strong>Clarify helper copy in project setup</strong><p>A small content refinement with no later decision to carry forward.</p><div className={styles.taskProgress}><span>Delivery</span><b>Done</b><i><em /></i></div><footer><span className={styles.avatarStack} aria-label="Jon Bell and Nora Lind"><i>JB</i><i>NL</i></span><span>Jon · 08:04</span><b>No receipt</b></footer></button><div hidden={boardFilter !== "all" && boardFilter !== "routine"} className={styles.completedStub}><span>Design QA</span><small>Resolved in the same session</small></div></section>
-            </div>
+          <section className={styles.taskBoard} aria-label="Product work calendar">
+            <header className={styles.boardHeader}>
+              <div><span>Team plan</span><small>18–22 August · Product, research and design system work</small></div>
+              <div className={styles.boardActions}>
+                <label className={styles.taskSearch}><IconSearch size={15} /><span className="sr-only">Search product work</span><input value={taskQuery} onChange={event => setTaskQuery(event.target.value)} placeholder="Search work" /></label>
+                <div className={styles.calendarView} role="group" aria-label="Choose calendar view"><button type="button" className={calendarView === "day" ? styles.calendarActive : ""} onClick={() => setCalendarView("day")}>Day</button><button type="button" className={calendarView === "week" ? styles.calendarActive : ""} onClick={() => setCalendarView("week")}>Week</button><button type="button" className={calendarView === "month" ? styles.calendarActive : ""} onClick={() => setCalendarView("month")}>Month</button></div>
+              </div>
+            </header>
+            <div className={styles.taskFilters} role="toolbar" aria-label="Filter product work"><button type="button" className={boardFilter === "all" ? styles.filterActive : ""} onClick={() => setBoardFilter("all")}>All <b>12</b></button><button type="button" className={boardFilter === "decision" ? styles.filterActive : ""} onClick={() => setBoardFilter("decision")}>Decisions</button><button type="button" className={boardFilter === "review" ? styles.filterActive : ""} onClick={() => setBoardFilter("review")}>Review needed</button><button type="button" className={boardFilter === "routine" ? styles.filterActive : ""} onClick={() => setBoardFilter("routine")}>Routine</button><span><IconUsers size={14} /> All owners</span><span><IconCalendarWeek size={14} /> This week</span></div>
+            {calendarView === "week" ? <div className={styles.weekGrid}>{["Mon", "Tue", "Wed", "Thu", "Fri"].map((day, index) => <section key={day} className={styles.dayColumn}><header><span>{day}</span><strong>{18 + index}</strong></header>{visibleWork.filter(item => item.day === day).map(item => <button type="button" key={item.id} className={`${styles.calendarTask} ${workItemTone(item)}`} onClick={() => openWorkItem(item)}><time>{item.time}</time><div className={styles.taskTags}>{item.tags.map(tag => <span key={tag}>{tag}</span>)}</div><strong>{item.title}</strong><p>{item.detail}</p><footer><span className={styles.avatarStack}>{item.people.map(person => <i key={person}>{person}</i>)}</span><b>{item.progress}%</b></footer></button>)}</section>)}</div> : calendarView === "day" ? <div className={styles.dayAgenda}>{visibleWork.map(item => <button type="button" key={item.id} className={`${styles.agendaTask} ${workItemTone(item)}`} onClick={() => openWorkItem(item)}><time>{item.time}</time><div><div className={styles.taskTags}>{item.tags.map(tag => <span key={tag}>{tag}</span>)}</div><strong>{item.title}</strong><p>{item.detail}</p></div><span className={styles.avatarStack}>{item.people.map(person => <i key={person}>{person}</i>)}</span></button>)}</div> : <div className={styles.monthGrid}>{Array.from({ length: 20 }, (_, index) => <button type="button" key={index} className={`${styles.monthCell} ${index === 6 ? styles.monthFocused : ""}`} onClick={() => index === 6 && openDecisionInContext()}><span>{index + 4}</span>{index % 3 === 0 && <i />}{index === 6 && <><b>3</b><small>Decision review</small></>}</button>)}</div>}
           </section>
 
           {contextSelection !== "none" && <aside className={styles.contextPanel} aria-label="Selected task detail">
