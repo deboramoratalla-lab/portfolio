@@ -34,3 +34,19 @@
 
 @media(min-width:1100px){.intro,.note{max-width:1440px}.workspace{min-height:680px}}
 .root button:focus-visible,.root summary:focus-visible{outline:3px solid #4939ba;outline-offset:3px}.orchestration summary:focus-visible{outline-color:#a99ef7;outline-offset:-3px}.scenarios button{min-height:58px}.caseDetails summary,.workflowDetails summary,.payload summary,.canvasProof summary{min-height:44px}
+
+/* Desktop product frame: one complete 16:9 application viewport. */
+@media(min-width:1100px){
+  .root{padding-inline:clamp(20px,2.2vw,40px)}
+  .intro{max-width:1600px}
+  .app{width:100%;max-width:1600px;aspect-ratio:16/9}
+  .toolbar{min-height:56px;height:7%}
+  .workspace{grid-template-columns:190px minmax(0,1fr);height:93%;min-height:0}
+  .sidebarHead{padding:17px 15px 11px}.scenarios{padding-inline:8px}.scenarios button{min-height:52px;padding:10px}.sidebar footer{padding:14px}
+  .canvas{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:minmax(0,1.55fr) minmax(0,1fr);gap:14px;min-height:0;padding:16px;overflow:hidden}
+  .decision{grid-column:1/-1;min-height:0;padding:17px;gap:14px}.decision>div:first-child{padding-right:14px}.decision .impactVisual strong{font-size:38px}.decision p{margin-top:6px}.decisionReasons{margin-top:9px}.outcomeDelta{gap:8px;padding-top:12px}.outcomeDelta article{padding:9px}.outcomeDelta article>header{margin-bottom:8px}.deltaRoute>div{padding:6px}.decision .run{padding:10px 12px}
+  .caseDetails{display:none}
+  .orchestration,.workflowDetails{min-width:0;min-height:0}
+  .orchestration>header{padding:13px 15px}.orchestration>header h3{font-size:15px}.orchestrationFlow{gap:5px;padding:12px}.orchestrationFlow>div{grid-template-columns:20px minmax(0,1fr);gap:3px 5px;padding:8px}.orchestrationFlow>div svg{width:15px}.orchestrationFlow>div span{font-size:9px}.orchestrationFlow>div small{font-size:8px}.executionSummary{gap:10px;padding:9px 14px}.payload summary,.canvasProof summary{min-height:34px;padding:8px 14px}
+  .workflowDetails summary{min-height:58px;padding:12px 14px}.workflowDetails summary strong{font-size:13px}.workflowDetails .flow{gap:8px;padding:10px}.flowStage{gap:5px}.flowStage>span{flex-basis:72px}.flowStage>div{gap:2px 5px;padding:8px!important}.flowStage>div b{font-size:10px}.flowStage>div small{font-size:8px}.flowStage>svg{width:13px}
+}

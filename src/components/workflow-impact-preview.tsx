@@ -50,7 +50,6 @@ export function WorkflowImpactPreview() {
     <header className={styles.intro}><span>n8n agent experiment</span><h2>Change the agent, not its behaviour by accident.</h2><p>A pre-publish replay for prompts, memory, models and tool permissions.</p></header>
     <div className={styles.app}>
       <header className={styles.toolbar}><div className={styles.identity}><span className={styles.mark}><IconHierarchy size={17} /></span><strong>Relay</strong><span>AI support agent</span></div><div className={styles.toolbarCenter}><span className={styles.viewIcon} aria-hidden="true"><IconLayoutSidebar size={16} /></span><span>Support agent</span><IconChevronRight size={15} aria-hidden="true" /><b>Pre-publish replay</b></div><div className={styles.connection}><i aria-hidden="true" /><span>n8n connected</span></div></header>
-      <div className={styles.guide}><strong>Review an AI agent change against prior conversation outcomes.</strong><span>Replay uses synthetic conversations. It never calls a production tool, writes customer data or changes the live agent.</span></div>
       <div className={styles.workspace}>
         <aside className={styles.sidebar}><div className={styles.sidebarHead}><span>Example changes</span><small>Choose one</small></div><div className={styles.scenarios}>{(Object.keys(states) as Version[]).map(key => <button type="button" aria-pressed={version === key} className={version === key ? styles.selected : ""} key={key} onClick={() => { setVersion(key); setResult(null); setActed(false); setComparingCurrent(false) }}><strong>{states[key].label}</strong><small>{states[key].note}</small></button>)}</div><footer><IconShieldCheck size={15} aria-hidden="true" /><span>Replay mode</span></footer></aside>
         <div className={styles.canvas}>
@@ -61,7 +60,6 @@ export function WorkflowImpactPreview() {
         </div>
       </div>
     </div>
-    <small className={styles.note}>The agent is the system under review; the replay verdict comes from a deterministic n8n workflow. Conversations are synthetic, and no production model, tool or customer record is called or changed.</small>
   </section>
 }
 
