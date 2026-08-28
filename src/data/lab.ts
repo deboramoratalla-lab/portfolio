@@ -10,7 +10,7 @@ export type LabEntry = {
 
 export const labEntries: LabEntry[] = [
   { slug: "decision-handover", type: "Experiment", title: "What changed is not why.", summary: "A decision-handover dashboard, grounded in a product-team problem I encountered while building a framework at TAP.", date: "August 2026", readingTime: "4 min read", topics: ["Product design", "Operational UX", "Interaction design"] },
-  { slug: "workflow-impact-preview", type: "Experiment", title: "Before you publish an n8n workflow, see what it would change.", summary: "A live n8n-backed interaction experiment for reviewing an automation change against prior workflow executions.", date: "August 2026", readingTime: "4 min read", topics: ["n8n", "Automation", "Developer tools"] },
+  { slug: "workflow-impact-preview", type: "Experiment", title: "Before you publish an n8n agent, replay how its behaviour would change.", summary: "A live n8n-backed experiment for reviewing prompt, memory, model and tool changes against representative conversations.", date: "August 2026", readingTime: "4 min read", topics: ["n8n", "AI agents", "Developer tools"] },
   {
     slug: "parallel-not-blind",
     type: "Experiment",
