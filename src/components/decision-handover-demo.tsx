@@ -74,12 +74,12 @@ export function DecisionHandoverCover() {
 export function DecisionHandoverJourney() {
   return <section className={styles.journey} aria-labelledby="decision-journey-title">
     <header><span>Prototype map</span><h2 id="decision-journey-title">From a changed signal to a decision someone can defend.</h2><p>The prototype is deliberately small: it distinguishes ordinary delivery work from a decision whose reasoning must survive the handover.</p></header>
-    <ol className={styles.journeyFlow}>
-      <li><span>01</span><div><strong>A condition changes</strong><p>A task crosses the review trigger attached to it.</p></div></li>
-      <li><span>02</span><div><strong>The receipt restores context</strong><p>What was decided, why it made sense then and when to reopen it.</p></div></li>
-      <li><span>03</span><div><strong>A person reviews</strong><p>They keep the boundary or revise the next product action.</p></div></li>
-      <li><span>04</span><div><strong>Work returns to the board</strong><p>The resolved task keeps its reasoning and follow-up connected.</p></div></li>
-    </ol>
+    <div className={styles.journeyFlow}>
+      <article><span>01</span><div><strong>A condition changes</strong><p>A task crosses the review trigger attached to it.</p></div></article>
+      <article><span>02</span><div><strong>The receipt restores context</strong><p>What was decided, why it made sense then and when to reopen it.</p></div></article>
+      <article><span>03</span><div><strong>A person reviews</strong><p>They keep the boundary or revise the next product action.</p></div></article>
+      <article><span>04</span><div><strong>Work returns to the board</strong><p>The resolved task keeps its reasoning and follow-up connected.</p></div></article>
+    </div>
     <aside className={styles.journeyQuiet}><span>Routine update</span><strong>Visible in activity. No receipt, no extra process.</strong><p>It did not change scope, customer risk or a decision that needs later interpretation.</p></aside>
   </section>
 }
@@ -90,7 +90,7 @@ export function DecisionHandoverDemo() {
   const [view, setView] = useState<"handover" | "context" | "guardrails">("context")
   const [reviewOpen, setReviewOpen] = useState(false)
   const [routineReasonOpen, setRoutineReasonOpen] = useState(false)
-  const [contextSelection, setContextSelection] = useState<"routine" | "receipt">("receipt")
+  const [contextSelection, setContextSelection] = useState<"none" | "routine" | "receipt">("none")
   const [boardFilter, setBoardFilter] = useState<"all" | "decision" | "review" | "routine">("all")
   const [checkScenario, setCheckScenario] = useState<"decision" | "routine">("decision")
   const [commentDraft, setCommentDraft] = useState("")
@@ -158,7 +158,8 @@ export function DecisionHandoverDemo() {
             </div>
           </section>
 
-          <aside className={styles.contextPanel} aria-label="Selected activity context">
+          {contextSelection !== "none" && <aside className={styles.contextPanel} aria-label="Selected task detail">
+            <button type="button" className={styles.closeDetail} aria-label="Close task detail" onClick={() => { setContextSelection("none"); setReviewOpen(false) }}>×</button>
             {contextSelection === "routine" ? <div className={styles.quietState}>
               <span className={styles.quietIcon}><IconCheck size={18} /></span><span>Routine update</span><h4>Nothing else needs to travel.</h4><p>This change is visible in activity, but it does not change product scope, customer risk or a decision that someone should reopen later.</p><button type="button" onClick={openDecisionInContext}>See a decision that does <IconArrowRight size={16} /></button>
             </div> : <div key={`${selected.id}-${selected.status}`} className={styles.contextReceipt}>
@@ -178,7 +179,7 @@ export function DecisionHandoverDemo() {
               <section className={styles.contextTrigger}><IconAlertTriangle size={17} /><div><span>Condition crossed</span><strong>{selected.event}</strong></div></section>
               {needsReview ? <button type="button" onClick={() => setReviewOpen(true)}>Review decision <IconChevronRight size={17} /></button> : <p className={styles.reassessedNote}><IconCheck size={15} /> The original reasoning and its follow-up are now visible together.</p>}
             </div>}
-          </aside>
+          </aside>}
         </div>
         <footer className={styles.contextFooter}><span>Try the flow: select the routine update, then the decision and its trigger.</span><span><b>Signal ≠ instruction</b> · a person decides what follows.</span></footer>
         {reviewOpen && <section className={styles.contextReview} aria-label="Decision review">
