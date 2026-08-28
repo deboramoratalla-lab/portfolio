@@ -10,6 +10,7 @@ const publicRoutes = [
   ["Fluxy case study", "/projects/fluxy"],
   ["TAP Mindset case study", "/projects/tap-mindset"],
   ["TAP design system case study", "/projects/tap-mindset-ds"],
+  ["n8n workflow impact experiment", "/lab/workflow-impact-preview"],
 ] as const
 
 for (const [name, route] of publicRoutes) {
