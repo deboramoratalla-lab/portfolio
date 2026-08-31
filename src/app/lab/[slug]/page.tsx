@@ -71,7 +71,7 @@ const articles: Record<string, ArticleContent> = {
     sections: [
       { title: "The risky moment is before publish", paragraphs: ["An n8n agent can look valid on the canvas while a small change to its instructions, memory, model credential or tool policy materially changes what it says and does.", "This prototype asks a focused question at that publishing moment: which representative conversations would end differently, and would the proposed agent gain any new external actions?"] },
       { title: "Replay behaviour, not just the graph", paragraphs: ["The published Relay workflow classifies intent and risk, retrieves approved policy, and then gives the agent a model, session-scoped memory and one constrained knowledge tool.", "Each replay compares the current and proposed outcome. Differences are named as response changes, new tool calls, bypassed approval gates or failures, so a reviewer does not need to reverse-engineer the whole graph first."] },
-      { title: "Agentic execution needs deterministic guardrails", paragraphs: ["The agent can reason and propose an action, but deterministic n8n gates control what happens next. Missing policy is blocked, high-risk actions require human approval, and every demonstration write remains simulated.", "The published agent finishes by building a structured execution receipt and a user-facing safety summary. A separate allowlisted replay workflow returns the decision shown in the prototype without calling production data or changing an external system."] },
+      { title: "Agentic execution needs deterministic guardrails", paragraphs: ["The agent can reason and propose an action, but deterministic n8n gates control what happens next. Missing policy is blocked, high-risk actions require human approval, and every demonstration write remains simulated.", "The same published workflow now exposes two isolated, allowlisted release-control paths. One returns the real n8n execution ID, support fixtures and node trace; the other persists a pending approval in an n8n Data Table. Neither path calls production data or changes an external system."] },
     ],
     close: "n8n provides the orchestration primitives, while the agent supplies contextual reasoning. This impact preview makes their boundary visible before a change is published.",
   },
@@ -189,7 +189,8 @@ function ArticleActions({ slug }: { slug: string }) {
   if (slug === "european-tech-opportunity-radar") return <ArrowRouteLink variant="secondary" tone="purple" href="#opportunity-radar">Open the radar</ArrowRouteLink>
   if (slug === "workflow-impact-preview") return <>
     <ArrowLink variant="secondary" tone="purple" href={`${portfolioRepo}/blob/main/src/components/workflow-impact-preview.tsx`} target="_blank" rel="noreferrer">Inspect the implementation</ArrowLink>
-    <ArrowRouteLink variant="secondary" tone="green" href="/lab/parallel-not-blind">Explore another systems experiment</ArrowRouteLink>
+    <ArrowLink variant="secondary" tone="green" href={`${portfolioRepo}/blob/main/docs/relay-agent-release-control.md`} target="_blank" rel="noreferrer">Read the technical evidence</ArrowLink>
+    <ArrowLink variant="secondary" tone="purple" href="https://deboramoratalla.app.n8n.cloud/workflow/9eARZ37mTUXE50IV" target="_blank" rel="noreferrer">Open the n8n workflow</ArrowLink>
   </>
   if (slug === "gpu-job-triage") return <>
     <ArrowRouteLink variant="secondary" tone="purple" href="#gpu-job-triage">Open the prototype</ArrowRouteLink>

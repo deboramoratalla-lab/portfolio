@@ -1,10 +1,9 @@
 import { NextRequest, NextResponse } from "next/server"
+import { randomUUID } from "node:crypto"
+import { isWorkflowScenario, scenarioEvidence, type WorkflowScenario } from "@/lib/workflow-impact"
 
-const workflowUrl = "https://deboramoratalla.app.n8n.cloud/webhook/workflow-impact-replay"
-const scenarios = ["safe", "changed", "broken"] as const
-type Scenario = (typeof scenarios)[number]
-const scenarioSet = new Set<string>(scenarios)
-const agentDecisions: Record<Scenario, { decision: string; summary: string }> = {
+const workflowUrl = "https://deboramoratalla.app.n8n.cloud/webhook/relay-agent-release-review"
+const agentDecisions: Record<WorkflowScenario, { decision: string; summary: string }> = {
   safe: {
     decision: "Publish agent change",
     summary: "The revised system message preserves responses, tool calls and escalation boundaries.",
@@ -21,18 +20,36 @@ const agentDecisions: Record<Scenario, { decision: string; summary: string }> = 
 
 export async function GET(request: NextRequest) {
   const requestedScenario = request.nextUrl.searchParams.get("scenario") ?? "changed"
-  const scenario: Scenario = scenarioSet.has(requestedScenario) ? requestedScenario as Scenario : "changed"
+  const scenario: WorkflowScenario = isWorkflowScenario(requestedScenario) ? requestedScenario : "changed"
+  const traceId = `relay-${randomUUID().slice(0, 8)}`
 
   try {
     const startedAt = performance.now()
-    const response = await fetch(`${workflowUrl}?scenario=${scenario}`, { cache: "no-store" })
+    const response = await fetch(`${workflowUrl}?scenario=${scenario}&traceId=${traceId}`, { cache: "no-store" })
     if (!response.ok) return NextResponse.json({ error: "Replay failed" }, { status: 502 })
     const workflowResult = await response.json()
     return NextResponse.json({
       ...workflowResult,
       ...agentDecisions[scenario],
+      ...workflowResult,
       scenario,
+      reasons: scenarioEvidence[scenario].reasons,
+      impact: scenarioEvidence[scenario].impact,
       transport: "n8n webhook",
+      traceId,
+      externalWrite: false,
+      policyId: "support-policy-v3",
+      workflow: {
+        id: "9eARZ37mTUXE50IV",
+        name: "Relay — Governed AI Support Agent",
+        url: "https://deboramoratalla.app.n8n.cloud/workflow/9eARZ37mTUXE50IV",
+        version: "published",
+      },
+      evaluation: {
+        dataset: "relay-release-fixtures-v1",
+        fixtureCount: Array.isArray(workflowResult.comparison) ? workflowResult.comparison.length : 0,
+        provenance: "Synthetic support fixtures returned by the published n8n workflow",
+      },
       proxyLatencyMs: Math.round(performance.now() - startedAt),
     }, { headers: { "Cache-Control": "no-store" } })
   } catch {

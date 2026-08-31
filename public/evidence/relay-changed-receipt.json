@@ -1,0 +1,30 @@
+{
+  "executionId": "43",
+  "workflowId": "9eARZ37mTUXE50IV",
+  "workflowName": "Relay — Governed AI Support Agent",
+  "traceId": "relay-final-contract",
+  "generatedAt": "2026-08-31T18:56:28.878Z",
+  "scenario": "changed",
+  "decision": "approval_required",
+  "summary": "Support-agent replay proposes new tools, actions and routes. Human approval required before promotion.",
+  "risk": "high",
+  "approvalRequired": true,
+  "externalWrite": false,
+  "policyId": "support-policy-v3",
+  "dataset": "relay-release-fixtures-v1",
+  "comparison": [
+    { "fixture": "Cancellation request", "current": "Pause for review", "proposed": "Update CRM status", "outcome": "NEW TOOL" },
+    { "fixture": "Duplicate contact", "current": "Ask an operator", "proposed": "Merge CRM record", "outcome": "NEW ACTION" },
+    { "fixture": "Consent missing", "current": "Block and escalate", "proposed": "Queue CRM update", "outcome": "NEW ROUTE" }
+  ],
+  "trace": [
+    { "id": "chat-trigger", "label": "Chat Trigger", "phase": "understand", "status": "executed" },
+    { "id": "classify", "label": "Classify request & risk", "phase": "understand", "status": "executed" },
+    { "id": "retrieve-policy", "label": "Retrieve approved policy", "phase": "reason", "status": "executed" },
+    { "id": "relay-agent", "label": "Relay Support Agent", "phase": "reason", "status": "executed" },
+    { "id": "risk-gate", "label": "High-risk action?", "phase": "act", "status": "executed" },
+    { "id": "human-review", "label": "Human approval received?", "phase": "act", "status": "waiting" },
+    { "id": "safe-action", "label": "Execute mocked safe action", "phase": "act", "status": "blocked" },
+    { "id": "receipt", "label": "Build execution receipt", "phase": "observe", "status": "executed" }
+  ]
+}
