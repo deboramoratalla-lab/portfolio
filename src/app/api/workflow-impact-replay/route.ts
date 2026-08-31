@@ -3,6 +3,7 @@ import { randomUUID } from "node:crypto"
 import { isWorkflowScenario, scenarioEvidence, type WorkflowScenario } from "@/lib/workflow-impact"
 
 const workflowUrl = "https://deboramoratalla.app.n8n.cloud/webhook/relay-agent-release-review"
+const webhookSecret = process.env.RELAY_WEBHOOK_SECRET
 const agentDecisions: Record<WorkflowScenario, { decision: string; summary: string }> = {
   safe: {
     decision: "Publish agent change",
@@ -19,13 +20,21 @@ const agentDecisions: Record<WorkflowScenario, { decision: string; summary: stri
 }
 
 export async function GET(request: NextRequest) {
+  if (!webhookSecret) {
+    return NextResponse.json({ error: "Replay route is not configured" }, { status: 503 })
+  }
+
   const requestedScenario = request.nextUrl.searchParams.get("scenario") ?? "changed"
   const scenario: WorkflowScenario = isWorkflowScenario(requestedScenario) ? requestedScenario : "changed"
   const traceId = `relay-${randomUUID().slice(0, 8)}`
 
   try {
     const startedAt = performance.now()
-    const response = await fetch(`${workflowUrl}?scenario=${scenario}&traceId=${traceId}`, { cache: "no-store" })
+    const response = await fetch(`${workflowUrl}?scenario=${scenario}&traceId=${traceId}`, {
+      cache: "no-store",
+      headers: { "X-Relay-Webhook-Key": webhookSecret },
+      signal: AbortSignal.timeout(8_000),
+    })
     if (!response.ok) return NextResponse.json({ error: "Replay failed" }, { status: 502 })
     const workflowResult = await response.json()
     return NextResponse.json({
