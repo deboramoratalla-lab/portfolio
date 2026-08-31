@@ -14,16 +14,24 @@ export async function POST(request: NextRequest) {
   }
 
   const requestId = `APR-${randomUUID().slice(0, 8).toUpperCase()}`
+  const idempotencyKey = `relay-approval:${scenario}:${traceId}`
   const createdAt = new Date().toISOString()
 
   try {
-    const response = await fetch(workflowUrl, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ scenario, traceId, requestId }), cache: "no-store" })
+    const response = await fetch(workflowUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ scenario, traceId, requestId, idempotencyKey }),
+      cache: "no-store",
+      signal: AbortSignal.timeout(8_000),
+    })
     if (!response.ok) return NextResponse.json({ error: "Approval route failed" }, { status: 502 })
 
     const workflowReceipt = await response.json()
     return NextResponse.json({
       ...workflowReceipt,
       requestId: workflowReceipt.requestId ?? requestId,
+      idempotencyKey,
       traceId,
       scenario,
       status: workflowReceipt.status ?? "pending",
