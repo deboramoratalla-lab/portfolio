@@ -8,12 +8,10 @@ type Evidence = { label: string; href: string }
 type AgentAnswer = { title: string; body: string; evidence: Evidence[]; probe?: string; limitation?: string; source?: "rules" | "ai" }
 
 const prompts = [
-  "Summarise Debora’s professional experience and current role",
-  "Can Debora design technical products with complex rules and roles?",
-  "As a Head of Product, show me evidence she can create operating leverage",
-  "Show me the evidence of seniority, ownership and decision-making",
-  "How does she work with engineering and AI without losing judgment?",
-  "How does Debora use coded prototypes before Figma?",
+  "Show me the case that proves product judgment",
+  "How does Debora work with engineering?",
+  "Which project best shows enterprise product design?",
+  "Give me the 90-second tour",
 ]
 
 const answers = {
@@ -152,10 +150,10 @@ export function PortfolioAgent() {
     {open && <div ref={dialogRef} className="agent-shell" role="dialog" aria-modal="true" aria-labelledby="portfolio-agent-title">
       <button className="agent-backdrop" aria-label="Close Ask Debora" onClick={closeDialog} tabIndex={-1} />
       <aside className="agent-panel">
-        <header><div><span>A guided way in</span><strong id="portfolio-agent-title">Find the right work</strong></div><button className="agent-close-action ui-action ui-action-secondary" onClick={closeDialog} aria-label="Close"><span className="agent-close-icon" aria-hidden="true">×</span> Close</button></header>
-        <div className="agent-body">{loading ? <div className="agent-thinking" aria-live="polite"><span>Reading the published evidence</span><i /><i /><i /></div> : !answer ? <div className="agent-intro"><p>Tell me what you need to assess. I’ll route you like a recruiter or Head of Product would: seniority, impact, judgment, collaboration, systems or AI boundaries.</p><div>{prompts.map(prompt => <button key={prompt} onClick={() => ask(prompt)}>{prompt}</button>)}</div></div> : <div className="agent-answer" aria-live="polite"><span>{answer.source === "ai" ? "AI answer · grounded in published work" : "Curated answer · published work"}</span><h2>{answer.title}</h2><p>{answer.body}</p>{answer.limitation && <p className="agent-limitation"><strong>Evidence gap</strong>{answer.limitation}</p>}{answer.probe && <p className="agent-probe"><strong>Ask in the interview</strong>{answer.probe}</p>}{answer.evidence.length > 0 && <nav>{answer.evidence.map(item => <ArrowRouteLink variant="secondary" tone="purple" key={item.label} href={item.href} onClick={closeDialog}>{item.label}</ArrowRouteLink>)}</nav>}<button className="agent-reset ui-action ui-action-primary ui-action-green ui-action-on-light" onClick={() => { setAnswer(null); setQuestion("") }}>Try another lens</button></div>}</div>
+        <header><div><span>A useful way in</span><strong id="portfolio-agent-title">Choose a hiring lens</strong></div><button className="agent-close-action ui-action ui-action-secondary" onClick={closeDialog} aria-label="Close"><span className="agent-close-icon" aria-hidden="true">×</span> Close</button></header>
+        <div className="agent-body">{loading ? <div className="agent-thinking" aria-live="polite"><span>Reading the published evidence</span><i /><i /><i /></div> : !answer ? <div className="agent-intro"><p>Start with the question you need answered. I’ll take you to the relevant proof — not a generic chat about the portfolio.</p><div>{prompts.map(prompt => <button key={prompt} onClick={() => ask(prompt)}>{prompt}</button>)}</div></div> : <div className="agent-answer" aria-live="polite"><span>{answer.source === "ai" ? "AI answer · grounded in published work" : "Curated answer · published work"}</span><h2>{answer.title}</h2><p>{answer.body}</p>{answer.limitation && <p className="agent-limitation"><strong>Evidence gap</strong>{answer.limitation}</p>}{answer.probe && <p className="agent-probe"><strong>Ask in the interview</strong>{answer.probe}</p>}{answer.evidence.length > 0 && <nav>{answer.evidence.map(item => <ArrowRouteLink variant="secondary" tone="purple" key={item.label} href={item.href} onClick={closeDialog}>{item.label}</ArrowRouteLink>)}</nav>}<button className="agent-reset ui-action ui-action-primary ui-action-green ui-action-on-light" onClick={() => { setAnswer(null); setQuestion("") }}>Try another lens</button></div>}</div>
         <form onSubmit={submit}><input ref={inputRef} value={question} onChange={event => setQuestion(event.target.value)} placeholder="What do you want to understand?" aria-label="Question about Debora's portfolio" /><button type="submit" aria-label="Ask"><ArrowUpRight /></button></form>
-        <footer>Answers are grounded in Debora’s published portfolio and verified CV facts.</footer>
+        <footer>Curated routes to published work and verified CV facts.</footer>
       </aside>
     </div>}
   </>

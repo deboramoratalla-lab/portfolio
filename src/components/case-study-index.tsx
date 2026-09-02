@@ -17,7 +17,7 @@ export function CaseStudyIndex({
   return (
     <nav className={["case-story-nav", className].filter(Boolean).join(" ")} aria-label="Case study index" style={{ "--case-index-count": chapters.length } as CSSProperties}>
       <header className="case-index-unified__header">
-        <span>CASE STUDY / CONTENTS</span>
+        <span>CASE STUDY / {chapters.length} PARTS</span>
         <p>{introduction}</p>
       </header>
       <div className="case-index-unified__chapters">

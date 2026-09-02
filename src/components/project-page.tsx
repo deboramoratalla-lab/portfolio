@@ -9,6 +9,7 @@ import { FluxyCase } from "@/components/fluxy-case"
 import { BoardCase } from "@/components/board-case"
 import { CiveoCase } from "@/components/civeo-case"
 import { MotionSafeVideo } from "@/components/motion-safe-video"
+import { CaseStudyIndex } from "@/components/case-study-index"
 
 function RoleArchitectureMap() {
   const roles = [
@@ -48,7 +49,7 @@ export function ProjectPage({ project }: { project: Project }) {
       <div className="fluxy-premise"><p className="eyebrow">The premise</p><h2>The brief asked for a better transaction. The opportunity was to remove the need to manage commuting at all.</h2><div><p>An online top-up flow solves one moment. Commuters still have to remember their balance, compare routes, monitor disruption and recover when the network changes. The product question was not how to make one task faster, but which decisions software could responsibly take off the passenger’s plate.</p><aside><span>Core thesis</span><strong>Goals stay stable. Routes, context and recommendations can change.</strong></aside></div></div>
       <div className="fluxy-business"><p className="eyebrow">The business bet</p><h3>The opportunity was fewer failure moments, not more app engagement.</h3><p>For an operator, the value is operational: prevent low-balance failures, reduce avoidable support contacts and protect journey completion when the network changes. Success would be measured through interventions resolved before travel, recommendation acceptance and fewer payment-related disruptions — not time spent in the interface.</p></div>
     </section>}
-    <div className="case-index-wrap"><span>Case study index</span>{project.slug === "fluxy" && <h2>Four decisions shaped the product.</h2>}<nav className="case-index" aria-label="Case study index">{project.chapters.map(chapter => <Link key={chapter.number} href={`#chapter-${chapter.number}`}><span>{chapter.number}</span><strong>{chapter.title}</strong></Link>)}</nav></div>
+    <CaseStudyIndex introduction={project.premise} chapters={project.chapters.map(chapter => [chapter.number, chapter.title] as const)} hrefForChapter={number => `#chapter-${number}`} />
     {project.chapters.map(chapter => <section className="chapter" id={`chapter-${chapter.number}`} key={chapter.number}>
       <header className={`chapter-header tone-${chapter.tone ?? "dark"}`}><span>{chapter.number}</span><div><p>{chapter.title}</p><h2>{chapter.thesis}</h2>{chapter.summary && <p className="chapter-summary">{chapter.summary}</p>}{chapter.intro && <div className="chapter-intro"><strong>{chapter.intro[0]}</strong><p>{chapter.intro[1]}</p></div>}</div></header>
       <div className="chapter-sections">{chapter.sections.map((section, sectionIndex) => <article className={`case-section tone-${section.tone ?? "dark"} layout-${section.layout ?? "split"}`} key={`${section.title}-${sectionIndex}`}>
