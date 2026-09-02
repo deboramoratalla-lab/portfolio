@@ -31,7 +31,7 @@ const screenGuide = [
 
 export function BoardCase() {
   return <main className="board-page">
-    <CaseHero className="board-hero" kickerClassName="board-hero-kicker" kicker={<><span>[CASE STUDY / 01]</span><span>&gt; ENTERPRISE PRODUCT DESIGN</span><i /></>} title="Enterprise Planning /" premiseClassName="board-hero-premise" premise="I turned a fragmented budgeting interface into a shared operating model — making ownership, dependencies and downstream impact visible across a €1.2B planning cycle." meta={<dl className="board-hero-meta case-hero-meta-unified">
+    <CaseHero className="board-hero" kickerClassName="board-hero-kicker" kicker={<><span>[CASE STUDY / 01]</span><span>&gt; ENTERPRISE PRODUCT DESIGN</span><i /></>} title="Enterprise Planning /" premiseClassName="board-hero-premise" premise="I turned a fragmented budgeting interface into a shared operating model — making ownership, dependencies and downstream impact visible across a €1.2B planning cycle." decision="Make workflow state non-optional, so every task carries its owner, dependency and next handoff." meta={<dl className="board-hero-meta case-hero-meta-unified">
         <div><dt>Role</dt><dd>Solo Senior Product Designer</dd></div>
         <div><dt>Team</dt><dd>SUEZ Finance · Product · Engineering</dd></div>
         <div><dt>Stack</dt><dd>Board platform · Figma · Claude · Coded prototype</dd></div>

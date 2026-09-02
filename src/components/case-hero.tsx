@@ -8,6 +8,7 @@ type CaseHeroProps = {
   title: ReactNode
   premise: string
   premiseClassName?: string
+  decision?: string
   meta: ReactNode
 }
 
@@ -16,12 +17,13 @@ type CaseHeroProps = {
  * Page-specific classes remain available for art direction; the document
  * structure, heading ownership and meta order do not vary by project.
  */
-export function CaseHero({ className, kickerClassName, kicker, title, premise, premiseClassName, meta }: CaseHeroProps) {
+export function CaseHero({ className, kickerClassName, kicker, title, premise, premiseClassName, decision, meta }: CaseHeroProps) {
   return (
     <section className={`${className} case-hero-unified`} id="top">
       <div className={`${kickerClassName} case-hero-kicker-unified`}>{kicker}</div>
       <h1 className="case-hero-title-unified">{title}</h1>
       <CasePremiseReveal className={premiseClassName}>{premise}</CasePremiseReveal>
+      {decision && <p className="case-hero-decision"><span>The decision</span>{decision}</p>}
       {meta}
     </section>
   )

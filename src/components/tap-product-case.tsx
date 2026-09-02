@@ -35,7 +35,7 @@ export function TapProductCase({ project }: { project: Project }) {
           <ArrowLink variant="primary" tone="purple" href="https://apps.apple.com/il/app/tap-mindset/id6443626525" target="_blank" rel="noreferrer">App Store</ArrowLink>
           <ArrowLink variant="primary" tone="green" href="https://play.google.com/store/apps/details?id=com.tap_mindset&hl=es_419&pli=1" target="_blank" rel="noreferrer">Google Play</ArrowLink>
         </nav>
-      </>} title={<>{project.shortTitle}<br />Product redesign /</>} premise="I led the redesign of a mental-training product that had grown one feature at a time. The work was not to make it cleaner. It was to decide what the product was, for whom, and how the team could keep building it." meta={<div className="tap-story-meta case-hero-meta-unified">
+      </>} title={<>{project.shortTitle}<br />Product redesign /</>} premise="I led the redesign of a mental-training product that had grown one feature at a time. The work was not to make it cleaner. It was to decide what the product was, for whom, and how the team could keep building it." decision="Organise the experience around each role's intent, not the feature list the product had accumulated." meta={<div className="tap-story-meta case-hero-meta-unified">
         <div><small>ROLE</small><p>Lead Product Designer · Product direction</p></div>
         <div><small>TEAM</small><p>Product designers ×2 · Engineers ×2</p></div>
         <div><small>STACK</small><p>Figma · Notion · iOS-first product</p></div>
