@@ -1,5 +1,5 @@
 import { EditorialPreviewHero } from "@/components/editorial-preview-hero"
-import { HomeHiringRoutes } from "@/components/home-hiring-routes"
+import { HomePortfolioGuide } from "@/components/home-hiring-routes"
 import { ProjectCard } from "@/components/project-card"
 import { EarlierGrid, MethodList, MotionSectionTitle, RevealStatement } from "@/components/home-motion"
 import { WorkbenchPreview } from "@/components/workbench-preview"
@@ -16,7 +16,7 @@ const methods = [
 export function HomePreview() {
   return <main id="top" className="aeye-home-preview">
     <EditorialPreviewHero />
-    <HomeHiringRoutes />
+    <HomePortfolioGuide />
     <section className="work section" id="work"><MotionSectionTitle title="Selected work" number="01" statement="When the interface is only the visible part."/><div className="project-stack">{projects.map((project, index) => <ProjectCard project={project} index={index} key={project.slug} />)}</div></section>
     <section className="practice section" id="practice"><MotionSectionTitle title="How I work" number="02" statement="I start with the rules people are already carrying."/><MethodList methods={methods}/><p className="impossible-note"><span>{"// A NOTE ON IMPOSSIBLE OBJECTS"}</span>Complex systems rarely look impossible all at once. The contradiction appears when you follow the rules from one decision to the next. My job is to find that break before it ships.</p><RevealStatement inverse lines={["Make the logic visible.", "Keep the intent buildable."]}/></section>
     <section className="explorations section" id="lab"><MotionSectionTitle title="Lab" number="03" statement="Field notes, coded experiments and useful tools I’m building in public."/><WorkbenchPreview entries={labEntries}/></section>

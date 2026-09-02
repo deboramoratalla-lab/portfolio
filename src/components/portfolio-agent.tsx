@@ -8,9 +8,9 @@ type Evidence = { label: string; href: string }
 type AgentAnswer = { title: string; body: string; evidence: Evidence[]; probe?: string; limitation?: string; source?: "rules" | "ai" }
 
 const prompts = [
-  "Show me the case that proves product judgment",
-  "How does Debora work with engineering?",
-  "Which project best shows enterprise product design?",
+  "What decision had the most downstream impact?",
+  "How did the design system become real in code?",
+  "Show me a prototype that became a working product",
   "Give me the 90-second tour",
 ]
 
@@ -44,7 +44,7 @@ function answerQuestion(question: string): AgentAnswer {
   if (/head of product|product leader|operating leverage|b2b|complex b2b/.test(q)) return answers.headProduct
   if (/impact|business|proof|measurable|outcome|evidence/.test(q)) return answers.impact
   if (/pm|engineer|engineering|collabor|cross-functional|stakeholder/.test(q)) return answers.collaboration
-  if (/judgment|judgement|craft|visual execution|beyond visual|trade-off|trade off/.test(q)) return answers.judgment
+  if (/judgment|judgement|decision|craft|visual execution|beyond visual|trade-off|trade off/.test(q)) return answers.judgment
   if (/seniority|ownership|decision-making|decision making|how senior/.test(q)) return answers.seniority
   if (/risk|gap|probe|interview|question/.test(q)) return answers.interview
   if (/90|tour|recorrido|quick|rápid/.test(q)) return answers.tour
@@ -150,10 +150,10 @@ export function PortfolioAgent() {
     {open && <div ref={dialogRef} className="agent-shell" role="dialog" aria-modal="true" aria-labelledby="portfolio-agent-title">
       <button className="agent-backdrop" aria-label="Close Ask Debora" onClick={closeDialog} tabIndex={-1} />
       <aside className="agent-panel">
-        <header><div><span>A useful way in</span><strong id="portfolio-agent-title">Choose a hiring lens</strong></div><button className="agent-close-action ui-action ui-action-secondary" onClick={closeDialog} aria-label="Close"><span className="agent-close-icon" aria-hidden="true">×</span> Close</button></header>
-        <div className="agent-body">{loading ? <div className="agent-thinking" aria-live="polite"><span>Reading the published evidence</span><i /><i /><i /></div> : !answer ? <div className="agent-intro"><p>Start with the question you need answered. I’ll take you to the relevant proof — not a generic chat about the portfolio.</p><div>{prompts.map(prompt => <button key={prompt} onClick={() => ask(prompt)}>{prompt}</button>)}</div></div> : <div className="agent-answer" aria-live="polite"><span>{answer.source === "ai" ? "AI answer · grounded in published work" : "Curated answer · published work"}</span><h2>{answer.title}</h2><p>{answer.body}</p>{answer.limitation && <p className="agent-limitation"><strong>Evidence gap</strong>{answer.limitation}</p>}{answer.probe && <p className="agent-probe"><strong>Ask in the interview</strong>{answer.probe}</p>}{answer.evidence.length > 0 && <nav>{answer.evidence.map(item => <ArrowRouteLink variant="secondary" tone="purple" key={item.label} href={item.href} onClick={closeDialog}>{item.label}</ArrowRouteLink>)}</nav>}<button className="agent-reset ui-action ui-action-primary ui-action-green ui-action-on-light" onClick={() => { setAnswer(null); setQuestion("") }}>Try another lens</button></div>}</div>
-        <form onSubmit={submit}><input ref={inputRef} value={question} onChange={event => setQuestion(event.target.value)} placeholder="What do you want to understand?" aria-label="Question about Debora's portfolio" /><button type="submit" aria-label="Ask"><ArrowUpRight /></button></form>
-        <footer>Curated routes to published work and verified CV facts.</footer>
+        <header><div><span>Portfolio guide</span><strong id="portfolio-agent-title">Ask Debora</strong></div><button className="agent-close-action ui-action ui-action-secondary" onClick={closeDialog} aria-label="Close"><span className="agent-close-icon" aria-hidden="true">×</span> Close</button></header>
+        <div className="agent-body">{loading ? <div className="agent-thinking" aria-live="polite"><span>Reading the published evidence</span><i /><i /><i /></div> : !answer ? <div className="agent-intro"><p>Start with what you want to understand. I will find the relevant project, identify the decision inside it and give you a direct route into the work.</p><div>{prompts.map(prompt => <button key={prompt} onClick={() => ask(prompt)}>{prompt}</button>)}</div></div> : <div className="agent-answer" aria-live="polite"><span>{answer.source === "ai" ? "AI answer · grounded in published work" : "Curated answer · published work"}</span><h2>{answer.title}</h2><p>{answer.body}</p>{answer.limitation && <p className="agent-limitation"><strong>Evidence gap</strong>{answer.limitation}</p>}{answer.probe && <p className="agent-probe"><strong>Ask next</strong>{answer.probe}</p>}{answer.evidence.length > 0 && <nav>{answer.evidence.map(item => <ArrowRouteLink variant="secondary" tone="purple" key={item.label} href={item.href} onClick={closeDialog}>{item.label}</ArrowRouteLink>)}</nav>}<button className="agent-reset ui-action ui-action-primary ui-action-green ui-action-on-light" onClick={() => { setAnswer(null); setQuestion("") }}>Explore another route</button></div>}</div>
+        <form onSubmit={submit}><input ref={inputRef} value={question} onChange={event => setQuestion(event.target.value)} placeholder="Ask about the work" aria-label="Question about Debora's portfolio" /><button type="submit" aria-label="Ask"><ArrowUpRight /></button></form>
+        <footer>Grounded in published cases, project chapters and verified CV facts.</footer>
       </aside>
     </div>}
   </>
