@@ -457,7 +457,7 @@ export async function GET() {
     if (seen.has(key)) return false
     seen.add(key)
     return true
-  }).sort((a, b) => Number(b.origin === "Direct company feed") - Number(a.origin === "Direct company feed") || String(b.publishedAt || "").localeCompare(String(a.publishedAt || ""))).slice(0, 600)
+  }).sort((a, b) => String(b.publishedAt || "").localeCompare(String(a.publishedAt || ""))).slice(0, 600)
 
   if (!deduplicated.length) return NextResponse.json({ jobs: [], updatedAt: new Date().toISOString(), sources: [], message: "The public feeds are temporarily unavailable. Try again later." }, { status: 503 })
   const activeSources = Array.from(new Set(deduplicated.map(job => job.source))).sort()

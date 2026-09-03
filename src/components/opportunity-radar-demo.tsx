@@ -28,6 +28,9 @@ export function OpportunityRadarDemo() {
   const [data, setData] = useState<RadarData | null>(null)
   const [category, setCategory] = useState("All technology")
   const [origin, setOrigin] = useState<"All sources" | Opportunity["origin"]>("All sources")
+  const [source, setSource] = useState<"All networks" | Opportunity["source"]>("All networks")
+  const [sort, setSort] = useState<"recent" | "source">("recent")
+  const [freshness, setFreshness] = useState<"any" | "48h" | "7d" | "30d">("any")
   const [query, setQuery] = useState("")
   const [shown, setShown] = useState(18)
   const [isLoading, setLoading] = useState(true)
@@ -63,10 +66,27 @@ export function OpportunityRadarDemo() {
     } catch (cause) { setContextError(cause instanceof Error ? cause.message : "Company context could not be read.") }
     finally { setContextLoading("") }
   }
-  const matches = useMemo(() => (data?.jobs || []).filter(job => (category === "All technology" || job.category === category) && (origin === "All sources" || job.origin === origin) && `${job.title} ${job.company} ${job.location}`.toLowerCase().includes(query.toLowerCase())), [category, data, origin, query])
+  const matches = useMemo(() => {
+    const search = query.trim().toLowerCase()
+    const ageInHours = (job: Opportunity) => job.publishedAt ? Math.max(0, (Date.now() - new Date(job.publishedAt).getTime()) / 3600000) : Number.POSITIVE_INFINITY
+    return (data?.jobs || []).filter(job =>
+      (category === "All technology" || job.category === category) &&
+      (origin === "All sources" || job.origin === origin) &&
+      (source === "All networks" || job.source === source) &&
+      (freshness === "any" || (freshness === "48h" && ageInHours(job) <= 48) || (freshness === "7d" && ageInHours(job) <= 168) || (freshness === "30d" && ageInHours(job) <= 720)) &&
+      (!search || `${job.title} ${job.company} ${job.location} ${job.category} ${job.type} ${job.source}`.toLowerCase().includes(search))
+    ).sort((a, b) => {
+      if (sort === "source") return Number(b.origin === "Direct company feed") - Number(a.origin === "Direct company feed") || String(b.publishedAt || "").localeCompare(String(a.publishedAt || ""))
+      return String(b.publishedAt || "").localeCompare(String(a.publishedAt || ""))
+    })
+  }, [category, data, origin, query, sort, source])
   const visible = matches.slice(0, shown)
   const categories = featuredCategories.filter(item => item === "All technology" || data?.jobs.some(job => job.category === item))
-  const directCount = data?.jobs.filter(job => job.origin === "Direct company feed").length || 0
+  const availableSources = useMemo(() => Array.from(new Set((data?.jobs || []).map(job => job.source))).sort(), [data])
+  const sourceBreakdown = useMemo(() => availableSources.map(name => {
+    const jobs = (data?.jobs || []).filter(job => job.source === name)
+    return { name, count: jobs.length, newCount: jobs.filter(job => job.publishedAt && Date.now() - new Date(job.publishedAt).getTime() <= 48 * 3600000).length, origin: jobs[0]?.origin || "Public feed" }
+  }), [availableSources, data])
   const glassdoorCount = data?.jobs.filter(job => job.origin === "Commercial job API").length || 0
   const glassdoorIsCursor = data?.glassdoorProvider === "JSearch cursor"
 
@@ -77,9 +97,23 @@ export function OpportunityRadarDemo() {
     </header>
     <div className="opportunity-radar-surface">
       <header className="radar-surface-head"><div><span>Remote tech opportunity radar</span><small>Remote only / global coverage</small></div><button type="button" onClick={() => void load()} disabled={isLoading}><IconRefresh size={16} />{isLoading ? "Refreshing" : "Refresh sources"}</button></header>
-      <div className="radar-controls"><label><IconSearch size={17} /><span className="sr-only">Search opportunities</span><input value={query} onChange={event => { setQuery(event.target.value); setShown(18) }} placeholder="Search title, company or location" /></label><div className="radar-filter-group"><span>Role family</span><div className="radar-category-list" aria-label="Filter by role family">{categories.map(item => <button type="button" className={category === item ? "is-selected" : ""} onClick={() => { setCategory(item); setShown(18) }} key={item}>{item}</button>)}</div></div><div className="radar-filter-group"><span>Source type</span><div className="radar-category-list" aria-label="Filter by source type">{(["All sources", "Direct company feed", "Commercial job API", "Public feed"] as const).map(item => <button type="button" className={origin === item ? "is-selected" : ""} onClick={() => { setOrigin(item); setShown(18) }} key={item}>{item}</button>)}</div></div></div>
-      <div className="radar-summary"><span>{data ? `${matches.length} matching opportunities from direct, public and API sources` : "Reading sources"}</span><span>{data?.updatedAt ? `Checked ${new Intl.DateTimeFormat("en", { hour: "2-digit", minute: "2-digit" }).format(new Date(data.updatedAt))}` : ""}</span></div>
-      {!isLoading && data && <aside className="radar-evidence"><div><span>Direct Ashby feed</span><strong>{directCount} remote roles</strong><p>Published by the employer through its own ATS. These are prioritised above aggregated listings.</p></div><div><span>{glassdoorIsCursor ? "Glassdoor via JSearch" : "Glassdoor API"}</span><strong>{glassdoorCount} remote roles</strong><p>{glassdoorIsCursor ? "Remote Glassdoor searches run by country and language, then follow up to three cursor pages." : "Sample fallback: JSearch pagination is not currently available to this API key, so this source is not presented as complete coverage."} Location is retained as a source fact; it is not treated as a hiring-eligibility promise.</p></div><div><span>Context policy</span><strong>Only disclose what is sourced</strong><p>Company context remains optional; jobs do not depend on a company-health lookup.</p></div></aside>}
+      <div className="radar-controls">
+        <label className="radar-search"><IconSearch size={17} /><span className="sr-only">Search opportunities</span><input value={query} onChange={event => { setQuery(event.target.value); setShown(18) }} placeholder="Search title, company, location or skill" /></label>
+        <div className="radar-filter-group"><span>Role family</span><div className="radar-category-list" aria-label="Filter by role family">{categories.map(item => <button type="button" className={category === item ? "is-selected" : ""} onClick={() => { setCategory(item); setShown(18) }} key={item}>{item}</button>)}</div></div>
+        <div className="radar-select-row">
+          <label><span>Source type</span><select value={origin} onChange={event => { setOrigin(event.target.value as typeof origin); setShown(18) }}><option>All sources</option><option>Direct company feed</option><option>Commercial job API</option><option>Public feed</option></select></label>
+          <label><span>Network</span><select value={source} onChange={event => { setSource(event.target.value as typeof source); setShown(18) }}><option>All networks</option>{availableSources.map(item => <option key={item}>{item}</option>)}</select></label>
+          <label><span>Published</span><select value={freshness} onChange={event => { setFreshness(event.target.value as typeof freshness); setShown(18) }}><option value="any">Any time</option><option value="48h">Last 48 hours</option><option value="7d">Last 7 days</option><option value="30d">Last 30 days</option></select></label>
+          <label><span>Order</span><select value={sort} onChange={event => setSort(event.target.value as typeof sort)}><option value="recent">Newest first</option><option value="source">Direct feeds first</option></select></label>
+          {(category !== "All technology" || origin !== "All sources" || source !== "All networks" || freshness !== "any" || query) && <button type="button" className="radar-clear-filters" onClick={() => { setCategory("All technology"); setOrigin("All sources"); setSource("All networks"); setFreshness("any"); setQuery(""); setShown(18) }}>Clear filters</button>}
+        </div>
+      </div>
+      <div className="radar-summary"><span>{data ? `${matches.length} matching opportunities` : "Reading sources"}</span><span>{data ? `${availableSources.length} active sources` : ""}</span><span>{data?.updatedAt ? `Checked ${new Intl.DateTimeFormat("en", { hour: "2-digit", minute: "2-digit" }).format(new Date(data.updatedAt))}` : ""}</span></div>
+      {!isLoading && data && <aside className="radar-source-ledger" aria-label="Source coverage">
+        <div className="radar-source-ledger-copy"><span>Coverage now</span><p>Every card links to its original posting. Location and eligibility stay exactly as supplied; neither is inferred.</p></div>
+        <div className="radar-source-list">{sourceBreakdown.map(item => <button type="button" key={item.name} onClick={() => { setSource(item.name); setShown(18) }}><strong>{item.name}</strong><span>{item.count} roles</span><small>{item.newCount ? `${item.newCount} in 48h · ` : ""}{item.origin === "Direct company feed" ? "Direct" : item.origin === "Commercial job API" ? "API" : "Public"}</small></button>)}</div>
+        <p className="radar-source-note">{glassdoorCount ? `${glassdoorIsCursor ? "Glassdoor via JSearch" : "Glassdoor API"} returned ${glassdoorCount} remote roles.` : "Glassdoor returned no remote roles in this refresh; it is not used to imply complete coverage."}</p>
+      </aside>}
       {error ? <div className="radar-message" role="status"><strong>Sources are unavailable right now.</strong><span>{error}</span><button type="button" onClick={() => void load()}>Try again</button></div> : <div className="radar-results" aria-live="polite">
         {isLoading ? Array.from({ length: 6 }, (_, index) => <div className="radar-skeleton" key={index} />) : visible.length ? visible.map(job => <article className={`radar-job ${job.origin === "Direct company feed" ? "is-direct" : ""} ${job.origin === "Commercial job API" ? "is-api" : ""}`} key={job.id}><div className="radar-job-main"><span className="radar-job-source">{job.origin === "Direct company feed" ? "Direct Ashby feed" : job.origin === "Commercial job API" ? (glassdoorIsCursor ? "Glassdoor via JSearch" : "Glassdoor API sample") : job.source}</span><h3>{job.title}</h3><p>{job.company} <i /> {job.location}</p>{data?.contextAvailable && <button type="button" className="radar-context-trigger" onClick={() => void loadCompanyContext(job.company)}>{contextLoading === job.company ? "Reading company context" : "Inspect company context"}</button>}</div><div className="radar-job-meta"><span>{job.category}</span><span>{job.type}</span><small>{relativeDate(job.publishedAt)}</small></div><a href={job.url} target="_blank" rel="noreferrer" aria-label={`Open ${job.title} at ${job.company}`}><IconArrowUpRight size={19} /></a></article>) : <div className="radar-empty"><IconBriefcase2 size={24} /><strong>No matching role in the current feed.</strong><p>Try another role family or a broader search.</p></div>}
       </div>}
