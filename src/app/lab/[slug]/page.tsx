@@ -61,7 +61,7 @@ const articles: Record<string, ArticleContent> = {
     sections: [
       { title: "Replay the conversation, not just the answer", paragraphs: ["Each fixture follows a realistic support request through intent detection, policy retrieval, tool use and the final response.", "The reviewer can see where the agent made its decision, what context it used and whether it crossed a permission boundary."] },
       { title: "Turn failure into a useful signal", paragraphs: ["A human reviewer marks the trajectory against a small set of criteria: policy correctness, customer safety, action accuracy and explanation quality."], points: ["Pass when the response and action agree with policy.", "Flag when the agent reaches a plausible but unsafe conclusion.", "Escalate when the evidence is incomplete or ambiguous."] },
-      { title: "The loop is the product", paragraphs: ["The output is not a leaderboard. It is a decision about what to change next: a prompt, a policy, a tool contract or an evaluation case.", "The prototype is deliberately separate from the n8n release-control experiment. It explores the quality layer that should sit around any agent workflow."] },
+      { title: "The loop is the product", paragraphs: ["The output is not a leaderboard. It is a decision about what to change next: a prompt, a policy, a tool contract or an evaluation case."] },
     ],
     metrics: [["03", "Support fixtures"], ["04", "Quality criteria"], ["01", "Next decision"]],
     close: "I am carrying this forward as a product pattern for trustworthy agents: replay behaviour, inspect the reasoning boundary and keep human judgement in the loop where confidence is not enough.",
