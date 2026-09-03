@@ -11,6 +11,7 @@ import { OpportunityRadarDemo } from "@/components/opportunity-radar-demo"
 import { AgentConvergenceDemo } from "@/components/agent-convergence-demo"
 import { WorkflowImpactPreview } from "@/components/workflow-impact-preview"
 import { DecisionHandoverDemo, DecisionHandoverJourney } from "@/components/decision-handover-demo"
+import { AgentQualityLoopDemo } from "@/components/agent-quality-loop-demo"
 import { getLabEntry, labEntries } from "@/data/lab"
 
 type ArticleSection = { title: string; paragraphs: string[]; points?: string[] }
@@ -54,6 +55,17 @@ const reusableResources: Record<string, ReusableResource[]> = {
 }
 
 const articles: Record<string, ArticleContent> = {
+  "agent-quality-loop": {
+    lead: "A support agent can sound convincing and still make the wrong decision. This experiment makes the evaluation loop visible before anyone trusts it with a real customer.",
+    quote: "A good score is not evidence until you can inspect the failure behind it.",
+    sections: [
+      { title: "Replay the conversation, not just the answer", paragraphs: ["Each fixture follows a realistic support request through intent detection, policy retrieval, tool use and the final response.", "The reviewer can see where the agent made its decision, what context it used and whether it crossed a permission boundary."] },
+      { title: "Turn failure into a useful signal", paragraphs: ["A human reviewer marks the trajectory against a small set of criteria: policy correctness, customer safety, action accuracy and explanation quality."], points: ["Pass when the response and action agree with policy.", "Flag when the agent reaches a plausible but unsafe conclusion.", "Escalate when the evidence is incomplete or ambiguous."] },
+      { title: "The loop is the product", paragraphs: ["The output is not a leaderboard. It is a decision about what to change next: a prompt, a policy, a tool contract or an evaluation case.", "The prototype is deliberately separate from the n8n release-control experiment. It explores the quality layer that should sit around any agent workflow."] },
+    ],
+    metrics: [["03", "Support fixtures"], ["04", "Quality criteria"], ["01", "Next decision"]],
+    close: "I am carrying this forward as a product pattern for trustworthy agents: replay behaviour, inspect the reasoning boundary and keep human judgement in the loop where confidence is not enough.",
+  },
   "decision-handover": {
     lead: "This exploration came from building a product framework at TAP while leading the product team’s work and tasks. The work could move between people, but the reasoning behind a decision often stayed with the person who made it.",
     quote: "A signal is a reading, not an instruction.",
@@ -458,6 +470,7 @@ export default async function LabArticle({ params }: { params: Promise<{ slug: s
       {entry.slug === "parallel-not-blind" && <AgentConvergenceDemo />}
       {entry.slug === "decision-handover" && <><DecisionHandoverJourney /><DecisionHandoverDemo /></>}
       {entry.slug === "workflow-impact-preview" && <WorkflowImpactPreview />}
+      {entry.slug === "agent-quality-loop" && <AgentQualityLoopDemo />}
       {entry.slug === "gpu-job-triage" && <><GpuJobTriageDecisionDemo /><TelemetryEvidenceDemo /></>}
       <ReusableResources slug={entry.slug} />
       <footer className="lab-article-close">

@@ -9,6 +9,7 @@ export type LabEntry = {
 }
 
 export const labEntries: LabEntry[] = [
+  { slug: "agent-quality-loop", type: "Experiment", title: "Can you trust an agent before it reaches production?", summary: "A focused evaluation loop for replaying support conversations, reviewing failure modes and turning human feedback into the next agent version.", date: "September 2026", readingTime: "4 min read", topics: ["AI agents", "Evaluation", "Human feedback"] },
   { slug: "decision-handover", type: "Experiment", title: "What changed is not why.", summary: "A decision-handover dashboard, grounded in a product-team problem I encountered while building a framework at TAP.", date: "August 2026", readingTime: "4 min read", topics: ["Product design", "Operational UX", "Interaction design"] },
   { slug: "workflow-impact-preview", type: "Experiment", title: "Before you publish an n8n agent, replay how its behaviour would change.", summary: "A live n8n-backed experiment for reviewing prompt, memory, model and tool changes against representative conversations.", date: "August 2026", readingTime: "4 min read", topics: ["n8n", "AI agents", "Developer tools"] },
   {
