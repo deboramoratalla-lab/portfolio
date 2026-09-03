@@ -79,7 +79,7 @@ export function OpportunityRadarDemo() {
       if (sort === "source") return Number(b.origin === "Direct company feed") - Number(a.origin === "Direct company feed") || String(b.publishedAt || "").localeCompare(String(a.publishedAt || ""))
       return String(b.publishedAt || "").localeCompare(String(a.publishedAt || ""))
     })
-  }, [category, data, origin, query, sort, source])
+  }, [category, data, freshness, origin, query, sort, source])
   const visible = matches.slice(0, shown)
   const categories = featuredCategories.filter(item => item === "All technology" || data?.jobs.some(job => job.category === item))
   const availableSources = useMemo(() => Array.from(new Set((data?.jobs || []).map(job => job.source))).sort(), [data])
