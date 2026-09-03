@@ -7,6 +7,7 @@ import { OpportunityRadarCover } from "@/components/opportunity-radar-demo"
 import { AgentConvergenceCover } from "@/components/agent-convergence-demo"
 import { WorkflowImpactPreviewCover } from "@/components/workflow-impact-preview"
 import { DecisionHandoverCover } from "@/components/decision-handover-demo"
+import { AgentQualityLoopCover } from "@/components/agent-quality-loop-demo"
 import type { LabEntry } from "@/data/lab"
 
 const HOME_LAB_LIMIT = 5
@@ -44,6 +45,8 @@ export function WorkbenchPreview({ entries }: { entries: LabEntry[] }) {
             ? <CapacityDecisionCover />
             : featuredEntry.slug === "metrics-are-not-decisions"
             ? <InfrastructureDashboardCover />
+            : featuredEntry.slug === "agent-quality-loop"
+            ? <AgentQualityLoopCover />
             : <Image src={LAB_COVERS[featuredEntry.slug].src} alt={LAB_COVERS[featuredEntry.slug].alt} fill sizes="(max-width: 800px) 100vw, 45vw" />}
         </figure>
       </Link>

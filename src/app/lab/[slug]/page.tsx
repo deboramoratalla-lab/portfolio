@@ -11,7 +11,7 @@ import { OpportunityRadarDemo } from "@/components/opportunity-radar-demo"
 import { AgentConvergenceDemo } from "@/components/agent-convergence-demo"
 import { WorkflowImpactPreview } from "@/components/workflow-impact-preview"
 import { DecisionHandoverDemo, DecisionHandoverJourney } from "@/components/decision-handover-demo"
-import { AgentQualityLoopDemo } from "@/components/agent-quality-loop-demo"
+import { AgentQualityLoopDemo, AgentQualityLoopCover } from "@/components/agent-quality-loop-demo"
 import { getLabEntry, labEntries } from "@/data/lab"
 
 type ArticleSection = { title: string; paragraphs: string[]; points?: string[] }
