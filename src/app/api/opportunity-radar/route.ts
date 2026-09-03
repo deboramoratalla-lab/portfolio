@@ -47,11 +47,11 @@ function normaliseDate(value: unknown) {
 
 function categoryFor(title: string, sourceCategory = "") {
   const text = `${title} ${sourceCategory}`.toLowerCase()
-  if (/product manager|project manager|program manager|technical program|operations/.test(text)) return "Product & Operations"
+  if (/product manager|project manager|program manager|technical program|product owner|product strategist|product operations|operations/.test(text)) return "Product & Operations"
   if (/design system|design engineer|design technologist|ui engineer/.test(text)) return "Design Systems & Engineering"
-  if (/product design|product designer/.test(text)) return "Product & Design"
-  if (/\bux\b|\bui\b|user experience|user interface|interaction designer|ux researcher|user researcher|design researcher/.test(text)) return "UX/UI & Research"
-  if (/content designer|brand designer|visual designer|creative director/.test(text)) return "Content & Brand"
+  if (/product design|product designer|product design lead|product design manager/.test(text)) return "Product & Design"
+  if (/\bux\b|\bui\b|user experience|user interface|interaction designer|ux researcher|user researcher|design researcher|ux writer|content design|service designer|experience designer|information architect|design strategist/.test(text)) return "UX/UI & Research"
+  if (/content designer|brand designer|visual designer|creative director|graphic designer|motion designer/.test(text)) return "Content & Brand"
   if (/developer relations|devrel|technical writer|solutions architect|developer advocate/.test(text)) return "Developer Experience"
   if (/security|privacy|identity|trust/.test(text)) return "Security"
   if (/devops|sre|platform|cloud|infrastructure|systems engineer/.test(text)) return "Platform & Cloud"

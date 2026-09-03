@@ -7,7 +7,7 @@ type Opportunity = { id: string; title: string; company: string; location: strin
 type RadarData = { jobs: Opportunity[]; updatedAt: string; sources: string[]; glassdoorProvider?: "JSearch cursor" | "Glassdoor API sample" | "Unavailable"; contextAvailable?: boolean; message?: string }
 type CompanyContext = { provider: string; retrievedAt: string; company: { name: string; industry: string | null; rating: number | null; reviewCount: number; salaryCount: number; careerOpportunities: number | null; culture: number | null; workLifeBalance: number | null; sourceUrl: string | null } }
 
-const featuredCategories = ["All technology", "Product & Design", "UX/UI & Research", "Design Systems & Engineering", "Content & Brand", "Engineering", "Data & AI", "Platform & Cloud", "Developer Experience", "Security", "Product & Operations"]
+const featuredCategories = ["All technology", "Product, UX & Design", "Product & Design", "UX/UI & Research", "Design Systems & Engineering", "Content & Brand", "Engineering", "Data & AI", "Platform & Cloud", "Developer Experience", "Security", "Product & Operations"]
 const marketRoutes = [
   { name: "EURES", description: "Official European labour-market network", href: "https://eures.europa.eu/index_en" },
   { name: "Wellfound", description: "Startup roles and company context", href: "https://wellfound.com/jobs" },
@@ -38,6 +38,39 @@ function relativeDate(date: string | null) {
   return days === 0 ? "Today" : days === 1 ? "Yesterday" : `${days} days ago`
 }
 
+function seniorityFor(title: string) {
+  const value = title.toLowerCase()
+  if (/\b(intern|internship|graduate|apprentice|entry[ -]?level|junior|jr\.?)\b/.test(value)) return "Entry level"
+  if (/\b(staff|principal|distinguished)\b/.test(value)) return "Staff & principal"
+  if (/\b(lead|manager|director|head of|vice president|\bvp\b)\b/.test(value)) return "Lead & management"
+  if (/\b(senior|sr\.?)\b/.test(value)) return "Senior"
+  return "Not specified"
+}
+
+function contractFor(type: string) {
+  const value = type.toLowerCase()
+  if (/\b(full[ -]?time|permanent)\b/.test(value)) return "Full-time"
+  if (/\b(contract|temporary|fixed[ -]?term)\b/.test(value)) return "Contract"
+  if (/\b(part[ -]?time)\b/.test(value)) return "Part-time"
+  if (/\b(intern|internship)\b/.test(value)) return "Internship"
+  if (/\b(freelance|consultant|consulting)\b/.test(value)) return "Freelance"
+  return "Not specified"
+}
+
+function locationScopeFor(location: string) {
+  const value = location.toLowerCase()
+  if (/worldwide|anywhere|global/.test(value)) return "Worldwide"
+  if (/europe|emea|european|spain|germany|france|italy|portugal|netherlands|belgium|ireland|united kingdom|\buk\b|sweden|denmark|norway|finland|poland|austria|switzerland/.test(value)) return "Europe listed"
+  if (/restriction|not supplied|shown on source/.test(value)) return "Restrictions on source"
+  return "Location listed"
+}
+
+function categoryMatches(selected: string, job: Opportunity) {
+  if (selected === "All technology") return true
+  if (selected === "Product, UX & Design") return ["Product & Design", "UX/UI & Research", "Design Systems & Engineering", "Content & Brand"].includes(job.category)
+  return job.category === selected
+}
+
 export function OpportunityRadarDemo() {
   const [data, setData] = useState<RadarData | null>(null)
   const [category, setCategory] = useState("All technology")
@@ -45,6 +78,9 @@ export function OpportunityRadarDemo() {
   const [source, setSource] = useState<"All networks" | Opportunity["source"]>("All networks")
   const [sort, setSort] = useState<"recent" | "source">("recent")
   const [freshness, setFreshness] = useState<"any" | "48h" | "7d" | "30d">("any")
+  const [seniority, setSeniority] = useState("Any level")
+  const [contract, setContract] = useState("Any contract")
+  const [locationScope, setLocationScope] = useState("Any location scope")
   const [query, setQuery] = useState("")
   const [page, setPage] = useState(1)
   const [isLoading, setLoading] = useState(true)
@@ -84,22 +120,29 @@ export function OpportunityRadarDemo() {
     const search = query.trim().toLowerCase()
     const ageInHours = (job: Opportunity) => job.publishedAt ? Math.max(0, (Date.now() - new Date(job.publishedAt).getTime()) / 3600000) : Number.POSITIVE_INFINITY
     return (data?.jobs || []).filter(job =>
-      (category === "All technology" || job.category === category) &&
+      categoryMatches(category, job) &&
       (origin === "All sources" || job.origin === origin) &&
       (source === "All networks" || job.source === source) &&
       (freshness === "any" || (freshness === "48h" && ageInHours(job) <= 48) || (freshness === "7d" && ageInHours(job) <= 168) || (freshness === "30d" && ageInHours(job) <= 720)) &&
+      (seniority === "Any level" || seniorityFor(job.title) === seniority) &&
+      (contract === "Any contract" || contractFor(job.type) === contract) &&
+      (locationScope === "Any location scope" || locationScopeFor(job.location) === locationScope) &&
       (!search || `${job.title} ${job.company} ${job.location} ${job.category} ${job.type} ${job.source}`.toLowerCase().includes(search))
     ).sort((a, b) => {
       if (sort === "source") return Number(b.origin === "Direct company feed") - Number(a.origin === "Direct company feed") || String(b.publishedAt || "").localeCompare(String(a.publishedAt || ""))
       return String(b.publishedAt || "").localeCompare(String(a.publishedAt || ""))
     })
-  }, [category, data, freshness, origin, query, sort, source])
+  }, [category, contract, data, freshness, locationScope, origin, query, seniority, sort, source])
   const pageCount = Math.max(1, Math.ceil(matches.length / PAGE_SIZE))
   const currentPage = Math.min(page, pageCount)
   const visible = matches.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE)
   const pageOptions = Array.from({ length: pageCount }, (_, index) => index + 1).filter(item => item === 1 || item === pageCount || Math.abs(item - currentPage) <= 1)
-  const categories = featuredCategories.filter(item => item === "All technology" || data?.jobs.some(job => job.category === item))
+  const categories = featuredCategories.filter(item => item === "All technology" || (item === "Product, UX & Design" ? data?.jobs.some(job => categoryMatches(item, job)) : data?.jobs.some(job => job.category === item)))
   const availableSources = useMemo(() => Array.from(new Set((data?.jobs || []).map(job => job.source))).sort(), [data])
+  const seniorityOptions = useMemo(() => ["Any level", ...Array.from(new Set((data?.jobs || []).map(job => seniorityFor(job.title)))).filter(item => item !== "Not specified"), "Not specified"], [data])
+  const contractOptions = useMemo(() => ["Any contract", ...Array.from(new Set((data?.jobs || []).map(job => contractFor(job.type)))).filter(item => item !== "Not specified"), "Not specified"], [data])
+  const locationScopeOptions = useMemo(() => ["Any location scope", ...Array.from(new Set((data?.jobs || []).map(job => locationScopeFor(job.location))))], [data])
+  useEffect(() => { if (page > pageCount) setPage(pageCount) }, [page, pageCount])
   const sourceBreakdown = useMemo(() => availableSources.map(name => {
     const jobs = (data?.jobs || []).filter(job => job.source === name)
     return { name, count: jobs.length, newCount: jobs.filter(job => job.publishedAt && Date.now() - new Date(job.publishedAt).getTime() <= 48 * 3600000).length, origin: jobs[0]?.origin || "Public feed" }
@@ -122,7 +165,13 @@ export function OpportunityRadarDemo() {
           <label><span>Network</span><select value={source} onChange={event => { setSource(event.target.value as typeof source); setPage(1) }}><option>All networks</option>{availableSources.map(item => <option key={item}>{item}</option>)}</select></label>
           <label><span>Published</span><select value={freshness} onChange={event => { setFreshness(event.target.value as typeof freshness); setPage(1) }}><option value="any">Any time</option><option value="48h">Last 48 hours</option><option value="7d">Last 7 days</option><option value="30d">Last 30 days</option></select></label>
           <label><span>Order</span><select value={sort} onChange={event => { setSort(event.target.value as typeof sort); setPage(1) }}><option value="recent">Newest first</option><option value="source">Direct feeds first</option></select></label>
-          {(category !== "All technology" || origin !== "All sources" || source !== "All networks" || freshness !== "any" || query) && <button type="button" className="radar-clear-filters" onClick={() => { setCategory("All technology"); setOrigin("All sources"); setSource("All networks"); setFreshness("any"); setQuery(""); setPage(1) }}>Clear filters</button>}
+        </div>
+        <div className="radar-select-row radar-refine-row" aria-label="Refine results">
+          <span>Refine results</span>
+          <label><span>Level shown</span><select value={seniority} onChange={event => { setSeniority(event.target.value); setPage(1) }}>{seniorityOptions.map(item => <option key={item}>{item}</option>)}</select></label>
+          <label><span>Contract shown</span><select value={contract} onChange={event => { setContract(event.target.value); setPage(1) }}>{contractOptions.map(item => <option key={item}>{item}</option>)}</select></label>
+          <label><span>Location shown</span><select value={locationScope} onChange={event => { setLocationScope(event.target.value); setPage(1) }}>{locationScopeOptions.map(item => <option key={item}>{item}</option>)}</select></label>
+          {(category !== "All technology" || origin !== "All sources" || source !== "All networks" || freshness !== "any" || seniority !== "Any level" || contract !== "Any contract" || locationScope !== "Any location scope" || query) && <button type="button" className="radar-clear-filters" onClick={() => { setCategory("All technology"); setOrigin("All sources"); setSource("All networks"); setFreshness("any"); setSeniority("Any level"); setContract("Any contract"); setLocationScope("Any location scope"); setQuery(""); setPage(1) }}>Clear filters</button>}
         </div>
       </div>
       <div className="radar-summary"><span>{data ? `${matches.length} roles to explore` : "Reading sources"}</span><span>{data ? `${availableSources.length} live networks` : ""}</span><span>{data?.updatedAt ? `Checked ${new Intl.DateTimeFormat("en", { hour: "2-digit", minute: "2-digit" }).format(new Date(data.updatedAt))}` : ""}</span></div>
