@@ -253,6 +253,20 @@ async function himalayasFeed() {
   return jobs.map(normaliseHimalayas).filter((job): job is Opportunity => Boolean(job))
 }
 
+async function himalayasProductAndDesignFeed() {
+  const queries = ["product designer", "ux designer", "ui designer", "user researcher", "product manager"]
+  const searches = await Promise.all(queries.map(async query => {
+    const endpoint = new URL("https://himalayas.app/jobs/api/search")
+    endpoint.searchParams.set("q", query)
+    endpoint.searchParams.set("sort", "recent")
+    const response = await fetch(endpoint, { next: { revalidate }, signal: AbortSignal.timeout(8000) })
+    if (!response.ok) throw new Error(`Himalayas search returned ${response.status}`)
+    const payload = await response.json() as { jobs?: HimalayasJob[]; data?: HimalayasJob[] }
+    return (payload.jobs || payload.data || []).map(normaliseHimalayas).filter((job): job is Opportunity => Boolean(job))
+  }))
+  return searches.flat()
+}
+
 async function arbeitnowFeed() {
   const response = await fetch("https://www.arbeitnow.com/api/job-board-api", { next: { revalidate }, signal: AbortSignal.timeout(8000) })
   if (!response.ok) throw new Error(`Arbeitnow returned ${response.status}`)
@@ -332,9 +346,14 @@ function normaliseRemoteFirst(job: RemoteFirstJob): Opportunity | null {
 }
 
 async function remoteFirstJobsFeed() {
-  const pages = await Promise.all(Array.from({ length: 5 }, async (_, page) => {
+  // Read the broad feed plus the two role families that otherwise get buried
+  // beneath high-volume engineering listings. The provider documents category
+  // filters and five paginated pages; the endpoint is cached for 12 hours.
+  const requests = ["", "design", "product"].flatMap(category => Array.from({ length: 3 }, (_, page) => ({ category, page })))
+  const pages = await Promise.all(requests.map(async ({ category, page }) => {
     const endpoint = new URL("https://remotefirstjobs.com/api/search-jobs")
     endpoint.searchParams.set("page", String(page))
+    if (category) endpoint.searchParams.set("category", category)
     const response = await fetch(endpoint, { next: { revalidate }, signal: AbortSignal.timeout(12000) })
     if (!response.ok) throw new Error(`Remote First Jobs returned ${response.status}`)
     const payload = await response.json() as { jobs?: RemoteFirstJob[] }
@@ -488,6 +507,7 @@ export async function GET() {
     sourceFeed("https://remotive.com/api/remote-jobs", "Remotive"),
     remoteOkFeed(),
     himalayasFeed(),
+    himalayasProductAndDesignFeed(),
     arbeitnowFeed(),
     directCompanyFeed(),
     theirStackFeed(),
