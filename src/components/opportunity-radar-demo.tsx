@@ -7,7 +7,7 @@ type Opportunity = { id: string; title: string; company: string; location: strin
 type RadarData = { jobs: Opportunity[]; updatedAt: string; sources: string[]; glassdoorProvider?: "JSearch cursor" | "Glassdoor API sample" | "Unavailable"; contextAvailable?: boolean; message?: string }
 type CompanyContext = { provider: string; retrievedAt: string; company: { name: string; industry: string | null; rating: number | null; reviewCount: number; salaryCount: number; careerOpportunities: number | null; culture: number | null; workLifeBalance: number | null; sourceUrl: string | null } }
 
-const featuredCategories = ["All technology", "Product, UX & Design", "Product & Design", "UX/UI & Research", "Design Systems & Engineering", "Content & Brand", "Engineering", "Data & AI", "Platform & Cloud", "Developer Experience", "Security", "Product & Operations"]
+const featuredCategories = ["All opportunities", "Product, UX & Research", "Creative & Brand", "Marketing & Growth", "Engineering", "Data & AI", "Cloud & Platform", "Developer Experience", "Security", "Product & Operations"]
 const marketRoutes = [
   { name: "EURES", description: "Official European labour-market network", href: "https://eures.europa.eu/index_en" },
   { name: "Wellfound", description: "Startup roles and company context", href: "https://wellfound.com/jobs" },
@@ -66,14 +66,14 @@ function locationScopeFor(location: string) {
 }
 
 function categoryMatches(selected: string, job: Opportunity) {
-  if (selected === "All technology") return true
-  if (selected === "Product, UX & Design") return ["Product & Design", "UX/UI & Research", "Design Systems & Engineering", "Content & Brand"].includes(job.category)
+  if (selected === "All opportunities") return true
+  if (selected === "Product, UX & Research") return ["Product & Design", "UX/UI & Research", "Design Systems & Engineering", "Product & Operations"].includes(job.category)
   return job.category === selected
 }
 
 export function OpportunityRadarDemo() {
   const [data, setData] = useState<RadarData | null>(null)
-  const [category, setCategory] = useState("All technology")
+  const [category, setCategory] = useState("All opportunities")
   const [origin, setOrigin] = useState<"All sources" | Opportunity["origin"]>("All sources")
   const [source, setSource] = useState<"All networks" | Opportunity["source"]>("All networks")
   const [sort, setSort] = useState<"recent" | "source">("recent")
@@ -137,7 +137,7 @@ export function OpportunityRadarDemo() {
   const currentPage = Math.min(page, pageCount)
   const visible = matches.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE)
   const pageOptions = Array.from({ length: pageCount }, (_, index) => index + 1).filter(item => item === 1 || item === pageCount || Math.abs(item - currentPage) <= 1)
-  const categories = featuredCategories.filter(item => item === "All technology" || (item === "Product, UX & Design" ? data?.jobs.some(job => categoryMatches(item, job)) : data?.jobs.some(job => job.category === item)))
+  const categories = featuredCategories.filter(item => item === "All opportunities" || (item === "Product, UX & Research" ? data?.jobs.some(job => categoryMatches(item, job)) : data?.jobs.some(job => job.category === item)) )
   const availableSources = useMemo(() => Array.from(new Set((data?.jobs || []).map(job => job.source))).sort(), [data])
   const seniorityOptions = useMemo(() => ["Any level", ...Array.from(new Set((data?.jobs || []).map(job => seniorityFor(job.title)))).filter(item => item !== "Not specified"), "Not specified"], [data])
   const contractOptions = useMemo(() => ["Any contract", ...Array.from(new Set((data?.jobs || []).map(job => contractFor(job.type)))).filter(item => item !== "Not specified"), "Not specified"], [data])
@@ -159,20 +159,15 @@ export function OpportunityRadarDemo() {
       <header className="radar-surface-head"><div><span>Remote opportunities</span><small>Live public feeds · global coverage</small></div><button type="button" onClick={() => void load()} disabled={isLoading}><IconRefresh size={16} />{isLoading ? "Refreshing" : "Refresh roles"}</button></header>
       <div className="radar-controls">
         <label className="radar-search"><IconSearch size={18} /><span className="sr-only">Search opportunities</span><input value={query} onChange={event => { setQuery(event.target.value); setPage(1) }} placeholder="Try Product designer, React, Madrid…" /></label>
-        <div className="radar-filter-group"><span>Explore by area</span><div className="radar-category-list" aria-label="Filter by role family">{categories.map(item => <button type="button" className={category === item ? "is-selected" : ""} onClick={() => { setCategory(item); setPage(1) }} key={item}>{item}</button>)}</div></div>
-        <div className="radar-select-row">
-          <label><span>Source type</span><select value={origin} onChange={event => { setOrigin(event.target.value as typeof origin); setPage(1) }}><option>All sources</option><option>Direct company feed</option><option>Commercial job API</option><option>Public feed</option></select></label>
-          <label><span>Network</span><select value={source} onChange={event => { setSource(event.target.value as typeof source); setPage(1) }}><option>All networks</option>{availableSources.map(item => <option key={item}>{item}</option>)}</select></label>
+        <div className="radar-filter-group"><span>Choose a role family</span><div className="radar-category-list" aria-label="Filter by role family">{categories.map(item => <button type="button" className={category === item ? "is-selected" : ""} onClick={() => { setCategory(item); setPage(1) }} key={item}>{item}</button>)}</div></div>
+        <div className="radar-select-row radar-primary-filters">
           <label><span>Published</span><select value={freshness} onChange={event => { setFreshness(event.target.value as typeof freshness); setPage(1) }}><option value="any">Any time</option><option value="48h">Last 48 hours</option><option value="7d">Last 7 days</option><option value="30d">Last 30 days</option></select></label>
-          <label><span>Order</span><select value={sort} onChange={event => { setSort(event.target.value as typeof sort); setPage(1) }}><option value="recent">Newest first</option><option value="source">Direct feeds first</option></select></label>
+          <label><span>Experience level</span><select value={seniority} onChange={event => { setSeniority(event.target.value); setPage(1) }}>{seniorityOptions.map(item => <option key={item}>{item}</option>)}</select></label>
+          <label><span>Employment type</span><select value={contract} onChange={event => { setContract(event.target.value); setPage(1) }}>{contractOptions.map(item => <option key={item}>{item}</option>)}</select></label>
+          <label><span>Location in the posting</span><select value={locationScope} onChange={event => { setLocationScope(event.target.value); setPage(1) }}>{locationScopeOptions.map(item => <option key={item}>{item}</option>)}</select></label>
+          {(category !== "All opportunities" || origin !== "All sources" || source !== "All networks" || freshness !== "any" || seniority !== "Any level" || contract !== "Any contract" || locationScope !== "Any location scope" || query) && <button type="button" className="radar-clear-filters" onClick={() => { setCategory("All opportunities"); setOrigin("All sources"); setSource("All networks"); setFreshness("any"); setSeniority("Any level"); setContract("Any contract"); setLocationScope("Any location scope"); setQuery(""); setPage(1) }}>Reset filters</button>}
         </div>
-        <div className="radar-select-row radar-refine-row" aria-label="Refine results">
-          <span>Refine results</span>
-          <label><span>Level shown</span><select value={seniority} onChange={event => { setSeniority(event.target.value); setPage(1) }}>{seniorityOptions.map(item => <option key={item}>{item}</option>)}</select></label>
-          <label><span>Contract shown</span><select value={contract} onChange={event => { setContract(event.target.value); setPage(1) }}>{contractOptions.map(item => <option key={item}>{item}</option>)}</select></label>
-          <label><span>Location shown</span><select value={locationScope} onChange={event => { setLocationScope(event.target.value); setPage(1) }}>{locationScopeOptions.map(item => <option key={item}>{item}</option>)}</select></label>
-          {(category !== "All technology" || origin !== "All sources" || source !== "All networks" || freshness !== "any" || seniority !== "Any level" || contract !== "Any contract" || locationScope !== "Any location scope" || query) && <button type="button" className="radar-clear-filters" onClick={() => { setCategory("All technology"); setOrigin("All sources"); setSource("All networks"); setFreshness("any"); setSeniority("Any level"); setContract("Any contract"); setLocationScope("Any location scope"); setQuery(""); setPage(1) }}>Clear filters</button>}
-        </div>
+        <details className="radar-advanced-filters"><summary>Source and sorting options</summary><div className="radar-select-row"><label><span>Source type</span><select value={origin} onChange={event => { setOrigin(event.target.value as typeof origin); setPage(1) }}><option>All sources</option><option>Direct company feed</option><option>Commercial job API</option><option>Public feed</option></select></label><label><span>Network</span><select value={source} onChange={event => { setSource(event.target.value as typeof source); setPage(1) }}><option>All networks</option>{availableSources.map(item => <option key={item}>{item}</option>)}</select></label><label><span>Order</span><select value={sort} onChange={event => { setSort(event.target.value as typeof sort); setPage(1) }}><option value="recent">Newest first</option><option value="source">Direct feeds first</option></select></label></div></details>
       </div>
       <div className="radar-summary"><span>{data ? `${matches.length} roles to explore` : "Reading sources"}</span><span>{data ? `${availableSources.length} live networks` : ""}</span><span>{data?.updatedAt ? `Checked ${new Intl.DateTimeFormat("en", { hour: "2-digit", minute: "2-digit" }).format(new Date(data.updatedAt))}` : ""}</span></div>
       {!isLoading && data && <aside className="radar-source-ledger" aria-label="Source coverage">
