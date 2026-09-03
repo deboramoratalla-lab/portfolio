@@ -33,7 +33,7 @@ type Opportunity = {
   location: string
   type: string
   category: string
-  source: "Jobicy" | "Remotive" | "Remote OK" | "Ashby" | "Glassdoor" | "Himalayas" | "Arbeitnow" | "TheirStack" | "We Work Remotely" | "Landing.Jobs" | "Startup Jobs"
+  source: "Jobicy" | "Remotive" | "Remote OK" | "Ashby" | "Glassdoor" | "Himalayas" | "Arbeitnow" | "TheirStack" | "We Work Remotely" | "Landing.Jobs" | "Startup Jobs" | "Remote First Jobs"
   origin: "Public feed" | "Direct company feed" | "Commercial job API"
   url: string
   publishedAt: string | null
@@ -176,7 +176,7 @@ async function sourceFeed(url: string, source: Opportunity["source"]) {
 }
 
 async function jobicyFeed() {
-  return sourceFeed("https://jobicy.com/api/v2/remote-jobs?count=100", "Jobicy")
+  return sourceFeed("https://jobicy.com/api/v2/remote-jobs?count=200", "Jobicy")
 }
 
 type HimalayasJob = {
@@ -237,10 +237,20 @@ function normaliseArbeitnow(job: ArbeitnowJob): Opportunity | null {
 }
 
 async function himalayasFeed() {
-  const response = await fetch("https://himalayas.app/jobs/api?limit=20", { next: { revalidate }, signal: AbortSignal.timeout(8000) })
-  if (!response.ok) throw new Error(`Himalayas returned ${response.status}`)
-  const payload = await response.json() as { jobs?: HimalayasJob[]; data?: HimalayasJob[] }
-  return (payload.jobs || payload.data || []).map(normaliseHimalayas).filter((job): job is Opportunity => Boolean(job))
+  const jobs: HimalayasJob[] = []
+  let cursor: string | null = null
+  for (let page = 0; page < 5; page += 1) {
+    const endpoint = new URL("https://himalayas.app/jobs/api")
+    endpoint.searchParams.set("limit", "20")
+    if (cursor) endpoint.searchParams.set("cursor", cursor)
+    const response = await fetch(endpoint, { next: { revalidate }, signal: AbortSignal.timeout(8000) })
+    if (!response.ok) throw new Error(`Himalayas returned ${response.status}`)
+    const payload = await response.json() as { jobs?: HimalayasJob[]; data?: HimalayasJob[]; nextCursor?: string | null }
+    jobs.push(...(payload.jobs || payload.data || []))
+    if (!payload.nextCursor) break
+    cursor = payload.nextCursor
+  }
+  return jobs.map(normaliseHimalayas).filter((job): job is Opportunity => Boolean(job))
 }
 
 async function arbeitnowFeed() {
@@ -295,7 +305,42 @@ async function rssFeed(url: string, source: "We Work Remotely" | "Startup Jobs")
 }
 
 async function weWorkRemotelyFeed() {
-  return rssFeed("https://weworkremotely.com/remote-jobs.rss", "We Work Remotely")
+  const feeds = await Promise.all([
+    rssFeed("https://weworkremotely.com/remote-jobs.rss", "We Work Remotely"),
+    rssFeed("https://weworkremotely.com/categories/remote-product-jobs.rss", "We Work Remotely"),
+    rssFeed("https://weworkremotely.com/categories/remote-design-jobs.rss", "We Work Remotely"),
+  ])
+  return feeds.flat()
+}
+
+type RemoteFirstJob = { id?: string; url?: string; company_name?: string; title?: string; category?: string; seniority?: string; locations?: string[]; published_at?: string; employment_type?: string }
+
+function normaliseRemoteFirst(job: RemoteFirstJob): Opportunity | null {
+  if (!job.id || !job.title || !job.company_name || !job.url) return null
+  return {
+    id: `remote-first-${job.id}`,
+    title: job.title,
+    company: job.company_name,
+    location: job.locations?.join(", ") || "Remote / restrictions shown on source",
+    type: job.employment_type || "Remote",
+    category: categoryFor(job.title, job.category || ""),
+    source: "Remote First Jobs",
+    origin: "Public feed",
+    url: job.url,
+    publishedAt: normaliseDate(job.published_at),
+  }
+}
+
+async function remoteFirstJobsFeed() {
+  const pages = await Promise.all(Array.from({ length: 5 }, async (_, page) => {
+    const endpoint = new URL("https://remotefirstjobs.com/api/search-jobs")
+    endpoint.searchParams.set("page", String(page))
+    const response = await fetch(endpoint, { next: { revalidate }, signal: AbortSignal.timeout(12000) })
+    if (!response.ok) throw new Error(`Remote First Jobs returned ${response.status}`)
+    const payload = await response.json() as { jobs?: RemoteFirstJob[] }
+    return (payload.jobs || []).map(normaliseRemoteFirst).filter((job): job is Opportunity => Boolean(job))
+  }))
+  return pages.flat()
 }
 
 async function startupJobsFeed() {
@@ -449,6 +494,7 @@ export async function GET() {
     weWorkRemotelyFeed(),
     landingJobsFeed(),
     startupJobsFeed(),
+    remoteFirstJobsFeed(),
   ])
   const jobs = [...feeds.flatMap(feed => feed.status === "fulfilled" ? feed.value : []), ...glassdoor.jobs]
   const seen = new Set<string>()

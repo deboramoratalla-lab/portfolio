@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react"
 import { IconArrowUpRight, IconBriefcase2, IconRefresh, IconSearch, IconX } from "@tabler/icons-react"
 
-type Opportunity = { id: string; title: string; company: string; location: string; type: string; category: string; source: "Jobicy" | "Remotive" | "Remote OK" | "Ashby" | "Glassdoor" | "Himalayas" | "Arbeitnow" | "TheirStack" | "We Work Remotely" | "Landing.Jobs" | "Startup Jobs"; origin: "Public feed" | "Direct company feed" | "Commercial job API"; url: string; publishedAt: string | null }
+type Opportunity = { id: string; title: string; company: string; location: string; type: string; category: string; source: "Jobicy" | "Remotive" | "Remote OK" | "Ashby" | "Glassdoor" | "Himalayas" | "Arbeitnow" | "TheirStack" | "We Work Remotely" | "Landing.Jobs" | "Startup Jobs" | "Remote First Jobs"; origin: "Public feed" | "Direct company feed" | "Commercial job API"; url: string; publishedAt: string | null }
 type RadarData = { jobs: Opportunity[]; updatedAt: string; sources: string[]; glassdoorProvider?: "JSearch cursor" | "Glassdoor API sample" | "Unavailable"; contextAvailable?: boolean; message?: string }
 type CompanyContext = { provider: string; retrievedAt: string; company: { name: string; industry: string | null; rating: number | null; reviewCount: number; salaryCount: number; careerOpportunities: number | null; culture: number | null; workLifeBalance: number | null; sourceUrl: string | null } }
 
