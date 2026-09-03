@@ -8,6 +8,20 @@ type RadarData = { jobs: Opportunity[]; updatedAt: string; sources: string[]; gl
 type CompanyContext = { provider: string; retrievedAt: string; company: { name: string; industry: string | null; rating: number | null; reviewCount: number; salaryCount: number; careerOpportunities: number | null; culture: number | null; workLifeBalance: number | null; sourceUrl: string | null } }
 
 const featuredCategories = ["All technology", "Product & Design", "UX/UI & Research", "Design Systems & Engineering", "Content & Brand", "Engineering", "Data & AI", "Platform & Cloud", "Developer Experience", "Security", "Product & Operations"]
+const marketRoutes = [
+  { name: "EURES", description: "Official European labour-market network", href: "https://eures.europa.eu/index_en" },
+  { name: "Wellfound", description: "Startup roles and company context", href: "https://wellfound.com/jobs" },
+  { name: "Get on Board", description: "Curated technology roles across markets", href: "https://www.getonbrd.com/jobs" },
+  { name: "Quibit", description: "Technology roles with region and contract filters", href: "https://www.qibit.tech/" },
+  { name: "Torre", description: "Global remote work across technical disciplines", href: "https://torre.co/es" },
+  { name: "Hireline", description: "Technology, data and security roles", href: "https://hireline.io/mx" },
+  { name: "Working Nomads", description: "Curated remote work", href: "https://www.workingnomads.com/jobs" },
+]
+const searchHelpers = [
+  { label: "Discover earlier", links: [{ name: "Scoutify", href: "https://scoutify.com" }, { name: "LinkedIn job alerts", href: "https://www.linkedin.com/jobs" }, { name: "Google Alerts", href: "https://www.google.com/alerts" }] },
+  { label: "Compare a role to your experience", links: [{ name: "Teal", href: "https://www.tealhq.com" }, { name: "Pronto", href: "https://www.gopronto.co" }] },
+]
+const PAGE_SIZE = 18
 
 export function OpportunityRadarCover() {
   return <div className="opportunity-radar-cover" aria-hidden="true">
@@ -32,7 +46,7 @@ export function OpportunityRadarDemo() {
   const [sort, setSort] = useState<"recent" | "source">("recent")
   const [freshness, setFreshness] = useState<"any" | "48h" | "7d" | "30d">("any")
   const [query, setQuery] = useState("")
-  const [shown, setShown] = useState(18)
+  const [page, setPage] = useState(1)
   const [isLoading, setLoading] = useState(true)
   const [error, setError] = useState("")
   const [companyContext, setCompanyContext] = useState<CompanyContext | null>(null)
@@ -80,7 +94,10 @@ export function OpportunityRadarDemo() {
       return String(b.publishedAt || "").localeCompare(String(a.publishedAt || ""))
     })
   }, [category, data, freshness, origin, query, sort, source])
-  const visible = matches.slice(0, shown)
+  const pageCount = Math.max(1, Math.ceil(matches.length / PAGE_SIZE))
+  const currentPage = Math.min(page, pageCount)
+  const visible = matches.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE)
+  const pageOptions = Array.from({ length: pageCount }, (_, index) => index + 1).filter(item => item === 1 || item === pageCount || Math.abs(item - currentPage) <= 1)
   const categories = featuredCategories.filter(item => item === "All technology" || data?.jobs.some(job => job.category === item))
   const availableSources = useMemo(() => Array.from(new Set((data?.jobs || []).map(job => job.source))).sort(), [data])
   const sourceBreakdown = useMemo(() => availableSources.map(name => {
@@ -92,33 +109,38 @@ export function OpportunityRadarDemo() {
 
   return <section className="opportunity-radar" id="opportunity-radar" aria-labelledby="radar-title">
     <header className="opportunity-radar-intro">
-      <div><span>Community utility</span><h2 id="radar-title">A clearer way to browse remote technology roles.</h2></div>
-      <p>This public view combines remote listings from across markets. It keeps location and any supplied restriction visible, but it does not infer hiring eligibility, rank people or guarantee coverage.</p>
+      <div><span>Community utility</span><h2 id="radar-title">Start with a clearer view of remote technology work.</h2></div>
+      <p>Explore live roles across product, design and technology, with their source and location kept visible from the start.</p>
     </header>
     <div className="opportunity-radar-surface">
-      <header className="radar-surface-head"><div><span>Remote tech opportunity radar</span><small>Remote only / global coverage</small></div><button type="button" onClick={() => void load()} disabled={isLoading}><IconRefresh size={16} />{isLoading ? "Refreshing" : "Refresh sources"}</button></header>
+      <header className="radar-surface-head"><div><span>Remote opportunities</span><small>Live public feeds · global coverage</small></div><button type="button" onClick={() => void load()} disabled={isLoading}><IconRefresh size={16} />{isLoading ? "Refreshing" : "Refresh roles"}</button></header>
       <div className="radar-controls">
-        <label className="radar-search"><IconSearch size={17} /><span className="sr-only">Search opportunities</span><input value={query} onChange={event => { setQuery(event.target.value); setShown(18) }} placeholder="Search title, company, location or skill" /></label>
-        <div className="radar-filter-group"><span>Role family</span><div className="radar-category-list" aria-label="Filter by role family">{categories.map(item => <button type="button" className={category === item ? "is-selected" : ""} onClick={() => { setCategory(item); setShown(18) }} key={item}>{item}</button>)}</div></div>
+        <label className="radar-search"><IconSearch size={18} /><span className="sr-only">Search opportunities</span><input value={query} onChange={event => { setQuery(event.target.value); setPage(1) }} placeholder="Try Product designer, React, Madrid…" /></label>
+        <div className="radar-filter-group"><span>Explore by area</span><div className="radar-category-list" aria-label="Filter by role family">{categories.map(item => <button type="button" className={category === item ? "is-selected" : ""} onClick={() => { setCategory(item); setPage(1) }} key={item}>{item}</button>)}</div></div>
         <div className="radar-select-row">
-          <label><span>Source type</span><select value={origin} onChange={event => { setOrigin(event.target.value as typeof origin); setShown(18) }}><option>All sources</option><option>Direct company feed</option><option>Commercial job API</option><option>Public feed</option></select></label>
-          <label><span>Network</span><select value={source} onChange={event => { setSource(event.target.value as typeof source); setShown(18) }}><option>All networks</option>{availableSources.map(item => <option key={item}>{item}</option>)}</select></label>
-          <label><span>Published</span><select value={freshness} onChange={event => { setFreshness(event.target.value as typeof freshness); setShown(18) }}><option value="any">Any time</option><option value="48h">Last 48 hours</option><option value="7d">Last 7 days</option><option value="30d">Last 30 days</option></select></label>
-          <label><span>Order</span><select value={sort} onChange={event => setSort(event.target.value as typeof sort)}><option value="recent">Newest first</option><option value="source">Direct feeds first</option></select></label>
-          {(category !== "All technology" || origin !== "All sources" || source !== "All networks" || freshness !== "any" || query) && <button type="button" className="radar-clear-filters" onClick={() => { setCategory("All technology"); setOrigin("All sources"); setSource("All networks"); setFreshness("any"); setQuery(""); setShown(18) }}>Clear filters</button>}
+          <label><span>Source type</span><select value={origin} onChange={event => { setOrigin(event.target.value as typeof origin); setPage(1) }}><option>All sources</option><option>Direct company feed</option><option>Commercial job API</option><option>Public feed</option></select></label>
+          <label><span>Network</span><select value={source} onChange={event => { setSource(event.target.value as typeof source); setPage(1) }}><option>All networks</option>{availableSources.map(item => <option key={item}>{item}</option>)}</select></label>
+          <label><span>Published</span><select value={freshness} onChange={event => { setFreshness(event.target.value as typeof freshness); setPage(1) }}><option value="any">Any time</option><option value="48h">Last 48 hours</option><option value="7d">Last 7 days</option><option value="30d">Last 30 days</option></select></label>
+          <label><span>Order</span><select value={sort} onChange={event => { setSort(event.target.value as typeof sort); setPage(1) }}><option value="recent">Newest first</option><option value="source">Direct feeds first</option></select></label>
+          {(category !== "All technology" || origin !== "All sources" || source !== "All networks" || freshness !== "any" || query) && <button type="button" className="radar-clear-filters" onClick={() => { setCategory("All technology"); setOrigin("All sources"); setSource("All networks"); setFreshness("any"); setQuery(""); setPage(1) }}>Clear filters</button>}
         </div>
       </div>
-      <div className="radar-summary"><span>{data ? `${matches.length} matching opportunities` : "Reading sources"}</span><span>{data ? `${availableSources.length} active sources` : ""}</span><span>{data?.updatedAt ? `Checked ${new Intl.DateTimeFormat("en", { hour: "2-digit", minute: "2-digit" }).format(new Date(data.updatedAt))}` : ""}</span></div>
+      <div className="radar-summary"><span>{data ? `${matches.length} roles to explore` : "Reading sources"}</span><span>{data ? `${availableSources.length} live networks` : ""}</span><span>{data?.updatedAt ? `Checked ${new Intl.DateTimeFormat("en", { hour: "2-digit", minute: "2-digit" }).format(new Date(data.updatedAt))}` : ""}</span></div>
       {!isLoading && data && <aside className="radar-source-ledger" aria-label="Source coverage">
-        <div className="radar-source-ledger-copy"><span>Coverage now</span><p>Every card links to its original posting. Location and eligibility stay exactly as supplied; neither is inferred.</p></div>
-        <div className="radar-source-list">{sourceBreakdown.map(item => <button type="button" key={item.name} onClick={() => { setSource(item.name); setShown(18) }}><strong>{item.name}</strong><span>{item.count} roles</span><small>{item.newCount ? `${item.newCount} in 48h · ` : ""}{item.origin === "Direct company feed" ? "Direct" : item.origin === "Commercial job API" ? "API" : "Public"}</small></button>)}</div>
+        <div className="radar-source-ledger-copy"><span>Where these roles come from</span><p>Every card links to its original posting. Location and eligibility stay exactly as supplied; neither is inferred.</p></div>
+        <div className="radar-source-list">{sourceBreakdown.map(item => <button type="button" key={item.name} onClick={() => { setSource(item.name); setPage(1) }}><strong>{item.name}</strong><span>{item.count} roles</span><small>{item.newCount ? `${item.newCount} in 48h · ` : ""}{item.origin === "Direct company feed" ? "Direct" : item.origin === "Commercial job API" ? "API" : "Public"}</small></button>)}</div>
         <p className="radar-source-note">{glassdoorCount ? `${glassdoorIsCursor ? "Glassdoor via JSearch" : "Glassdoor API"} returned ${glassdoorCount} remote roles.` : "Glassdoor returned no remote roles in this refresh; it is not used to imply complete coverage."}</p>
       </aside>}
+      <aside className="radar-market-routes" aria-label="More places to explore">
+        <div><span>Broaden the search</span><p>These trusted boards are not counted above because they do not expose a general public feed for this tool.</p></div>
+        <nav>{marketRoutes.map(route => <a href={route.href} target="_blank" rel="noreferrer" key={route.name}><strong>{route.name}</strong><span>{route.description}</span><IconArrowUpRight size={16} /></a>)}</nav>
+      </aside>
       {error ? <div className="radar-message" role="status"><strong>Sources are unavailable right now.</strong><span>{error}</span><button type="button" onClick={() => void load()}>Try again</button></div> : <div className="radar-results" aria-live="polite">
         {isLoading ? Array.from({ length: 6 }, (_, index) => <div className="radar-skeleton" key={index} />) : visible.length ? visible.map(job => <article className={`radar-job ${job.origin === "Direct company feed" ? "is-direct" : ""} ${job.origin === "Commercial job API" ? "is-api" : ""}`} key={job.id}><div className="radar-job-main"><span className="radar-job-source">{job.origin === "Direct company feed" ? "Direct Ashby feed" : job.origin === "Commercial job API" ? (glassdoorIsCursor ? "Glassdoor via JSearch" : "Glassdoor API sample") : job.source}</span><h3>{job.title}</h3><p>{job.company} <i /> {job.location}</p>{data?.contextAvailable && <button type="button" className="radar-context-trigger" onClick={() => void loadCompanyContext(job.company)}>{contextLoading === job.company ? "Reading company context" : "Inspect company context"}</button>}</div><div className="radar-job-meta"><span>{job.category}</span><span>{job.type}</span><small>{relativeDate(job.publishedAt)}</small></div><a href={job.url} target="_blank" rel="noreferrer" aria-label={`Open ${job.title} at ${job.company}`}><IconArrowUpRight size={19} /></a></article>) : <div className="radar-empty"><IconBriefcase2 size={24} /><strong>No matching role in the current feed.</strong><p>Try another role family or a broader search.</p></div>}
       </div>}
-      {!isLoading && !error && matches.length > visible.length && <div className="radar-load-more"><span>Showing {visible.length} of {matches.length}</span><button type="button" onClick={() => setShown(current => current + 18)}>Show 18 more</button></div>}
+      {!isLoading && !error && matches.length > PAGE_SIZE && <nav className="radar-pagination" aria-label="Opportunity pages"><span>Showing {(currentPage - 1) * PAGE_SIZE + 1}–{Math.min(currentPage * PAGE_SIZE, matches.length)} of {matches.length}</span><div><button type="button" onClick={() => setPage(current => Math.max(1, current - 1))} disabled={currentPage === 1}>Previous</button>{pageOptions.map((item, index) => <span className="radar-pagination-item" key={item}>{index > 0 && item - pageOptions[index - 1] > 1 && <span className="radar-pagination-gap" aria-hidden="true">…</span>}<button type="button" onClick={() => setPage(item)} aria-current={currentPage === item ? "page" : undefined} className={currentPage === item ? "is-current" : ""}>{item}</button></span>)}<button type="button" onClick={() => setPage(current => Math.min(pageCount, current + 1))} disabled={currentPage === pageCount}>Next</button></div></nav>}
       {(companyContext || contextError) && <section className="radar-company-context" aria-live="polite"><button type="button" onClick={() => { setCompanyContext(null); setContextError("") }} aria-label="Close company context"><IconX size={17} /></button>{contextError ? <><span>Company context</span><strong>Context unavailable</strong><p>{contextError}</p></> : companyContext && <><span>{companyContext.provider}</span><div><h3>{companyContext.company.name}</h3>{companyContext.company.industry && <p>{companyContext.company.industry}</p>}</div><dl><div><dt>Overall rating</dt><dd>{companyContext.company.rating ?? "Not supplied"}</dd></div><div><dt>Reviews</dt><dd>{companyContext.company.reviewCount || "Not supplied"}</dd></div><div><dt>Salary records</dt><dd>{companyContext.company.salaryCount || "Not supplied"}</dd></div><div><dt>Career opportunities</dt><dd>{companyContext.company.careerOpportunities ?? "Not supplied"}</dd></div></dl>{companyContext.company.sourceUrl && <a href={companyContext.company.sourceUrl} target="_blank" rel="noreferrer">Open source <IconArrowUpRight size={16} /></a>}</>}</section>}
+      <aside className="radar-search-support" aria-label="Useful job-search tools"><div><span>Keep the search moving</span><p>These tools help with discovery and preparation; they do not alter or rank the roles in this radar.</p></div><div>{searchHelpers.map(group => <section key={group.label}><h3>{group.label}</h3><ul>{group.links.map(link => <li key={link.name}><a href={link.href} target="_blank" rel="noreferrer">{link.name}<IconArrowUpRight size={14} /></a></li>)}</ul></section>)}</div></aside>
       <footer className="radar-provenance"><span>Sources currently returning listings: {data?.sources.join(", ") || "Reading feeds"}.</span><span>Listings link to the original source.</span></footer>
     </div>
   </section>
