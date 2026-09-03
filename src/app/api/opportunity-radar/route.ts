@@ -56,7 +56,7 @@ function categoryFor(title: string, sourceCategory = "") {
   if (/marketing|growth|demand gen|demand generation|seo|sem\b|paid media|performance marketing|lifecycle|acquisition|crm|email marketing|social media|community manager|communications|market research/.test(text)) return "Marketing & Growth"
   if (/developer relations|devrel|technical writer|solutions architect|developer advocate/.test(text)) return "Developer Experience"
   if (/security|privacy|identity|trust/.test(text)) return "Security"
-  if (/devops|sre|platform|cloud|infrastructure|systems engineer/.test(text)) return "Platform & Cloud"
+  if (/devops|sre|platform|cloud|infrastructure|systems engineer/.test(text)) return "Cloud & Platform"
   if (/data|machine learning|\bml\b|artificial intelligence|\bai\b|analytics|scientist/.test(text)) return "Data & AI"
   if (/engineer|developer|frontend|front-end|backend|back-end|software|quality assurance|\bqa\b/.test(text)) return "Engineering"
   return "Technology"

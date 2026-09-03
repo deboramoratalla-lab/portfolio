@@ -8,15 +8,6 @@ type RadarData = { jobs: Opportunity[]; updatedAt: string; sources: string[]; gl
 type CompanyContext = { provider: string; retrievedAt: string; company: { name: string; industry: string | null; rating: number | null; reviewCount: number; salaryCount: number; careerOpportunities: number | null; culture: number | null; workLifeBalance: number | null; sourceUrl: string | null } }
 
 const featuredCategories = ["All opportunities", "Product, UX & Research", "Creative & Brand", "Marketing & Growth", "Engineering", "Data & AI", "Cloud & Platform", "Developer Experience", "Security", "Product & Operations"]
-const marketRoutes = [
-  { name: "EURES", description: "Official European labour-market network", href: "https://eures.europa.eu/index_en" },
-  { name: "Wellfound", description: "Startup roles and company context", href: "https://wellfound.com/jobs" },
-  { name: "Get on Board", description: "Curated technology roles across markets", href: "https://www.getonbrd.com/jobs" },
-  { name: "Quibit", description: "Technology roles with region and contract filters", href: "https://www.qibit.tech/" },
-  { name: "Torre", description: "Global remote work across technical disciplines", href: "https://torre.co/es" },
-  { name: "Hireline", description: "Technology, data and security roles", href: "https://hireline.io/mx" },
-  { name: "Working Nomads", description: "Curated remote work", href: "https://www.workingnomads.com/jobs" },
-]
 const searchHelpers = [
   { label: "Discover earlier", links: [{ name: "Scoutify", href: "https://scoutify.com" }, { name: "LinkedIn job alerts", href: "https://www.linkedin.com/jobs" }, { name: "Google Alerts", href: "https://www.google.com/alerts" }] },
   { label: "Compare a role to your experience", links: [{ name: "Teal", href: "https://www.tealhq.com" }, { name: "Pronto", href: "https://www.gopronto.co" }] },
@@ -143,11 +134,6 @@ export function OpportunityRadarDemo() {
   const contractOptions = useMemo(() => ["Any contract", ...Array.from(new Set((data?.jobs || []).map(job => contractFor(job.type)))).filter(item => item !== "Not specified"), "Not specified"], [data])
   const locationScopeOptions = useMemo(() => ["Any location scope", ...Array.from(new Set((data?.jobs || []).map(job => locationScopeFor(job.location))))], [data])
   useEffect(() => { if (page > pageCount) setPage(pageCount) }, [page, pageCount])
-  const sourceBreakdown = useMemo(() => availableSources.map(name => {
-    const jobs = (data?.jobs || []).filter(job => job.source === name)
-    return { name, count: jobs.length, newCount: jobs.filter(job => job.publishedAt && Date.now() - new Date(job.publishedAt).getTime() <= 48 * 3600000).length, origin: jobs[0]?.origin || "Public feed" }
-  }), [availableSources, data])
-  const glassdoorCount = data?.jobs.filter(job => job.origin === "Commercial job API").length || 0
   const glassdoorIsCursor = data?.glassdoorProvider === "JSearch cursor"
 
   return <section className="opportunity-radar" id="opportunity-radar" aria-labelledby="radar-title">
@@ -170,15 +156,6 @@ export function OpportunityRadarDemo() {
         <details className="radar-advanced-filters"><summary>Source and sorting options</summary><div className="radar-select-row"><label><span>Source type</span><select value={origin} onChange={event => { setOrigin(event.target.value as typeof origin); setPage(1) }}><option>All sources</option><option>Direct company feed</option><option>Commercial job API</option><option>Public feed</option></select></label><label><span>Network</span><select value={source} onChange={event => { setSource(event.target.value as typeof source); setPage(1) }}><option>All networks</option>{availableSources.map(item => <option key={item}>{item}</option>)}</select></label><label><span>Order</span><select value={sort} onChange={event => { setSort(event.target.value as typeof sort); setPage(1) }}><option value="recent">Newest first</option><option value="source">Direct feeds first</option></select></label></div></details>
       </div>
       <div className="radar-summary"><span>{data ? `${matches.length} roles to explore` : "Reading sources"}</span><span>{data ? `${availableSources.length} live networks` : ""}</span><span>{data?.updatedAt ? `Checked ${new Intl.DateTimeFormat("en", { hour: "2-digit", minute: "2-digit" }).format(new Date(data.updatedAt))}` : ""}</span></div>
-      {!isLoading && data && <aside className="radar-source-ledger" aria-label="Source coverage">
-        <div className="radar-source-ledger-copy"><span>Where these roles come from</span><p>Every card links to its original posting. Location and eligibility stay exactly as supplied; neither is inferred.</p></div>
-        <div className="radar-source-list">{sourceBreakdown.map(item => <button type="button" key={item.name} onClick={() => { setSource(item.name); setPage(1) }}><strong>{item.name}</strong><span>{item.count} roles</span><small>{item.newCount ? `${item.newCount} in 48h · ` : ""}{item.origin === "Direct company feed" ? "Direct" : item.origin === "Commercial job API" ? "API" : "Public"}</small></button>)}</div>
-        <p className="radar-source-note">{glassdoorCount ? `${glassdoorIsCursor ? "Glassdoor via JSearch" : "Glassdoor API"} returned ${glassdoorCount} remote roles.` : "Glassdoor returned no remote roles in this refresh; it is not used to imply complete coverage."}</p>
-      </aside>}
-      <aside className="radar-market-routes" aria-label="More places to explore">
-        <div><span>Broaden the search</span><p>These trusted boards are not counted above because they do not expose a general public feed for this tool.</p></div>
-        <nav>{marketRoutes.map(route => <a href={route.href} target="_blank" rel="noreferrer" key={route.name}><strong>{route.name}</strong><span>{route.description}</span><IconArrowUpRight size={16} /></a>)}</nav>
-      </aside>
       {error ? <div className="radar-message" role="status"><strong>Sources are unavailable right now.</strong><span>{error}</span><button type="button" onClick={() => void load()}>Try again</button></div> : <div className="radar-results" aria-live="polite">
         {isLoading ? Array.from({ length: 6 }, (_, index) => <div className="radar-skeleton" key={index} />) : visible.length ? visible.map(job => <article className={`radar-job ${job.origin === "Direct company feed" ? "is-direct" : ""} ${job.origin === "Commercial job API" ? "is-api" : ""}`} key={job.id}><div className="radar-job-main"><span className="radar-job-source">{job.origin === "Direct company feed" ? "Direct Ashby feed" : job.origin === "Commercial job API" ? (glassdoorIsCursor ? "Glassdoor via JSearch" : "Glassdoor API sample") : job.source}</span><h3>{job.title}</h3><p>{job.company} <i /> {job.location}</p>{data?.contextAvailable && <button type="button" className="radar-context-trigger" onClick={() => void loadCompanyContext(job.company)}>{contextLoading === job.company ? "Reading company context" : "Inspect company context"}</button>}</div><div className="radar-job-meta"><span>{job.category}</span><span>{job.type}</span><small>{relativeDate(job.publishedAt)}</small></div><a href={job.url} target="_blank" rel="noreferrer" aria-label={`Open ${job.title} at ${job.company}`}><IconArrowUpRight size={19} /></a></article>) : <div className="radar-empty"><IconBriefcase2 size={24} /><strong>No matching role in the current feed.</strong><p>Try another role family or a broader search.</p></div>}
       </div>}
