@@ -55,9 +55,9 @@ export async function GET(request: NextRequest) {
         version: "published",
       },
       evaluation: {
-        dataset: "relay-release-fixtures-v1",
+        dataset: "support-agent-eval-v1",
         fixtureCount: Array.isArray(workflowResult.comparison) ? workflowResult.comparison.length : 0,
-        provenance: "Synthetic support fixtures returned by the published n8n workflow",
+        provenance: "Synthetic support conversations evaluated through n8n with human-review-ready verdicts",
       },
       proxyLatencyMs: Math.round(performance.now() - startedAt),
     }, { headers: { "Cache-Control": "no-store" } })

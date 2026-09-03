@@ -95,7 +95,7 @@ export function WorkflowImpactPreview() {
   const traceById = new Map(result?.trace.map((node) => [node.id, node.status]))
 
   return <section className={styles.reviewSection} id="workflow-impact">
-    <header className={styles.reviewIntro}><span>Agent release control</span><h2>Test the agent before it ships.</h2><p>Inspect the published n8n control flow, replay a proposed change and follow the evidence behind its release decision.</p></header>
+    <header className={styles.reviewIntro}><span>Agent quality loop</span><h2>Test the support agent before it ships.</h2><p>Replay realistic customer conversations, inspect the agent’s trajectory and turn every failure into a reviewable quality signal.</p></header>
     <div className={styles.reviewApp}>
       <header className={styles.reviewBar}>
         <div className={styles.productIdentity}><span className={styles.reviewLogo}><IconHierarchy size={20} /></span><span><strong>Relay agent review</strong><small>Governed AI Support Agent</small></span></div>
@@ -103,8 +103,8 @@ export function WorkflowImpactPreview() {
         <button type="button" onClick={runReplay} disabled={running} aria-describedby="replay-status"><IconPlayerPlay size={17} />{running ? "Running through n8n…" : "Run replay"}</button>
       </header>
       <div className={styles.reviewBody}>
-        <aside className={styles.changeList}>
-          <header><span>Replay setup</span><h3>Scenario to test</h3><p>Choose one synthetic release fixture. The evaluation never touches customer data.</p></header>
+          <aside className={styles.changeList}>
+          <header><span>Evaluation setup</span><h3>Scenario to test</h3><p>Choose one synthetic support fixture. The evaluation never touches customer data.</p></header>
           <div className={styles.scenarioOptions} role="radiogroup" aria-label="Scenario to replay">{scenarioOrder.map((key) => <button id={`scenario-${key}`} className={styles[key]} type="button" role="radio" key={key} aria-checked={version === key} tabIndex={version === key ? 0 : -1} onKeyDown={(event) => moveScenario(event, key)} onClick={() => chooseScenario(key)}><span className={styles.radioMark} aria-hidden="true"><i /></span><span className={styles.changeSymbol}><IconFileDiff size={17} /></span><span className={styles.scenarioCopy}><strong>{states[key].label}</strong><small>{states[key].path}</small></span><span className={styles.changeImpact}><strong>{states[key].impact}</strong><small>{version === key ? "Selected" : "Select"}</small></span></button>)}</div>
           <footer><IconShieldCheck size={19} /><span><strong>Evidence boundaries</strong><small><b>Live</b> n8n · <b>Synthetic</b> fixtures · <b>Mocked</b> writes</small></span></footer>
         </aside>

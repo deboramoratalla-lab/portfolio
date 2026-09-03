@@ -33,9 +33,9 @@ export type ReplayReceipt = {
     version: "published"
   }
   evaluation: {
-    dataset: "relay-release-fixtures-v1"
+    dataset: "support-agent-eval-v1"
     fixtureCount: 3
-    provenance: "Synthetic server fixtures evaluated through n8n"
+    provenance: "Synthetic support conversations evaluated through n8n with human-review-ready verdicts"
   }
   risk: "low" | "high" | "blocked"
   approvalRequired: boolean
