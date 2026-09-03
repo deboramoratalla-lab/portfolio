@@ -7,6 +7,7 @@ export type Project = {
   problem?: string
   complexity?: string
   ownership?: string
+  outcome?: string
   tags: string[]
   accent: string
   cover: string
@@ -55,7 +56,7 @@ export const projects: Project[] = [
     strapline: "A budgeting product where status had become a coordination problem.",
     problem: "Finance teams could see the process, but not what was blocked or who owned the next move.",
     complexity: "Distributed approvals, dependencies and regional roles.",
-    ownership: "Framed the workflow problem and defined the reusable rule system.",
+    ownership: "Framed the workflow problem and defined the reusable rule system.", outcome: "Adopted by SUEZ for the FY2026 budgeting cycle.",
     tags: ["Product design", "Enterprise workflow"], accent: "#ffe67c",
     cover: "/media/suez-enterprise-planning-cover.png", hero: "/media/fL9YsjcUWjmuDS7xICXN72fDkpY.png",
     role: "Solo Senior Product Designer", context: "SUEZ × Board", timeline: "6 months",
@@ -90,7 +91,7 @@ export const projects: Project[] = [
     strapline: "Keeping product, design and code in sync as the system grows.",
     problem: "Component drift made each release slower to document and harder to keep aligned.",
     complexity: "Figma, code, tokens, Storybook and a 28,000-instance product surface.",
-    ownership: "Led foundations, API reduction and the bridge between design and implementation.", tags: ["Design system", "AI workflows"], accent: "#bce7f0",
+    ownership: "Led foundations, API reduction and the bridge between design and implementation.", outcome: "Reduced 55 public concepts to 38 and cut documentation from 45 minutes to under 2.", tags: ["Design system", "AI workflows"], accent: "#bce7f0",
     cover: "/media/7WRS2B1Dd4dOwKjpPVAjEylA44.png", hero: "/media/8E3h5foMKSIxJzUkdIrbzLfEFgM.png",
     role: "Lead Product Designer", context: "Product, Design ×2, Engineering ×2", timeline: "Ongoing",
     meta: [["Role:","Lead Product Designer · Design Engineer"],["Team:","Product Manager · Product Designers ×3 · Engineers ×2"],["Stack:","React · TypeScript · Storybook · Style Dictionary · Figma Plugins"],["My ownership:","Led foundations, API reduction and the bridge between design and implementation"]],
@@ -138,7 +139,7 @@ export const projects: Project[] = [
     strapline: "Turning one feature-led product into three role-based experiences.",
     problem: "One feature-led product was serving three jobs with overlapping paths.",
     complexity: "Role-specific onboarding, shared capabilities and progressive personalisation.",
-    ownership: "Led product architecture and the 12-month redesign with design and engineering.", tags: ["Product design", "Sports"], accent: "#e5f4d6",
+    ownership: "Led product architecture and the 12-month redesign with design and engineering.", outcome: "Reduced decisions before a first session by 38%.", tags: ["Product design", "Sports"], accent: "#e5f4d6",
     cover: "/media/tap-mindset-product-cover.png", hero: "/media/8vYUA69ov7JIByTeoOntKRg1Bb4.png",
     role: "Lead Product Designer", context: "Product Design ×2 · Engineering ×2", timeline: "12 months",
     meta: [["Role:","Lead Product Designer · Product direction"],["Team:","Product Designers ×2 · Engineers ×2"],["Stack:","Figma · Notion · iOS-first product"],["My ownership:","Led product architecture, direction, critique and final design decisions"]],
@@ -181,7 +182,7 @@ export const projects: Project[] = [
     strapline: "An autonomous commuting agent that knows when to act — and when to wait.",
     problem: "A narrow top-up brief hid the larger burden of managing a changing commute.",
     complexity: "Goal protection, proactive suggestions, consent and uncertain network conditions.",
-    ownership: "Defined the autonomy model, journey logic and interaction prototype.", tags: ["Agentic design", "Mobility"], accent: "#ffe9ca",
+    ownership: "Defined the autonomy model, journey logic and interaction prototype.", outcome: "Validated three trust-critical moments across 12 commuting scenarios.", tags: ["Agentic design", "Mobility"], accent: "#ffe9ca",
     cover: "/media/fluxy-cover.png", hero: "/media/2b7YNCK8WXiTCdQRa84XPV7867M.png",
     role: "Lead Product Designer", context: "Independent concept", timeline: "2026",
     meta: [["Role","Lead Product Designer · AI Product Designer"],["Team","Independent concept · End-to-end ownership"],["Stack","Figma · React prototype · Vercel"],["My ownership","Defined the autonomy model, journey logic and interaction prototype"]],
@@ -214,7 +215,7 @@ export const projects: Project[] = [
     strapline: "A municipal operations surface that preserves context from overview to action.",
     problem: "Teams relied on Excel and separate service views to reconstruct the state of municipal operations.",
     complexity: "Four-level navigation, editable widgets, live data states and a grounded contextual assistant.",
-    ownership: "Defined the product model, information architecture, interaction rules and working POC.",
+    ownership: "Defined the product model, information architecture, interaction rules and working POC.", outcome: "Replaced an Excel-led process with one operational surface for 15 internal workers.",
     tags: ["Product design", "Design engineering"], accent: "#bcffff",
     cover: "/media/civeo-mockup.png", hero: "/media/civeo-dashboard.png",
     role: "POC Product Designer", context: "Internal teams · municipal operations", timeline: "Exploratory POC",

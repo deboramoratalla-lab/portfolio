@@ -181,7 +181,24 @@ export function generateStaticParams() { return labEntries.map(entry => ({ slug:
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const entry = getLabEntry((await params).slug)
-  return entry ? { title: entry.title, description: entry.summary } : {}
+  if (!entry) return {}
+  const url = `https://deboramoratalla.com/lab/${entry.slug}`
+  const image = entry.slug === "workflow-impact-preview"
+    ? "https://deboramoratalla.com/lab/workflow-impact-preview/opengraph-image?v=2"
+    : "https://deboramoratalla.com/opengraph-image"
+  return {
+    title: entry.title,
+    description: entry.summary,
+    alternates: { canonical: url },
+    openGraph: {
+      title: entry.title,
+      description: entry.summary,
+      url,
+      type: "article",
+      images: [{ url: image, width: 1200, height: 630, alt: entry.title }],
+    },
+    twitter: { card: "summary_large_image", title: entry.title, description: entry.summary, images: [image] },
+  }
 }
 
 function ArticleActions({ slug }: { slug: string }) {

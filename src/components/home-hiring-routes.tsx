@@ -14,8 +14,8 @@ export function HomePortfolioGuide() {
   return (
     <section className="hiring-routes" aria-labelledby="hiring-routes-title">
       <div className="hiring-routes__intro">
-        <p id="hiring-routes-title">A way in</p>
-        <span>Ask Debora connects a question to the case, chapter and decision that answer it.</span>
+        <p id="hiring-routes-title">Start somewhere</p>
+        <span>Pick a question and I’ll take you to the project, decision or prototype behind the answer.</span>
       </div>
       <div className="hiring-routes__actions" aria-label="Portfolio routes">
         {routes.map(([label, prompt]) => (
