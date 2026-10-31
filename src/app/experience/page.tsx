@@ -5,7 +5,7 @@ import { ExperienceMap } from "@/components/experience-map"
 import { EditorialSectionHeader } from "@/components/editorial-section-header"
 import { SupportCard } from "@/components/support-card"
 
-export const metadata: Metadata = { title: "Experience - Debora Moratalla", description: "Professional experience, education and languages of product designer and design engineer Debora Moratalla." }
+export const metadata: Metadata = { title: "Experience", description: "Professional experience, education and languages of product designer and design engineer Debora Moratalla." }
 
 export default function ExperiencePage() {
   return <main className="editorial-page experience-page">

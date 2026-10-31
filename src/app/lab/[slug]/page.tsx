@@ -214,6 +214,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 }
 
 function ArticleActions({ slug }: { slug: string }) {
+  if (slug === "agent-quality-loop") return null
   if (slug === "decision-handover") return <ArrowRouteLink variant="secondary" tone="purple" href="#decision-handover">Open the prototype</ArrowRouteLink>
   if (slug === "european-tech-opportunity-radar") return <ArrowRouteLink variant="secondary" tone="purple" href="#opportunity-radar">Open the radar</ArrowRouteLink>
   if (slug === "workflow-impact-preview") return <>
