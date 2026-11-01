@@ -119,6 +119,6 @@ export function FluxyCase({ project }: { project: Project }) {
       <blockquote className="fx-close">Software can monitor, prepare and recommend. Consequential decisions remain human.</blockquote>
     </section>
 
-    <CaseMoreWorks previous={{href:"/projects/tap-mindset",title:"TAP Mindset",description:"Rebuilding a fragmented product around role, intent and shared logic."}} next={{href:"/projects/saas",title:"Board",description:"Making workflow state visible across a complex enterprise system."}} />
+    <CaseMoreWorks previous={{ href: "/projects/tap-mindset-ds", title: "TAP Design System", description: "Building the system that keeps product, design and code in sync." }} next={{ href: "/projects/tap-mindset", title: "TAP Mindset", description: "Rebuilding a fragmented product around role, intent and shared logic." }} />
   </main>
 }

@@ -10,7 +10,7 @@ import { MotionSafeVideo } from "@/components/motion-safe-video"
 
 export function TapDsCase({ project }: { project: Project }) {
   return <main className="tap-ds" style={{ "--accent": project.accent } as React.CSSProperties}>
-    <CaseHero className="tap-ds-hero" kickerClassName="tap-ds-context" kicker={<><span>[CASE STUDY / 02]</span><span>&gt; DESIGN SYSTEM</span><i /><span className="tap-ds-context-links">{(project.heroLinks ?? (project.heroLink ? [project.heroLink] : [])).map(([label, href], index) => <ArrowRouteLink variant="primary" tone={index % 2 ? "green" : "purple"} href={href} target="_blank" rel="noreferrer" key={href}>{label}</ArrowRouteLink>)}</span></>} title={project.title} premise={project.premise} decision="Turn the decisions the team repeats into foundations that are inspectable in both code and Figma." meta={<div className="tap-ds-meta case-hero-meta-unified">
+    <CaseHero className="tap-ds-hero" kickerClassName="tap-ds-context" kicker={<><span>[CASE STUDY / 03]</span><span>&gt; DESIGN SYSTEM</span><i /><span className="tap-ds-context-links">{(project.heroLinks ?? (project.heroLink ? [project.heroLink] : [])).map(([label, href], index) => <ArrowRouteLink variant="primary" tone={index % 2 ? "green" : "purple"} href={href} target="_blank" rel="noreferrer" key={href}>{label}</ArrowRouteLink>)}</span></>} title={project.title} premise={project.premise} decision="Turn the decisions the team repeats into foundations that are inspectable in both code and Figma." meta={<div className="tap-ds-meta case-hero-meta-unified">
         {project.meta?.slice(0,3).map(([label,value]) => <div key={label}><span>{label.replace(":","")}</span><p>{value}</p></div>)}
         <div className="tap-ds-ownership"><span>MY OWNERSHIP</span><p>{project.ownership}</p></div>
       </div>} />
@@ -33,6 +33,6 @@ export function TapDsCase({ project }: { project: Project }) {
         </article>)}
       </div>
     </CaseChapter>)}
-    <CaseMoreWorks previous={{ href:"/projects/saas",title:"Board",description:"Making workflow state visible across a €1.2B budgeting system." }} next={{ href:"/projects/tap-mindset",title:"TAP Mindset",description:"Reframing one product into three role-based experiences." }} />
+    <CaseMoreWorks previous={{ href: "/projects/saas", title: "Board", description: "Making workflow state visible across a €1.2B budgeting system." }} next={{ href: "/projects/fluxy", title: "Fluxy", description: "A commuting agent that steps in only when the journey changes." }} />
   </main>
 }

@@ -23,7 +23,7 @@ const widgetActions = [
 
 export function CiveoCase() {
   return <main className="civeo-page">
-    <CaseHero className="civeo-hero" kickerClassName="civeo-hero-kicker" kicker={<><span>[CASE STUDY / 05]</span><span>&gt; MUNICIPAL OPERATIONS</span><i /><ArrowRouteLink variant="primary" tone="purple" href="/civeo/index.html" target="_blank" rel="noreferrer">Open product</ArrowRouteLink></>} title="Civeo /" premiseClassName="civeo-hero-premise" premise="I turned an Excel-led service process into one readable operating surface for internal teams working with municipal diputaciones." decision="Preserve the operational context from overview to action, even when a live source cannot respond." meta={<dl className="civeo-hero-meta case-hero-meta-unified">
+    <CaseHero className="civeo-hero" kickerClassName="civeo-hero-kicker" kicker={<><span>[CASE STUDY / 06]</span><span>&gt; MUNICIPAL OPERATIONS</span><i /><ArrowRouteLink variant="primary" tone="purple" href="/civeo/index.html" target="_blank" rel="noreferrer">Open product</ArrowRouteLink></>} title="Civeo /" premiseClassName="civeo-hero-premise" premise="I turned an Excel-led service process into one readable operating surface for internal teams working with municipal diputaciones." decision="Preserve the operational context from overview to action, even when a live source cannot respond." meta={<dl className="civeo-hero-meta case-hero-meta-unified">
         <div><dt>Role</dt><dd>Product Designer</dd></div>
         <div><dt>Users</dt><dd>15 internal workers as users and testers</dd></div>
         <div><dt>Stack</dt><dd>HTML · CSS · JavaScript · Leaflet · Open-Meteo</dd></div>
@@ -102,6 +102,6 @@ export function CiveoCase() {
 
     <section className="civeo-section civeo-close"><CaseSectionLabel number="04.03" dark className="civeo-label">What this proved</CaseSectionLabel><b>A shared operational model people could inspect and challenge.</b><hr /><h2>The interface became useful when it stopped asking people to reconstruct the system in their heads.</h2></section>
 
-    <CaseMoreWorks previous={{ href: "/projects/fluxy", title: "Fluxy", description: "A responsible agent for everyday mobility." }} next={{ href: "/projects/saas", title: "Board", description: "Making workflow state visible across enterprise planning." }} />
+    <CaseMoreWorks previous={{ href: "/projects/tap-mindset", title: "TAP Mindset", description: "Rebuilding a fragmented product around role, intent and shared logic." }} next={{ href: "/projects/seamline", title: "Seamline", description: "An agent that keeps a design system in sync, and knows when to stop." }} />
   </main>
 }

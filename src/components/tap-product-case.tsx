@@ -30,7 +30,7 @@ const roles = [
 export function TapProductCase({ project }: { project: Project }) {
   return <main className="tap-story">
     <CaseHero className="tap-story-hero" kickerClassName="tap-story-kicker" kicker={<>
-        <span>[CASE STUDY / 03]</span><span>&gt; PRODUCT REDESIGN</span><i />
+        <span>[CASE STUDY / 05]</span><span>&gt; PRODUCT REDESIGN</span><i />
         <nav className="tap-story-store-links" aria-label="Download TAP Mindset">
           <ArrowLink variant="primary" tone="purple" href="https://apps.apple.com/il/app/tap-mindset/id6443626525" target="_blank" rel="noreferrer">App Store</ArrowLink>
           <ArrowLink variant="primary" tone="green" href="https://play.google.com/store/apps/details?id=com.tap_mindset&hl=es_419&pli=1" target="_blank" rel="noreferrer">Google Play</ArrowLink>
@@ -173,6 +173,6 @@ export function TapProductCase({ project }: { project: Project }) {
       <CaseClosingReveal>The redesign became credible when the product stopped needing us to explain how its pieces fitted together.</CaseClosingReveal>
     </section>
 
-    <CaseMoreWorks previous={{href:"/projects/tap-mindset-ds",title:"TAP Design System",description:"Building the system that keeps product, design and code in sync."}} next={{href:"/projects/fluxy",title:"Fluxy",description:"Designing an agent that earns autonomy through legibility and consent."}} />
+    <CaseMoreWorks previous={{ href: "/projects/fluxy", title: "Fluxy", description: "A commuting agent that steps in only when the journey changes." }} next={{ href: "/projects/civeo", title: "Civeo", description: "A municipal operations surface that preserves context from overview to action." }} />
   </main>
 }

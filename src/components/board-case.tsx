@@ -174,6 +174,6 @@ export function BoardCase() {
       <h2>Enterprise software becomes useful when it makes the work between people visible.</h2>
     </section>
 
-    <CaseMoreWorks previous={{ href: "/projects/fluxy", title: "Fluxy", description: "A responsible travel agent for everyday mobility" }} next={{ href: "/projects/tap-mindset-ds", title: "TAP Design System", description: "A coded system connecting design and development" }} />
+    <CaseMoreWorks previous={{ href: "/projects/seamline", title: "Seamline", description: "An agent that keeps a design system in sync, and knows when to stop." }} next={{ href: "/projects/tap-mindset-ds", title: "TAP Design System", description: "Building the system that keeps product, design and code in sync." }} />
   </main>
 }

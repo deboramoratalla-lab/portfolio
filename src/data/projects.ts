@@ -58,7 +58,7 @@ export const projects: Project[] = [
     complexity: "Five kinds of change, three models, a real pull request and a person who has the final word.",
     ownership: "Solo: designed the agent's autonomy, built it end to end and tested where it breaks.", outcome: "6/6 breaks found in a blind test, 0 false alarms. Full PR loop running on GitHub's Primer.",
     tags: ["AI agents", "Design systems"], accent: "#d9d4ff",
-    cover: "/media/seamline-figma-cover.jpg", hero: "/media/seamline-agent-map-still.jpg",
+    cover: "/media/seamline-cover-mockup.jpg", hero: "/media/seamline-agent-map-still.jpg",
     role: "Solo · Product design, agent behaviour, build", context: "Nebius × NVIDIA Global AI Hackathon 2026", timeline: "3 weeks",
     meta: [["Role","Solo · design, agent behaviour and build"],["Context","Nebius × NVIDIA Global AI Hackathon 2026 · results Jan 2027"],["Stack","Nemotron on Nebius Token Factory · TypeScript · GitHub Actions · Figma"],["Time","3 weeks, October 2026"]],
     heroLink: ["Open the console", "https://seamline-five.vercel.app/"],
@@ -68,7 +68,7 @@ export const projects: Project[] = [
     chapters: []
   },
   {
-    slug: "saas", number: "01", title: "Enterprise Planning /", shortTitle: "Board",
+    slug: "saas", number: "02", title: "Enterprise Planning /", shortTitle: "Board",
     strapline: "A budgeting product where status had become a coordination problem.",
     problem: "Finance teams could see the process, but not what was blocked or who owned the next move.",
     complexity: "Distributed approvals, dependencies and regional roles.",
@@ -103,7 +103,7 @@ export const projects: Project[] = [
     ]
   },
   {
-    slug: "tap-mindset-ds", number: "02", title: "TAP Mindset Design System & AI Workflow /", shortTitle: "TAP Design System",
+    slug: "tap-mindset-ds", number: "03", title: "TAP Mindset Design System & AI Workflow /", shortTitle: "TAP Design System",
     strapline: "Keeping product, design and code in sync as the system grows.",
     problem: "Component drift made each release slower to document and harder to keep aligned.",
     complexity: "Figma, code, tokens, Storybook and a 28,000-instance product surface.",
@@ -151,7 +151,40 @@ export const projects: Project[] = [
     ]
   },
   {
-    slug: "tap-mindset", number: "03", title: "TAP Mindset — Product Redesign /", shortTitle: "TAP Mindset",
+    slug: "fluxy", number: "04", title: "Fluxy — Product Design Case Study /", shortTitle: "Fluxy",
+    strapline: "An autonomous commuting agent that knows when to act — and when to wait.",
+    problem: "A narrow top-up brief hid the larger burden of managing a changing commute.",
+    complexity: "Goal protection, proactive suggestions, consent and uncertain network conditions.",
+    ownership: "Defined the autonomy model, journey logic and interaction prototype.", outcome: "Validated three trust-critical moments across 12 commuting scenarios.", tags: ["Agentic design", "Mobility"], accent: "#ffe9ca",
+    cover: "/media/fluxy-cover.png", hero: "/media/2b7YNCK8WXiTCdQRa84XPV7867M.png",
+    role: "Lead Product Designer", context: "Independent concept", timeline: "2026",
+    meta: [["Role","Lead Product Designer · AI Product Designer"],["Team","Independent concept · End-to-end ownership"],["Stack","Figma · React prototype · Vercel"],["My ownership","Defined the autonomy model, journey logic and interaction prototype"]],
+    heroLink: ["Explore the agent", "/projects/fluxy/agent"],
+    premiseLabel: "The premise",
+    premise: "I turned a narrow online top-up brief into Fluxy: an autonomous commuting agent that protects the passenger’s goal, prepares decisions and intervenes only when circumstances change.",
+    tldr: ["Reframed a top-up brief around the full commuting burden", "Defined an agentic interaction model", "Designed autonomy around consent and transparency", "Prototyped three end-to-end moments of trust"],
+    chapters: [
+      { number: "01", title: "The mismatch", thesis: "A top-up problem was only the visible edge of a much larger burden.", tone: "light", sections: [
+        { tone: "light", layout: "compact", title: "", body: ["Looking across the commute exposed an accumulation of small, repetitive decisions. None was difficult alone. Together they created the cognitive load: checking, anticipating, comparing, remembering and recovering."], points: [["Brief","Improve online top-ups."],["Observation","People manage the network continuously."],["Reframe","Protect the passenger’s goal."]], signals: [["Prepare","Check balance, weather and timing before leaving."],["Monitor","Watch delays, transfers and remaining time."],["React","Compare alternatives when the network changes."],["Recover","Re-plan the rest of the journey after disruption."]] }
+      ]},
+      { number: "02", title: "From route planner to agent", thesis: "The strategic move was a product that decides when interaction is necessary.", tone: "dark", sections: [
+        { tone: "dark", layout: "compact", title: "", body: ["Fluxy works in the background until the passenger’s objective is threatened. It observes context, evaluates options and prepares a recommendation. The interface appears at the decision boundary — not before."], points: [["Goal","Arrive at work by 08:45"],["Context","Balance, disruption and timing change"],["Agent","Fluxy evaluates and prepares options"],["Decision boundary","Passenger confirms consequential actions"]], statement: "The product’s value is not the number of decisions it automates. It is knowing which decisions should disappear, which can be prepared and which must remain human." },
+        { tone: "fluxy-panel", layout: "feature", eyebrow: "Interactive model", title: "See how Fluxy reasons before it intervenes.", body: ["The demo makes the agent’s operating model tangible: start with a passenger goal, introduce a change in context and see how Fluxy prepares a recommendation while keeping the final decision explicit."], embed: "https://fluxy-rho.vercel.app/", link: ["Open the agent in a new tab ↗", "https://fluxy-rho.vercel.app/"] }
+      ]},
+      { number: "03", title: "Designing responsible autonomy", thesis: "Trust needed an interaction model, not a reassuring tone of voice.", tone: "light", sections: [
+        { tone: "light", layout: "compact", title: "", body: ["An agent can only reduce effort if people understand what it is doing, why it intervenes and where their control begins. I turned those requirements into four rules used across the journey."], points: [["Invisible by default","Do not ask for attention when the goal remains achievable."],["Explain the trigger","Every intervention must reveal what changed."],["Prepare, don’t presume","Fluxy can recommend and stage an action; consequential choices require consent."],["Protect the goal","Optimise for the passenger’s objective, not simply the fastest route."]] },
+        { tone: "light", layout: "split", eyebrow: "Product leadership & AI process", title: "I treated the agent as a policy system, not a chat surface.", body: ["I translated fare policy, accessibility, operations and passenger trust into explicit autonomy rules, then used AI to simulate edge cases and generate auditable decision traces. The model accelerated scenario coverage; it did not define the boundaries. Payments, personal-data expansion and major journey changes always remained behind human approval."] }
+      ]},
+      { number: "04", title: "Proving the model", thesis: "Three moments tested whether an autonomous product could still feel understandable and controlled.", summary: "The prototype focused on moments with different levels of urgency and consequence. Together they tested whether Fluxy could be useful when quiet, persuasive when needed and transparent when asking for consent.", tone: "light", sections: [
+        { tone: "orange", layout: "feature", eyebrow: "Daily brief", title: "Build trust before disruption", body: ["A single morning view communicates the plan, confidence and anything worth knowing — without turning commuting into another dashboard."], media: "/media/Mmfb40qOiaxKtQrgIFMJi6A.png", caption: "One glance replaces four checks — balance, weather, timing and route confidence, before the passenger leaves home." },
+        { tone: "light", layout: "feature", eyebrow: "Smart recharge", title: "Autonomy stops at payment", body: ["Fluxy monitors balance and recommends a recharge only when necessary. It prepares the action; the passenger authorises the transaction."], media: "/media/3ZRShN2uu7UG2p8p8J3RXWpJg1U.png", caption: "Fluxy stages the top-up and shows why — but the payment button stays with the passenger. This is the autonomy boundary made visible." },
+        { tone: "fluxy-dark", layout: "feature", eyebrow: "Goal protection", title: "The objective survives change", body: ["When disruption threatens arrival, Fluxy explains what changed and recommends a new route in terms of the passenger’s priority."], media: "/media/1OrTKFTrcLckBt1fLOZU36fom5s.png", caption: "The route changes, but the arrival goal does not — the recommendation explains the trade-off and leaves the final choice with the passenger." },
+        { tone: "dark", layout: "results", eyebrow: "What the project demonstrated", title: "The strongest product decision was deciding when the product should disappear.", body: ["The challenge started with online top-ups and ended as an exploration of agentic commuting. The work was less about adding features than defining a boundary: software can monitor, prepare and recommend, but it must remain legible and return consequential decisions to the passenger."], metrics: [["5/6","Passengers understood why Fluxy intervened without additional explanation"],["6/6","Expected payment to require confirmation — the autonomy boundary was clear"],["12","Routine, disruption and low-balance scenarios tested"]] }
+      ]}
+    ]
+  },
+  {
+    slug: "tap-mindset", number: "05", title: "TAP Mindset — Product Redesign /", shortTitle: "TAP Mindset",
     strapline: "Turning one feature-led product into three role-based experiences.",
     problem: "One feature-led product was serving three jobs with overlapping paths.",
     complexity: "Role-specific onboarding, shared capabilities and progressive personalisation.",
@@ -194,40 +227,7 @@ export const projects: Project[] = [
     ]
   },
   {
-    slug: "fluxy", number: "04", title: "Fluxy — Product Design Case Study /", shortTitle: "Fluxy",
-    strapline: "An autonomous commuting agent that knows when to act — and when to wait.",
-    problem: "A narrow top-up brief hid the larger burden of managing a changing commute.",
-    complexity: "Goal protection, proactive suggestions, consent and uncertain network conditions.",
-    ownership: "Defined the autonomy model, journey logic and interaction prototype.", outcome: "Validated three trust-critical moments across 12 commuting scenarios.", tags: ["Agentic design", "Mobility"], accent: "#ffe9ca",
-    cover: "/media/fluxy-cover.png", hero: "/media/2b7YNCK8WXiTCdQRa84XPV7867M.png",
-    role: "Lead Product Designer", context: "Independent concept", timeline: "2026",
-    meta: [["Role","Lead Product Designer · AI Product Designer"],["Team","Independent concept · End-to-end ownership"],["Stack","Figma · React prototype · Vercel"],["My ownership","Defined the autonomy model, journey logic and interaction prototype"]],
-    heroLink: ["Explore the agent", "/projects/fluxy/agent"],
-    premiseLabel: "The premise",
-    premise: "I turned a narrow online top-up brief into Fluxy: an autonomous commuting agent that protects the passenger’s goal, prepares decisions and intervenes only when circumstances change.",
-    tldr: ["Reframed a top-up brief around the full commuting burden", "Defined an agentic interaction model", "Designed autonomy around consent and transparency", "Prototyped three end-to-end moments of trust"],
-    chapters: [
-      { number: "01", title: "The mismatch", thesis: "A top-up problem was only the visible edge of a much larger burden.", tone: "light", sections: [
-        { tone: "light", layout: "compact", title: "", body: ["Looking across the commute exposed an accumulation of small, repetitive decisions. None was difficult alone. Together they created the cognitive load: checking, anticipating, comparing, remembering and recovering."], points: [["Brief","Improve online top-ups."],["Observation","People manage the network continuously."],["Reframe","Protect the passenger’s goal."]], signals: [["Prepare","Check balance, weather and timing before leaving."],["Monitor","Watch delays, transfers and remaining time."],["React","Compare alternatives when the network changes."],["Recover","Re-plan the rest of the journey after disruption."]] }
-      ]},
-      { number: "02", title: "From route planner to agent", thesis: "The strategic move was a product that decides when interaction is necessary.", tone: "dark", sections: [
-        { tone: "dark", layout: "compact", title: "", body: ["Fluxy works in the background until the passenger’s objective is threatened. It observes context, evaluates options and prepares a recommendation. The interface appears at the decision boundary — not before."], points: [["Goal","Arrive at work by 08:45"],["Context","Balance, disruption and timing change"],["Agent","Fluxy evaluates and prepares options"],["Decision boundary","Passenger confirms consequential actions"]], statement: "The product’s value is not the number of decisions it automates. It is knowing which decisions should disappear, which can be prepared and which must remain human." },
-        { tone: "fluxy-panel", layout: "feature", eyebrow: "Interactive model", title: "See how Fluxy reasons before it intervenes.", body: ["The demo makes the agent’s operating model tangible: start with a passenger goal, introduce a change in context and see how Fluxy prepares a recommendation while keeping the final decision explicit."], embed: "https://fluxy-rho.vercel.app/", link: ["Open the agent in a new tab ↗", "https://fluxy-rho.vercel.app/"] }
-      ]},
-      { number: "03", title: "Designing responsible autonomy", thesis: "Trust needed an interaction model, not a reassuring tone of voice.", tone: "light", sections: [
-        { tone: "light", layout: "compact", title: "", body: ["An agent can only reduce effort if people understand what it is doing, why it intervenes and where their control begins. I turned those requirements into four rules used across the journey."], points: [["Invisible by default","Do not ask for attention when the goal remains achievable."],["Explain the trigger","Every intervention must reveal what changed."],["Prepare, don’t presume","Fluxy can recommend and stage an action; consequential choices require consent."],["Protect the goal","Optimise for the passenger’s objective, not simply the fastest route."]] },
-        { tone: "light", layout: "split", eyebrow: "Product leadership & AI process", title: "I treated the agent as a policy system, not a chat surface.", body: ["I translated fare policy, accessibility, operations and passenger trust into explicit autonomy rules, then used AI to simulate edge cases and generate auditable decision traces. The model accelerated scenario coverage; it did not define the boundaries. Payments, personal-data expansion and major journey changes always remained behind human approval."] }
-      ]},
-      { number: "04", title: "Proving the model", thesis: "Three moments tested whether an autonomous product could still feel understandable and controlled.", summary: "The prototype focused on moments with different levels of urgency and consequence. Together they tested whether Fluxy could be useful when quiet, persuasive when needed and transparent when asking for consent.", tone: "light", sections: [
-        { tone: "orange", layout: "feature", eyebrow: "Daily brief", title: "Build trust before disruption", body: ["A single morning view communicates the plan, confidence and anything worth knowing — without turning commuting into another dashboard."], media: "/media/Mmfb40qOiaxKtQrgIFMJi6A.png", caption: "One glance replaces four checks — balance, weather, timing and route confidence, before the passenger leaves home." },
-        { tone: "light", layout: "feature", eyebrow: "Smart recharge", title: "Autonomy stops at payment", body: ["Fluxy monitors balance and recommends a recharge only when necessary. It prepares the action; the passenger authorises the transaction."], media: "/media/3ZRShN2uu7UG2p8p8J3RXWpJg1U.png", caption: "Fluxy stages the top-up and shows why — but the payment button stays with the passenger. This is the autonomy boundary made visible." },
-        { tone: "fluxy-dark", layout: "feature", eyebrow: "Goal protection", title: "The objective survives change", body: ["When disruption threatens arrival, Fluxy explains what changed and recommends a new route in terms of the passenger’s priority."], media: "/media/1OrTKFTrcLckBt1fLOZU36fom5s.png", caption: "The route changes, but the arrival goal does not — the recommendation explains the trade-off and leaves the final choice with the passenger." },
-        { tone: "dark", layout: "results", eyebrow: "What the project demonstrated", title: "The strongest product decision was deciding when the product should disappear.", body: ["The challenge started with online top-ups and ended as an exploration of agentic commuting. The work was less about adding features than defining a boundary: software can monitor, prepare and recommend, but it must remain legible and return consequential decisions to the passenger."], metrics: [["5/6","Passengers understood why Fluxy intervened without additional explanation"],["6/6","Expected payment to require confirmation — the autonomy boundary was clear"],["12","Routine, disruption and low-balance scenarios tested"]] }
-      ]}
-    ]
-  },
-  {
-    slug: "civeo", number: "05", title: "Civeo — Municipal Operations /", shortTitle: "Civeo",
+    slug: "civeo", number: "06", title: "Civeo — Municipal Operations /", shortTitle: "Civeo",
     strapline: "A municipal operations surface that preserves context from overview to action.",
     problem: "Teams relied on Excel and separate service views to reconstruct the state of municipal operations.",
     complexity: "Four-level navigation, editable widgets, live data states and a grounded contextual assistant.",
