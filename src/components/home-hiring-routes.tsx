@@ -1,9 +1,9 @@
 "use client"
 
 const routes = [
-  ["What does the agent decide alone?", "Show me how Seamline decides what it can fix without a person"],
   ["What decision changed the product?", "Show me the product decision with the most downstream impact"],
   ["How did the system become real?", "Trace a design system from audit to code"],
+  ["What was tested in code?", "Show me a prototype that became a working product"],
 ]
 
 export function HomePortfolioGuide() {

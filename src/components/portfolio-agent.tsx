@@ -8,7 +8,6 @@ type Evidence = { label: string; href: string }
 type AgentAnswer = { title: string; body: string; evidence: Evidence[]; probe?: string; limitation?: string; nextQuestion?: string; source?: "rules" | "ai" }
 
 const prompts = [
- "What does the agent decide alone?",
  "What decision had the most downstream impact?",
  "How did the design system become real in code?",
  "Show me a prototype that became a working product",
@@ -16,7 +15,6 @@ const prompts = [
 ]
 
 const answers = {
-  seamline: { title: "Start with Seamline: an agent that knows when to stop.", body: "Debora built Seamline solo in three weeks for the Nebius × NVIDIA Global AI Hackathon. It keeps Figma, code, Storybook and docs in sync for GitHub's Primer design system. The interesting part is the autonomy design: the agent acts alone only above 85% confidence, every change can be undone, three rejections of the same kind pause auto-apply, and the pull request stays red until the design system lead decides. She tested it with planted, blind and random breaks: 6/6 on a blind screen with no false alarms, 343/343 random breaks caught.", evidence: [{ label: "Seamline · how autonomy is decided", href: "/projects/seamline#chapter-02" }, { label: "Seamline · where it broke", href: "/projects/seamline#chapter-04" }], limitation: "It's a hackathon project on a public design system, not yet used by a real team." },
   hiring: { title: "Assess technical judgment first, then craft.", body: "For a senior product role in a technical company, start with how Debora handles abstraction: roles, rules, permissions, constraints, exceptions and implementation limits. The strongest hiring signal is not one polished UI; it is the way Board moved from a screen request into a reusable coordination model for roles, regions and agencies.", evidence: [{ label: "Board · problem framing", href: "/projects/saas#chapter-01" }, { label: "Board · reusable rules", href: "/projects/saas#chapter-03" }, { label: "TAP Mindset · product leadership", href: "/projects/tap-mindset#chapter-04" }] },
   headProduct: { title: "For a Head of Product, the signal is operating leverage.", body: "Debora’s best work helps teams make better product decisions repeatedly: clearer workflows, shared rules, reduced concept sprawl and product architecture that can scale across roles. That matters for technical products because the interface is only as good as the rules, states and handoffs underneath it.", evidence: [{ label: "Enterprise workflow complexity", href: "/projects/saas" }, { label: "Design system continuity", href: "/projects/tap-mindset-ds" }, { label: "Role-based product architecture", href: "/projects/tap-mindset#chapter-02" }] },
   impact: { title: "Look for measurable simplification.", body: "The clearest impact is where complexity was reduced without flattening the product. Board created a rule system for SUEZ’s FY2026 budgeting cycle. TAP Design System reduced 55 concepts to 38 and cut a documentation task from 45 minutes to under two. Those are useful signals for recruiters because they connect design work to team speed and product clarity.", evidence: [{ label: "Board · adopted workflow rules", href: "/projects/saas#chapter-03" }, { label: "TAP DS · measurable system outcomes", href: "/projects/tap-mindset-ds#chapter-02" }] },
@@ -42,7 +40,6 @@ const answers = {
 
 function answerQuestion(question: string): AgentAnswer {
   const q = question.toLowerCase()
-  if (/seamline|decide.*alone|fix.*without|guardrail|human in the loop|hackathon|agent.*(decide|trust)/.test(q)) return answers.seamline
   if (/hiring|hire|recruiter|contrat|senior product role|evaluate first|fit/.test(q)) return answers.hiring
   if (/head of product|product leader|operating leverage|b2b|complex b2b/.test(q)) return answers.headProduct
   if (/impact|business|proof|measurable|outcome|evidence/.test(q)) return answers.impact

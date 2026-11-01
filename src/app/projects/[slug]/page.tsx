@@ -13,7 +13,6 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     description: project.strapline,
     alternates: { canonical: `/projects/${project.slug}` },
     openGraph: { title: `${project.shortTitle} — Debora Moratalla`, description: project.strapline, url: `/projects/${project.slug}`, type: "article" },
-    robots: project.slug === "saas" ? { index: false, follow: false } : undefined,
   } : {}
 }
 

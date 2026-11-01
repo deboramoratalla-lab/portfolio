@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og"
 
-export const alt = "Debora Moratalla — Senior Product Designer, AI-first"
+export const alt = "Debora Moratalla — Product Designer & Builder"
 export const size = { width: 1200, height: 630 }
 export const contentType = "image/png"
 
@@ -14,7 +14,7 @@ export default function OpenGraphImage() {
       <div style={{ display: "flex", flex: 1, marginTop: 35, borderTop: "1px solid #adaca5", borderBottom: "1px solid #adaca5" }}>
         <div style={{ display: "flex", flexDirection: "column", width: "58%", padding: "44px 40px 38px 0", justifyContent: "space-between" }}>
           <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
-            <span style={{ color: "#5143d4", fontSize: 18, letterSpacing: 1.5, textTransform: "uppercase" }}>Senior Product Designer · AI-first</span>
+            <span style={{ color: "#5143d4", fontSize: 18, letterSpacing: 1.5, textTransform: "uppercase" }}>Product designer &amp; builder</span>
             <span style={{ fontSize: 59, lineHeight: 0.98, letterSpacing: -3.4, fontWeight: 600 }}>I make complex products easier to understand, use and build.</span>
             <span style={{ maxWidth: 530, color: "#5d5c57", fontSize: 22, lineHeight: 1.32 }}>Product design for technical systems, enterprise tools, design systems and AI workflows.</span>
           </div>
