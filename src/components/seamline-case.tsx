@@ -30,11 +30,11 @@ const personas = [
 ] as const
 
 const changeKinds = [
-  ["01", "A value changes on one side", "The model reads the commit and the ticket.", "Applied alone at 85% confidence or more.", "Below that, it asks."],
-  ["02", "A token is renamed", "A small model pairs old and new names.", "Prepares the rename.", "A person confirms it."],
-  ["03", "An urgent hotfix", "Code shipped first and Figma is behind.", "Copies it to the other side.", "Blocked if it breaks WCAG AA contrast."],
-  ["04", "A new option appears", "It exists on one side only.", "Researches other systems and proposes it.", "Never created alone."],
-  ["05", "Both sides change the same thing", "Designer and engineer disagree.", "Explains both reasons without picking one.", "Always a person's call."],
+  ["01", "An urgent hotfix", 5, "Acts alone", "Code shipped first and Figma is behind.", "Blocked if it breaks WCAG AA contrast."],
+  ["02", "A value changes on one side", 4, "Acts when sure", "The model reads the commit and the ticket.", "Below 85% confidence, it asks."],
+  ["03", "A token is renamed", 3, "Prepares, you confirm", "A small model pairs old and new names.", "A person confirms the pair."],
+  ["04", "A new option appears", 2, "Researches, proposes", "It exists on one side only.", "Never created alone."],
+  ["05", "Both sides change the same thing", 1, "Explains, never picks", "Designer and engineer disagree.", "Always a person's call."],
 ] as const
 
 const flowSpine = [
@@ -97,7 +97,17 @@ export function SeamlineCase({ project }: { project: Project }) {
         </div>
         <p className="fx-agent-rule">Autonomy is decided per kind of change, not per agent.</p>
       </article>
-      <article className="fx-principles"><div className="fx-principles-intro"><span>&gt; FIVE KINDS OF CHANGE</span><p>Some changes are mechanical. Some need judgment. One should never be the agent&apos;s call. Each one got its own rule and its own owner.</p></div><ol className="fx-rule-deck">{changeKinds.map(([number,title,when,may,limit])=><li key={number}><div className="fx-rule-top"><small>{number}</small><strong>{title}</strong></div><div className="fx-rule-body"><p><b>When</b><span>{when}</span></p><p><b>Seamline may</b><span>{may}</span></p><p><b>Limit</b><span>{limit}</span></p></div></li>)}</ol></article>
+      <article className="sl-autonomy">
+        <header><span>&gt; FIVE KINDS OF CHANGE</span><h3>Some changes are mechanical. One should never be the agent&apos;s call.</h3><p>Each kind of change got its own rule and its own owner, ordered from most to least autonomy.</p></header>
+        <div className="sl-autonomy-scale" aria-hidden="true"><span>Agent acts alone</span><i/><span>A person decides</span></div>
+        <ol>{changeKinds.map(([number,title,level,label,when,limit])=><li key={number} style={{ "--level": level } as React.CSSProperties}>
+          <small>{number}</small>
+          <h4>{title}</h4>
+          <div className="sl-meter" role="img" aria-label={`Autonomy ${level} of 5: ${label}`}>{[1,2,3,4,5].map(n=><i key={n} className={n <= level ? "is-on" : ""} style={{ "--n": n } as React.CSSProperties}/>)}<b>{label}</b></div>
+          <p><em>When</em>{when}</p>
+          <p><em>Limit</em>{limit}</p>
+        </li>)}</ol>
+      </article>
     </section>
 
     <section className="fx-chapter" id="seamline-03">

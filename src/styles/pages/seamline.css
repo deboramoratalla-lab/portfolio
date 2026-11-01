@@ -141,3 +141,48 @@
   .sl-personas section:first-child header i,.sl-stage-caption span::before{animation:none}
 }
 @media(max-width:900px){.sl-stage{padding:16px 12px 64px}.sl-stage-chrome span{display:none}}
+
+/* — Iteration 4 — */
+/* Words: each statement reveals itself; never left faded */
+.sl-motion-ready .sl-words.is-in .sl-word{opacity:1;transform:none}
+.sl-motion-ready .sl-word{opacity:.18}
+/* The rule under the flow, readable on dark */
+.seamline-story .fx-agent-rule{color:#f2f1ea!important;margin-top:56px!important}
+
+/* Stage caption: clear air below the window */
+.sl-stage-window{margin-bottom:0!important}
+.sl-stage-caption{margin-top:clamp(64px,7vw,104px)!important;padding-top:28px;border-top:1px solid rgba(255,255,255,.12)}
+
+/* Autonomy scale — replaces the rule deck */
+.sl-autonomy{padding-top:72px!important;border-top:1px solid rgba(255,255,255,.14)}
+.sl-autonomy header{display:grid;grid-template-columns:minmax(250px,.33fr) minmax(0,1fr);gap:clamp(40px,6vw,96px);align-items:start;margin-bottom:56px}
+.sl-autonomy header span{grid-row:1/3;color:#b7aaff;font:500 var(--type-label,12px)/1.4 var(--font-mono,monospace);text-transform:uppercase;letter-spacing:.02em;padding-top:10px}
+.sl-autonomy header h3{margin:0;max-width:760px;color:#f2f1ea;font-size:clamp(28px,3vw,42px);font-weight:430;line-height:1.05;letter-spacing:-.045em}
+.sl-autonomy header p{margin:18px 0 0;max-width:560px;color:#b9b8b0;font-size:var(--type-body,17px);line-height:1.5}
+.sl-autonomy-scale{display:flex;align-items:center;gap:16px;margin:0 0 8px;color:#8f8e87;font:500 11px/1 var(--font-mono,monospace);text-transform:uppercase}
+.sl-autonomy-scale i{flex:1;height:2px;background:linear-gradient(90deg,#6c47ff,#e59a2f)}
+.sl-autonomy ol{margin:0;padding:0;list-style:none;border-top:1px solid rgba(255,255,255,.14)}
+.sl-autonomy li{display:grid;grid-template-columns:44px minmax(0,1.25fr) minmax(220px,.9fr) minmax(0,1fr) minmax(0,1fr);gap:28px;align-items:baseline;padding:30px 0;border-bottom:1px solid rgba(255,255,255,.14);color:#f2f1ea;transition:background .3s ease}
+@media(hover:hover){.sl-autonomy li:hover{background:rgba(255,255,255,.03)}}
+.sl-autonomy li small{color:#8f8e87;font:500 12px/1 var(--font-mono,monospace)}
+.sl-autonomy h4{margin:0;font-size:clamp(20px,1.8vw,26px);font-weight:430;line-height:1.1;letter-spacing:-.03em}
+.sl-autonomy p{margin:0;color:#c9c8c0;font-size:15px;line-height:1.45}
+.sl-autonomy em{display:block;margin-bottom:6px;color:#8f8e87;font:500 11px/1 var(--font-mono,monospace);font-style:normal;text-transform:uppercase}
+.sl-meter{display:flex;flex-wrap:wrap;align-items:center;gap:5px}
+.sl-meter i{width:22px;height:8px;border-radius:2px;background:rgba(255,255,255,.12)}
+.sl-meter i.is-on{background:color-mix(in srgb,#6c47ff calc((var(--level) - 1) * 25%),#e59a2f)}
+.sl-meter b{flex-basis:100%;margin-top:10px;color:#f2f1ea;font:500 12px/1.2 var(--font-mono,monospace);text-transform:uppercase;letter-spacing:.02em}
+.sl-motion-ready .sl-meter i.is-on{transform:scaleX(0);transform-origin:left;transition:transform .45s cubic-bezier(.16,1,.3,1) calc(.4s + var(--i,0) * 110ms + var(--n) * 70ms)}
+.sl-motion-ready .is-in .sl-meter i.is-on{transform:none}
+@media(max-width:900px){
+  .sl-autonomy header{grid-template-columns:1fr;gap:14px}.sl-autonomy header span{grid-row:auto;padding:0}
+  .sl-autonomy li{grid-template-columns:32px 1fr;gap:14px 12px}
+  .sl-autonomy li>*:not(small):not(h4){grid-column:2}
+}
+@media(prefers-reduced-motion:reduce){.sl-motion-ready .sl-meter i.is-on{transform:none!important;transition:none!important}}
+/* Word spans must inherit the statement's type, not the case's label style */
+.seamline-story .sl-word{font:inherit!important;letter-spacing:inherit!important;color:inherit!important;text-transform:inherit!important;margin:0!important;padding:0!important;background:none!important;border:0!important}
+.sl-autonomy header{grid-template-rows:auto auto;row-gap:0;align-content:start}
+.sl-autonomy header h3{grid-column:2;grid-row:1;align-self:start}
+.sl-autonomy header p{grid-column:2;grid-row:2;align-self:start}
+@media(max-width:900px){.sl-autonomy header h3,.sl-autonomy header p{grid-column:1;grid-row:auto}}

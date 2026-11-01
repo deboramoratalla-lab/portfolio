@@ -15,6 +15,7 @@ const STAGGER = [
   ".fx-agent-spine > div",
   ".fx-agent-paths > div",
   ".fx-rule-deck > li",
+  ".sl-autonomy li",
   ".fx-insights ol > li",
   ".sl-voice li",
   ".sl-roles [role=row]",
@@ -89,6 +90,7 @@ export function SeamlineMotion() {
       }
     }, { rootMargin: "0px 0px -12% 0px", threshold: .12 })
     blocks.forEach(el => io.observe(el))
+    root.querySelectorAll<HTMLElement>(WORDS).forEach(el => { el.classList.add("sl-words"); io.observe(el) })
     return () => io.disconnect()
   }, [])
   return null
