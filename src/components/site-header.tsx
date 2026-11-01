@@ -32,6 +32,15 @@ const caseNavigation = {
       ["04", "Make it hold"],
     ],
   },
+  "/projects/seamline": {
+    prefix: "seamline",
+    chapters: [
+      ["01", "Read the drift"],
+      ["02", "Decide the autonomy"],
+      ["03", "Design the trust"],
+      ["04", "Break it on purpose"],
+    ],
+  },
   "/projects/fluxy": {
     prefix: "fluxy",
     chapters: [

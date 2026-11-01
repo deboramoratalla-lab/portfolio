@@ -12,7 +12,7 @@ const footerLinks = [
 export function SiteFooter() {
   return <footer id="contact" className="site-footer">
     <div className="footer-cta">
-      <span>Available for the right product challenge.</span>
+      <span>Open to Senior and Staff roles · Madrid or remote EU</span>
       <p>hello@deboramoratalla.com</p>
       <div className="footer-actions">
         <ArrowLink className="footer-action" variant="secondary" tone="purple" href="mailto:hello@deboramoratalla.com">Email</ArrowLink>
@@ -23,7 +23,7 @@ export function SiteFooter() {
     <div className="footer-bottom">
       <Link className="footer-mark" href="/"><Image src="/media/dm-logo.png" alt="DM" width={42} height={42} /></Link>
       <div><span>Explore</span><nav>{footerLinks.map(([label, href]) => <Link key={href} href={href}>{label}</Link>)}</nav></div>
-      <div className="footer-location"><span>Based in Madrid</span><p>Product designer · Systems thinker</p></div>
+      <div className="footer-location"><span>Based in Madrid</span><p>Senior Product Designer · AI-first</p></div>
     </div>
   </footer>
 }

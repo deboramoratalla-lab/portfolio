@@ -8,6 +8,7 @@ import { TapProductCase } from "@/components/tap-product-case"
 import { FluxyCase } from "@/components/fluxy-case"
 import { BoardCase } from "@/components/board-case"
 import { CiveoCase } from "@/components/civeo-case"
+import { SeamlineCase } from "@/components/seamline-case"
 import { MotionSafeVideo } from "@/components/motion-safe-video"
 import { CaseStudyIndex } from "@/components/case-study-index"
 
@@ -21,6 +22,7 @@ function RoleArchitectureMap() {
 }
 
 export function ProjectPage({ project }: { project: Project }) {
+  if (project.slug === "seamline") return <SeamlineCase project={project} />
   if (project.slug === "saas") return <BoardCase />
   if (project.slug === "tap-mindset-ds") return <TapDsCase project={project} />
   if (project.slug === "tap-mindset") return <TapProductCase project={project} />
