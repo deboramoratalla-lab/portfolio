@@ -5,6 +5,8 @@ import { CaseMoreWorks } from "@/components/case-more-works"
 import { CaseStudyIndex } from "@/components/case-study-index"
 import { CaseSectionLabel } from "@/components/case-section-label"
 import { MotionSafeVideo } from "@/components/motion-safe-video"
+import { SeamlineHeroStage } from "@/components/seamline-hero-stage"
+import { SeamlineMotion } from "@/components/seamline-motion"
 import { ArrowLink } from "@/components/ui-links"
 
 const chapters = [
@@ -71,7 +73,7 @@ export function SeamlineCase({ project }: { project: Project }) {
   return <main className="fluxy-story seamline-story" style={{ "--fx-accent": project.accent } as React.CSSProperties}>
     <CaseHero className="fx-hero" kickerClassName="fx-kicker" kicker={<><span>[CASE STUDY / 01]</span><span>&gt; AI AGENT · DESIGN SYSTEMS</span><i/><ArrowLink variant="primary" tone="purple" href="https://seamline-five.vercel.app/" target="_blank" rel="noreferrer">Open the console</ArrowLink></>} title="Seamline — An agent that keeps a design system in sync, and knows when to stop." premiseClassName="fx-premise" premise="I designed and built, on my own, an agent that keeps Figma, code, Storybook and docs in sync for GitHub's Primer, without taking the decision away from the people who own the system." decision="The agent acts alone only when it's sure and the change can be undone. Everything else goes to a person." meta={<div className="fx-meta case-hero-meta-unified"><div><small>ROLE</small><p>Solo · product design, agent behaviour and build</p></div><div><small>CONTEXT</small><p>Nebius × NVIDIA Global AI Hackathon 2026 · results Jan 2027</p></div><div><small>STACK</small><p>Nemotron on Nebius Token Factory · TypeScript · GitHub Actions · Figma</p></div><div className="fx-ownership"><small>MY OWNERSHIP</small><p>{project.ownership}</p></div></div>} />
 
-    <figure className="sl-hero-media"><MotionSafeVideo src="/media/seamline-agent-map.mp4" poster="/media/seamline-agent-map-poster.jpg" aria-label="The Seamline agent replaying its last run: changes travel in from Figma, code, Storybook and docs, the agent fixes what it can and sends the rest to a person" /><figcaption>The agent replaying its last run. Changes come in from four sources, fixes go back out, and the decisions it won&apos;t make turn amber.</figcaption></figure>
+    <SeamlineHeroStage />
 
     <CaseStudyIndex introduction="From silent drift to an agent that earns, and can lose, the right to act alone." chapters={chapters} hrefForChapter={number => `#seamline-${number}`} />
 
@@ -119,5 +121,6 @@ export function SeamlineCase({ project }: { project: Project }) {
     </section>
 
     <CaseMoreWorks previous={{href:"/projects/civeo",title:"Civeo",description:"A municipal operations surface that preserves context from overview to action."}} next={{href:"/projects/saas",title:"Board",description:"Making workflow state visible across a complex enterprise system."}} />
+    <SeamlineMotion />
   </main>
 }
