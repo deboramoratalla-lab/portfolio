@@ -9,6 +9,9 @@ import { WorkflowImpactPreviewCover } from "@/components/workflow-impact-preview
 import { DecisionHandoverCover } from "@/components/decision-handover-demo"
 import { AgentQualityLoopCover } from "@/components/agent-quality-loop-demo"
 import type { LabEntry } from "@/data/lab"
+import { LabGlyph } from "@/components/lab-glyph"
+
+const ACCENTS = ["#5145c7", "#1f7a6c", "#b4521f", "#526600", "#a2366f"]
 
 const HOME_LAB_LIMIT = 5
 const LAB_COVERS: Record<string, { src: string; alt: string }> = {
@@ -25,11 +28,13 @@ export function WorkbenchPreview({ entries }: { entries: LabEntry[] }) {
 
   return <div className="home-lab-preview">
     {featuredEntry && <div className="home-lab-index">
-      <Link href={`/lab/${featuredEntry.slug}`} className="home-lab-feature">
+      <Link href={`/lab/${featuredEntry.slug}`} className="home-lab-feature" style={{ "--lab-accent": ACCENTS[0] } as React.CSSProperties}>
+        <LabGlyph slug={featuredEntry.slug} className="lab-glyph-feature" />
         <div className="home-lab-feature-copy">
           <div className="home-lab-card-meta"><span>01 · {featuredEntry.type}</span><span>{featuredEntry.date}</span></div>
           <h3>{featuredEntry.title}</h3>
           <p>{featuredEntry.summary}</p>
+          <ul className="lab-topics">{featuredEntry.topics.slice(0, 3).map(t => <li key={t}>{t}</li>)}</ul>
           <span className="home-lab-card-action">Read more <ArrowUpRight /></span>
         </div>
         <figure className="home-lab-feature-media">
@@ -52,12 +57,14 @@ export function WorkbenchPreview({ entries }: { entries: LabEntry[] }) {
       </Link>
 
       <div className="home-lab-notes" aria-label="More lab notes">
-        {noteEntries.map((entry, index) => <Link href={`/lab/${entry.slug}`} className="home-lab-note" key={entry.slug}>
+        {noteEntries.map((entry, index) => <Link href={`/lab/${entry.slug}`} className="home-lab-note" key={entry.slug} style={{ "--lab-accent": ACCENTS[(index + 1) % ACCENTS.length] } as React.CSSProperties}>
           <span className="home-lab-note-number">{String(index + 2).padStart(2, "0")}</span>
           <div className="home-lab-note-copy">
             <div className="home-lab-note-meta"><span>{entry.type}</span><span>{entry.date}</span></div>
             <h3>{entry.title}</h3>
+            <ul className="lab-topics">{entry.topics.slice(0, 2).map(t => <li key={t}>{t}</li>)}</ul>
           </div>
+          <LabGlyph slug={entry.slug} />
           <ArrowUpRight />
         </Link>)}
       </div>
