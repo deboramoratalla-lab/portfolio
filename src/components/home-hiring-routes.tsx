@@ -1,31 +1,44 @@
 "use client"
 
-const routes = [
-  ["What does the agent decide alone?", "Show me how Seamline decides what it can fix without a person"],
-  ["What decision changed the product?", "Show me the product decision with the most downstream impact"],
-  ["How did the system become real?", "Trace a design system from audit to code"],
-]
+import { useEffect, useState } from "react"
+import { useReducedMotion } from "motion/react"
+import { starters } from "@/data/portfolio-agent-content"
+
+const typed = ["Who is Debora?", "Has she designed an AI agent end to end?", "What is she looking for next?", "Has her work been adopted by a real team?"]
 
 export function HomePortfolioGuide() {
-  function openRoute(prompt: string) {
-    window.dispatchEvent(new CustomEvent("open-portfolio-agent", { detail: prompt }))
-  }
+  const reduced = useReducedMotion()
+  const [text, setText] = useState(typed[0])
+
+  useEffect(() => {
+    if (reduced) return
+    let phrase = 0, i = typed[0].length, deleting = true, timer: number
+    const tick = () => {
+      const target = typed[phrase]
+      if (deleting) { i--; if (i <= 0) { deleting = false; phrase = (phrase + 1) % typed.length } }
+      else { i++; if (i >= typed[phrase].length) { deleting = true; setText(typed[phrase]); timer = window.setTimeout(tick, 2200); return } }
+      setText((deleting ? target : typed[phrase]).slice(0, Math.max(0, i)))
+      timer = window.setTimeout(tick, deleting ? 28 : 55)
+    }
+    timer = window.setTimeout(tick, 2600)
+    return () => window.clearTimeout(timer)
+  }, [reduced])
+
+  const open = (prompt?: string) => window.dispatchEvent(new CustomEvent("open-portfolio-agent", { detail: prompt }))
 
   return (
-    <section className="hiring-routes" aria-labelledby="hiring-routes-title">
-      <div className="hiring-routes__intro">
-        <p id="hiring-routes-title">Start somewhere</p>
-        <span>Pick a question and I’ll take you to the project, decision or prototype behind the answer.</span>
+    <section className="guide-band" aria-labelledby="guide-band-title">
+      <div className="guide-band__head">
+        <p id="guide-band-title"><i aria-hidden="true" />AI guide</p>
+        <span>Short on time? Ask about me. Straight answers, with links to the proof.</span>
       </div>
-      <div className="hiring-routes__actions" aria-label="Portfolio routes">
-        {routes.map(([label, prompt]) => (
-          <button type="button" key={label} onClick={() => openRoute(prompt)}>
-            <span>{label}</span>
-            <b aria-hidden="true">↗</b>
-          </button>
-        ))}
+      <button type="button" className="guide-band__field" onClick={() => open()} aria-label="Ask the AI guide about Debora">
+        <span className="guide-band__text" aria-hidden="true">{text}<b /></span>
+        <span className="guide-band__send" aria-hidden="true">↗</span>
+      </button>
+      <div className="guide-band__chips" aria-label="Suggested questions">
+        {starters.map(({ label }) => <button type="button" key={label} onClick={() => open(label)}>{label}</button>)}
       </div>
-      <p className="hiring-routes__note">Every route ends in real work: a case, a decision or a prototype you can open.</p>
     </section>
   )
 }
