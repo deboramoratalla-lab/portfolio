@@ -10050,3 +10050,9 @@ body .board-page.board-page .board-validation--confirmed .board-validation-signa
 .same-brief-shot img { width: 100%; height: auto; border-radius: 8px; border: 1px solid var(--line, rgba(0,0,0,.12)); }
 .same-brief-shot span { font-size: .8rem; opacity: .65; }
 @media (max-width: 800px) { .same-brief-grid, .same-brief-grid-2 { grid-template-columns: 1fr; } }
+.zoom-shot-trigger { display: block; padding: 0; border: 0; background: none; cursor: zoom-in; width: 100%; }
+.zoom-shot-trigger:hover img { filter: brightness(.96); }
+.zoom-shot-dialog { position: fixed; inset: 0; margin: auto; width: min(94vw, 1600px); height: fit-content; max-width: none; max-height: 92vh; padding: 0; border: 0; border-radius: 10px; background: #fff; overflow: auto; }
+.zoom-shot-dialog::backdrop { background: rgba(10, 12, 14, .82); }
+.zoom-shot-dialog img { display: block; width: 100%; height: auto; }
+.zoom-shot-close { position: absolute; top: 10px; right: 10px; z-index: 1; padding: 6px 12px; border: 0; border-radius: 999px; background: #151515; color: #fff; font: inherit; font-size: .8rem; cursor: pointer; }

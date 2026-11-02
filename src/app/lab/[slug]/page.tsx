@@ -13,6 +13,7 @@ import { WorkflowImpactPreview } from "@/components/workflow-impact-preview"
 import { DecisionHandoverDemo, DecisionHandoverJourney } from "@/components/decision-handover-demo"
 import { AgentQualityLoopDemo, AgentQualityLoopCover } from "@/components/agent-quality-loop-demo"
 import { getLabEntry, labEntries } from "@/data/lab"
+import { ZoomShot } from "@/components/zoom-shot"
 
 type ArticleSection = { title: string; paragraphs: string[]; points?: string[] }
 type ArticleContent = { lead: string; quote: string; sections: ArticleSection[]; metrics?: [string, string][]; close: string }
@@ -311,14 +312,14 @@ function SameBriefEvidence() {
       <span>[ The screens ]</span>
       <div>
         <h2 id="same-brief-title">Three rounds, three roles.</h2>
-        <p>Every screen as the agent delivered it, in its default state at desktop width.</p>
+        <p>Every screen as the agent delivered it, in its default state at desktop width. Click any screen to enlarge it.</p>
       </div>
     </header>
     {sameBriefRounds.map(round => <figure className="same-brief-round" key={round.id}>
       <figcaption><span>{round.label}</span><h3>{round.title}</h3><p>{round.body}</p></figcaption>
       <div className="same-brief-grid">
         {sameBriefRoles.map(([role, name]) => <div className="same-brief-shot" key={role}>
-          <Image src={`/lab/same-brief/${round.id}-${role}.webp`} alt={`${round.label} screen from the ${name} prompt`} width={2560} height={1600} sizes="(max-width: 800px) 100vw, 30vw" />
+          <ZoomShot src={`/lab/same-brief/${round.id}-${role}.webp`} alt={`${round.label} screen from the ${name} prompt`} sizes="(max-width: 800px) 100vw, 30vw" />
           <span>{name}</span>
         </div>)}
       </div>
@@ -327,7 +328,7 @@ function SameBriefEvidence() {
       <figcaption><span>Noise check</span><h3>Same prompt, run twice</h3><p>Structure held. Small visual choices the pattern didn’t fix changed between runs.</p></figcaption>
       <div className="same-brief-grid same-brief-grid-2">
         {[["c-designer", "Designer, run 1"], ["c-designer-2", "Designer, run 2"]].map(([file, name]) => <div className="same-brief-shot" key={file}>
-          <Image src={`/lab/same-brief/${file}.webp`} alt={`Round C screen from the ${name}`} width={2560} height={1600} sizes="(max-width: 800px) 100vw, 45vw" />
+          <ZoomShot src={`/lab/same-brief/${file}.webp`} alt={`Round C screen from the ${name}`} sizes="(max-width: 800px) 100vw, 45vw" />
           <span>{name}</span>
         </div>)}
       </div>
