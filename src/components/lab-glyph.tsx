@@ -1,5 +1,20 @@
 /** Pixel glyphs in the site's pixel language: 12×12 bitmaps, square cells, accent from currentColor. */
 const G: Record<string, string[]> = {
+  // three different inputs, one shared output
+  "same-brief": [
+    "............",
+    ".##..##..##.",
+    ".##..##..##.",
+    "............",
+    "..#..#...#..",
+    "...#.#..#...",
+    "....###.....",
+    "............",
+    "...######...",
+    "...######...",
+    "...######...",
+    "............",
+  ],
   // one card hands a decision to the next
   "decision-handover": [
     "............",

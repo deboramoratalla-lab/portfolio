@@ -10037,3 +10037,16 @@ body .board-page.board-page .board-validation--confirmed .board-validation-signa
 #board-validation.board-validation--confirmed h2{color:#f5f5f2!important}
 #board-validation.board-validation--confirmed .board-validation-note{color:#c0c8d8!important}
 #board-validation.board-validation--confirmed .board-validation-intro p{color:#c0c8d8!important}
+
+/* Same Brief: round-by-round screen grid */
+.same-brief-round { margin: 0; padding: 2.5rem 0; border-top: 1px solid var(--line, rgba(0,0,0,.12)); display: grid; gap: 1.25rem; }
+.same-brief-round figcaption { display: grid; gap: .35rem; max-width: 40rem; }
+.same-brief-round figcaption span { font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; opacity: .6; }
+.same-brief-round figcaption h3 { margin: 0; font-size: 1.25rem; }
+.same-brief-round figcaption p { margin: 0; opacity: .75; }
+.same-brief-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+.same-brief-grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.same-brief-shot { display: grid; gap: .5rem; }
+.same-brief-shot img { width: 100%; height: auto; border-radius: 8px; border: 1px solid var(--line, rgba(0,0,0,.12)); }
+.same-brief-shot span { font-size: .8rem; opacity: .65; }
+@media (max-width: 800px) { .same-brief-grid, .same-brief-grid-2 { grid-template-columns: 1fr; } }

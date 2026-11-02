@@ -55,6 +55,19 @@ const reusableResources: Record<string, ReusableResource[]> = {
 }
 
 const articles: Record<string, ArticleContent> = {
+  "same-brief": {
+    lead: "If a team shares one design agent, does it matter who writes the prompt? I gave the same agent the same brief three times: once as a designer, once as an engineer, once as a PM. Then I kept adding layers until the screens matched.",
+    quote: "Whatever you don’t write down, the model decides fresh every time.",
+    sections: [
+      { title: "The setup", paragraphs: ["One agent in Claude, one brief: a workspace access screen where an admin approves or rejects member requests, with a reason when rejecting. Same model, same brief, three prompts written from three roles.", "I ran it in rounds. Round A had only the brief. Round B added the TAP design system (tokens and twenty components) and a short rules file. Round C added one pattern file. Then I ran the designer prompt a second time to see how much changes by chance."] },
+      { title: "A design system fixes how it looks", paragraphs: ["Without a system, I got three different products: three fonts, three palettes, no shared components, and each screen covered different states.", "With the design system, the visual drift went to zero: no hard-coded colours or sizes, the same type, 11 to 17 real components per screen, and empty, loading and error states in all three.", "But the layouts still split. The PM version added a member view nobody asked for, in both rounds. And the button said “Reject” in one screen and “Decline” in another."] },
+      { title: "A pattern fixes what gets built", paragraphs: ["Round C added a single “Review queue” pattern: layout, list, detail, the five states with their exact copy, what is out of scope, and a short copy glossary.", "All three screens converged: two panes from 1024px, no extra views, Approve and Reject, the same five states. The error message reads “Couldn’t load requests.” word for word in every screen."], points: ["Tokens and components: how it looks.", "Patterns: how it is structured and what it says.", "The brief: only what is new in this feature."] },
+      { title: "Repeating a run shows what is still open", paragraphs: ["Running the designer prompt twice kept everything the pattern fixed. What changed were the details it didn’t: the selected-row style, whether the request sat in a card, the avatar colour.", "Those were the same kind of differences I had seen between roles. So they came from chance, not from who was asking. I moved them into the pattern. Running a prompt more than once turned out to be a cheap way to find the decisions a system still leaves open.", "Along the way, the agents also caught real bugs in the tokens: values with no units, a tablet body size of 64 and a blue foreground identical to its background."] },
+      { title: "What this doesn’t prove", paragraphs: ["One model, one screen, three prompts I wrote myself, one run each plus one repeat. It is a signal, not a study. A real team would write prompts I wouldn’t, and a harder screen would leave more decisions open."] },
+    ],
+    metrics: [["0", "Hard-coded values with the design system"], ["3 / 3", "Same layout and copy with the pattern"], ["3", "Token bugs the agents caught"]],
+    close: "Most teams document components. Few write down the patterns that decide structure, scope and wording, and that is the layer an agent needs most. Next, I want to try the same loop on a harder screen and let repeated runs tell me what the pattern is missing.",
+  },
   "agent-quality-loop": {
     lead: "A support agent can sound convincing and still make the wrong decision. This experiment makes the evaluation loop visible before anyone trusts it with a real customer.",
     quote: "A good score is not evidence until you can inspect the failure behind it.",
@@ -212,7 +225,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 }
 
 function ArticleActions({ slug }: { slug: string }) {
-  if (slug === "agent-quality-loop") return null
+  if (slug === "agent-quality-loop" || slug === "same-brief") return null
   if (slug === "decision-handover") return <ArrowRouteLink variant="secondary" tone="purple" href="#decision-handover">Open the prototype</ArrowRouteLink>
   if (slug === "european-tech-opportunity-radar") return <ArrowRouteLink variant="secondary" tone="purple" href="#opportunity-radar">Open the radar</ArrowRouteLink>
   if (slug === "workflow-impact-preview") return <>
@@ -284,6 +297,43 @@ const designSystemEvidence = [
     linkLabel: "Inspect the token story",
   },
 ]
+
+const sameBriefRounds = [
+  { id: "a", label: "Round A", title: "Brief only", body: "Three fonts, three palettes, no shared components. Each screen covered different states." },
+  { id: "b", label: "Round B", title: "+ Design system", body: "Visuals converged. Layout, scope and wording still depended on who asked." },
+  { id: "c", label: "Round C", title: "+ Pattern", body: "Same layout, same scope, same states, same words." },
+]
+const sameBriefRoles = [["designer", "Designer"], ["engineer", "Engineer"], ["pm", "PM"]]
+
+function SameBriefEvidence() {
+  return <section className="lab-evidence-dossier same-brief-evidence" aria-labelledby="same-brief-title">
+    <header>
+      <span>[ The screens ]</span>
+      <div>
+        <h2 id="same-brief-title">Three rounds, three roles.</h2>
+        <p>Every screen as the agent delivered it, in its default state at desktop width.</p>
+      </div>
+    </header>
+    {sameBriefRounds.map(round => <figure className="same-brief-round" key={round.id}>
+      <figcaption><span>{round.label}</span><h3>{round.title}</h3><p>{round.body}</p></figcaption>
+      <div className="same-brief-grid">
+        {sameBriefRoles.map(([role, name]) => <div className="same-brief-shot" key={role}>
+          <Image src={`/lab/same-brief/${round.id}-${role}.webp`} alt={`${round.label} screen from the ${name} prompt`} width={2560} height={1600} sizes="(max-width: 800px) 100vw, 30vw" />
+          <span>{name}</span>
+        </div>)}
+      </div>
+    </figure>)}
+    <figure className="same-brief-round">
+      <figcaption><span>Noise check</span><h3>Same prompt, run twice</h3><p>Structure held. Small visual choices the pattern didn’t fix changed between runs.</p></figcaption>
+      <div className="same-brief-grid same-brief-grid-2">
+        {[["c-designer", "Designer, run 1"], ["c-designer-2", "Designer, run 2"]].map(([file, name]) => <div className="same-brief-shot" key={file}>
+          <Image src={`/lab/same-brief/${file}.webp`} alt={`Round C screen from the ${name}`} width={2560} height={1600} sizes="(max-width: 800px) 100vw, 45vw" />
+          <span>{name}</span>
+        </div>)}
+      </div>
+    </figure>
+  </section>
+}
 
 function DesignSystemEvidence() {
   return <section className="lab-evidence-dossier" aria-labelledby="lab-evidence-title">
@@ -462,6 +512,7 @@ export default async function LabArticle({ params }: { params: Promise<{ slug: s
           </section>}
         </div>
       </section>)}
+      {entry.slug === "same-brief" && <SameBriefEvidence />}
       {entry.slug === "design-systems-need-evidence" && <DesignSystemEvidence />}
       {entry.slug === "storybook-source-of-truth" && <StorybookEvidence />}
       {entry.slug === "figma-plugin-component-apis" && <FigmaPluginEvidence />}

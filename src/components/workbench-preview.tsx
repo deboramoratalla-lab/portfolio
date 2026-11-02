@@ -15,6 +15,7 @@ const ACCENTS = ["#5145c7", "#1f7a6c", "#b4521f", "#526600", "#a2366f"]
 
 const HOME_LAB_LIMIT = 5
 const LAB_COVERS: Record<string, { src: string; alt: string }> = {
+  "same-brief": { src: "/lab/same-brief/c-pm.webp", alt: "Access requests screen built by the agent in Round C, with a queue on the left and request detail on the right" },
   "design-systems-need-evidence": { src: "/media/design-system-component-evidence.png", alt: "Design-system component evidence arranged as an inspectable interface" },
   "storybook-source-of-truth": { src: "/media/storybook-design-tokens-library.png", alt: "Storybook foundations and design-token documentation" },
   "figma-plugin-component-apis": { src: "/media/figma-code-component-importer.png", alt: "Figma plugin importing component APIs from code" },

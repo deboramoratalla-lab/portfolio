@@ -14,6 +14,7 @@ export const draftLabEntries: LabEntry[] = [
 ]
 
 export const labEntries: LabEntry[] = [
+  { slug: "same-brief", type: "Experiment", title: "Same brief, same agent, three people. Did it build the same screen?", summary: "I gave one screen-design agent the same brief as a designer, an engineer and a PM, then added a design system and a pattern file to see what actually makes the result converge.", date: "November 2026", readingTime: "5 min read", topics: ["AI agents", "Design systems", "Patterns"] },
   { slug: "decision-handover", type: "Experiment", title: "What changed is not why.", summary: "A decision-handover dashboard, grounded in a product-team problem I encountered while building a framework at TAP.", date: "September 2026", readingTime: "4 min read", topics: ["Product design", "Operational UX", "Interaction design"] },
   { slug: "workflow-impact-preview", type: "Experiment", title: "Before you publish an n8n agent, replay how its behaviour would change.", summary: "A live n8n-backed experiment for reviewing prompt, memory, model and tool changes against representative conversations.", date: "September 2026", readingTime: "4 min read", topics: ["n8n", "AI agents", "Developer tools"] },
   {
