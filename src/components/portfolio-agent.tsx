@@ -4,74 +4,18 @@ import { FormEvent, useCallback, useEffect, useRef, useState } from "react"
 import { ArrowUpRight } from "@/components/arrow-up-right"
 import { ArrowRouteLink } from "@/components/ui-links"
 
-type Evidence = { label: string; href: string }
-type AgentAnswer = { title: string; body: string; evidence: Evidence[]; probe?: string; limitation?: string; nextQuestion?: string; source?: "rules" | "ai" }
-
-const prompts = [
- "What does the agent decide alone?",
- "What decision had the most downstream impact?",
- "How did the design system become real in code?",
- "Show me a prototype that became a working product",
-  "Give me the 90-second tour",
-]
-
-const answers = {
-  seamline: { title: "Start with Seamline: an agent that knows when to stop.", body: "Debora built Seamline solo in three weeks for the Nebius × NVIDIA Global AI Hackathon. It keeps Figma, code, Storybook and docs in sync for GitHub's Primer design system. The interesting part is the autonomy design: the agent acts alone only above 85% confidence, every change can be undone, three rejections of the same kind pause auto-apply, and the pull request stays red until the design system lead decides. She tested it with planted, blind and random breaks: 6/6 on a blind screen with no false alarms, 343/343 random breaks caught.", evidence: [{ label: "Seamline · how autonomy is decided", href: "/projects/seamline#chapter-02" }, { label: "Seamline · where it broke", href: "/projects/seamline#chapter-04" }], limitation: "It's a hackathon project on a public design system, not yet used by a real team." },
-  hiring: { title: "Assess technical judgment first, then craft.", body: "For a senior product role in a technical company, start with how Debora handles abstraction: roles, rules, permissions, constraints, exceptions and implementation limits. The strongest hiring signal is not one polished UI; it is the way Board moved from a screen request into a reusable coordination model for roles, regions and agencies.", evidence: [{ label: "Board · problem framing", href: "/projects/saas#chapter-01" }, { label: "Board · reusable rules", href: "/projects/saas#chapter-03" }, { label: "TAP Mindset · product leadership", href: "/projects/tap-mindset#chapter-04" }] },
-  headProduct: { title: "For a Head of Product, the signal is operating leverage.", body: "Debora’s best work helps teams make better product decisions repeatedly: clearer workflows, shared rules, reduced concept sprawl and product architecture that can scale across roles. That matters for technical products because the interface is only as good as the rules, states and handoffs underneath it.", evidence: [{ label: "Enterprise workflow complexity", href: "/projects/saas" }, { label: "Design system continuity", href: "/projects/tap-mindset-ds" }, { label: "Role-based product architecture", href: "/projects/tap-mindset#chapter-02" }] },
-  impact: { title: "Look for measurable simplification.", body: "The clearest impact is where complexity was reduced without flattening the product. Board created a rule system for SUEZ’s FY2026 budgeting cycle. TAP Design System reduced 55 concepts to 38 and cut a documentation task from 45 minutes to under two. Those are useful signals for recruiters because they connect design work to team speed and product clarity.", evidence: [{ label: "Board · adopted workflow rules", href: "/projects/saas#chapter-03" }, { label: "TAP DS · measurable system outcomes", href: "/projects/tap-mindset-ds#chapter-02" }] },
-  collaboration: { title: "She works where Product, Design and Engineering meet.", body: "The portfolio is strongest when Debora turns unclear product intent into shared technical decisions: naming the real problem, defining reusable rules, documenting behavior and staying close enough to code for the system to survive implementation. That is the collaboration signal a technical product team usually wants to see.", evidence: [{ label: "Board · shared operating model", href: "/projects/saas#chapter-03" }, { label: "TAP DS · design and code together", href: "/projects/tap-mindset-ds" }, { label: "Tools in context", href: "/#tools" }] },
-  judgment: { title: "Her judgment shows in what gets constrained.", body: "Debora’s work is not presented as more screens or more ideas. It is about deciding what the product should make explicit, what should become a rule and what should stay under human control. That shows up in Board’s rejected paths, TAP’s role-based architecture and Fluxy’s autonomy boundaries.", evidence: [{ label: "Board · what did not ship", href: "/projects/saas#chapter-02" }, { label: "TAP Mindset · role architecture", href: "/projects/tap-mindset#chapter-02" }, { label: "Fluxy · autonomy boundaries", href: "/projects/fluxy#chapter-03" }], nextQuestion: "How did the design system become real in code?" },
-  seniority: { title: "The seniority signal is ownership of ambiguity.", body: "The strongest evidence is her ability to move before the brief is clean: reframe the problem, align stakeholders, define decision rules and leave the team with a system rather than a one-off deliverable. That is closer to product leadership than interface production.", evidence: [{ label: "Board · from UI request to product model", href: "/projects/saas#chapter-01" }, { label: "TAP Mindset · 12-month redesign", href: "/projects/tap-mindset#chapter-04" }, { label: "TAP DS · system ownership", href: "/projects/tap-mindset-ds" }] },
-  interview: { title: "Probe the edges, not the portfolio story.", body: "A useful interview should test how she makes trade-offs under pressure: which constraint she would protect, how she handles stakeholder conflict, when a system is too heavy, and where AI should not act autonomously. The case studies give enough evidence to ask precise follow-ups instead of generic portfolio questions.", evidence: [{ label: "Ask about Board trade-offs", href: "/projects/saas#chapter-02" }, { label: "Ask about design system maintenance", href: "/projects/tap-mindset-ds#chapter-02" }, { label: "Ask about AI boundaries", href: "/projects/fluxy#chapter-03" }] },
-  enterprise: { title: "Start with Board.", body: "This is the clearest view of how Debora thinks under complexity. A request to improve a UI became a coordination model for three roles, 24 regions and 186 agencies, then a reusable rule system adopted for SUEZ’s FY2026 budgeting cycle.", evidence: [{ label: "See how the brief was reframed", href: "/projects/saas#chapter-01" }, { label: "See the rule system", href: "/projects/saas#chapter-03" }], nextQuestion: "Show me a prototype that became a working product" },
-  prototypes: { title: "She prototypes behaviour in code when that is the fastest way to test it.", body: "Debora does not treat Figma as a mandatory step between an idea and a useful test. In Board, she used a coded workflow to make roles, task states, dependencies and approvals inspectable across the full journey. In Civeo, she implemented a municipal operations product directly in HTML, CSS and JavaScript, allowing internal workers to use navigation, editable widgets, live states and the contextual assistant as real behaviour, not as a presentation.", evidence: [{ label: "Board · coded workflow prototype", href: "/projects/saas#board-02" }, { label: "Civeo · deployed municipal operations product", href: "/projects/civeo" }], nextQuestion: "What decision had the most downstream impact?" },
-  civeo: { title: "Civeo made the operating model usable in production.", body: "Civeo began with an Excel-led process where internal teams had to reconstruct operational context across files and service views. Debora reframed it as one working surface: a four-level hierarchy, editable widgets, explicit live and offline states, and a contextual assistant. She implemented and deployed the product in code, then used it with 15 internal workers — turning the proposed behaviour into an operational tool rather than a static handoff.", evidence: [{ label: "Civeo · deployed municipal operations product", href: "/projects/civeo" }] },
-  leadership: { title: "Look for the decisions, not the deliverables.", body: "Debora’s leadership shows up in the work she makes possible: naming the real problem, aligning people around shared rules and making trade-offs explicit enough for Product, Design and Engineering to move together.", evidence: [{ label: "A 12-month product redesign", href: "/projects/tap-mindset#chapter-04" }, { label: "The choices Board did not ship", href: "/projects/saas#chapter-02" }] },
-  ai: { title: "AI speeds up the work. Judgment still sets the direction.", body: "Debora uses AI for audits, documentation, edge cases and implementation — the repetitive work that slows a system down. Product intent, accessibility, public APIs and autonomy boundaries remain deliberate human decisions.", evidence: [{ label: "AI inside a coded design system", href: "/projects/tap-mindset-ds#chapter-02" }, { label: "Designing responsible autonomy", href: "/projects/fluxy#chapter-03" }] },
-  systems: { title: "A system matters when the team can keep it alive.", body: "TAP connects foundations, code, Storybook and Figma without creating another product to maintain. The useful signal for technical teams is continuity: fewer concepts, clearer API-facing decisions and documentation that reduces future coordination work.", evidence: [{ label: "Read the Design System case", href: "/projects/tap-mindset-ds" }, { label: "Open the live Storybook", href: "https://deboramoratalla-lab.github.io/design-system-showcase/?path=/story/welcome-start-here--start-here" }], nextQuestion: "What decision had the most downstream impact?" },
-  agentic: { title: "Fluxy is about knowing when the product should disappear.", body: "The agent monitors quietly, prepares the next decision and steps forward only when it can help. Anything consequential — payment, disruption or a change of goal — stays visible and under the passenger’s control.", evidence: [{ label: "See the autonomy model", href: "/projects/fluxy#chapter-02" }, { label: "See it tested in the prototype", href: "/projects/fluxy#chapter-04" }] },
-  product: { title: "TAP Mindset shows the product architecture work.", body: "Debora moved a fragmented, feature-led platform into three role-based experiences. The redesign gets people to value before asking for personalisation, then lets the product learn progressively over time.", evidence: [{ label: "See the product reframe", href: "/projects/tap-mindset#chapter-01" }, { label: "See the three-role architecture", href: "/projects/tap-mindset#chapter-02" }] },
-  career: { title: "Her path crosses product, systems and engineering.", body: "Debora is a Product Designer and Builder specialising in complex digital products, design systems and AI workflows. She has 10+ years across enterprise software, retail, media and independent product work. She currently owns end-to-end product design at Board International, working closely with Product and Engineering; alongside that, she builds experiments and case studies that make product logic tangible.", evidence: [{ label: "Professional experience", href: "/experience" }, { label: "Current role at Board", href: "/experience#board" }, { label: "Earlier roles", href: "/experience#leroy-merlin" }] },
-  tools: { title: "She designs close to the material of the product.", body: "Her core stack spans Figma, Storybook and Tokens Studio; React, Next.js, TypeScript and Tailwind; Claude, the OpenAI API, MCP and Cursor; plus GitHub, VS Code and Vercel. The point is not the list. It is being able to move from technical intent to a production-aware product decision.", evidence: [{ label: "See the tools in context", href: "/#tools" }, { label: "See design and code working together", href: "/projects/tap-mindset-ds" }] },
-  languages: { title: "She works across languages as well as disciplines.", body: "Debora speaks Spanish natively, English at C1 level and German at B2 level.", evidence: [{ label: "Languages", href: "/experience#languages" }] },
-  education: { title: "Her background connects code, space and product.", body: "Debora holds an Associate Degree in Computer Applications Development and a BA in Interior Design. She later specialised in UX/UI at IMMUNE Institute and design tokens through Brad Frost Academy. That mix shows in the work: technical fluency, spatial clarity and systems thinking.", evidence: [{ label: "Education", href: "/experience#education" }, { label: "See the systems work", href: "/projects/tap-mindset-ds" }] },
-  community: { title: "Design has also been a way to make everyday life better.", body: "Before moving fully into digital product design, Debora volunteered with Tengo Hogar, helping refurbish homes for people without resources. She also won first prize in a visual-merchandising competition organised by Nuevo Estilo and Jardín de Serrano. Both belong to an earlier chapter, but they explain the same instinct: make complex or difficult environments feel clearer and more humane.", evidence: [{ label: "More about Debora", href: "/experience" }, { label: "See her working principles", href: "/#practice" }] },
-  tour: { title: "Four projects. Ninety seconds. Start here.", body: "Board shows the reframe. TAP Design System shows systems and AI in practice. TAP Mindset shows product architecture and leadership. Fluxy shows how Debora thinks about responsible autonomy.", evidence: [{ label: "Board · Frame the right problem", href: "/projects/saas#chapter-01" }, { label: "TAP DS · Build for continuity", href: "/projects/tap-mindset-ds#chapter-02" }, { label: "TAP Mindset · Lead the reframe", href: "/projects/tap-mindset#chapter-04" }, { label: "Fluxy · Bound autonomy", href: "/projects/fluxy#chapter-03" }] },
-} satisfies Record<string, AgentAnswer>
-
-function answerQuestion(question: string): AgentAnswer {
-  const q = question.toLowerCase()
-  if (/seamline|decide.*alone|fix.*without|guardrail|human in the loop|hackathon|agent.*(decide|trust)/.test(q)) return answers.seamline
-  if (/hiring|hire|recruiter|contrat|senior product role|evaluate first|fit/.test(q)) return answers.hiring
-  if (/head of product|product leader|operating leverage|b2b|complex b2b/.test(q)) return answers.headProduct
-  if (/impact|business|proof|measurable|outcome|evidence/.test(q)) return answers.impact
-  if (/pm|engineer|engineering|collabor|cross-functional|stakeholder/.test(q)) return answers.collaboration
-  if (/judgment|judgement|decision|craft|visual execution|beyond visual|trade-off|trade off/.test(q)) return answers.judgment
-  if (/seniority|ownership|decision-making|decision making|how senior/.test(q)) return answers.seniority
-  if (/risk|gap|probe|interview|question/.test(q)) return answers.interview
-  if (/90|tour|recorrido|quick|rápid/.test(q)) return answers.tour
-  if (/civeo|municipal|municipio|operations product|operations surface|excel-led/.test(q)) return answers.civeo
-  if (/coded prototype|code prototype|prototype.*code|prototyp.*code|without figma|sin figma|before figma|prototyping|prototipo|working poc|working prototype/.test(q)) return answers.prototypes
-  if (/enterprise|suez|board|workflow|complex|complej/.test(q)) return answers.enterprise
-  if (/lead|senior|stakeholder|collabor|hire|hiring|contrat/.test(q)) return answers.leadership
-  if (/\bai\b|artificial|automation|automat|agentic process/.test(q)) return answers.ai
-  if (/system|storybook|component|code|figma|token/.test(q)) return answers.systems
-  if (/agent|autonomy|autonom|fluxy|mobility|commut/.test(q)) return answers.agentic
-  if (/product|onboarding|role|athlete|coach|mindset/.test(q)) return answers.product
-  if (/career|background|experience|years|cv|resume|board international|leroy|netflix|bicg|freelance/.test(q)) return answers.career
-  if (/tools|stack|react|next|typescript|tailwind|cursor|github|vercel|mcp|claude/.test(q)) return answers.tools
-  if (/language|spanish|english|german|idioma|ingl[eé]s|alem[aá]n/.test(q)) return answers.languages
-  if (/education|study|studied|degree|interior|human resources|formaci[oó]n|estudi/.test(q)) return answers.education
-  if (/volunteer|community|award|prize|tengo hogar|premio|voluntari/.test(q)) return answers.community
-  return { title: "Tell me what you need to assess.", body: "Debora works best where technical systems become product experiences: enterprise workflows, design systems, AI boundaries and product architecture. Pick the lens closest to your role and I’ll take you to the evidence, not just the polished screens.", evidence: [{ label: "Complex enterprise workflows", href: "/projects/saas" }, { label: "Design systems & AI", href: "/projects/tap-mindset-ds" }, { label: "Product leadership", href: "/projects/tap-mindset" }, { label: "Agentic product design", href: "/projects/fluxy" }] }
-}
+import { usePathname } from "next/navigation"
+import { answerQuestion, pageQuestions, roles, type AgentAnswer } from "@/data/portfolio-agent-content"
 
 export function PortfolioAgent() {
   const [open, setOpen] = useState(false)
   const [question, setQuestion] = useState("")
   const [answer, setAnswer] = useState<AgentAnswer | null>(null)
   const [loading, setLoading] = useState(false)
+  const [role, setRole] = useState<string | null>(null)
+  const pathname = usePathname()
+  const pageSet = pageQuestions[pathname ?? ""]
+  const activeRole = roles.find(item => item.id === role)
   const inputRef = useRef<HTMLInputElement>(null)
   const dialogRef = useRef<HTMLDivElement>(null)
   const returnFocusRef = useRef<HTMLElement | null>(null)
@@ -96,7 +40,7 @@ export function PortfolioAgent() {
       })
       if (!response.ok) return
       const data = await response.json() as { answer?: AgentAnswer; configured?: boolean }
-      if (data.answer?.title && data.answer?.body && data.configured) setAnswer({ ...data.answer, source: "ai" })
+      if (data.answer?.title && data.answer?.body && data.configured) setAnswer({ ...data.answer, source: "ai", followUps: fallback.followUps })
       else setAnswer(fallback)
     } catch {
       setAnswer(fallback)
@@ -145,18 +89,33 @@ export function PortfolioAgent() {
 
   return <>
     {!open && <div className="agent-entry is-visible">
-      <button className="agent-trigger" onClick={openDialog} aria-label="Open Ask Debora">
+      <button className="agent-trigger" onClick={openDialog} aria-label="Open the portfolio guide">
         <span className="agent-spark" aria-hidden="true">✦</span>
-        Ask Debora
+        Ask about my work
       </button>
     </div>}
     {open && <div ref={dialogRef} className="agent-shell" role="dialog" aria-modal="true" aria-labelledby="portfolio-agent-title">
-      <button className="agent-backdrop" aria-label="Close Ask Debora" onClick={closeDialog} tabIndex={-1} />
+      <button className="agent-backdrop" aria-label="Close the portfolio guide" onClick={closeDialog} tabIndex={-1} />
       <aside className="agent-panel">
-        <header><div><span>Portfolio guide</span><strong id="portfolio-agent-title">Ask Debora</strong></div><button className="agent-close-action ui-action ui-action-secondary" onClick={closeDialog} aria-label="Close"><span className="agent-close-icon" aria-hidden="true">×</span> Close</button></header>
-        <div className="agent-body">{loading ? <div className="agent-thinking" aria-live="polite"><span>Reading the published evidence</span><i /><i /><i /></div> : !answer ? <div className="agent-intro"><p>Start with what you want to understand. I will find the relevant project, identify the decision inside it and give you a direct route into the work.</p><div>{prompts.map(prompt => <button key={prompt} onClick={() => ask(prompt)}>{prompt}</button>)}</div></div> : <div className="agent-answer" aria-live="polite"><span>{answer.source === "ai" ? "AI answer · grounded in published work" : "Curated answer · published work"}</span><h2>{answer.title}</h2><p>{answer.body}</p>{answer.limitation && <p className="agent-limitation"><strong>Evidence gap</strong>{answer.limitation}</p>}{answer.probe && <p className="agent-probe"><strong>Ask next</strong>{answer.probe}</p>}{answer.evidence.length > 0 && <nav>{answer.evidence.map(item => <ArrowRouteLink variant="secondary" tone="purple" key={item.label} href={item.href} onClick={closeDialog}>{item.label}</ArrowRouteLink>)}</nav>}{answer.nextQuestion && <button className="agent-follow-up" onClick={() => ask(answer.nextQuestion!)}><span>Continue with</span>{answer.nextQuestion}<b aria-hidden="true">↗</b></button>}<button className="agent-reset ui-action ui-action-primary ui-action-green ui-action-on-light" onClick={() => { setAnswer(null); setQuestion("") }}>Explore another route</button></div>}</div>
-        <form onSubmit={submit}><input ref={inputRef} value={question} onChange={event => setQuestion(event.target.value)} placeholder="Ask about the work" aria-label="Question about Debora's portfolio" /><button type="submit" aria-label="Ask"><ArrowUpRight /></button></form>
-        <footer>Grounded in published cases, project chapters and verified CV facts.</footer>
+        <header><div><span>AI guide</span><strong id="portfolio-agent-title">Ask about Debora&apos;s work</strong></div><button className="agent-close-action ui-action ui-action-secondary" onClick={closeDialog} aria-label="Close"><span className="agent-close-icon" aria-hidden="true">×</span> Close</button></header>
+        <div className="agent-body">{loading ? <div className="agent-thinking" aria-live="polite"><span>Looking through her work</span><i /><i /><i /></div> : !answer ? <div className="agent-intro">
+          <p>I answer questions about Debora&apos;s work using only her published cases and CV. If something isn&apos;t proven, I&apos;ll say so.</p>
+          {pageSet && <section className="agent-group"><h3>{pageSet.label}</h3><div>{pageSet.questions.map(prompt => <button key={prompt} onClick={() => ask(prompt)}>{prompt}</button>)}</div></section>}
+          <section className="agent-group"><h3>I&apos;m hiring for…</h3><div className="agent-roles" role="group" aria-label="Role you are hiring for">{roles.map(item => <button key={item.id} aria-pressed={role === item.id} onClick={() => setRole(role === item.id ? null : item.id)}>{item.label}</button>)}</div>
+            {activeRole && <div>{activeRole.questions.map(prompt => <button key={prompt} onClick={() => ask(prompt)}>{prompt}</button>)}</div>}
+          </section>
+          {!pageSet && !activeRole && <button className="agent-tour" onClick={() => ask("Give me the 90-second tour")}>Or take the 90-second tour <b aria-hidden="true">→</b></button>}
+        </div> : <div className="agent-answer" aria-live="polite">
+          <span>{answer.source === "ai" ? "AI answer · from her published work" : "From her published work"}</span>
+          <h2>{answer.title}</h2>
+          {answer.points ? <ul className="agent-points">{answer.points.map(point => <li key={point}>{point}</li>)}</ul> : answer.body && <p>{answer.body}</p>}
+          {answer.limitation && <p className="agent-limitation"><strong>Not proven yet</strong>{answer.limitation}</p>}
+          {answer.evidence.length > 0 && <nav aria-label="See it in the work">{answer.evidence.map(item => <ArrowRouteLink variant="secondary" tone="purple" key={item.label} href={item.href} onClick={closeDialog}>{item.label}</ArrowRouteLink>)}</nav>}
+          {(answer.followUps ?? []).length > 0 && <section className="agent-group agent-next"><h3>Ask next</h3><div>{answer.followUps!.map(prompt => <button key={prompt} onClick={() => ask(prompt)}>{prompt}</button>)}</div></section>}
+          <button className="agent-restart" onClick={() => { setAnswer(null); setQuestion("") }}>← Start over</button>
+        </div>}</div>
+        <form onSubmit={submit}><input ref={inputRef} value={question} onChange={event => setQuestion(event.target.value)} placeholder="e.g. Has she led a team?" aria-label="Question about Debora's portfolio" /><button type="submit" aria-label="Ask"><ArrowUpRight /></button></form>
+        <footer>AI guide · answers only from published cases and her CV</footer>
       </aside>
     </div>}
   </>
