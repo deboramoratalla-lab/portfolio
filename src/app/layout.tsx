@@ -8,6 +8,7 @@ import "../styles/pages/home.css"
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 import { BackToTop } from "@/components/back-to-top"
+import { SiteMotion } from "@/components/site-motion"
 import { PortfolioAgent } from "@/components/portfolio-agent"
 import { Analytics } from "@vercel/analytics/next"
 import { SpeedInsights } from "@vercel/speed-insights/next"
@@ -28,5 +29,5 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const personSchema = { "@context": "https://schema.org", "@type": "Person", name: "Debora Moratalla Martín", url: "https://deboramoratalla.com", jobTitle: "Senior Product Designer", image: "https://deboramoratalla.com/media/y6pNO70rr4PZo0E8r6ULmhFEeA.png", worksFor: { "@type": "Organization", name: "Board International" }, address: { "@type": "PostalAddress", addressLocality: "Madrid", addressCountry: "ES" }, sameAs: ["https://www.linkedin.com/in/deboramoratallamartin/", "https://github.com/deboramoratalla-lab"], knowsAbout: ["AI Product Design", "Agentic UX", "Technical Product Design", "Enterprise Product Design", "Design Systems", "AI Product Design", "Design Engineering", "Product Strategy"] }
-  return <html lang="en" data-scroll-behavior="smooth"><body className="portfolio"><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }} /><SiteHeader />{children}<SiteFooter /><PortfolioAgent /><BackToTop /><Analytics /><SpeedInsights /></body></html>
+  return <html lang="en" data-scroll-behavior="smooth"><body className="portfolio"><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }} /><SiteHeader />{children}<SiteFooter /><PortfolioAgent /><BackToTop /><SiteMotion /><Analytics /><SpeedInsights /></body></html>
 }
