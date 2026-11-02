@@ -1,9 +1,9 @@
 "use client"
 
 const routes = [
+  ["What does the agent decide alone?", "Show me how Seamline decides what it can fix without a person"],
   ["What decision changed the product?", "Show me the product decision with the most downstream impact"],
   ["How did the system become real?", "Trace a design system from audit to code"],
-  ["What was tested in code?", "Show me a prototype that became a working product"],
 ]
 
 export function HomePortfolioGuide() {
@@ -25,7 +25,7 @@ export function HomePortfolioGuide() {
           </button>
         ))}
       </div>
-      <p className="hiring-routes__note">I started with spaces, images and stories. Product gave me a new material: behaviour.</p>
+      <p className="hiring-routes__note">Every route ends in real work: a case, a decision or a prototype you can open.</p>
     </section>
   )
 }
