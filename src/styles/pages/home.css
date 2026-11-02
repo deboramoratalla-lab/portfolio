@@ -39,3 +39,5 @@
 .beyond p{margin:0;color:var(--grey-600,#55554f);font-size:15px;line-height:1.5}
 @media(max-width:800px){.beyond{grid-template-columns:1fr}}
 .aeye-home-preview .section-title sup:after{content:"/05]"}
+.aeye-home-preview .section-title>h2{min-height:0!important;margin-bottom:8px}
+.aeye-home-preview .scramble-heading{position:relative}.aeye-home-preview .scramble-size{display:block;visibility:hidden}.aeye-home-preview .scramble-output{position:absolute;inset:0;display:block}
