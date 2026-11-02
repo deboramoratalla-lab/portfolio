@@ -169,3 +169,10 @@ a:hover .lab-glyph .g-dash{stroke-dashoffset:-10;transition:stroke-dashoffset .8
 .guide-band__chips{padding-left:0!important;gap:6px!important}
 .guide-band__chips button{padding:6px 11px!important;background:transparent!important;font-size:13px!important;color:var(--grey-700,#3d3d38)!important}
 @media(max-width:900px){.guide-band{grid-template-columns:1fr!important;grid-template-areas:"head" "field" "chips"!important}}
+/* Pixel glyphs: cells light up in sequence on hover, like the site's pixel field */
+.lab-glyph rect{opacity:.9;transition:opacity .25s ease,fill .25s ease}
+a:hover .lab-glyph rect,a:focus-visible .lab-glyph rect{animation:glyph-pixel .9s steps(1) both;animation-delay:calc(var(--n) * 14ms)}
+@keyframes glyph-pixel{0%{opacity:.15}40%{opacity:1;fill:#8fa72d}100%{opacity:1}}
+.aeye-home-preview .home-lab-note .lab-glyph{width:44px!important;height:44px!important}
+.lab-glyph-feature{width:clamp(64px,6vw,88px)!important}
+@media(prefers-reduced-motion:reduce){a:hover .lab-glyph rect{animation:none}}
