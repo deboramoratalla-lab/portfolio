@@ -8,6 +8,9 @@ export type Project = {
   complexity?: string
   ownership?: string
   outcome?: string
+  /** First-impression card: one result and one role line. */
+  cardStat?: [string, string]
+  cardRole?: string
   tags: string[]
   accent: string
   cover: string
@@ -52,6 +55,7 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    cardStat: ["6/6", "breaks caught on a blind test, 0 false alarms"], cardRole: "Solo · designed and built an AI agent",
     slug: "seamline", number: "01", title: "Seamline — Design System Agent /", shortTitle: "Seamline",
     strapline: "An agent that keeps a design system in sync, and knows when to stop.",
     problem: "Figma, code, Storybook and docs drift apart, and sync tools quietly overwrite one side.",
@@ -68,6 +72,7 @@ export const projects: Project[] = [
     chapters: []
   },
   {
+    cardStat: ["€1.2B", "budget process, adopted by SUEZ for FY2026"], cardRole: "Solo designer · enterprise B2B",
     slug: "saas", number: "02", title: "Enterprise Planning /", shortTitle: "Board",
     strapline: "A budgeting product where status had become a coordination problem.",
     problem: "Finance teams could see the process, but not what was blocked or who owned the next move.",
@@ -103,6 +108,7 @@ export const projects: Project[] = [
     ]
   },
   {
+    cardStat: ["55 → 38", "component concepts · docs from 45 min to under 2"], cardRole: "Lead · design system and AI workflow",
     slug: "tap-mindset-ds", number: "03", title: "TAP Mindset Design System & AI Workflow /", shortTitle: "TAP Design System",
     strapline: "Keeping product, design and code in sync as the system grows.",
     problem: "Component drift made each release slower to document and harder to keep aligned.",
@@ -151,6 +157,7 @@ export const projects: Project[] = [
     ]
   },
   {
+    cardStat: ["12", "commuting scenarios tested for trust"], cardRole: "Lead · agentic UX concept",
     slug: "fluxy", number: "04", title: "Fluxy — Product Design Case Study /", shortTitle: "Fluxy",
     strapline: "An autonomous commuting agent that knows when to act — and when to wait.",
     problem: "A narrow top-up brief hid the larger burden of managing a changing commute.",
@@ -184,6 +191,7 @@ export const projects: Project[] = [
     ]
   },
   {
+    cardStat: ["−38%", "decisions before a first session"], cardRole: "Lead · 12-month product redesign",
     slug: "tap-mindset", number: "05", title: "TAP Mindset — Product Redesign /", shortTitle: "TAP Mindset",
     strapline: "Turning one feature-led product into three role-based experiences.",
     problem: "One feature-led product was serving three jobs with overlapping paths.",
@@ -227,6 +235,7 @@ export const projects: Project[] = [
     ]
   },
   {
+    cardStat: ["15", "internal users moved off Excel"], cardRole: "Product designer · built in code",
     slug: "civeo", number: "06", title: "Civeo — Municipal Operations /", shortTitle: "Civeo",
     strapline: "A municipal operations surface that preserves context from overview to action.",
     problem: "Teams relied on Excel and separate service views to reconstruct the state of municipal operations.",
