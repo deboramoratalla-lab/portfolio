@@ -1,4 +1,5 @@
 import Link from "next/link"
+import { CookieSettingsLink } from "@/components/cookie-settings-link"
 import Image from "next/image"
 import { ArrowLink } from "@/components/ui-links"
 
@@ -23,7 +24,7 @@ export function SiteFooter() {
     <div className="footer-bottom">
       <Link className="footer-mark" href="/"><Image src="/media/dm-logo.png" alt="DM" width={42} height={42} /></Link>
       <div><span>Explore</span><nav>{footerLinks.map(([label, href]) => <Link key={href} href={href}>{label}</Link>)}</nav></div>
-      <div className="footer-location"><span>Based in Madrid</span><p>Senior Product Designer · AI-first</p></div>
+      <div className="footer-location"><span>Based in Madrid</span><CookieSettingsLink /><p>Senior Product Designer · AI-first</p></div>
     </div>
   </footer>
 }
