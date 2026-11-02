@@ -12,6 +12,11 @@ export type AgentAnswer = {
 
 /** Curated answers. Third person: the guide talks about Debora, never as her. Conclusion first, proof second. */
 export const answers = {
+  who: { title: "Debora is a Senior Product Designer in Madrid who designs AI products and complex B2B tools.", points: ["10+ years. Now at Board International, on enterprise planning and AI-assisted workflows.", "Came to product from interior design, film art direction and HR. She still thinks in structure first.", "She prototypes in code and stays close to engineering until things ship."], evidence: [{ label: "Experience", href: "/experience" }, { label: "How she works", href: "/#practice" }], followUps: ["What is she looking for next?", "Show me her best work", "How does she work with a team?"] },
+  looking: { title: "A Senior or Staff role where AI does real work in the product.", points: ["Ideally: agents, AI workflows, design systems or complex B2B tools.", "Madrid or remote within the EU.", "Teams where design sits close to engineering."], evidence: [{ label: "Email Debora", href: "mailto:hello@deboramoratalla.com" }, { label: "LinkedIn", href: "https://www.linkedin.com/in/deboramoratallamartin/" }], followUps: ["Is she a fit for an AI product role?", "Show me her best work"] },
+  howWorks: { title: "She models the rules before she draws the screens.", points: ["Maps roles, states and failure paths first, so trade-offs show up while they're cheap.", "Brings engineering constraints in early and prototypes in code when it's faster.", "Uses AI for repetitive work; people keep the decisions."], evidence: [{ label: "How I work", href: "/#practice" }, { label: "Beyond my own work", href: "/#beyond" }], followUps: ["What's the strongest proof of seniority?", "How does she use AI in her own process?"] },
+  bestWork: { title: "Start with these three.", points: ["Seamline: an AI agent she designed and built that knows when to stop.", "Board: a €1.2B budget process made readable, adopted by SUEZ.", "TAP Design System: AI in the design workflow, with numbers."], evidence: [{ label: "Seamline", href: "/projects/seamline" }, { label: "Board", href: "/projects/saas" }, { label: "TAP Design System", href: "/projects/tap-mindset-ds" }], followUps: ["Is she a fit for an AI product role?", "Who is Debora?"] },
+  contact: { title: "Email is fastest. She replies personally.", points: ["hello@deboramoratalla.com", "Or a message on LinkedIn."], evidence: [{ label: "Email Debora", href: "mailto:hello@deboramoratalla.com" }, { label: "LinkedIn", href: "https://www.linkedin.com/in/deboramoratallamartin/" }], followUps: ["What is she looking for next?"] },
   seamline: { title: "Yes. Seamline is an AI agent she designed and built on her own.", points: ["It keeps Figma, code, Storybook and docs in sync for GitHub's Primer.", "It acts alone only above 85% confidence. Everything else goes to a person, and the pull request stays red until they decide.", "Three rejections of the same kind of change pause its autonomy for that kind."], evidence: [{ label: "How autonomy is decided", href: "/projects/seamline#seamline-02" }, { label: "Open the live console", href: "https://seamline-five.vercel.app/" }], limitation: "Hackathon project on a public design system. Not used by a real team yet.", followUps: ["What broke when she tested it?", "Where does she draw the line on autonomy?"] },
   seamlineTests: { title: "She tested it to break it, and the failures shaped the design.", points: ["The small model invented a commit, so judgment moved to the larger one.", "The model gave different answers each time. Three reads and a second model took false alarms to zero.", "6/6 breaks found on a screen she hadn't tuned for. 343/343 random breaks caught."], evidence: [{ label: "Where it broke", href: "/projects/seamline#seamline-04" }, { label: "Code and test log", href: "https://github.com/deboramoratalla-lab/ds-lab" }], followUps: ["What does the agent decide alone?", "How does she use AI in her own process?"] },
   agentic: { title: "Software prepares. People decide anything with real consequences.", points: ["In Seamline, the agent never creates a new option alone and never picks a side when two people disagree.", "In Fluxy, the commuting agent stages a payment but the passenger always approves it.", "Both products show why they act, and both can step back."], evidence: [{ label: "Seamline · five kinds of change", href: "/projects/seamline#seamline-02" }, { label: "Fluxy · autonomy rules", href: "/projects/fluxy#fluxy-03" }], followUps: ["Has she designed an AI agent end to end?", "How does she use AI in her own process?"] },
@@ -35,6 +40,13 @@ export type AnswerKey = keyof typeof answers
 
 /** Every suggested question maps to one curated answer. */
 export const questionAnswers: Record<string, AnswerKey> = {
+  "Who is Debora?": "who",
+  "What is she looking for next?": "looking",
+  "How does she work with a team?": "howWorks",
+  "How does she work?": "howWorks",
+  "Show me her best work": "bestWork",
+  "How do I reach her?": "contact",
+  "Is she a fit for an AI product role?": "seamline",
   "What's the strongest proof of seniority?": "seniority",
   "Has her work been adopted by a real team?": "enterprise",
   "How does she work with engineering?": "collaboration",
@@ -76,6 +88,11 @@ export function answerQuestion(question: string): AgentAnswer {
   const direct = questionAnswers[question]
   if (direct) return answers[direct]
   const q = question.toLowerCase()
+  if (/who is|about her|about debora|background/.test(q)) return answers.who
+  if (/looking|next role|open to|available|availab|relocat|remote/.test(q)) return answers.looking
+  if (/how does she work|process|approach|method/.test(q) && !/\bai\b/.test(q)) return answers.howWorks
+  if (/best work|where.*start|show me|portfolio/.test(q)) return answers.bestWork
+  if (/contact|email|reach|hire her|talk to/.test(q)) return answers.contact
   if (/broke|fail|test/.test(q) && /seamline|agent/.test(q)) return answers.seamlineTests
   if (/seamline|decide.*alone|guardrail|human in the loop|hackathon|agent.*(design|built|end to end)/.test(q)) return answers.seamline
   if (/autonom|line|boundar|fluxy|consent/.test(q)) return answers.agentic
@@ -94,3 +111,11 @@ export function answerQuestion(question: string): AgentAnswer {
   if (/tour|quick|overview|summary/.test(q)) return answers.tour
   return answers.unknown
 }
+
+/** First screen: entry points about the person, the work, the fit and contact. */
+export const starters = [
+  { label: "Who is Debora?", hint: "Background, path, how she thinks" },
+  { label: "Show me her best work", hint: "Three cases to start with" },
+  { label: "What is she looking for next?", hint: "Roles, location, team" },
+  { label: "How do I reach her?", hint: "Email or LinkedIn" },
+] as const

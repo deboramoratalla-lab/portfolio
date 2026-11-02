@@ -5,7 +5,7 @@ import { ArrowUpRight } from "@/components/arrow-up-right"
 import { ArrowRouteLink } from "@/components/ui-links"
 
 import { usePathname } from "next/navigation"
-import { answerQuestion, pageQuestions, roles, type AgentAnswer } from "@/data/portfolio-agent-content"
+import { answerQuestion, pageQuestions, roles, starters, type AgentAnswer } from "@/data/portfolio-agent-content"
 
 export function PortfolioAgent() {
   const [open, setOpen] = useState(false)
@@ -97,14 +97,14 @@ export function PortfolioAgent() {
     {open && <div ref={dialogRef} className="agent-shell" role="dialog" aria-modal="true" aria-labelledby="portfolio-agent-title">
       <button className="agent-backdrop" aria-label="Close the portfolio guide" onClick={closeDialog} tabIndex={-1} />
       <aside className="agent-panel">
-        <header><div><span>AI guide</span><strong id="portfolio-agent-title">Ask about Debora&apos;s work</strong></div><button className="agent-close-action ui-action ui-action-secondary" onClick={closeDialog} aria-label="Close"><span className="agent-close-icon" aria-hidden="true">×</span> Close</button></header>
+        <header><div><span>AI guide</span><strong id="portfolio-agent-title">Ask about Debora</strong></div><button className="agent-close-action ui-action ui-action-secondary" onClick={closeDialog} aria-label="Close"><span className="agent-close-icon" aria-hidden="true">×</span> Close</button></header>
         <div className="agent-body">{loading ? <div className="agent-thinking" aria-live="polite"><span>Looking through her work</span><i /><i /><i /></div> : !answer ? <div className="agent-intro">
-          <p>I answer questions about Debora&apos;s work using only her published cases and CV. If something isn&apos;t proven, I&apos;ll say so.</p>
+          <p>Hi. I&apos;m a guide to Debora&apos;s work. Ask me anything about her, or start here.</p>
+          <div className="agent-starters">{starters.map(item => <button key={item.label} onClick={() => ask(item.label)}><strong>{item.label}</strong><span>{item.hint}</span></button>)}</div>
           {pageSet && <section className="agent-group"><h3>{pageSet.label}</h3><div>{pageSet.questions.map(prompt => <button key={prompt} onClick={() => ask(prompt)}>{prompt}</button>)}</div></section>}
-          <section className="agent-group"><h3>I&apos;m hiring for…</h3><div className="agent-roles" role="group" aria-label="Role you are hiring for">{roles.map(item => <button key={item.id} aria-pressed={role === item.id} onClick={() => setRole(role === item.id ? null : item.id)}>{item.label}</button>)}</div>
+          <section className="agent-group"><h3>Hiring? Pick the role</h3><div className="agent-roles" role="group" aria-label="Role you are hiring for">{roles.map(item => <button key={item.id} aria-pressed={role === item.id} onClick={() => setRole(role === item.id ? null : item.id)}>{item.label}</button>)}</div>
             {activeRole && <div>{activeRole.questions.map(prompt => <button key={prompt} onClick={() => ask(prompt)}>{prompt}</button>)}</div>}
           </section>
-          {!pageSet && !activeRole && <button className="agent-tour" onClick={() => ask("Give me the 90-second tour")}>Or take the 90-second tour <b aria-hidden="true">→</b></button>}
         </div> : <div className="agent-answer" aria-live="polite">
           <span>{answer.source === "ai" ? "AI answer · from her published work" : "From her published work"}</span>
           <h2>{answer.title}</h2>
@@ -114,8 +114,8 @@ export function PortfolioAgent() {
           {(answer.followUps ?? []).length > 0 && <section className="agent-group agent-next"><h3>Ask next</h3><div>{answer.followUps!.map(prompt => <button key={prompt} onClick={() => ask(prompt)}>{prompt}</button>)}</div></section>}
           <button className="agent-restart" onClick={() => { setAnswer(null); setQuestion("") }}>← Start over</button>
         </div>}</div>
-        <form onSubmit={submit}><input ref={inputRef} value={question} onChange={event => setQuestion(event.target.value)} placeholder="e.g. Has she led a team?" aria-label="Question about Debora's portfolio" /><button type="submit" aria-label="Ask"><ArrowUpRight /></button></form>
-        <footer>AI guide · answers only from published cases and her CV</footer>
+        <form onSubmit={submit}><input ref={inputRef} value={question} onChange={event => setQuestion(event.target.value)} placeholder="Ask about Debora or her work" aria-label="Question about Debora's portfolio" /><button type="submit" aria-label="Ask"><ArrowUpRight /></button></form>
+        <footer>AI guide · answers from her published work and CV. If it isn&apos;t there, it says so.</footer>
       </aside>
     </div>}
   </>
