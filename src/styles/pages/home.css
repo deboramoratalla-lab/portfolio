@@ -38,7 +38,7 @@
 .beyond h3{margin:0 0 10px;font-size:clamp(20px,2vw,26px);font-weight:450;line-height:1.08;letter-spacing:-.03em}
 .beyond p{margin:0;color:var(--grey-600,#55554f);font-size:15px;line-height:1.5}
 @media(max-width:800px){.beyond{grid-template-columns:1fr}}
-.aeye-home-preview .section-title sup:after{content:"/05]"}
+.aeye-home-preview .section-title sup:after{content:"/04]"}
 .aeye-home-preview .section-title>h2{min-height:0!important;margin-bottom:8px}
 .aeye-home-preview .scramble-heading{position:relative}.aeye-home-preview .scramble-size{display:block;visibility:hidden}.aeye-home-preview .scramble-output{position:absolute;inset:0;display:block}
 .lab-earlier{display:grid;grid-template-columns:auto auto 1fr auto;align-items:baseline;gap:18px;margin-top:20px;padding:18px 0;border-top:1px solid var(--grey-300,#cfcec7);border-bottom:1px solid var(--grey-300,#cfcec7);color:var(--black-900,#141414);text-decoration:none;transition:color .2s ease}
@@ -48,3 +48,13 @@
 .lab-earlier b{color:var(--purple-600,#5145c7);font-weight:400}
 .lab-earlier:hover strong,.lab-earlier:focus-visible strong{color:var(--purple-600,#5145c7)}
 @media(max-width:700px){.lab-earlier{grid-template-columns:auto 1fr auto;gap:8px 14px}.lab-earlier em{grid-column:1/-1;grid-row:2}}
+/* Lab feature: copy only, no inline demo visual */
+.aeye-home-preview .home-lab-feature-media{display:none!important}
+.aeye-home-preview .home-lab-feature{display:flex!important;flex-direction:column}
+.aeye-home-preview .home-lab-feature-copy{flex:1;height:auto!important}
+@media(min-width:901px){
+  .aeye-home-preview .home-lab-feature-copy{display:flex!important;flex-direction:column!important}
+  .aeye-home-preview .home-lab-feature-copy h3{margin-top:auto!important;font-size:clamp(48px,4.6vw,76px)!important;line-height:.98!important;letter-spacing:-.055em!important}
+  .aeye-home-preview .home-lab-feature-copy p{max-width:460px;margin-bottom:32px!important}
+  .aeye-home-preview .home-lab-feature-copy .home-lab-card-action{margin-top:0!important}
+}

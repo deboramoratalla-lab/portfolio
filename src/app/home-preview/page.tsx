@@ -25,7 +25,6 @@ export function HomePreview() {
       <article><span>Inside teams</span><h3>Workshops at Board</h3><p>I run UX/UI practice workshops for product and engineering, so good decisions don't depend on one designer being in the room.</p></article>
       <article><span>Ways of working</span><h3>AI in the design process, with a person in charge</h3><p>At TAP I set up a weekly design and engineering review: automation prepares the work, a person approves anything that touches foundations, the API or accessibility.</p></article>
     </div></section>
-    <section className="personal-note section" id="about"><MotionSectionTitle title="A note" number="05"/><div><p>Interiors, film, HR, then product. Same habit: finding the structure under things.</p><span>Today that structure is behaviour. I’m most interested in AI that knows when to act, when to wait and when to hand control back.</span></div></section>
   </main>
 }
 
