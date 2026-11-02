@@ -61,7 +61,7 @@
 
 /* — Lab cards with identity: accent per piece, glyph, topics — */
 .aeye-home-preview .home-lab-note{position:relative;grid-template-columns:42px minmax(0,1fr) 56px 16px!important;overflow:hidden}
-.aeye-home-preview .home-lab-note::before,.aeye-home-preview .home-lab-feature::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--lab-accent);transform:scaleY(.18);transform-origin:top;transition:transform .45s cubic-bezier(.16,1,.3,1)}
+.aeye-home-preview .home-lab-note::before,.aeye-home-preview .home-lab-feature::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--lab-accent);transform:scaleY(0);transform-origin:top;transition:transform .45s cubic-bezier(.16,1,.3,1)}
 .aeye-home-preview .home-lab-note-number{color:var(--lab-accent)!important}
 .aeye-home-preview .home-lab-note .lab-glyph{width:56px;height:56px;color:var(--lab-accent);opacity:.85;transition:transform .5s cubic-bezier(.16,1,.3,1),opacity .3s ease}
 .aeye-home-preview .home-lab-note:hover,.aeye-home-preview .home-lab-note:focus-visible{background:color-mix(in srgb,var(--lab-accent) 7%,#f7f6f1)!important;box-shadow:none!important}
