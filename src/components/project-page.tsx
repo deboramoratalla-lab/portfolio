@@ -23,7 +23,7 @@ function RoleArchitectureMap() {
 
 export function ProjectPage({ project }: { project: Project }) {
   if (project.slug === "seamline") return <SeamlineCase project={project} />
-  if (project.slug === "saas") return <BoardCase />
+  if (project.slug === "board") return <BoardCase />
   if (project.slug === "tap-mindset-ds") return <TapDsCase project={project} />
   if (project.slug === "tap-mindset") return <TapProductCase project={project} />
   if (project.slug === "fluxy") return <FluxyCase project={project} />
@@ -31,7 +31,7 @@ export function ProjectPage({ project }: { project: Project }) {
   const index = projects.findIndex(item => item.slug === project.slug)
   const previous = projects[(index - 1 + projects.length) % projects.length]
   const next = projects[(index + 1) % projects.length]
-  const closing = project.slug === "seamline" ? "Rules first. Models where judgment is needed. People where it matters." : project.slug === "saas" ? "People don’t coordinate work through screens. They coordinate through shared understanding." : project.slug === "tap-mindset-ds" ? "The goal was never consistency. It was continuity." : project.slug === "tap-mindset" ? "A product becomes scalable when its logic is clear enough to survive the next feature." : "Good design isn’t about adding more interactions. It’s about removing the unnecessary ones."
+  const closing = project.slug === "seamline" ? "Rules first. Models where judgment is needed. People where it matters." : project.slug === "board" ? "People don’t coordinate work through screens. They coordinate through shared understanding." : project.slug === "tap-mindset-ds" ? "The goal was never consistency. It was continuity." : project.slug === "tap-mindset" ? "A product becomes scalable when its logic is clear enough to survive the next feature." : "Good design isn’t about adding more interactions. It’s about removing the unnecessary ones."
   return <main className={`case-study case-${project.slug}`} style={{ "--accent": project.accent } as React.CSSProperties}>
     <section className="case-hero" id="top">
       <div className="case-hero-context"><span>[CASE STUDY / {String(index + 1).padStart(2, "0")}]</span><p>&gt; {project.tags[0]}</p><i aria-hidden="true" />{project.heroLink && <Link className="case-hero-link" href={project.heroLink[1]} target={project.heroLink[1].startsWith("http") ? "_blank" : undefined} rel={project.heroLink[1].startsWith("http") ? "noreferrer" : undefined}>{project.heroLink[0]} <b aria-hidden="true">↗</b></Link>}</div>

@@ -130,7 +130,7 @@ export function SeamlineCase({ project }: { project: Project }) {
       <blockquote className="fx-close">The hard part of an agent isn&apos;t what it can do. It&apos;s what it chooses not to.</blockquote>
     </section>
 
-    <CaseMoreWorks previous={{ href: "/projects/civeo", title: "Civeo", description: "A municipal operations surface that preserves context from overview to action." }} next={{ href: "/projects/saas", title: "Board", description: "Making workflow state visible across a €1.2B budgeting system." }} />
+    <CaseMoreWorks previous={{ href: "/projects/civeo", title: "Civeo", description: "A municipal operations surface that preserves context from overview to action." }} next={{ href: "/projects/board", title: "Board", description: "Making workflow state visible across a €1.2B budgeting system." }} />
     <SeamlineMotion />
   </main>
 }

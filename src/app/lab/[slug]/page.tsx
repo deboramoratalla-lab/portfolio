@@ -195,11 +195,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const entry = getLabEntry((await params).slug)
   if (!entry) return {}
   const url = `https://deboramoratalla.com/lab/${entry.slug}`
-  const image = entry.slug === "workflow-impact-preview"
-    ? "https://deboramoratalla.com/lab/workflow-impact-preview/opengraph-image?v=2"
-    : "https://deboramoratalla.com/opengraph-image"
+  const image = `https://deboramoratalla.com/lab/${entry.slug}/opengraph-image?v=3`
   return {
-    title: entry.title,
+    title: `${entry.title} · Lab`,
     description: entry.summary,
     alternates: { canonical: url },
     openGraph: {
@@ -430,7 +428,9 @@ export default async function LabArticle({ params }: { params: Promise<{ slug: s
   const content = articles[entry.slug]
   if (!content) notFound()
 
+  const articleLd = { "@context": "https://schema.org", "@type": "Article", headline: entry.title, description: entry.summary, url: `https://deboramoratalla.com/lab/${entry.slug}`, image: `https://deboramoratalla.com/lab/${entry.slug}/opengraph-image?v=3`, keywords: entry.topics.join(", "), inLanguage: "en", author: { "@type": "Person", name: "Debora Moratalla", url: "https://deboramoratalla.com" } }
   return <main className="lab-article">
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleLd) }} />
     <header className="lab-article-hero">
       <div className="lab-article-hero-top">
         <Link href="/lab">← Back to Lab</Link>

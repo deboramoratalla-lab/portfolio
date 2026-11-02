@@ -1,4 +1,5 @@
 import { ImageResponse } from "next/og"
+import { getLabEntry } from "@/data/lab"
 
 export const alt = "Workflow impact preview, an n8n agent release-control experiment by Debora Moratalla"
 export const size = { width: 1200, height: 630 }
@@ -7,6 +8,18 @@ export const contentType = "image/png"
 export default async function OpenGraphImage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
   const isWorkflow = slug === "workflow-impact-preview"
+  const entry = getLabEntry(slug)
+  if (!isWorkflow) return new ImageResponse(
+    <div style={{ width: "100%", height: "100%", display: "flex", flexDirection: "column", justifyContent: "space-between", background: "#efeee9", color: "#141414", padding: "56px 60px", fontFamily: "Arial, sans-serif" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", color: "#5145c7", fontSize: 16, letterSpacing: 2, textTransform: "uppercase" }}><span>Lab · {entry?.type ?? "Note"}</span><span style={{ color: "#77766f" }}>{entry?.date ?? ""}</span></div>
+      <div style={{ display: "flex", flexDirection: "column", gap: 22 }}>
+        <span style={{ fontSize: 68, lineHeight: 1, letterSpacing: -3, color: "#5145c7", maxWidth: 1000 }}>{entry?.title ?? "Lab"}</span>
+        <span style={{ fontSize: 26, lineHeight: 1.35, color: "#55554f", maxWidth: 900 }}>{entry?.summary ?? ""}</span>
+      </div>
+      <div style={{ display: "flex", justifyContent: "space-between", borderTop: "1px solid #c9c8c1", paddingTop: 20, fontSize: 16, color: "#77766f", letterSpacing: 1.5, textTransform: "uppercase" }}><span>Debora Moratalla · Senior Product Designer</span><span>deboramoratalla.com/lab</span></div>
+    </div>,
+    size,
+  )
 
   return new ImageResponse(
     <div style={{ width: "100%", height: "100%", display: "flex", flexDirection: "column", background: "#f7f8fa", color: "#151a24", padding: "42px 50px", fontFamily: "Arial, sans-serif" }}>

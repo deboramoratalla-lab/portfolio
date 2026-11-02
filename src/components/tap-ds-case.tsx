@@ -33,6 +33,6 @@ export function TapDsCase({ project }: { project: Project }) {
         </article>)}
       </div>
     </CaseChapter>)}
-    <CaseMoreWorks previous={{ href: "/projects/saas", title: "Board", description: "Making workflow state visible across a €1.2B budgeting system." }} next={{ href: "/projects/fluxy", title: "Fluxy", description: "A commuting agent that steps in only when the journey changes." }} />
+    <CaseMoreWorks previous={{ href: "/projects/board", title: "Board", description: "Making workflow state visible across a €1.2B budgeting system." }} next={{ href: "/projects/fluxy", title: "Fluxy", description: "A commuting agent that steps in only when the journey changes." }} />
   </main>
 }

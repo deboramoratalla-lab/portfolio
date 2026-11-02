@@ -9,7 +9,7 @@ export const portfolioEvidence: PortfolioEvidence[] = [
   {
     id: "board-framing",
     label: "Board · problem framing",
-    href: "/projects/saas#chapter-01",
+    href: "/projects/board#chapter-01",
     claims: [
       "A UI request became a coordination model for three roles, 24 regions and 186 agencies.",
       "The work reframed interface complexity as a product and operating-model problem.",
@@ -18,7 +18,7 @@ export const portfolioEvidence: PortfolioEvidence[] = [
   {
     id: "board-tradeoffs",
     label: "Board · trade-offs",
-    href: "/projects/saas#chapter-02",
+    href: "/projects/board#chapter-02",
     claims: [
       "The case study makes rejected paths and product trade-offs visible.",
       "It shows how constraints were protected under enterprise complexity.",
@@ -27,7 +27,7 @@ export const portfolioEvidence: PortfolioEvidence[] = [
   {
     id: "board-rules",
     label: "Board · rule system",
-    href: "/projects/saas#chapter-03",
+    href: "/projects/board#chapter-03",
     claims: [
       "The outcome was a reusable rule system adopted for SUEZ's FY2026 budgeting cycle.",
       "The system aligned roles, regions, agencies and dependencies instead of solving one screen.",
@@ -36,7 +36,7 @@ export const portfolioEvidence: PortfolioEvidence[] = [
   {
     id: "board-coded-prototype",
     label: "Board · coded workflow prototype",
-    href: "/projects/saas#board-02",
+    href: "/projects/board#board-02",
     claims: [
       "The Board case includes a coded, interactive prototype of the role-based workflow: role selection, home, task detail, submission, review and approval.",
       "Claude was used as a design participant to challenge edge cases and accelerate the prototype; Debora retained ownership of the operating model, interaction decisions and validation.",

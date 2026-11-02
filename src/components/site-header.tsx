@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation"
 import { motion, useReducedMotion } from "motion/react"
 
 const caseNavigation = {
-  "/projects/saas": {
+  "/projects/board": {
     prefix: "board",
     chapters: [
       ["01", "Find the problem"],
