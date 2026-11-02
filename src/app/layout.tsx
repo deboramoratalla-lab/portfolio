@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import Script from "next/script"
 import "./tokens.css"
 import "./globals.css"
 import "./site-header.css"
@@ -29,5 +30,5 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const personSchema = { "@context": "https://schema.org", "@type": "Person", name: "Debora Moratalla Martín", url: "https://deboramoratalla.com", jobTitle: "Senior Product Designer", image: "https://deboramoratalla.com/media/y6pNO70rr4PZo0E8r6ULmhFEeA.png", worksFor: { "@type": "Organization", name: "Board International" }, address: { "@type": "PostalAddress", addressLocality: "Madrid", addressCountry: "ES" }, sameAs: ["https://www.linkedin.com/in/deboramoratallamartin/", "https://github.com/deboramoratalla-lab", "https://medium.com/@debora.moratalla"], knowsAbout: ["AI Product Design", "Agentic UX", "Human-in-the-loop AI", "AI agents", "Technical Product Design", "Enterprise Product Design", "Design Systems", "AI Product Design", "Design Engineering", "Product Strategy"] }
-  return <html lang="en" data-scroll-behavior="smooth"><body className="portfolio"><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }} /><SiteHeader />{children}<SiteFooter /><PortfolioAgent /><BackToTop /><SiteMotion /><Analytics /><SpeedInsights /></body></html>
+  return <html lang="en" data-scroll-behavior="smooth"><body className="portfolio"><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }} /><SiteHeader />{children}<SiteFooter /><PortfolioAgent /><BackToTop /><SiteMotion /><Analytics /><SpeedInsights /><Script src="https://www.googletagmanager.com/gtag/js?id=G-L1EKS15DSN" strategy="afterInteractive" /><Script id="ga4" strategy="afterInteractive">{`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-L1EKS15DSN");`}</Script></body></html>
 }
